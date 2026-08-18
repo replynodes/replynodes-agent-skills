@@ -36,4 +36,17 @@ grep -F 'validation failed: credential-like value found' <<<"$output" >/dev/null
   exit 1
 }
 
+cp -R "$root/tests/fixtures/unsafe-shell" "$tmp/unsafe-shell"
+if output="$("$validator" "$tmp/unsafe-shell" 2>&1)"; then
+  echo 'expected unsafe shell fixture to fail' >&2
+  exit 1
+else
+  status=$?
+fi
+[[ "$status" -eq 1 ]] || { echo "unsafe shell fixture exited $status" >&2; exit 1; }
+grep -F 'validation failed: unsafe shell interpolation or command execution pattern found' <<<"$output" >/dev/null || {
+  echo "unsafe shell fixture failed for an unexpected reason: $output" >&2
+  exit 1
+}
+
 echo 'deterministic package, archive, and negative-fixture tests passed'

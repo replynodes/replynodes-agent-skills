@@ -70,7 +70,7 @@ done < <(find "$root" -type f \( -name '*.js' -o -name '*.ts' -o -name '*.mjs' -
 
 # Shell safety policy: data is passed as arguments/stdin, never evaluated or interpolated into a command.
 shell_unsafe='(^|[;&|])[[:space:]]*(eval|bash[[:space:]]+-c|sh[[:space:]]+-c|xargs[[:space:]]+(-I[^ ]+[[:space:]]+)?(sh|bash))|curl[^\n]*[$][A-Za-z_{]|wget[^\n]*[$][A-Za-z_{]'
-if rg -n -I --glob '*.sh' --glob '!scripts/validate-package.sh' "$shell_unsafe" "$root" >/dev/null; then
+if rg -n -I --glob '*.sh' --glob '!scripts/validate-package.sh' "${fixture_glob[@]}" "$shell_unsafe" "$root" >/dev/null; then
   fail 'unsafe shell interpolation or command execution pattern found'
 fi
 
