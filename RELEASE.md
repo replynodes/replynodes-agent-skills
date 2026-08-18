@@ -1,6 +1,6 @@
 # Release checklist
 
-This PR prepares package version `v1.0.1` (from `VERSION`). The published `v1.0.0` tag is immutable and remains the prior release.
+This PR prepares package version `v1.0.2` (from `VERSION`). The published `v1.0.0` tag is immutable and remains the prior release.
 
 Before publishing a new version, a maintainer must:
 

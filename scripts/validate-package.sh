@@ -36,7 +36,7 @@ awk 'NR == 1 && $0 == "---" { open=1; next }
      open && NR <= 8 { print; if ($0 == "---") { ended=1; exit } }
      END { if (!open || !ended) exit 1 }' "$root/SKILL.md" >"$frontmatter" || fail 'SKILL.md frontmatter delimiters'
 grep -Fx 'name: replynodes' "$frontmatter" >/dev/null || fail 'SKILL.md name'
-grep -Fx 'description: Publish, cross-post, and schedule social media through ReplyNodes in OpenClaw.' "$frontmatter" >/dev/null || fail 'SKILL.md description'
+grep -Fx 'description: Approval-first social media publishing with the ReplyNodes scheduler for cross-posting and auto-posting in OpenClaw, using browser OAuth for LinkedIn and X/Twitter.' "$frontmatter" >/dev/null || fail 'SKILL.md description'
 grep -Fx 'homepage: https://replynodes.com/openclaw' "$frontmatter" >/dev/null || fail 'SKILL.md homepage'
 [[ "$(grep -c '^---$' "$frontmatter")" -eq 1 ]] || fail 'SKILL.md frontmatter shape'
 [[ "$(head -n 1 "$root/SKILL.md")" == '---' ]] || fail 'SKILL.md frontmatter start'
