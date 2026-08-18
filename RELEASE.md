@@ -1,6 +1,6 @@
 # Release checklist
 
-Current package version: `v1.0.0` (from `VERSION`).
+This PR prepares package version `v1.0.1` (from `VERSION`). The published `v1.0.0` tag is immutable and remains the prior release.
 
 Before publishing a new version, a maintainer must:
 
@@ -9,6 +9,6 @@ Before publishing a new version, a maintainer must:
 3. Run `bash tests/test-package.sh` and preserve its exit code and output in the release PR.
 4. Confirm the clean tree contains no credentials, session tokens, OAuth tokens, generated archives, or unrelated files.
 5. Review the CI security, dependency, archive/install smoke, and metadata checks on the exact release commit.
-6. Create the matching annotated Git tag `v$(cat VERSION)` from that reviewed commit, verify the tag points to the release commit, and publish the release with generated notes.
+6. After this PR merges, create the new matching annotated Git tag `v$(cat VERSION)` from the reviewed post-merge release commit; never move or rewrite `v1.0.0`. Verify the new tag points to that release commit, then publish the release with generated notes.
 
 The package has no runtime dependency manifest today. If one is introduced, commit its lockfile and require a successful high-severity vulnerability audit before release.

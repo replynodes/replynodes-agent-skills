@@ -21,10 +21,10 @@ openclaw skills install skills-sh:replynodes/replynodes-agent-skills/replynodes
 Direct unmanaged Git installation (not skills.sh):
 
 ```bash
-openclaw skills install git:replynodes/replynodes-agent-skills@v1.0.0 --as replynodes
+openclaw skills install git:replynodes/replynodes-agent-skills@v1.0.1 --as replynodes
 ```
 
-This is not an npm package. Release tags use SemVer (`vMAJOR.MINOR.PATCH`), beginning with `v1.0.0`; use an explicit Git tag or commit for a reproducible direct install.
+This is not an npm package. `v1.0.0` is the currently published immutable release and does not contain this PR's security-validation changes. This PR prepares unreleased `v1.0.1`; the `v1.0.1` tag must be created from the reviewed post-merge commit before that install command is used. Until then, install the published release with `@v1.0.0`, or use this PR head's full commit SHA for an explicit review build.
 
 ## Use it safely
 

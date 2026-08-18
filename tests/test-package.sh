@@ -49,4 +49,20 @@ grep -F 'validation failed: unsafe shell interpolation or command execution patt
   exit 1
 }
 
+cp -R "$root/tests/fixtures/pinned-dependency" "$tmp/pinned-dependency"
+"$validator" "$tmp/pinned-dependency" >/dev/null
+
+cp -R "$root/tests/fixtures/unpinned-dependency" "$tmp/unpinned-dependency"
+if output=$("$validator" "$tmp/unpinned-dependency" 2>&1); then
+  echo 'expected unpinned dependency fixture to fail' >&2
+  exit 1
+else
+  status=$?
+fi
+[[ "$status" -eq 1 ]] || { echo "unpinned dependency fixture exited $status" >&2; exit 1; }
+grep -F 'validation failed: dependency is not exactly pinned: requirements.txt' <<<"$output" >/dev/null || {
+  echo "unpinned dependency fixture failed for an unexpected reason: $output" >&2
+  exit 1
+}
+
 echo 'deterministic package, archive, and negative-fixture tests passed'

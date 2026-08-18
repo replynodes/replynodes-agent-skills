@@ -21,7 +21,7 @@ done
 while IFS= read -r -d '' path; do
   rel="${path#"$root/"}"
   case "$rel" in
-    SKILL.md|README.md|LICENSE|PROVENANCE.md|VERSION|SECURITY.md|RELEASE.md|scripts/*|tests/*|.github/workflows/*|tests/fixtures/*)
+    SKILL.md|README.md|LICENSE|PROVENANCE.md|VERSION|SECURITY.md|RELEASE.md|package.json|package-lock.json|requirements*.txt|pyproject.toml|Cargo.toml|Cargo.lock|go.mod|go.sum|scripts/*|tests/*|.github/workflows/*|tests/fixtures/*)
       ;;
     *) fail "unexpected package path: $rel" ;;
   esac
@@ -74,16 +74,46 @@ if rg -n -I --glob '*.sh' --glob '!scripts/validate-package.sh' "${fixture_glob[
   fail 'unsafe shell interpolation or command execution pattern found'
 fi
 
-# Dependencies are not needed today. If a manifest is added, it must have a lockfile and exact versions.
+# Dependencies are not needed today. If a manifest is added, it must have a lockfile where
+# applicable, exact versions, and a deterministic high-severity audit.
 if [[ -f "$root/package.json" ]]; then
   require_file package-lock.json
-  if rg -n '"(dependencies|devDependencies)"' "$root/package.json" >/dev/null &&
-    rg -n '"[[:alnum:]_.@/-]+"[[:space:]]*:[[:space:]]*"(\^|~)' "$root/package.json" >/dev/null; then
-    fail 'unpinned package dependency'
-  fi
+  command -v node >/dev/null || fail 'node is required when package.json exists'
+  node - "$root/package.json" <<'NODE' || fail 'package dependency is not exactly pinned'
+const fs = require('fs');
+const packageJson = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const sections = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies'];
+const exact = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
+for (const section of sections) {
+  for (const [name, version] of Object.entries(packageJson[section] || {})) {
+    if (typeof version !== 'string' || !exact.test(version)) {
+      console.error(`${section}.${name} must use an exact numeric version`);
+      process.exit(1);
+    }
+  }
+}
+NODE
   command -v npm >/dev/null || fail 'npm is required when package.json exists'
   npm audit --package-lock-only --audit-level=high --ignore-scripts --prefix "$root" >/dev/null
 fi
+
+for manifest in "$root"/requirements*.txt; do
+  [[ -f "$manifest" ]] || continue
+  while IFS= read -r dependency || [[ -n "$dependency" ]]; do
+    dependency="${dependency%%#*}"
+    [[ -z "${dependency//[[:space:]]/}" || "$dependency" == -* ]] && continue
+    [[ "$dependency" =~ ^[A-Za-z0-9_.-]+(\[[A-Za-z0-9_,.-]+\])?==[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]] ||
+      fail "dependency is not exactly pinned: ${manifest#"$root/"}"
+  done < "$manifest"
+done
+
+for manifest in "$root/pyproject.toml" "$root/Cargo.toml" "$root/go.mod"; do
+  [[ -f "$manifest" ]] || continue
+  floating_version="([\"'](latest|\*|\^|~|>=|<=|>|<)|[=:][[:space:]]*[\"']?(latest|\*|\^|~|>=|<=|>|<))"
+  if rg -n -I "$floating_version" "$manifest" >/dev/null; then
+    fail "dependency range or floating version found: ${manifest#"$root/"}"
+  fi
+done
 
 grep -Eiq 'untrusted|structured (JSON|data)|never.*instructions' "$root/SKILL.md" || fail 'untrusted source-data boundary not documented'
 grep -Eiq 'MIT License' "$root/LICENSE" || fail 'license missing'
