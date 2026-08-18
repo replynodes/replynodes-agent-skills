@@ -26,7 +26,7 @@ openclaw skills install git:replynodes/replynodes-agent-skills@v1.0.1 --as reply
 
 LobeHub installation and import
 
-LobeHub consumes the same portable package: the compatible file is the repository-root [`SKILL.md`](SKILL.md), with no LobeHub-specific fork or wrapper. LobeHub's skill-management documentation describes importing a skill package and then reading its installed `SKILL.md`; its marketplace page also documents the `@lobehub/market-cli` workflow.
+LobeHub consumes the same portable package: the compatible file is the repository-root [`SKILL.md`](SKILL.md), with no LobeHub-specific fork or wrapper. The linked LobeHub pages are source/reference links for importing a skill package, reading its installed `SKILL.md`, and using the `@lobehub/market-cli` workflow; their live content and UI labels must be rechecked against the installed LobeHub version.
 
 For a released marketplace entry, use the identifier shown by LobeHub's [Skills marketplace](https://lobehub.com/skills) and pin the displayed version when the CLI supports version selection:
 
@@ -35,10 +35,10 @@ npx -y @lobehub/market-cli skills search --q "ReplyNodes"
 npx -y @lobehub/market-cli skills install <marketplace-identifier> --version <version>
 ```
 
-This repository is not currently listed at the checked marketplace endpoint, so `<marketplace-identifier>` is intentionally not guessed. For a reviewed Git import, download this exact file, verify its commit or release tag, and import the file/package through the LobeHub skill-management UI or the LobeHub agent's skill-install prompt:
+Marketplace presence for this repository is unverified, so `<marketplace-identifier>` is intentionally not guessed. To verify it in a configured LobeHub environment, run `npx -y @lobehub/market-cli skills search --q "ReplyNodes"`; this was not run here because marketplace authentication/credentials are unavailable in this clean environment. For a reviewed Git import, download this exact file, verify its commit or release tag, and import the file/package through the LobeHub skill-management UI or the LobeHub agent's skill-install prompt:
 
 ```text
-https://raw.githubusercontent.com/replynodes/replynodes-agent-skills/9bc4bf07/SKILL.md
+https://raw.githubusercontent.com/replynodes/replynodes-agent-skills/da3a5008e7c51c29535e6ef850d0c31a7e534776/SKILL.md
 ```
 
 Keep the file at `SKILL.md` in the imported skill directory. Do not paste a session token, provider token, or channel identifier into an agent prompt or LobeHub configuration. LobeHub's [agent guide](https://lobehub.com/docs/usage/getting-started/agent) is the place to attach the imported skill to an agent. This skill does not require an MCP server: do not add a duplicate ReplyNodes MCP backend. If an MCP server is separately needed for another integration, use LobeHub's [custom MCP](https://lobehub.com/docs/usage/community/custom-mcp) configuration and keep its credentials in the host's secret store; that configuration is outside this package.
@@ -91,10 +91,10 @@ Checked from the candidate security/release base `9bc4bf07` on 2026-08-18:
 - `./scripts/validate-package.sh` — exit `0`.
 - `./tests/test-package.sh` — exit `0` (deterministic archive and negative-fixture tests included).
 - `openclaw --version` — exit `127` in this environment (OpenClaw is unavailable); no screenshot or recording was produced.
-- `lh --version` — exit `127` in this environment (LobeHub CLI is unavailable); no UI import was claimed.
-- `npx -y @lobehub/market-cli skills search --q "ReplyNodes"` was not run because the marketplace CLI is not installed and the clean-environment check must not create marketplace credentials. Use the command above in a configured LobeHub environment.
+- `npx -y @lobehub/market-cli --version` — exit `0`, result `0.0.41`.
+- `npx -y @lobehub/market-cli skills search --q "ReplyNodes"` — marketplace presence unverified; not run here because marketplace authentication/credentials are unavailable in this clean environment. Use the command above in a configured LobeHub environment.
 
-Primary references: [skill management](https://lobehub.com/docs/usage/community/skill-management), [custom MCP](https://lobehub.com/docs/usage/community/custom-mcp), [agent guide](https://lobehub.com/docs/usage/getting-started/agent), [agent market](https://lobehub.com/docs/usage/community/agent-market), [Skills marketplace](https://lobehub.com/skills), and [LobeHub source repository](https://github.com/lobehub/lobehub). The live docs currently redirect to LobeHub's markdown routing boundary; verify UI labels against the installed LobeHub version.
+Primary source/reference links: [skill management](https://lobehub.com/docs/usage/community/skill-management), [custom MCP](https://lobehub.com/docs/usage/community/custom-mcp), [agent guide](https://lobehub.com/docs/usage/getting-started/agent), [agent market](https://lobehub.com/docs/usage/community/agent-market), [Skills marketplace](https://lobehub.com/skills), and [LobeHub source repository](https://github.com/lobehub/lobehub). Their live content currently routes through LobeHub's markdown boundary; recheck it and verify UI labels against the installed LobeHub version.
 
 ## Update and uninstall
 
