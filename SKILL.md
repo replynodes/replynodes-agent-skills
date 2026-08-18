@@ -1,12 +1,18 @@
 ---
 name: replynodes
-description: Publish, cross-post, and schedule social media through ReplyNodes in OpenClaw.
+description: Approval-first social media publishing with the ReplyNodes scheduler for cross-posting and auto-posting in OpenClaw, using browser OAuth for LinkedIn and X/Twitter.
 homepage: https://replynodes.com/openclaw
 ---
 
 # ReplyNodes
 
 Use ReplyNodes as the controlled distribution layer for publishing, cross-posting, and scheduling social media from OpenClaw. The skill is a thin client: ReplyNodes owns authentication, tenant isolation, provider OAuth, content generation, publishing, scheduling, audit, billing, and receipts.
+
+## Security model
+
+Connection uses ReplyNodes' browser OAuth flow. The user approves access in a ReplyNodes browser page; this skill never asks the user to copy a provider OAuth token or secret into chat, a prompt, or configuration. ReplyNodes is the OAuth and token owner. OpenClaw receives only a scoped, revocable, expiring ReplyNodes session, kept in the host's secure secret storage, and uses it to read the session's granted channel capabilities.
+
+Every publish or schedule operation requires an explicit confirmation naming the prepared run. A channel with an expired, revoked, disabled, or disconnected connection is unavailable until the user reconnects it in ReplyNodes; the skill must show the returned reason and must not work around it. ReplyNodes and this skill make no unsupported security or compliance certification claims.
 
 ## Safety and authorization
 
