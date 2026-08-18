@@ -1,0 +1,24 @@
+name: Validate public skill
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  package-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate layout, security, provenance, and release metadata
+        shell: bash
+        run: bash tests/test-package.sh
+      - name: Install smoke test
+        shell: bash
+        run: |
+          archive="$(mktemp)"
+          git archive --format=tar --output="$archive" HEAD
+          test -s "$archive"
+          rm -f "$archive"
