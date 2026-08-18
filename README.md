@@ -38,7 +38,7 @@ npx -y @lobehub/market-cli@0.0.41 skills install <marketplace-identifier> --vers
 Marketplace presence for this repository is unverified, so `<marketplace-identifier>` is intentionally not guessed. To verify it in a configured LobeHub environment, run `npx -y @lobehub/market-cli@0.0.41 skills search --q "ReplyNodes"`; this was not run here because marketplace authentication/credentials are unavailable in this clean environment. For a reviewed Git import, download this exact file, verify its commit or release tag, and import the file/package through the LobeHub skill-management UI or the LobeHub agent's skill-install prompt:
 
 ```text
-https://raw.githubusercontent.com/replynodes/replynodes-agent-skills/25ac0fed82a59d1ab911379b9110bb9aeb7224d2/SKILL.md
+https://raw.githubusercontent.com/replynodes/replynodes-agent-skills/58b21e895f3642226fd9198603f75fd16c84c10a/SKILL.md
 ```
 
 Keep the file at `SKILL.md` in the imported skill directory. Do not paste a session token, provider token, or channel identifier into an agent prompt or LobeHub configuration. LobeHub's [agent guide](https://lobehub.com/docs/usage/getting-started/agent) is the place to attach the imported skill to an agent. This skill does not require an MCP server: do not add a duplicate ReplyNodes MCP backend. If an MCP server is separately needed for another integration, use LobeHub's [custom MCP](https://lobehub.com/docs/usage/community/custom-mcp) configuration and keep its credentials in the host's secret store; that configuration is outside this package.
