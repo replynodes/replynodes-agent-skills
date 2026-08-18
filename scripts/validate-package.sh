@@ -40,7 +40,8 @@ grep -Fx 'homepage: https://replynodes.com/openclaw' "$frontmatter" >/dev/null |
 [[ "$(head -n 1 "$root/SKILL.md")" == '---' ]] || fail 'SKILL.md frontmatter start'
 
 # Scan tracked package text for common credential forms. The scanner itself is excluded so its
-# detection expressions cannot self-match; fixtures are included when validating a fixture root.
+# detection expressions cannot self-match. Test fixtures are excluded only when validating the
+# package root; validating an individual fixture directly still scans all of its contents.
 fixture_glob=()
 if [[ -d "$root/tests/fixtures" ]]; then
   fixture_glob=(--glob '!**/tests/fixtures/**')
@@ -59,7 +60,7 @@ while IFS= read -r -d '' path; do
     *) fail "unexpected executable file: $rel" ;;
   esac
 done < <(find "$root" -type f -perm /111 -not -path '*/.git/*' -print0)
-if rg -n -I --hidden --glob '!.git/**' --glob '!scripts/validate-package.sh' \
+if rg -n -I --hidden --glob '!.git/**' --glob '!scripts/validate-package.sh' "${fixture_glob[@]}" \
   '(^|[[:space:]])(eval|exec)[[:space:]]|base64[[:space:]]+(-d|--decode)|[A-Fa-f0-9]{80,}' "$root" >/dev/null; then
   fail 'obfuscated or encoded executable content found'
 fi
