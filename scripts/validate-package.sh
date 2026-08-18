@@ -41,7 +41,11 @@ grep -Fx 'homepage: https://replynodes.com/openclaw' "$frontmatter" >/dev/null |
 
 # Scan tracked package text for common credential forms. The scanner itself is excluded so its
 # detection expressions cannot self-match; fixtures are included when validating a fixture root.
-if rg -n -I --hidden --glob '!scripts/validate-package.sh' --glob '!.git/**' --glob '!**/tests/fixtures/**' \
+fixture_glob=()
+if [[ -d "$root/tests/fixtures" ]]; then
+  fixture_glob=(--glob '!**/tests/fixtures/**')
+fi
+if rg -n -I --hidden --glob '!scripts/validate-package.sh' --glob '!.git/**' "${fixture_glob[@]}" \
   '(AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|gh[pousr]_[A-Za-z0-9_]{20,}|xox[baprs]-[A-Za-z0-9-]{20,}|Bearer[[:space:]]+[A-Za-z0-9._-]{24,}|(api[_-]?key|client[_-]?secret|access[_-]?token|session[_-]?token)[[:space:]]*[:=][[:space:]]*[A-Za-z0-9._-]{16,})' "$root" >/dev/null; then
   fail 'credential-like value found'
 fi
