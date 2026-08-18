@@ -13,6 +13,8 @@ fi
 fail() { printf 'validation failed: %s\n' "$1" >&2; exit 1; }
 require_file() { [[ -f "$root/$1" ]] || fail "missing $1"; }
 
+command -v rg >/dev/null 2>&1 || fail 'rg is required for security scans'
+
 for file in SKILL.md README.md LICENSE PROVENANCE.md VERSION SECURITY.md RELEASE.md; do
   require_file "$file"
 done
