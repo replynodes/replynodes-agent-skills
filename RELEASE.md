@@ -1,6 +1,13 @@
 # Release checklist
 
-This PR prepares package version `v1.0.2` (from `VERSION`). The published `v1.0.0` tag is immutable and remains the prior release.
+This PR prepares package version `v1.0.3` (from `VERSION`). The published `v1.0.0` tag is immutable and remains the prior release.
+
+## v1.0.3 release notes
+
+- Reframes the skill opening around outcome-led scheduler and publisher intents, including LinkedIn and X/Twitter publishing.
+- Adds realistic request examples while keeping prepare → preview → explicit confirmation → receipt as the authorization boundary.
+- Clarifies exact capability gating, unavailable-channel behavior, and the possibility that ReplyNodes is a paid external service.
+- Keeps browser OAuth/no-token-copy trust messaging before public endpoint details and preserves the ReplyNodes OpenClaw homepage.
 
 Before publishing a new version, a maintainer must:
 
