@@ -4,9 +4,9 @@ description: Approval-first social media publishing with the ReplyNodes schedule
 homepage: https://replynodes.com/openclaw
 ---
 
-# ReplyNodes
+# ReplyNodes: prepare and publish social posts safely
 
-Use ReplyNodes as the controlled distribution layer for publishing, cross-posting, and scheduling social media from OpenClaw. The skill is a thin client: ReplyNodes owns authentication, tenant isolation, provider OAuth, content generation, publishing, scheduling, audit, billing, and receipts.
+Use this skill when you need a **social media scheduler** or **social media publisher** from OpenClaw: **publish social media posts**, **cross-post content**, **schedule social posts**, **publish everywhere**, **post from OpenClaw**, or manage **LinkedIn publishing** and **X/Twitter publishing**. ReplyNodes prepares a named run, shows a channel-aware preview, waits for your explicit confirmation, and returns a per-channel receipt. It is a thin client: ReplyNodes owns authentication, tenant isolation, provider OAuth, content generation, publishing, scheduling, audit, billing, and receipts.
 
 ## Security model
 
@@ -21,6 +21,19 @@ Every publish or schedule operation requires an explicit confirmation naming the
 - Do not ask for or store API keys, social OAuth tokens, provider credentials, workspace IDs, or account IDs. The user authorizes a scoped ReplyNodes session in a browser.
 - Prepare or draft by default. Never publish or schedule without a fresh, explicit confirmation naming the prepared run.
 - Do not read arbitrary local files or upload media unless the user identifies that exact file.
+
+## What you can ask
+
+Examples of requests this skill can prepare:
+
+- “Publish this launch announcement to LinkedIn and X/Twitter now: `https://example.com/launch`.”
+- “Cross-post this text to every connected channel, but show me the preview first: Our beta is live.”
+- “Schedule the approved version of this URL for tomorrow at 09:00 in my timezone: `https://example.com/news`.”
+- “Post from OpenClaw to LinkedIn only, and tell me why any other connected channel is unavailable.”
+- “Publish these social media posts everywhere I have an explicit `publish` capability.”
+- “Prepare a social media schedule for this product update on LinkedIn and X/Twitter; do not publish until I confirm the named run.”
+
+Every request follows **prepare → preview → explicit confirmation → receipt**. A request to publish, schedule, or “do it everywhere” is not confirmation by itself; the skill must show the prepared run and ask for fresh confirmation naming it.
 
 ## Workflow
 
@@ -63,7 +76,7 @@ Return a receipt with the run identifier and, for every channel, status plus its
 
 ## Capability boundaries
 
-ReplyNodes can report connected channel health and explicit `publish` and `schedule` grants. Availability depends on the user's external ReplyNodes account and connected provider accounts; the skill has no paywall, while ReplyNodes may be a paid service.
+ReplyNodes can report connected channel health and explicit `publish` and `schedule` grants. A channel is supported for the requested action only when its returned capability includes that exact action: `publish` is not evidence of `schedule`, and a connected channel without either grant is unavailable for both. Availability depends on the user's external ReplyNodes account and connected provider accounts; this skill has no paywall, while ReplyNodes may be a paid service.
 
 The skill cannot grant capabilities, reconnect expired providers, bypass approval, select another tenant, expose OAuth tokens, or publish to channels whose capability is absent. If a channel is expired, disabled, or disconnected, show the API's reason and ask the user to reconnect it in ReplyNodes.
 
