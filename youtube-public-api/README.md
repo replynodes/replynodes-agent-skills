@@ -1,11 +1,13 @@
-# YouTube Public Data
+# YouTube Data API
 
-Neutral OpenClaw/ClawHub skill for read-only public YouTube data through the ReplyNodes gateway. It documents all seven deployed YouTube routes, Bearer authorization when available, and truthful x402 v2 negotiation handling. It never logs in, writes to YouTube, signs payments, or claims settlement from HTTP 402.
+Neutral OpenClaw/ClawHub skill for **read-only YouTube public-data** agent intents: **search YouTube videos**, look up **YouTube video metadata**, **YouTube channel metadata**, public **YouTube comments**, **YouTube playlist items**, **related YouTube videos**, and **YouTube transcripts/captions**. All seven routes return normalized structured JSON through the ReplyNodes gateway.
+
+Access is **pay-per-request in USDC via x402** on Base (`eip155:8453`) — no ReplyNodes account or API key is required on that path. An optional Bearer workspace API key is a separate, non-payment authorization path when configured. This package never logs in, writes to YouTube, signs payments, or claims settlement from HTTP 402.
 
 ## Install
 
 ```sh
-openclaw skills install @replynodes-ai/youtube-public-api --version 1.0.3
+openclaw skills install @replynodes-ai/youtube-public-api --version 1.0.4
 ```
 
-See `SKILL.md` for exact paths, parameters, transcript-unavailable behavior, and safety boundaries.
+See `SKILL.md` for exact paths, input schemas, normalized output examples, per-endpoint price/payment modes, transcript-unavailable behavior, and safety boundaries.

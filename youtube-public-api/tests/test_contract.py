@@ -12,10 +12,18 @@ expected = [
 assert all(p in text for p in expected)
 assert text.count('`GET /v1/youtube/') == 7
 assert 'ReplyNodes' not in text.split('\n', 12)[0:12].__str__()
-assert '# YouTube Public Data' in text
+assert '# YouTube Data API' in text
+assert 'YouTube public-data' in text
+assert 'normalized structured JSON' in text
+assert 'USDC' in text and 'x402' in text
+assert 'no account or API key required' in text
+assert 'youtube-data-api' not in text
+assert 'generic ReplyNodes public reads' not in text
+assert 'vague research agent' not in text
+assert 'payment was signed, submitted, settled' in text
 assert 'payment requirements only' in text
 assert 'does not implement payment' in text
 assert 'No YouTube login' in text
 assert 'cookies' in text and 'publishing' in text
-assert (root / 'VERSION').read_text().strip() == '1.0.3'
+assert (root / 'VERSION').read_text().strip() == '1.0.4'
 print('PASS route_count=7 naming=x402-read-only-boundary')

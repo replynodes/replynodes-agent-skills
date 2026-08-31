@@ -1,0 +1,803 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "App Store Data API",
+    "version": "v1",
+    "summary": "Read-only, normalized public-data reads of App Store applications exposed through the ReplyNodes fetcher domain: app lookup, bounded term search, and related-app listings.",
+    "description": "Machine-readable specification for the supported public App Store read capabilities of the ReplyNodes fetcher domain.\n\nSurface status:\n- The three supported read operations are implemented and behavior-tested today in services/appstore-fetcher (issue #15): capability gating before any egress, explicit egress allowlisting including redirects, bounded timeouts and response sizes, and strict normalization into the v1 contract.\n- Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.\n- No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses.\n\nRead-only guarantees:\n- Every cataloged operation is an HTTP GET capability over public application data only.\n- No purchase, review-submission, account, login, or any other write or authenticated capability exists in this domain, now or later; it is excluded by policy rather than by configuration.\n- Operations can only be disabled at runtime (APPSTORE_FETCHER_DISABLED_OPERATIONS kill switch), never enabled beyond this matrix.\n- No request path carries or accepts credentials, keys, or login material of any kind; the read layer performs public reads server-side.\n- Only public platform data is returned; counters, scores, and prices are null when the source omits them - zeros are never fabricated - and unknown upstream fields are dropped.\n\nGenerated from services/social-data-skills/catalog/catalog_appstore.json (#16); do not edit by hand."
+  },
+  "servers": [
+    {
+      "url": "https://api.replynodes.com",
+      "description": "The supported public gateway base URL is https://api.replynodes.com. Use this deployment base unless your workspace is explicitly issued another HTTPS gateway URL; never use localhost:18789."
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "appstore",
+      "description": "Public App Store read operations."
+    }
+  ],
+  "paths": {
+    "/v1/appstore/app": {
+      "get": {
+        "operationId": "get_app",
+        "summary": "Look up one public App Store application",
+        "description": "GET /v1/appstore/app returns exactly one normalized public application record for the numeric track id or bundle id supplied via the id or appId query parameter, per contract v1 (developer, rating, pricing, genres, languages, version, release data). Callers authenticate with a ReplyNodes Bearer workspace key or settle 0.001 USDC per call via x402 v2 pay-per-request payment (HTTP 402) - no account or API key is required on the x402 path. An unknown or non-public id yields not_found.",
+        "tags": [
+          "appstore"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "appId",
+            "in": "query",
+            "required": false,
+            "description": "Alias for id; provide appId or id.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "description": "Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}$"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "description": "Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}(-[a-z]{2})?$"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response. Single lookups carry exactly one element in data; searches and similar listings carry zero or more.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "Correlation identifier echoed as meta.request_id.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Normalized error with code invalid_request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Normalized error with code not_found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Normalized error with code rate_limited.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds until the quota window resets.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Normalized error with code upstream_unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Normalized error with code degraded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/appstore/search": {
+      "get": {
+        "operationId": "search_apps",
+        "summary": "Search public App Store applications by term",
+        "description": "GET /v1/appstore/search returns zero or more normalized public application records matching the free-text term query parameter, as one bounded page (default 20 results, clamped to at most 50; no continuation tokens exist on this surface). Callers authenticate with a ReplyNodes Bearer workspace key or settle 0.002 USDC per call via x402 v2 pay-per-request payment (HTTP 402) - no account or API key is required on the x402 path.",
+        "tags": [
+          "appstore"
+        ],
+        "parameters": [
+          {
+            "name": "term",
+            "in": "query",
+            "required": true,
+            "description": "Free-text search query; required and never empty after trimming.",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\S(.*)?$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Page size bound; defaults to 20 and is clamped to at most 50 client-side.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "description": "Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}$"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "description": "Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}(-[a-z]{2})?$"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response. Single lookups carry exactly one element in data; searches and similar listings carry zero or more.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "Correlation identifier echoed as meta.request_id.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Normalized error with code invalid_request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Normalized error with code not_found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Normalized error with code rate_limited.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds until the quota window resets.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Normalized error with code upstream_unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Normalized error with code degraded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/appstore/similar": {
+      "get": {
+        "operationId": "get_similar_apps",
+        "summary": "List public apps related to one App Store application",
+        "description": "GET /v1/appstore/similar returns zero or more normalized public application records related to the app referenced by the id or appId query parameter; no continuation tokens exist on this surface. Callers authenticate with a ReplyNodes Bearer workspace key or settle 0.0015 USDC per call via x402 v2 pay-per-request payment (HTTP 402) - no account or API key is required on the x402 path.",
+        "tags": [
+          "appstore"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "appId",
+            "in": "query",
+            "required": false,
+            "description": "Alias for id; provide appId or id.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "description": "Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}$"
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "description": "Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}(-[a-z]{2})?$"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response. Single lookups carry exactly one element in data; searches and similar listings carry zero or more.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "Correlation identifier echoed as meta.request_id.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Normalized error with code invalid_request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Normalized error with code not_found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Normalized error with code rate_limited.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds until the quota window resets.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Normalized error with code upstream_unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Normalized error with code degraded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorEnvelope"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "The gateway supports two honest access paths: a ReplyNodes workspace key in Authorization: Bearer <workspace-key>, or x402 v2 pay-per-request payment in USDC when the route returns HTTP 402 - no account or API key is required on the x402 path. Scope/entitlement checks belong to the shared control plane; this package does not claim payment settlement or a successful paid request. ReplyNodes API keys are minted per workspace from the ReplyNodes console and are stored server-side only as SHA-256 hashes; treat them as sensitive material and never embed them in client-side code."
+      }
+    },
+    "schemas": {
+      "App": {
+        "type": "object",
+        "description": "Normalized public App Store application record (contract v1). Optional values stay null when the public source omitted them; zeros are never fabricated; unknown upstream fields are dropped at parse time.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Platform-prefixed URN ios:app:<numeric track id>."
+          },
+          "platform": {
+            "type": "string",
+            "const": "ios"
+          },
+          "bundle_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Reverse-DNS bundle id, or null when omitted."
+          },
+          "title": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Public store page URL, or null when omitted."
+          },
+          "icon_url": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "release_notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "developer": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "ios:developer:<id> URN when known."
+              }
+            }
+          },
+          "primary_genre": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "content_rating": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "languages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "size_bytes": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "min_os_version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "released_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "RFC3339 UTC, or null when omitted."
+          },
+          "updated_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "RFC3339 UTC, or null when omitted."
+          },
+          "rating": {
+            "type": "object",
+            "properties": {
+              "score": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "0..5 average, or null when omitted."
+              },
+              "ratings_count": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "reviews_count": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          },
+          "pricing": {
+            "type": "object",
+            "properties": {
+              "price": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "currency": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "free": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            }
+          },
+          "screenshot_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Developer": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "ios:developer:<id> URN when known."
+          }
+        }
+      },
+      "Rating": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "0..5 average, or null when omitted."
+          },
+          "ratings_count": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "reviews_count": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        }
+      },
+      "Pricing": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "free": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
+        }
+      },
+      "ResponseMeta": {
+        "type": "object",
+        "description": "Provenance metadata echoed with every response. request_id echoes the caller-supplied opaque correlation id; missing_fields appears only when availability is partial, using dotted *. paths that apply to every element of data.",
+        "additionalProperties": false,
+        "required": [
+          "request_id",
+          "contract_version",
+          "generated_at",
+          "availability"
+        ],
+        "properties": {
+          "request_id": {
+            "type": "string"
+          },
+          "contract_version": {
+            "type": "string",
+            "const": "v1"
+          },
+          "generated_at": {
+            "type": "string",
+            "description": "Server-side RFC3339 UTC timestamp."
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "partial",
+              "degraded"
+            ]
+          },
+          "detail": {
+            "type": "string",
+            "description": "Fixed generic note; never provider diagnostics."
+          },
+          "missing_fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AppResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "data",
+          "meta"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/App"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ResponseMeta"
+          }
+        }
+      },
+      "ErrorEnvelope": {
+        "type": "object",
+        "description": "Body of every non-2xx response on this surface; retry hints travel in the Retry-After header.",
+        "additionalProperties": false,
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "message",
+              "request_id"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "degraded",
+                  "invalid_request",
+                  "not_found",
+                  "rate_limited",
+                  "upstream_unavailable"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "description": "Fixed generic message."
+              },
+              "request_id": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
