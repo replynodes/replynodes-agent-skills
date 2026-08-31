@@ -17,5 +17,5 @@ assert 'payment requirements only' in text
 assert 'does not implement payment' in text
 assert 'No YouTube login' in text
 assert 'cookies' in text and 'publishing' in text
-assert (root / 'VERSION').read_text().strip() == '1.0.0'
+assert (root / 'VERSION').read_text().strip() == '1.0.1'
 print('PASS route_count=7 naming=x402-read-only-boundary')
