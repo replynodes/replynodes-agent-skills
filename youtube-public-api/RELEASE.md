@@ -1,4 +1,4 @@
-# Release 1.0.2
+# Release 1.0.3
 
 - Re-publish the neutral `youtube-public-api` package with server-resolvable public GitHub provenance for ClawHub card verification.
 - Documents the seven deployed read routes: search, video, channel, comments, playlist, related, transcript.

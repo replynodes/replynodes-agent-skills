@@ -1,7 +1,7 @@
 # YouTube Public Data
 
 - **Slug:** `youtube-public-api`
-- **Version:** `1.0.2`
+- **Version:** `1.0.3`
 - **Purpose:** Read public YouTube data through seven `GET` routes.
 - **Authentication:** Optional ReplyNodes workspace Bearer API key when supported; never request secrets in chat.
 - **Safety:** No login, cookies, private data, writes, wallet access, payment signing, or settlement.

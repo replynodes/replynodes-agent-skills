@@ -5,7 +5,7 @@ Neutral OpenClaw/ClawHub skill for read-only public YouTube data through the Rep
 ## Install
 
 ```sh
-openclaw skills install @replynodes-ai/youtube-public-api --version 1.0.2
+openclaw skills install @replynodes-ai/youtube-public-api --version 1.0.3
 ```
 
 See `SKILL.md` for exact paths, parameters, transcript-unavailable behavior, and safety boundaries.
