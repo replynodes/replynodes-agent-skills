@@ -1,7 +1,7 @@
 ---
 name: youtube-public-api
 description: Read public YouTube search, video, channel, playlist, comments, related-video, and transcript data through a read-only API.
-version: 1.0.0
+version: 1.0.2
 homepage: https://api.replynodes.com/v1/youtube/capabilities
 metadata:
   openclaw:
