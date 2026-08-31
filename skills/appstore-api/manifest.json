@@ -4,7 +4,7 @@
   "name": "appstore-data-api",
   "title": "App Store Public Reads",
   "description": "Read-only access to public App Store application data: application lookup by track ID or bundle ID, bounded term search, and related-app listings. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No purchase, review, account, login, or other mutation is supported.",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "contract_version": "v1",
   "platform": "ios",
   "mode": "readonly",
@@ -43,7 +43,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/appstore-api",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -133,18 +133,18 @@
     },
     {
       "path": "PUBLICATION.md",
-      "bytes": 1976,
-      "sha256": "bd18f1c98ae70953f79fd76371f444a0a3d04ff433838c160e140bec40304f94"
+      "bytes": 1977,
+      "sha256": "41b291379e5f52b451786cd9934316744c873ef75d6f3fdad336bf84dfcb7569"
     },
     {
       "path": "SKILL.md",
-      "bytes": 10043,
-      "sha256": "dc6aff852070bd795a0d139a6c5be7cf7b15d6b7bdc877e4028eb7dee310f8f6"
+      "bytes": 10044,
+      "sha256": "c5678e05d8d280e9ee2b0e762c7d5794ae37e1e3aed69a6fd4e229f1696946da"
     },
     {
       "path": "evidence/publication-evidence.json",
-      "bytes": 984,
-      "sha256": "be24135886bbd41fa0b88c39b61b44896754004c61a38359c2ccc21d977ec3a7"
+      "bytes": 985,
+      "sha256": "5f0c04def41240926844a907f9cc0af523b911f74e2437845d77503f7f54bb0a"
     },
     {
       "path": "llms.txt",
@@ -168,8 +168,8 @@
     },
     {
       "path": "skill-card.md",
-      "bytes": 845,
-      "sha256": "f5c58f65c4ac51ff93488265877ceb8344fabc75a9293d0c6ae8bd6eccfa121d"
+      "bytes": 846,
+      "sha256": "ffab2090d5c418886387dcfaa88575361164370218165638629e3896540284e2"
     }
   ]
 }

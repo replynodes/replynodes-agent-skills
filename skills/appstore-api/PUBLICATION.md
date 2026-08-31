@@ -1,7 +1,7 @@
 # Publication status & evidence - `appstore-data-api` package
 
 Status: **PREPARED** for ClawHub as `@replynodes-ai/appstore-api`.
-Version `1.0.9`. Moderation status: **PENDING**.
+Version `1.0.10`. Moderation status: **PENDING**.
 
 Prepared for ClawHub publication as @replynodes-ai/appstore-api; registry evidence is recorded only after independent inspect and moderation checks.
 

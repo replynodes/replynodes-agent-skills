@@ -10,7 +10,7 @@ root=pathlib.Path(sys.argv[1])
 for rel in ['manifest.json','evidence/publication-evidence.json','references/appstore-mcp.schema.json','references/appstore-public-v1.openapi.json']:
     json.loads((root/rel).read_text())
 m=json.loads((root/'manifest.json').read_text())
-assert m['version'] == '1.0.9'
+assert m['version'] == '1.0.10'
 routes={c['path'] for c in m['capabilities']}
 assert routes == {'/v1/appstore/app','/v1/appstore/search','/v1/appstore/similar'}
 assert all(c['method'] == 'GET' for c in m['capabilities'])
@@ -31,4 +31,4 @@ fi
 if ! rg -qi 'x402 v2' "$root/SKILL.md" || ! rg -qi 'Bearer workspace' "$root/SKILL.md"; then
   echo 'truthful access documentation missing' >&2; exit 1
 fi
-echo 'public App Store package validation passed (v1.0.9)'
+echo 'public App Store package validation passed (v1.0.10)'
