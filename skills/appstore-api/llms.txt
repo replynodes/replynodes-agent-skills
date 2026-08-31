@@ -1,0 +1,64 @@
+# App Store Public Reads
+
+> Read-only, normalized public-data reads of App Store applications exposed through the ReplyNodes App Store public-read service: app lookup, bounded term search, and related-app listings. GET-only read capabilities with Bearer workspace-key or x402 v2 negotiation
+> at the gateway, bounded pages, normalized v1 payloads, and
+> transparent errors plus an explicit unsupported-capability matrix.
+
+Base URL: deployment-specific. The supported public gateway base URL is https://api.replynodes.com. Use this deployment base unless your workspace is explicitly issued another HTTPS gateway URL; never use localhost:18789.
+
+## Surface status
+
+- The three documented read operations have stable public contracts with bounded requests and normalized v1 responses.
+- Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.
+- No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses.
+
+## Endpoints
+
+- `GET /v1/appstore/app` - Look up one public App Store application (capability `app`; requires a ReplyNodes API key at the gateway).
+  - Query parameter `id` (optional): Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.
+  - Query parameter `appId` (optional): Alias for id; provide appId or id.
+  - Query parameter `country` (optional): Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).
+  - Query parameter `language` (optional): Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).
+- `GET /v1/appstore/search` - Search public App Store applications by term (capability `search`; requires a ReplyNodes API key at the gateway).
+  - Query parameter `term` (required): Free-text search query; required and never empty after trimming.
+  - Query parameter `limit` (optional): Page size bound; defaults to 20 and is clamped to at most 50 client-side.
+  - Query parameter `country` (optional): Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).
+  - Query parameter `language` (optional): Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).
+- `GET /v1/appstore/similar` - List public apps related to one App Store application (capability `similar`; requires a ReplyNodes API key at the gateway).
+  - Query parameter `id` (optional): Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.
+  - Query parameter `appId` (optional): Alias for id; provide appId or id.
+  - Query parameter `country` (optional): Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).
+  - Query parameter `language` (optional): Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).
+
+## Essentials
+
+- Auth: use `Authorization: Bearer *** API key>` or follow x402 v2 payment requirements returned as HTTP 402; scope and entitlement enforcement belong to the shared control plane.
+- Envelope: success `{data:[app records], meta{request_id, contract_version, generated_at, availability}}`; failure `{error:{code, message, request_id}}`.
+- Correlation: supply an opaque request id per call; it is echoed as `meta.request_id`.
+- Page bounds: Search returns one bounded page: limit defaults to 20 when omitted and is clamped client-side to at most 50 regardless of what a caller requests. There are no continuation tokens on this surface.
+- Honesty rules: counters/scores/prices are `null` when the source omits them (zeros are never fabricated); `meta.availability` reports completeness; unknown upstream fields are dropped.
+- Guarantees: GET-only public data; no purchase/review/account capability exists now or later; the read layer carries no credential material of any kind.
+
+## Error codes
+
+- `400 invalid_request`
+- `404 not_found`
+- `429 rate_limited`
+- `502 upstream_unavailable`
+- `503 degraded`
+
+## Unsupported capabilities (do not improvise)
+
+- `list` (deferred scope)
+- `developer` (deferred scope)
+- `reviews` (deferred scope)
+- `ratings` (deferred scope)
+- `suggest` (deferred scope)
+- `*write_or_authenticated` (read only policy)
+
+## Docs
+
+- [OpenAPI spec](references/appstore-public-v1.openapi.json)
+- [Skill handbook](skill.md)
+- [MCP manifest](references/appstore-mcp.schema.json)
+- [Endpoint examples](examples/endpoints.md)

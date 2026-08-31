@@ -1,0 +1,175 @@
+{
+  "manifest_kind": "replynodes/social-data-skills/appstore-data-api-package-manifest",
+  "manifest_version": 1,
+  "name": "appstore-data-api",
+  "title": "App Store Public Reads",
+  "description": "Read-only access to public App Store application data: application lookup by track ID or bundle ID, bounded term search, and related-app listings. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No purchase, review, account, login, or other mutation is supported.",
+  "version": "1.0.9",
+  "contract_version": "v1",
+  "platform": "ios",
+  "mode": "readonly",
+  "license": "Apache-2.0",
+  "entrypoint": "SKILL.md",
+  "install_doc": "INSTALL.md",
+  "publication_doc": "PUBLICATION.md",
+  "required_agents": [
+    "OpenClaw",
+    "Hermes",
+    "ChatGPT",
+    "Claude",
+    "generic HTTP",
+    "MCP agents"
+  ],
+  "search_terms": [
+    "app store",
+    "appstore",
+    "ios",
+    "app lookup",
+    "app search",
+    "related apps",
+    "app metadata",
+    "public app data"
+  ],
+  "surface_status": [
+    "This package documents three stable, read-only GET operations with bounded requests and normalized v1 responses.",
+    "The public routes are stable capability identifiers for agent tool bindings.",
+    "No availability, uptime, latency, success-rate, or payment-settlement claim is made; example payloads are illustrative fixtures."
+  ],
+  "source_of_truth": {
+    "repository": "replynodes/replynodes-agent-skills",
+    "path": "skills/appstore-api",
+    "purpose": "Public sanitized provenance for the App Store read-skill package and its release artifacts."
+  },
+  "distribution": {
+    "registry": "ClawHub",
+    "package": "@replynodes-ai/appstore-api",
+    "version": "1.0.9",
+    "moderation": "pending independent registry verification",
+    "public_discovery": false,
+    "note": "Registry status is verified independently after publication."
+  },
+  "capabilities": [
+    {
+      "capability": "get_app",
+      "mcp_tool": "appstore_get_app",
+      "operation": "app",
+      "method": "GET",
+      "path": "/v1/appstore/app",
+      "auth_required": false,
+      "summary": "Look up one public App Store application"
+    },
+    {
+      "capability": "search_apps",
+      "mcp_tool": "appstore_search_apps",
+      "operation": "search",
+      "method": "GET",
+      "path": "/v1/appstore/search",
+      "auth_required": false,
+      "summary": "Search public App Store applications by term"
+    },
+    {
+      "capability": "get_similar_apps",
+      "mcp_tool": "appstore_get_similar_apps",
+      "operation": "similar",
+      "method": "GET",
+      "path": "/v1/appstore/similar",
+      "auth_required": false,
+      "summary": "List public apps related to one App Store application"
+    }
+  ],
+  "unsupported_capabilities": [
+    {
+      "name": "list",
+      "status": "unsupported",
+      "reason": "deferred_scope",
+      "notes": "Storefront ranking crawls; high volume, deferred beyond #15."
+    },
+    {
+      "name": "developer",
+      "status": "unsupported",
+      "reason": "deferred_scope",
+      "notes": "Developer catalog enumeration; deferred beyond #15."
+    },
+    {
+      "name": "reviews",
+      "status": "unsupported",
+      "reason": "deferred_scope",
+      "notes": "Paged user reviews; pagination contract deferred beyond #15."
+    },
+    {
+      "name": "ratings",
+      "status": "unsupported",
+      "reason": "deferred_scope",
+      "notes": "Standalone ratings fetch; already embedded in app records."
+    },
+    {
+      "name": "suggest",
+      "status": "unsupported",
+      "reason": "deferred_scope",
+      "notes": "Type-ahead suggestions; deferred beyond #15."
+    },
+    {
+      "name": "*write_or_authenticated",
+      "status": "unsupported",
+      "reason": "read_only_policy",
+      "notes": "No purchase, review submission, account, login, or authenticated capability exists on this boundary, now or later."
+    }
+  ],
+  "files": [
+    {
+      "path": "INSTALL.md",
+      "bytes": 3319,
+      "sha256": "c96c9995ef69422f0a26004a9065a75bc036f6234de11be8ebc753552793bd9b"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "PROVENANCE.md",
+      "bytes": 845,
+      "sha256": "eb874215d9416b74789b3438ff5e79c6c6a77b8996841b62985eb6536164243a"
+    },
+    {
+      "path": "PUBLICATION.md",
+      "bytes": 1976,
+      "sha256": "bd18f1c98ae70953f79fd76371f444a0a3d04ff433838c160e140bec40304f94"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 10043,
+      "sha256": "dc6aff852070bd795a0d139a6c5be7cf7b15d6b7bdc877e4028eb7dee310f8f6"
+    },
+    {
+      "path": "evidence/publication-evidence.json",
+      "bytes": 984,
+      "sha256": "be24135886bbd41fa0b88c39b61b44896754004c61a38359c2ccc21d977ec3a7"
+    },
+    {
+      "path": "llms.txt",
+      "bytes": 4540,
+      "sha256": "e15c20300ec0618cc744d90f165ad594e2e9eb675f487fa6f0bca6feb8bf482f"
+    },
+    {
+      "path": "references/appstore-mcp.schema.json",
+      "bytes": 8235,
+      "sha256": "64958711455974a43c65d1eee4bf081bcd5ab5e25c02ddba91e58f02657d2daf"
+    },
+    {
+      "path": "references/appstore-public-v1.openapi.json",
+      "bytes": 24914,
+      "sha256": "beb761c0a4d8737fb216b60d85485eb2df0aae8340dfb8847666cc2375f6b9ca"
+    },
+    {
+      "path": "references/endpoints.md",
+      "bytes": 10778,
+      "sha256": "f538f0bb1a244f61b8a10896f8939057410220d27946b210e268fb8c2ca570bb"
+    },
+    {
+      "path": "skill-card.md",
+      "bytes": 845,
+      "sha256": "f5c58f65c4ac51ff93488265877ceb8344fabc75a9293d0c6ae8bd6eccfa121d"
+    }
+  ]
+}

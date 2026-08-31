@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "manifest_kind": "replynodes/social-data-skills/appstore-mcp-manifest",
+  "manifest_version": 1,
+  "name": "appstore-data-api",
+  "title": "App Store Public Reads",
+  "version": "v1",
+  "contract_version": "v1",
+  "description": "Read-only, normalized public-data reads of App Store applications exposed through the ReplyNodes App Store public-read service: app lookup, bounded term search, and related-app listings. Published from this public, sanitized skill-only provenance repository.",
+  "readonly": true,
+  "distribution_note": "Published package metadata is recorded in the generated package publication evidence; payment settlement is not claimed.",
+  "transport": {
+    "type": "streamable_http",
+    "url": "{base_url}",
+    "authentication": {
+      "type": "bearer",
+      "location": "Authorization header",
+      "credential_description": "Bearer workspace key issued per workspace, or x402 v2 payment negotiation after HTTP 402; this manifest stores no key or payer material."
+    }
+  },
+  "instructions": "# App Store Public Reads (MCP)\n\nRead-only, normalized public-data reads of App Store applications exposed through the ReplyNodes App Store public-read service: app lookup, bounded term search, and related-app listings.\n\n## Surface status\n-The three documented read operations have stable public contracts with bounded requests and normalized v1 responses.\n-Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.\n\n## How to call\n- Resolve the base URL issued to your workspace at onboarding; never assume a host.\n- Each tool maps to one HTTP GET capability: substitute path parameters into the endpoint path and pass optional parameters as query strings.\n- Authenticate at the gateway with header `Authorization: Bearer *** API key>` or follow x402 v2 payment requirements returned as HTTP 402; the manifest holds no key or payer material.\n\n## Results\n- Success: `{\"data\": [app records], \"meta\": {\"request_id\": \"req-...\", \"contract_version\": \"v1\", \"generated_at\": \"...\", \"availability\": \"complete\"}}`.\n- Failure: `{\"error\": {\"code\": \"...\", \"message\": \"...\", \"request_id\": \"req-...\"}}`; honor HTTP status and any `Retry-After` header.\n- Report `meta.availability`, `meta.missing_fields`, and null counters honestly instead of guessing.\n\n## Conduct\n- Read-only: these tools never mutate anything; refuse requests asking them to purchase, review, submit, or touch accounts.\n- Respect page bounds (20 default results, max 50); there are no continuation tokens on this surface.",
+  "tools": [
+    {
+      "name": "appstore_get_app",
+      "title": "Get one public App Store application",
+      "description": "Look up one public App Store application. Returns exactly one normalized public application record referenced by numeric track id or bundle id, per contract v1 (developer, rating, pricing, genres, languages, version, release data). An unknown or non-public id yields not_found.",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
+            "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "appId": {
+            "type": "string",
+            "description": "Alias for id; provide appId or id.",
+            "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "country": {
+            "type": "string",
+            "description": "Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).",
+            "pattern": "^[a-z]{2}$"
+          },
+          "language": {
+            "type": "string",
+            "description": "Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).",
+            "pattern": "^[a-z]{2}(-[a-z]{2})?$"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/appstore/app",
+        "operation": "app",
+        "auth_required": false
+      }
+    },
+    {
+      "name": "appstore_search_apps",
+      "title": "Search public App Store applications",
+      "description": "Search public App Store applications by term. Returns zero or more normalized public application records matching a free-text term, as one bounded page (default 20 results, clamped to at most 50). No continuation tokens exist on this surface.",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "term": {
+            "type": "string",
+            "description": "Free-text search query; required and never empty after trimming.",
+            "pattern": "^\\S(.*)?$"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Page size bound; defaults to 20 and is clamped to at most 50 client-side.",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 20
+          },
+          "country": {
+            "type": "string",
+            "description": "Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).",
+            "pattern": "^[a-z]{2}$"
+          },
+          "language": {
+            "type": "string",
+            "description": "Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).",
+            "pattern": "^[a-z]{2}(-[a-z]{2})?$"
+          }
+        },
+        "required": [
+          "term"
+        ],
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/appstore/search",
+        "operation": "search",
+        "auth_required": false
+      }
+    },
+    {
+      "name": "appstore_get_similar_apps",
+      "title": "List public apps related to one App Store application",
+      "description": "List public apps related to one App Store application. Returns zero or more normalized public application records related to the app referenced by numeric track id or bundle id. No continuation tokens exist on this surface.",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
+            "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "appId": {
+            "type": "string",
+            "description": "Alias for id; provide appId or id.",
+            "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "country": {
+            "type": "string",
+            "description": "Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).",
+            "pattern": "^[a-z]{2}$"
+          },
+          "language": {
+            "type": "string",
+            "description": "Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).",
+            "pattern": "^[a-z]{2}(-[a-z]{2})?$"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/appstore/similar",
+        "operation": "similar",
+        "auth_required": false
+      }
+    }
+  ]
+}
