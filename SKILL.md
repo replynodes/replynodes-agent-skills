@@ -1,7 +1,7 @@
 ---
-name: replynodes
-description: Approval-first social media publishing with the ReplyNodes scheduler for cross-posting and auto-posting in OpenClaw, using browser OAuth for LinkedIn and X/Twitter.
-homepage: https://replynodes.com/openclaw
+name: fomo-app-data-api
+description: Read-only public FOMO market-intelligence data through documented HTTPS GET routes...
+homepage: https://fomo.app
 ---
 
 # ReplyNodes: prepare and publish social posts safely

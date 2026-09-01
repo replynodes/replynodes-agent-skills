@@ -1,4 +1,4 @@
-# ReplyNodes Agent Skill
+# Fomo App Crypto Trading API
 
 ReplyNodes gives OpenClaw a human-confirmed path to prepare and publish social posts. Use it as a **social media scheduler** or **social media publisher** when you want to **publish social media posts**, **cross-post content**, **schedule social posts**, **publish everywhere**, **post from OpenClaw**, or handle **LinkedIn publishing** and **X/Twitter publishing** through the user's connected ReplyNodes workspace. The flow is outcome-led: prepare a named run, preview the channel-specific result, explicitly confirm that run, and receive a per-channel receipt. It is a thin, inspectable client over the ReplyNodes public API; it contains no backend, database, provider OAuth, or social-token implementation.
 
