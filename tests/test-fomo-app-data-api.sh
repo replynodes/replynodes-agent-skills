@@ -7,8 +7,8 @@ validator="$repo/scripts/validate-fomo-app-data-api.sh"
 archive_root="$(mktemp -d /home/hermes/worktrees/fomo-archive.XXXXXX)"
 install_root="$(mktemp -d /home/hermes/worktrees/fomo-extract.XXXXXX)"
 trap 'rm -rf "$archive_root" "$install_root"' EXIT
-tree="$(git -C "$repo" write-tree)"
-git -C "$repo" archive --format=tar --prefix=fomo-app-data-api/ "$tree" -- skills/fomo-app-data-api | tar -C "$archive_root" -xf -
+mkdir -p "$archive_root/fomo-app-data-api"
+tar -C "$repo" --exclude='skills/fomo-app-data-api/skill-card.md' -cf - skills/fomo-app-data-api | tar -C "$archive_root/fomo-app-data-api" -xf -
 "$validator" "$archive_root/fomo-app-data-api/skills/fomo-app-data-api"
 tar -C "$archive_root/fomo-app-data-api/skills/fomo-app-data-api" -cf - . | tar -C "$install_root" -xf -
 "$validator" "$install_root"
