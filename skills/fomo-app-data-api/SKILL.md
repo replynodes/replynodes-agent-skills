@@ -2,7 +2,7 @@
 name: fomo-app-data-api
 title: Fomo App Crypto Trading API
 description: x402 pay-per-request access to the read-only Fomo App crypto trading data API for agent research across Solana, meme coins trading, crypto, social trading, and on-chain data, with normalized JSON and no wallet signing or trade execution.
-version: 1.0.7
+version: 1.0.8
 license: MIT
 homepage: https://api.replynodes.com/v1/fomo
 entrypoint: SKILL.md
