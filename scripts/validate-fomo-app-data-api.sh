@@ -12,13 +12,13 @@ awk 'NR > 1 && NR <= 20 { print; if ($0 == "---") { found=1; exit } } END { exit
 grep -Fx 'name: fomo-app-data-api' "$root/SKILL.md" >/dev/null || fail 'frontmatter name'
 grep -Fx 'title: Fomo App Crypto Trading API' "$root/SKILL.md" >/dev/null || fail 'frontmatter title'
 grep -Fx 'description: x402 pay-per-request access to the read-only Fomo App crypto trading data API for agent research across Solana, meme coins trading, crypto, social trading, and on-chain data, with normalized JSON and no wallet signing or trade execution.' "$root/SKILL.md" >/dev/null || fail 'frontmatter description'
-grep -Fx 'version: 1.0.2' "$root/SKILL.md" >/dev/null || fail 'frontmatter version'
+grep -Fx 'version: 1.0.7' "$root/SKILL.md" >/dev/null || fail 'frontmatter version'
 grep -Fx 'license: MIT' "$root/SKILL.md" >/dev/null || fail 'frontmatter license'
 grep -Fx '# Fomo App Crypto Trading API' "$root/README.md" >/dev/null || fail 'README title'
 grep -F 'display title **Fomo App Crypto Trading API**' "$root/PUBLICATION.md" >/dev/null || fail 'publication title'
 
 version="$(tr -d '[:space:]' < "$root/VERSION")"
-[[ "$version" == 1.0.2 ]] || fail 'VERSION'
+[[ "$version" == 1.0.7 ]] || fail 'VERSION'
 grep -F 'fomo-app-data-api' "$root/README.md" >/dev/null || fail 'README slug'
 grep -F 'HTTP `429`' "$root/SKILL.md" >/dev/null || fail '429 behavior'
 grep -Eiq 'read-only|no wallet|trade execution|untrusted data' "$root/SKILL.md" || fail 'guardrails'
@@ -28,7 +28,7 @@ if grep -RInE 'title:.*ReplyNodes|^# .*ReplyNodes|api\.fomoapi\.io|app\.replynod
 fi
 if [[ -f "$root/skill-card.md" ]]; then
   grep -Fx '# Fomo App Crypto Trading API' "$root/skill-card.md" >/dev/null || fail 'local card title'
-  grep -F '**Version:** `1.0.2`' "$root/skill-card.md" >/dev/null || fail 'local card version'
+  grep -F '**Version:** `1.0.7`' "$root/skill-card.md" >/dev/null || fail 'local card version'
 fi
 
 expected='leaderboard/{24h|7d|30d|all} tokens/trending tokens/most-held tokens/graduated users/{handle} users/{handle}/trades users/{handle}/balances trades/{tradeId} thesis thesis/token/{token} thesis/user/{id} thesis/user/{id}/token/{address} search tokens/{token}/holders alerts notifications'

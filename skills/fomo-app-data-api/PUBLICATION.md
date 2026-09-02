@@ -1,6 +1,6 @@
 # Publication record
 
-Prepared for ClawHub as `fomo-app-data-api`, display title **Fomo App Crypto Trading API**, version `1.0.2`.
+Prepared for ClawHub as `fomo-app-data-api`, display title **Fomo App Crypto Trading API**, version `1.0.7`.
 
 The registry is the source of truth for publication and moderation status.
 This file does not claim publication, moderation approval, ratings, or live
