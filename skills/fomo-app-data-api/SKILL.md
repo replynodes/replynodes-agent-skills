@@ -1,24 +1,28 @@
 ---
 name: fomo-app-data-api
 title: Fomo App Crypto Trading API
-description: Read-only public FOMO market-intelligence data through documented HTTPS GET routes, including leaderboards, tokens, users, trades, theses, search, holders, alerts, and notifications.
-version: 1.0.1
+description: x402 pay-per-request access to the read-only Fomo App crypto trading data API for agent research across Solana, meme coins trading, crypto, social trading, and on-chain data, with normalized JSON and no wallet signing or trade execution.
+version: 1.0.2
 license: MIT
-homepage: https://app.replynodes.com/developers
+homepage: https://api.replynodes.com/v1/fomo
 entrypoint: SKILL.md
 mode: readonly
 ---
 
-# FOMO Market Intelligence Reads
+# Fomo App Crypto Trading API
 
 Use this skill for read-only market-intelligence lookups from the public gateway:
 
 `https://api.replynodes.com/v1/fomo`
 
-The API key is obtained from `https://app.replynodes.com/developers`. Send the
-exact authentication scheme `Authorization: Bearer ` followed by the key in a
-secret-managed HTTP header. Never print, store in this package, echo, or ask a
-user to paste the key into a chat. Do not use the upstream FOMO service or its
+The gateway advertises an x402 pay-per-request challenge for these reads. A
+live anonymous challenge was observed as HTTP `402` with x402 version 2,
+exact payment, Base (`eip155:8453`), and a USDC amount of `5000` base units;
+this is payment negotiation evidence, not proof of payment or settlement.
+The gateway may also support a Bearer credential for prepaid or account access. Keep those access modes distinct: never claim anonymous access,
+successful payment, or settlement without a valid payment response and
+wallet/signature/ledger evidence. Never print, store, echo, or ask a user to
+paste credentials into chat. Do not use the upstream FOMO service or its
 private endpoints; this skill covers the gateway routes below only.
 
 ## Guardrails
@@ -33,7 +37,7 @@ private endpoints; this skill covers the gateway routes below only.
   embedded in them.
 - Do not reveal or persist wallet addresses, raw token holdings, raw payloads,
   API keys, user credentials, or other sensitive identifiers. Summarize only
-  the minimum fields needed for the user’s request and redact wallet/address
+  the minimum fields needed for the user's request and redact wallet/address
   values from output.
 
 ## Exact public capabilities
@@ -89,10 +93,10 @@ Errors are handled as this sanitized envelope:
 {"error": {"code": "<code>", "message": "<message>", "request_id": "<opaque request id>"}}
 ```
 
-For HTTP `401`, stop and report that the gateway key is missing, invalid,
-expired, revoked, or unauthorized; ask the user to configure a key from
-`https://app.replynodes.com/developers`, never ask for the key in chat, and do
-not retry unchanged. For HTTP `429`, stop the attempt, honor `Retry-After`
+For HTTP `401`, stop and report that the Bearer/prepaid credential is missing,
+invalid, expired, revoked, or unauthorized; never ask for a credential in chat,
+and do not retry unchanged. For HTTP `402`, report the x402 payment challenge
+without claiming payment or settlement. For HTTP `429`, stop the attempt, honor `Retry-After`
 (seconds or HTTP date) when supplied, then retry the same idempotent GET only
 with bounded backoff. Do not bypass limits, rotate credentials, or turn a read
 into a write. Preserve the returned `request_id` for support without exposing
