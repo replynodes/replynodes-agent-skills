@@ -1,0 +1,63 @@
+{
+  "schema": "replynodes/social-data-skills/publication-evidence/v1",
+  "package": "@replynodes-ai/hackernews-api",
+  "package_slug": "hackernews-api",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "mode": "readonly",
+  "generated_at": "2026-09-04",
+  "platform": "hackernews",
+  "supported_auth_modes": [
+    "bearer_workspace_key",
+    "x402_v2_negotiation"
+  ],
+  "files": [
+    {"path": "SKILL.md", "role": "entrypoint"},
+    {"path": "INSTALL.md", "role": "install_guide"},
+    {"path": "LICENSE", "role": "license"},
+    {"path": "PROVENANCE.md", "role": "provenance"},
+    {"path": "PUBLICATION.md", "role": "publication_status"},
+    {"path": "skill-card.md", "role": "skill_card"},
+    {"path": "manifest.json", "role": "capability_manifest"},
+    {"path": "llms.txt", "role": "agent_indexable_summary"},
+    {"path": "references/endpoints.md", "role": "endpoints_catalog"},
+    {"path": "references/hackernews-public-v1.openapi.json", "role": "openapi_spec"},
+    {"path": "references/hackernews-mcp.schema.json", "role": "mcp_schema"},
+    {"path": "evidence/publication-evidence.json", "role": "publication_evidence"}
+  ],
+  "capabilities": [
+    {"name": "get_stories_top", "operation": "stories_top", "method": "GET", "path": "/v1/hackernews/stories_top"},
+    {"name": "get_stories_new", "operation": "stories_new", "method": "GET", "path": "/v1/hackernews/stories_new"},
+    {"name": "get_stories_best", "operation": "stories_best", "method": "GET", "path": "/v1/hackernews/stories_best"},
+    {"name": "get_stories_ask", "operation": "stories_ask", "method": "GET", "path": "/v1/hackernews/stories_ask"},
+    {"name": "get_stories_show", "operation": "stories_show", "method": "GET", "path": "/v1/hackernews/stories_show"},
+    {"name": "get_stories_job", "operation": "stories_job", "method": "GET", "path": "/v1/hackernews/stories_job"},
+    {"name": "get_item", "operation": "item", "method": "GET", "path": "/v1/hackernews/item/{id}"},
+    {"name": "get_user", "operation": "user", "method": "GET", "path": "/v1/hackernews/user/{handle}"},
+    {"name": "search", "operation": "search", "method": "GET", "path": "/v1/hackernews/search"}
+  ],
+  "prohibited_claims": [
+    "no registry or marketplace listing metrics",
+    "no live availability, uptime, latency, or success-rate figures",
+    "no official platform partnership, endorsement, license grant, or data-sharing arrangement with the upstream platform",
+    "no submit, vote, comment, favorite, login, account, or other write/authenticated capability",
+    "no credentials, session cookies, user identifiers, or fallback claims",
+    "no claim that illustrative fixtures are captured responses from any live gateway",
+    "no claim that a 402 payment requirement is settlement or successful paid access"
+  ],
+  "publication_status": {
+    "state": "PREPARED",
+    "registry": "ClawHub",
+    "moderation": "PENDING",
+    "registry_metrics": null,
+    "public_discovery": false,
+    "note": "Registry publication status is recorded only after independent inspect and moderation checks."
+  },
+  "verification": {
+    "validation_script": "scripts/validate-hackernews-api.sh",
+    "test_script": "tests/test-hackernews-api.sh",
+    "checksums_file": "CHECKSUMS.txt",
+    "manifest_file": "manifest.json"
+  },
+  "illustrative_fixtures_note": "Fixtures in this package, if any, are illustrative only and do not represent captured responses from any live gateway."
+}
