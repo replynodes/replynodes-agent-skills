@@ -1,0 +1,176 @@
+{
+  "manifest_kind": "replynodes/social-data-skills/hackernews-data-api-package-manifest",
+  "manifest_version": 1,
+  "name": "hackernews-data-api",
+  "title": "Hacker News Public Reads",
+  "description": "Read-only access to public Hacker News data: front-page and category feeds, single-item fetch with bounded comment threading, user profiles, and term search. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No submit, vote, comment, favorite, login, or other mutation is supported.",
+  "version": "1.0.0",
+  "contract_version": "v1",
+  "platform": "hackernews",
+  "mode": "readonly",
+  "license": "Apache-2.0",
+  "entrypoint": "SKILL.md",
+  "install_doc": "INSTALL.md",
+  "publication_doc": "PUBLICATION.md",
+  "required_agents": [
+    "OpenClaw",
+    "Hermes",
+    "ChatGPT",
+    "Claude",
+    "generic HTTP",
+    "MCP agents"
+  ],
+  "search_terms": [
+    "hacker news",
+    "hackernews",
+    "hn",
+    "y combinator",
+    "tech news",
+    "stories",
+    "items",
+    "users",
+    "search",
+    "public feed"
+  ],
+  "surface_status": [
+    "This package documents nine stable, read-only GET operations with bounded requests and normalized v1 responses.",
+    "The public routes are stable capability identifiers for agent tool bindings.",
+    "No availability, uptime, latency, success-rate, or payment-settlement claim is made; example payloads are illustrative fixtures."
+  ],
+  "source_of_truth": {
+    "repository": "replynodes/replynodes-agent-skills",
+    "path": "skills/hackernews-api",
+    "purpose": "Public sanitized provenance for the Hacker News read-skill package and its release artifacts."
+  },
+  "distribution": {
+    "registry": "ClawHub",
+    "package": "@replynodes-ai/hackernews-api",
+    "version": "1.0.0",
+    "moderation": "pending independent registry verification",
+    "public_discovery": false,
+    "note": "Registry status is verified independently after publication."
+  },
+  "capabilities": [
+    {
+      "capability": "get_stories_top",
+      "mcp_tool": "hackernews_get_stories_top",
+      "operation": "stories_top",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_top",
+      "auth_required": false,
+      "summary": "Front-page Hacker News stories"
+    },
+    {
+      "capability": "get_stories_new",
+      "mcp_tool": "hackernews_get_stories_new",
+      "operation": "stories_new",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_new",
+      "auth_required": false,
+      "summary": "Newest Hacker News stories"
+    },
+    {
+      "capability": "get_stories_best",
+      "mcp_tool": "hackernews_get_stories_best",
+      "operation": "stories_best",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_best",
+      "auth_required": false,
+      "summary": "Best Hacker News stories"
+    },
+    {
+      "capability": "get_stories_ask",
+      "mcp_tool": "hackernews_get_stories_ask",
+      "operation": "stories_ask",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_ask",
+      "auth_required": false,
+      "summary": "Ask HN feed"
+    },
+    {
+      "capability": "get_stories_show",
+      "mcp_tool": "hackernews_get_stories_show",
+      "operation": "stories_show",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_show",
+      "auth_required": false,
+      "summary": "Show HN feed"
+    },
+    {
+      "capability": "get_stories_job",
+      "mcp_tool": "hackernews_get_stories_job",
+      "operation": "stories_job",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_job",
+      "auth_required": false,
+      "summary": "Jobs feed"
+    },
+    {
+      "capability": "get_item",
+      "mcp_tool": "hackernews_get_item",
+      "operation": "item",
+      "method": "GET",
+      "path": "/v1/hackernews/item/{id}",
+      "auth_required": false,
+      "summary": "One Hacker News item with bounded comment thread"
+    },
+    {
+      "capability": "get_user",
+      "mcp_tool": "hackernews_get_user",
+      "operation": "user",
+      "method": "GET",
+      "path": "/v1/hackernews/user/{handle}",
+      "auth_required": false,
+      "summary": "Public Hacker News user profile"
+    },
+    {
+      "capability": "search",
+      "mcp_tool": "hackernews_search",
+      "operation": "search",
+      "method": "GET",
+      "path": "/v1/hackernews/search",
+      "auth_required": false,
+      "summary": "Hacker News term search"
+    }
+  ],
+  "auth": {
+    "modes": [
+      {
+        "name": "bearer_workspace_key",
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "settlement": "prepaid_credit (synchronous debit before upstream read)",
+        "claim": "successful access only when upstream returns 200"
+      },
+      {
+        "name": "x402_v2_negotiation",
+        "trigger": "request without Authorization header on a metered route",
+        "response": "HTTP 402 with payment-required header (base64 JSON)",
+        "response_shape": "{\"accepts\":[{\"scheme\":\"exact\",\"network\":\"eip155:8453\",\"asset\":\"0x8335...\",\"amount\":\"<micros>\"}]}",
+        "settlement": "X-PAYMENT header carrying a signed x402 v2 payload",
+        "claim": "requirements advertisement, not settlement or successful paid access"
+      }
+    ],
+    "claim": "exactly two access modes exist; no third mode is supported or claimed"
+  },
+  "pagination": {
+    "default_limit": 20,
+    "max_limit": 50,
+    "cursor_param": "cursor (opaque)",
+    "page_param": "page (1-indexed; mutually exclusive with cursor)",
+    "applies_to": ["stories_top","stories_new","stories_best","stories_ask","stories_show","stories_job","search"],
+    "never_applies_to": ["item","user"],
+    "max_comment_depth": 8,
+    "default_comment_depth": 3
+  },
+  "prohibited_claims": [
+    "no registry or marketplace listing metrics",
+    "no live availability, uptime, latency, or success-rate figures",
+    "no official platform partnership, endorsement, license grant, or data-sharing arrangement with the upstream platform",
+    "no submit, vote, comment, favorite, login, account, or other write/authenticated capability",
+    "no credentials, session cookies, user identifiers, or fallback claims",
+    "no claim that the illustrative fixtures are captured responses from any live gateway",
+    "no claim that a 402 payment requirement is settlement or successful paid access"
+  ],
+  "license_doc": "LICENSE"
+}

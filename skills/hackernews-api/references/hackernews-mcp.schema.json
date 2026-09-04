@@ -1,0 +1,133 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/specification/main/schema/2025-06-18/schema.json",
+  "name": "replynodes-hackernews",
+  "version": "1.0.0",
+  "description": "Read-only Hacker News public reads through the ReplyNodes Hacker News public-read service: front-page and category feeds, single-item fetch with bounded comment threading, user profiles, and term search. Two truthful access paths are supported: Bearer workspace-key and x402 v2 negotiation at the gateway. No submit, vote, comment, favorite, login, account, or other write/authenticated capability exists; no availability, uptime, latency, success-rate, or payment-settlement claim is made.",
+  "transport": {
+    "type": "streamable-http",
+    "url": "https://api.replynodes.com/mcp",
+    "auth": {
+      "type": "bearer",
+      "description": "ReplyNodes workspace API key. Prepaid credits are debited synchronously before the upstream read runs; failed requests are never charged. The same key unlocks x402 v2 alternative negotiation; omit Authorization and follow the returned 402 to attempt x402 v2 settlement with a separately configured payer."
+    }
+  },
+  "tools": [
+    {
+      "name": "hackernews_get_stories_top",
+      "description": "List front-page Hacker News stories (bounded page).",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20},
+          "page": {"type": "integer", "minimum": 1},
+          "cursor": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hackernews_get_stories_new",
+      "description": "List newest Hacker News stories (bounded page).",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20},
+          "page": {"type": "integer", "minimum": 1},
+          "cursor": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hackernews_get_stories_best",
+      "description": "List best Hacker News stories (bounded page).",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20},
+          "page": {"type": "integer", "minimum": 1},
+          "cursor": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hackernews_get_stories_ask",
+      "description": "List Ask HN stories (bounded page).",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20},
+          "page": {"type": "integer", "minimum": 1},
+          "cursor": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hackernews_get_stories_show",
+      "description": "List Show HN stories (bounded page).",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20},
+          "page": {"type": "integer", "minimum": 1},
+          "cursor": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hackernews_get_stories_job",
+      "description": "List Hacker News jobs postings (bounded page).",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20},
+          "page": {"type": "integer", "minimum": 1},
+          "cursor": {"type": "string"}
+        }
+      }
+    },
+    {
+      "name": "hackernews_get_item",
+      "description": "Fetch one Hacker News item with bounded comment thread.",
+      "input_schema": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": {"type": "integer", "minimum": 1, "description": "Numeric Hacker News item id."},
+          "depth": {"type": "integer", "minimum": 0, "maximum": 8, "default": 3, "description": "Max comment depth to inline; deeper comments are dropped and reported in meta.missing_fields."}
+        }
+      }
+    },
+    {
+      "name": "hackernews_get_user",
+      "description": "Fetch one public Hacker News user profile.",
+      "input_schema": {
+        "type": "object",
+        "required": ["handle"],
+        "properties": {
+          "handle": {"type": "string", "minLength": 1, "maxLength": 80, "description": "Hacker News username (case-sensitive)."}
+        }
+      }
+    },
+    {
+      "name": "hackernews_search",
+      "description": "Search Hacker News by free-text term with optional tag filters (bounded page).",
+      "input_schema": {
+        "type": "object",
+        "required": ["q"],
+        "properties": {
+          "q": {"type": "string", "minLength": 1, "description": "Free-text search query; required and never empty after trimming."},
+          "tags": {"type": "string", "description": "Comma-separated tag filters (story, comment, poll, show_hn, ask_hn, front_page)."},
+          "limit": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20},
+          "page": {"type": "integer", "minimum": 1},
+          "cursor": {"type": "string"}
+        }
+      }
+    }
+  ],
+  "x-prohibited-claims": [
+    "no availability, uptime, latency, success-rate, or payment-settlement claim",
+    "no upstream partnership, endorsement, license grant, or data-sharing arrangement",
+    "no submit, vote, comment, favorite, login, account, or other write capability",
+    "no claim that 402 is settlement or successful paid access",
+    "no claim that example payloads are captured responses from any live gateway"
+  ]
+}
