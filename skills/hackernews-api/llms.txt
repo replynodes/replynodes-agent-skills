@@ -1,0 +1,79 @@
+# Hacker News Public Reads
+
+> Read-only, normalized public-data reads of Hacker News stories, items, users, and search exposed through the ReplyNodes Hacker News public-read service: front-page and category feeds, single-item fetch with bounded comment threading, user profiles, and term search. GET-only read capabilities with Bearer workspace-key or x402 v2 negotiation at the gateway, bounded pages, normalized v1 payloads, and transparent errors plus an explicit unsupported-capability matrix.
+
+Base URL: deployment-specific. The supported public gateway base URL is https://api.replynodes.com. Use this deployment base unless your workspace is explicitly issued another HTTPS gateway URL; never use localhost.
+
+## Surface status
+
+- The nine documented read operations have stable public contracts with bounded requests and normalized v1 responses.
+- Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.
+- No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses from the live gateway.
+- A 402 payment-required response is the x402 v2 requirements advertisement, not evidence of settlement or successful paid access.
+
+## Endpoints
+
+- `GET /v1/hackernews/stories_top` - Front-page Hacker News stories (capability `get_stories_top`).
+  - Query parameter `limit` (optional): Page size bound; defaults to 20 and is clamped to at most 50 client-side.
+  - Query parameter `page` (optional): 1-indexed page number; mutually exclusive with `cursor`.
+  - Query parameter `cursor` (optional): Opaque continuation token from a prior `meta.next_cursor`.
+- `GET /v1/hackernews/stories_new` - Newest Hacker News stories (capability `get_stories_new`).
+  - Same query parameters as `stories_top`.
+- `GET /v1/hackernews/stories_best` - Best Hacker News stories (capability `get_stories_best`).
+  - Same query parameters as `stories_top`.
+- `GET /v1/hackernews/stories_ask` - Ask HN feed (capability `get_stories_ask`).
+  - Same query parameters as `stories_top`.
+- `GET /v1/hackernews/stories_show` - Show HN feed (capability `get_stories_show`).
+  - Same query parameters as `stories_top`.
+- `GET /v1/hackernews/stories_job` - Jobs feed (capability `get_stories_job`).
+  - Same query parameters as `stories_top`.
+- `GET /v1/hackernews/item/{id}` - One Hacker News item with bounded comment thread (capability `get_item`).
+  - Path parameter `id` (required): Numeric Hacker News item id.
+  - Query parameter `depth` (optional): Max comment depth to inline; defaults to 3 and is clamped at 8 client-side. Nested comments past the bound are dropped and reported in `meta.missing_fields`.
+- `GET /v1/hackernews/user/{handle}` - Public Hacker News user profile (capability `get_user`).
+  - Path parameter `handle` (required): Hacker News username (case-sensitive).
+- `GET /v1/hackernews/search` - Hacker News term search (capability `search`).
+  - Query parameter `q` (required): Free-text search query; required and never empty after trimming.
+  - Query parameter `tags` (optional): Comma-separated tag filters (e.g. `story`, `comment`, `poll`, `show_hn`, `ask_hn`, `front_page`).
+  - Query parameter `limit` (optional): Page size bound; defaults to 20 and is clamped to at most 50 client-side.
+  - Query parameter `page` (optional): 1-indexed page number; mutually exclusive with `cursor`.
+  - Query parameter `cursor` (optional): Opaque continuation token from a prior `meta.next_cursor`.
+
+## Auth (two truthful paths)
+
+1. Bearer workspace key: `Authorization: Bearer ***` at the gateway; prepaid credits are debited synchronously before the upstream read runs and a failed request is never charged.
+2. x402 v2 negotiation: omit auth, receive HTTP 402 with a machine-readable `accepts` block (scheme, network, asset, exact amount); an x402 v2 client signs and re-issues the same call with `X-PAYMENT`.
+
+A 402 response is the requirements advertisement, not evidence of settlement or successful paid access.
+
+## Bounded pages
+
+- Feeds (`stories_*`) and `search` return one bounded page (default 20, max 50).
+- `meta.next_cursor` is `null` on the last page; otherwise it is an opaque string the client passes back as `?cursor=...` for the next page.
+- `get_item` and `get_user` never return a continuation token.
+- Comment threads are inlined up to a bounded depth; deeper comments are dropped and reported in `meta.missing_fields` (never invented).
+
+## What this package does not claim
+
+- No registry or marketplace listing, download statistics, ratings, or community metrics exist for it.
+- No live availability, latency, uptime, or success-rate figures are asserted anywhere.
+- No official platform partnership, endorsement, license grant, or data-sharing arrangement with the upstream platform is claimed.
+- No submit, vote, comment, favorite, login, account, or other write/authenticated capability exists or is advertised.
+- No credentials, session cookies, user identifiers, or fallback claims are included in this package.
+
+## References
+
+- `INSTALL.md` — OpenClaw, Hermes, ChatGPT, Claude install paths.
+- `SKILL.md` — capability overview, normalized v1 envelope, honest call rules.
+- `references/hackernews-public-v1.openapi.json` — OpenAPI 3.1 spec.
+- `references/hackernews-mcp.schema.json` — MCP tool schema.
+- `references/endpoints.md` — Hermes-style function definitions and curl examples.
+- `manifest.json` — capability manifest.
+- `PUBLICATION.md` — publication status and evidence.
+- `PROVENANCE.md` — public sanitized provenance.
+- `CHECKSUMS.txt` — sha256sum-style checksums.
+- `evidence/publication-evidence.json` — machine-readable facts.
+
+## License
+
+Apache License, Version 2.0. See `LICENSE`.

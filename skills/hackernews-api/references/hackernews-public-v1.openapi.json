@@ -1,0 +1,394 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ReplyNodes Hacker News Public Reads",
+    "version": "1.0.0",
+    "description": "Read-only public-data reads of Hacker News: front-page and category feeds, single-item fetch with bounded comment threading, user profiles, and term search. Read-only; GET-only; no submit, vote, comment, favorite, login, account, or other write/authenticated capability exists. Two truthful auth modes are supported: Bearer workspace-key and x402 v2 negotiation. No availability, uptime, latency, success-rate, or payment-settlement claim is made; example payloads are illustrative fixtures, not captured responses."
+  },
+  "servers": [
+    {
+      "url": "https://api.replynodes.com",
+      "description": "ReplyNodes public gateway (production). Use this deployment base unless your workspace is explicitly issued another HTTPS gateway URL."
+    }
+  ],
+  "tags": [
+    {"name": "hackernews", "description": "Hacker News public reads (read-only)."}
+  ],
+  "paths": {
+    "/v1/hackernews/stories_top": {
+      "get": {
+        "operationId": "getStoriesTop",
+        "tags": ["hackernews"],
+        "summary": "Front-page Hacker News stories (bounded page).",
+        "security": [
+            {" bearerAuth": []},
+            {" x402V2": []}
+        ],
+        "parameters": [
+          {"$ref": "#/components/parameters/Limit"},
+          {"$ref": "#/components/parameters/Page"},
+          {"$ref": "#/components/parameters/Cursor"}
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/StoriesOrItems"},
+          "402": {"$ref": "#/components/responses/PaymentRequired"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/v1/hackernews/stories_new": {
+      "get": {
+        "operationId": "getStoriesNew",
+        "tags": ["hackernews"],
+        "summary": "Newest Hacker News stories (bounded page).",
+        "security": [{"bearerAuth": []}, {"x402V2": []}],
+        "parameters": [
+          {"$ref": "#/components/parameters/Limit"},
+          {"$ref": "#/components/parameters/Page"},
+          {"$ref": "#/components/parameters/Cursor"}
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/StoriesOrItems"},
+          "402": {"$ref": "#/components/responses/PaymentRequired"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/v1/hackernews/stories_best": {
+      "get": {
+        "operationId": "getStoriesBest",
+        "tags": ["hackernews"],
+        "summary": "Best Hacker News stories (bounded page).",
+        "security": [{"bearerAuth": []}, {"x402V2": []}],
+        "parameters": [
+          {"$ref": "#/components/parameters/Limit"},
+          {"$ref": "#/components/parameters/Page"},
+          {"$ref": "#/components/parameters/Cursor"}
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/StoriesOrItems"},
+          "402": {"$ref": "#/components/responses/PaymentRequired"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/v1/hackernews/stories_ask": {
+      "get": {
+        "operationId": "getStoriesAsk",
+        "tags": ["hackernews"],
+        "summary": "Ask HN feed (bounded page).",
+        "security": [{"bearerAuth": []}, {"x402V2": []}],
+        "parameters": [
+          {"$ref": "#/components/parameters/Limit"},
+          {"$ref": "#/components/parameters/Page"},
+          {"$ref": "#/components/parameters/Cursor"}
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/StoriesOrItems"},
+          "402": {"$ref": "#/components/responses/PaymentRequired"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/v1/hackernews/stories_show": {
+      "get": {
+        "operationId": "getStoriesShow",
+        "tags": ["hackernews"],
+        "summary": "Show HN feed (bounded page).",
+        "security": [{"bearerAuth": []}, {"x402V2": []}],
+        "parameters": [
+          {"$ref": "#/components/parameters/Limit"},
+          {"$ref": "#/components/parameters/Page"},
+          {"$ref": "#/components/parameters/Cursor"}
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/StoriesOrItems"},
+          "402": {"$ref": "#/components/responses/PaymentRequired"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/v1/hackernews/stories_job": {
+      "get": {
+        "operationId": "getStoriesJob",
+        "tags": ["hackernews"],
+        "summary": "Hacker News jobs feed (bounded page).",
+        "security": [{"bearerAuth": []}, {"x402V2": []}],
+        "parameters": [
+          {"$ref": "#/components/parameters/Limit"},
+          {"$ref": "#/components/parameters/Page"},
+          {"$ref": "#/components/parameters/Cursor"}
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/StoriesOrItems"},
+          "402": {"$ref": "#/components/responses/PaymentRequired"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/v1/hackernews/item/{id}": {
+      "get": {
+        "operationId": "getItem",
+        "tags": ["hackernews"],
+        "summary": "One Hacker News item with bounded comment thread.",
+        "security": [{"bearerAuth": []}, {"x402V2": []}],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Numeric Hacker News item id.",
+            "schema": {"type": "integer", "minimum": 1}
+          },
+          {
+            "name": "depth",
+            "in": "query",
+            "required": false,
+            "description": "Max comment depth to inline; deeper comments are dropped and reported in meta.missing_fields.",
+            "schema": {"type": "integer", "minimum": 0, "maximum": 8, "default": 3}
+          }
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/Item"},
+          "402": {"$ref": "#/components/responses/PaymentRequired"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/v1/hackernews/user/{handle}": {
+      "get": {
+        "operationId": "getUser",
+        "tags": ["hackernews"],
+        "summary": "Public Hacker News user profile.",
+        "security": [{"bearerAuth": []}, {"x402V2": []}],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "description": "Hacker News username (case-sensitive).",
+            "schema": {"type": "string", "minLength": 1, "maxLength": 80}
+          }
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/User"},
+          "402": {"$ref": "#/components/responses/PaymentRequired"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    },
+    "/v1/hackernews/search": {
+      "get": {
+        "operationId": "search",
+        "tags": ["hackernews"],
+        "summary": "Hacker News term search with optional tag filters (bounded page).",
+        "security": [{"bearerAuth": []}, {"x402V2": []}],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "description": "Free-text search query; required and never empty after trimming.",
+            "schema": {"type": "string", "minLength": 1}
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "description": "Comma-separated tag filters (story, comment, poll, show_hn, ask_hn, front_page).",
+            "schema": {"type": "string"}
+          },
+          {"$ref": "#/components/parameters/Limit"},
+          {"$ref": "#/components/parameters/Page"},
+          {"$ref": "#/components/parameters/Cursor"}
+        ],
+        "responses": {
+          "200": {"$ref": "#/components/responses/StoriesOrItems"},
+          "402": {"$ref": "#/components/responses/PaymentRequired"},
+          "401": {"$ref": "#/components/responses/Unauthorized"}
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "ReplyNodes workspace API key. Prepaid credits are debited synchronously before the upstream read runs; failed requests are never charged."
+      },
+      "x402V2": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-PAYMENT",
+        "description": "x402 v2 signed payment payload. Required only after the gateway returns HTTP 402 with a payment-required header on the same route. A 402 response is the requirements advertisement, not evidence of settlement."
+      }
+    },
+    "parameters": {
+      "Limit": {
+        "name": "limit",
+        "in": "query",
+        "required": false,
+        "description": "Page size bound; defaults to 20 and is clamped to at most 50 client-side.",
+        "schema": {"type": "integer", "minimum": 1, "maximum": 50, "default": 20}
+      },
+      "Page": {
+        "name": "page",
+        "in": "query",
+        "required": false,
+        "description": "1-indexed page number; mutually exclusive with cursor.",
+        "schema": {"type": "integer", "minimum": 1}
+      },
+      "Cursor": {
+        "name": "cursor",
+        "in": "query",
+        "required": false,
+        "description": "Opaque continuation token from a prior meta.next_cursor.",
+        "schema": {"type": "string"}
+      }
+    },
+    "schemas": {
+      "Item": {
+        "type": "object",
+        "description": "Normalized Hacker News story/item. Fields may be null where the upstream omitted them; report them honestly rather than inventing plausible values.",
+        "properties": {
+          "id": {"type": "integer"},
+          "type": {"type": "string", "enum": ["story", "comment", "poll", "job", "pollopt"]},
+          "by": {"type": "string", "nullable": true, "description": "Author handle; null when the upstream omitted or the read layer redacted."},
+          "time": {"type": "integer", "nullable": true, "description": "Unix timestamp; null when unavailable."},
+          "title": {"type": "string", "nullable": true},
+          "url": {"type": "string", "format": "uri", "nullable": true},
+          "text": {"type": "string", "nullable": true, "description": "Inline body for Ask HN, comments, etc.; null for plain stories."},
+          "score": {"type": "integer", "nullable": true},
+          "descendants": {"type": "integer", "nullable": true, "description": "Total reply count including nested; null when the upstream omitted it."},
+          "kids": {
+            "type": "array", "nullable": true,
+            "items": {"$ref": "#/components/schemas/Item"},
+            "description": "Bounded comment thread; deeper comments are dropped and reported in meta.missing_fields."
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "created": {"type": "integer", "format": "int64", "nullable": true},
+          "karma": {"type": "integer", "nullable": true},
+          "about": {"type": "string", "nullable": true},
+          "submitted": {
+            "type": "array", "nullable": true,
+            "items": {"type": "integer"},
+            "description": "Recent item ids; truncated upstream, never invented client-side."
+          }
+        }
+      },
+      "Meta": {
+        "type": "object",
+        "required": ["request_id", "provider", "endpoint", "availability", "missing_fields", "fetched_at"],
+        "properties": {
+          "request_id": {"type": "string"},
+          "provider": {"type": "string", "const": "hackernews"},
+          "endpoint": {"type": "string"},
+          "next_cursor": {"type": "string", "nullable": true},
+          "availability": {"type": "string", "enum": ["available", "rate_limited", "unavailable"]},
+          "missing_fields": {"type": "array", "items": {"type": "string"}},
+          "fetched_at": {"type": "string", "format": "date-time"}
+        }
+      },
+      "EnvelopeArray": {
+        "type": "object",
+        "required": ["data", "meta"],
+        "properties": {
+          "data": {"type": "array", "items": {"$ref": "#/components/schemas/Item"}},
+          "meta": {"$ref": "#/components/schemas/Meta"}
+        }
+      },
+      "EnvelopeItem": {
+        "type": "object",
+        "required": ["data", "meta"],
+        "properties": {
+          "data": {"$ref": "#/components/schemas/Item"},
+          "meta": {"$ref": "#/components/schemas/Meta"}
+        }
+      },
+      "EnvelopeUser": {
+        "type": "object",
+        "required": ["data", "meta"],
+        "properties": {
+          "data": {"$ref": "#/components/schemas/User"},
+          "meta": {"$ref": "#/components/schemas/Meta"}
+        }
+      }
+    },
+    "responses": {
+      "StoriesOrItems": {
+        "description": "Bounded page of items; data is an array, meta carries next_cursor and availability.",
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/EnvelopeArray"}
+          }
+        }
+      },
+      "Item": {
+        "description": "One Hacker News item with bounded comment thread.",
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/EnvelopeItem"}
+          }
+        }
+      },
+      "User": {
+        "description": "Public Hacker News user profile.",
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/EnvelopeUser"}
+          }
+        }
+      },
+      "PaymentRequired": {
+        "description": "x402 v2 payment requirements advertisement. Not settlement; not successful paid access. Re-issue the same call with X-PAYMENT carrying a signed payload to attempt settlement.",
+        "headers": {
+          "payment-required": {
+            "description": "Base64-encoded JSON of the x402 v2 accepts block.",
+            "schema": {"type": "string"}
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "accepts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "scheme": {"type": "string", "const": "exact"},
+                      "network": {"type": "string", "const": "eip155:8453"},
+                      "asset": {"type": "string"},
+                      "amount": {"type": "string"},
+                      "payTo": {"type": "string"},
+                      "maxTimeoutSeconds": {"type": "integer"}
+                    }
+                  }
+                },
+                "error": {"type": "string"},
+                "x402Version": {"type": "integer"}
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Missing or invalid Authorization header on a Bearer-mode call. Use the x402 v2 path instead by omitting Authorization and following the returned 402."
+      }
+    }
+  },
+  "x-prohibited-claims": [
+    "no availability, uptime, latency, success-rate, or payment-settlement claim",
+    "no upstream partnership, endorsement, license grant, or data-sharing arrangement",
+    "no submit, vote, comment, favorite, login, account, or other write capability",
+    "no claim that 402 is settlement or successful paid access",
+    "no claim that example payloads are captured responses from any live gateway"
+  ]
+}
