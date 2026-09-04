@@ -1,0 +1,160 @@
+{
+  "name": "replynodes-web-search",
+  "title": "Web Search API",
+  "description": "x402 pay-per-call access to a read-only public web-search fetcher provider for AI agents, OpenSERP-backed across DuckDuckGo, Bing, Google, Yandex, Baidu, and Ecosia with zero credentials required and normalized v1 JSON responses. Public reads only: no login, no credentials, no proxies, no wallet signing, no agent identity required.",
+  "version": "1.0.0",
+  "contract_version": "v1",
+  "mode": "readonly",
+  "license": "MIT",
+  "upstream": {
+    "repo": "karust/openserp",
+    "version": "v0.8.12",
+    "commit": "29c7b0fbe09640160efcfc1f1e04e60e0fbe60e9",
+    "license": "MIT",
+    "path": "third_party/openserp"
+  },
+  "entrypoint": "SKILL.md",
+  "install_doc": "INSTALL.md",
+  "publication_doc": "PUBLICATION.md",
+  "required_agents": [
+    "OpenClaw",
+    "Hermes",
+    "ChatGPT",
+    "Claude",
+    "generic HTTP",
+    "MCP agents"
+  ],
+  "keywords": [
+    "web search",
+    "replynodes-web-search",
+    "openserp",
+    "x402",
+    "fetcher",
+    "read-only",
+    "public data",
+    "agent research"
+  ],
+  "search_terms": [
+    "web search",
+    "openserp",
+    "search",
+    "google",
+    "bing",
+    "duckduckgo",
+    "yandex",
+    "baidu",
+    "ecosia",
+    "fetcher",
+    "public data"
+  ],
+  "distribution": {
+    "registry": "ClawHub",
+    "package": "@replynodes-ai/replynodes-web-search",
+    "version": "1.0.0",
+    "moderation": "pending independent registry verification",
+    "public_discovery": true,
+    "note": "Registry status is verified independently after publication."
+  },
+  "capabilities": [
+    {
+      "capability": "web_search",
+      "mcp_tool": "replynodes_web_search",
+      "operation": "web-search",
+      "method": "GET",
+      "path": "/v1/web/search",
+      "auth_required": false,
+      "summary": "Public web search across DuckDuckGo, Bing, Google, Yandex, Baidu, Ecosia; x402 pay-per-call at $0.005 per request.",
+      "price_micros": 5000
+    }
+  ],
+  "unsupported_capabilities": [
+    {
+      "name": "image_search",
+      "status": "unsupported",
+      "reason": "deferred_scope",
+      "notes": "Per-engine image search endpoint; out of V1 scope (issue #30 capability matrix)."
+    },
+    {
+      "name": "url_extract",
+      "status": "unsupported",
+      "reason": "deferred_scope",
+      "notes": "Target-page fetching expands the egress surface; deferred beyond V1."
+    },
+    {
+      "name": "batch_extract",
+      "status": "unsupported",
+      "reason": "deferred_scope",
+      "notes": "Batch target-page fetching expands the egress surface; deferred beyond V1."
+    },
+    {
+      "name": "parse_html",
+      "status": "unsupported",
+      "reason": "deferred_scope",
+      "notes": "Raw HTML ingestion is unnecessary behind the bridge process boundary."
+    },
+    {
+      "name": "*write_or_authenticated",
+      "status": "unsupported",
+      "reason": "read_only_policy",
+      "notes": "No login, OAuth, cookie, session, wallet signing, transaction submission, or proxy-credential capability exists on this boundary, now or later (AGENTS.md rule 4)."
+    },
+    {
+      "name": "*credential_access",
+      "status": "unsupported",
+      "reason": "read_only_policy",
+      "notes": "No login/session/cookie/OAuth material ever; the boundary is public-read and credential-free by construction (AGENTS.md rule 4)."
+    }
+  ],
+  "files": [
+    {
+      "path": "INSTALL.md",
+      "bytes": 0,
+      "sha256": "TBD"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 0,
+      "sha256": "TBD"
+    },
+    {
+      "path": "PROVENANCE.md",
+      "bytes": 0,
+      "sha256": "TBD"
+    },
+    {
+      "path": "PUBLICATION.md",
+      "bytes": 0,
+      "sha256": "TBD"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 0,
+      "sha256": "TBD"
+    },
+    {
+      "path": "evidence/publication-evidence.json",
+      "bytes": 0,
+      "sha256": "TBD"
+    },
+    {
+      "path": "llms.txt",
+      "bytes": 0,
+      "sha256": "TBD"
+    },
+    {
+      "path": "references/endpoints.md",
+      "bytes": 0,
+      "sha256": "TBD"
+    },
+    {
+      "path": "references/scenarios.md",
+      "bytes": 0,
+      "sha256": "TBD"
+    },
+    {
+      "path": "skill-card.md",
+      "bytes": 0,
+      "sha256": "TBD"
+    }
+  ]
+}
