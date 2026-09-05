@@ -1,15 +1,15 @@
 ---
 name: reddit-api
 title: Reddit Public Data API
-description: Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Bearer workspace-key authentication, normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
-version: 1.0.2
+description: Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported — a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
+version: 1.0.3
 contract_version: v1
 mode: readonly
-auth: Bearer workspace key at the gateway; the read layer itself carries no credential material
+auth: Bearer workspace key OR x402 v2 pay-per-call in USDC on Base at the gateway; the read layer itself carries no credential material
 license: MIT
 homepage: https://api.replynodes.com/v1/reddit
-keywords: [reddit, reddit-api, reddit public data, subreddit posts, post comments, keyword search, public data, read-only, agent api, social data]
-search_terms: [reddit, subreddit, r/programming, r/python, post, comment, search, public data, read-only, bearer, x-read, agent, fetcher, normalized, no oauth, no credentials]
+keywords: [reddit, reddit-api, reddit public data, subreddit posts, post comments, keyword search, public data, read-only, agent api, social data, x402, pay-per-call, usdc, base, wallet]
+search_terms: [reddit, subreddit, r/programming, r/python, post, comment, search, public data, read-only, bearer, x-read, agent, fetcher, normalized, no oauth, no credentials, x402, pay-per-call, usdc, base, wallet]
 entrypoint: SKILL.md
 install_guide: INSTALL.md
 source: published from the public sanitized provenance repository; review changes in git
