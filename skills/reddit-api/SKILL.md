@@ -1,12 +1,18 @@
 ---
 name: reddit-api
 title: Reddit Public Data API
-description: Bearer-key, pay-per-request access to read-only Reddit data — a subreddit's posts, a single post, a post's comments, and keyword search — through one HTTPS gateway, with normalized JSON, Arctic Shift as the primary source and Reddit RSS as a fallback. No OAuth, no Reddit credentials, no posting, voting, commenting, or account access.
-version: 1.0.1
+description: Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Bearer workspace-key authentication, normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
+version: 1.0.2
+contract_version: v1
+mode: readonly
+auth: Bearer workspace key at the gateway; the read layer itself carries no credential material
 license: MIT
 homepage: https://api.replynodes.com/v1/reddit
+keywords: [reddit, reddit-api, reddit public data, subreddit posts, post comments, keyword search, public data, read-only, agent api, social data]
+search_terms: [reddit, subreddit, r/programming, r/python, post, comment, search, public data, read-only, bearer, x-read, agent, fetcher, normalized, no oauth, no credentials]
 entrypoint: SKILL.md
-mode: readonly
+install_guide: INSTALL.md
+source: published from the public sanitized provenance repository; review changes in git
 ---
 
 # Reddit Public Data API
