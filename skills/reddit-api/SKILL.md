@@ -1,15 +1,15 @@
 ---
 name: reddit-api
 title: Reddit Public Data API
-description: Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Bearer workspace-key authentication, normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
-version: 1.0.2
+description: Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported — a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
+version: 1.0.4
 contract_version: v1
 mode: readonly
-auth: Bearer workspace key at the gateway; the read layer itself carries no credential material
+auth: Bearer workspace key OR x402 v2 pay-per-call in USDC on Base at the gateway; the read layer itself carries no credential material
 license: MIT
 homepage: https://api.replynodes.com/v1/reddit
-keywords: [reddit, reddit-api, reddit public data, subreddit posts, post comments, keyword search, public data, read-only, agent api, social data]
-search_terms: [reddit, subreddit, r/programming, r/python, post, comment, search, public data, read-only, bearer, x-read, agent, fetcher, normalized, no oauth, no credentials]
+keywords: [reddit, reddit-api, reddit public data, subreddit posts, post comments, keyword search, public data, read-only, agent api, social data, x402, pay-per-call, usdc, base, wallet]
+search_terms: [reddit, subreddit, r/programming, r/python, post, comment, search, public data, read-only, bearer, x-read, agent, fetcher, normalized, no oauth, no credentials, x402, pay-per-call, usdc, base, wallet]
 entrypoint: SKILL.md
 install_guide: INSTALL.md
 source: published from the public sanitized provenance repository; review changes in git
@@ -34,69 +34,109 @@ do not exist on this gateway, not just in this skill's documentation of it.
 | | |
 | --- | --- |
 | Base URL | `https://api.replynodes.com/v1/reddit` |
-| Auth | `Authorization: Bearer <workspace API key>` |
-| Price | `/capabilities` is free; every other route is `price_micros=3000` ($0.003 / 3000 USDC micros) |
-| Endpoints | 5, all `GET` |
+| Auth | `Authorization: Bearer <workspace API key>` OR x402 v2 pay-per-call in USDC on Base |
+| Price | `/capabilities` is free; every other route is `price_micros=1000` ($0.001 / 1000 USDC micros) |
+| Endpoints | 7, all `GET` (1 free + 6 priced) |
 | Read-only | Yes — no OAuth, no Reddit credentials, no writes |
 
 ## Which endpoint do I need?
 
 | I want to... | Call |
 | --- | --- |
-| See the current route/price catalog | `GET /capabilities` |
-| List a subreddit's posts | `GET /subreddits/{name}/posts` |
-| Fetch a single post by ID | `GET /posts/{post_id}` |
-| Read a post's comments | `GET /posts/{post_id}/comments?subreddit={name}` |
-| Search posts by keyword | `GET /search?q={query}` |
+| See the current route/price/payment-modes catalog | `GET /capabilities` |
+| List a subreddit's posts | `GET /v1/reddit/subreddit_posts/{subreddit}` |
+| Fetch a single post by Reddit post ID | `GET /v1/reddit/post_by_id/{id}` |
+| Fetch a single post by full URL | `GET /v1/reddit/post_by_permalink?url=<permalink>` |
+| Search posts by keyword | `GET /v1/reddit/search_posts?q={query}` |
+| List a user's posts | `GET /v1/reddit/user_posts/{username}` |
+| Read a user's full activity (posts + comments) | `GET /v1/reddit/user_activity/{username}` |
 
 Full param details for every row: [`references/endpoints.md`](references/endpoints.md).
 
 ## Authentication
 
-One mode only: a **Bearer workspace API key**, sent on every request.
+Two payment paths hit the same routes; the gateway picks the right one
+from the headers you send. Neither path requires Reddit credentials.
+
+**(a) Bearer workspace-key** — for prepaid/team usage where a workspace
+already holds credits. Mint a key from the [ReplyNodes
+console](https://app.replynodes.com/auth).
 
 ```bash
 export REDDIT_API_KEY="<your workspace API key>"
-curl -H "Authorization: Bearer $REDDIT_API_KEY" \
-  "https://api.replynodes.com/v1/reddit/subreddits/programming/posts"
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/reddit/subreddit_posts/programming"
 ```
 
-`GET /capabilities` needs no header and costs nothing — use it to confirm the
-gateway is up and to see the live route/price catalog before spending on data
-calls.
+**(b) x402 v2 pay-per-call** — for anonymous single-call usage. The
+gateway answers a priced request with HTTP `402` plus an x402 v2
+challenge body (asset `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` USDC
+on Base, network `eip155:8453`, amount `1000` base units = `$0.001` per
+call). A wallet signs the challenge and retries with an `X-PAYMENT`
+header; on settlement the gateway releases the same response a Bearer
+caller would receive. To fund a wallet first, see the [ReplyNodes top-up
+page](https://replynodes.com/topup?skill=reddit-api).
 
-An unauthenticated or invalid-key request to any priced route returns HTTP
-`401` (see [Errors](#errors)) — the gateway does not fall back to an x402
-payment challenge for Reddit routes. If your integration already speaks x402
-for other ReplyNodes gateways (for example the FOMO data API), do not assume
-it applies here: only a Bearer workspace key is confirmed to work for Reddit.
+```bash
+# 1. anonymous probe — gateway returns 402 + payment-required header
+curl -i 'https://api.replynodes.com/v1/reddit/subreddit_posts/programming'
+# HTTP/2 402
+# payment-required: <base64 challenge>
+# {"x402Version":2,"accepts":[{"scheme":"exact","network":"eip155:8453",...}],"extensions":{"topup":{"topup_url":"/v1/billing/topup/intents"}}}
 
-Every response — success or error — carries an opaque `request_id` in `meta`
-(or in `error`) for support correlation. Never print, log, or ask a user to
-paste an API key into chat.
+# 2. sign challenge with a Base USDC wallet and retry
+curl -i \
+  -H "X-PAYMENT: <base64 payment proof>" \
+  'https://api.replynodes.com/v1/reddit/subreddit_posts/programming'
+# HTTP/2 200 + sanitized Reddit response (same body a Bearer caller sees)
+```
 
-## Endpoints (5 — 1 free, 4 at $0.003/call)
+`GET /capabilities` needs no header and costs nothing — use it to confirm
+the gateway is up and to see the live route/price/payment-modes catalog
+before spending on data calls.
+
+An unauthenticated request to any priced route returns HTTP `402` with
+the x402 challenge above (it does **not** return `401`). A Bearer key
+that is missing, malformed, expired, or revoked returns HTTP `401` with
+`code: invalid_or_expired_token`; the gateway does **not** fall back
+to x402 for that request — auth errors fail closed, exactly as
+documented in [Errors](#errors).
+
+If your integration already speaks x402 for other ReplyNodes gateways
+(Hacker News, App Store, FOMO data API), the same v2 challenge shape
+applies here: asset `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`,
+network `eip155:8453`, amount in micros.
+
+Every response — success or error — carries an opaque `request_id` in
+`meta` (or in `error`) for support correlation. Never print, log, or
+ask a user to paste an API key into chat, and never log a signed
+`X-PAYMENT` proof — it is single-use bearer material.
+
+## Endpoints (7 — 1 free, 6 at $0.001/call)
 
 | Endpoint | Price | What it returns |
 | --- | --- | --- |
-| `GET /capabilities` | free | Provider status and the live route/price catalog |
-| `GET /subreddits/{name}/posts` | $0.003 | Recent posts from one subreddit |
-| `GET /posts/{post_id}` | $0.003 | A single post by its Reddit post ID |
-| `GET /posts/{post_id}/comments` | $0.003 | Comments on one post |
-| `GET /search` | $0.003 | Posts matching a keyword query |
+| `GET /capabilities` | free | Provider status, payment modes, and the live route/price catalog |
+| `GET /v1/reddit/subreddit_posts/{subreddit}` | $0.001 | Recent posts from one subreddit |
+| `GET /v1/reddit/post_by_id/{id}` | $0.001 | A single post by its Reddit post ID |
+| `GET /v1/reddit/post_by_permalink` | $0.001 | A single post by permalink (full URL in `url` query param) |
+| `GET /v1/reddit/search_posts?q={query}` | $0.001 | Posts matching a keyword query |
+| `GET /v1/reddit/user_posts/{username}` | $0.001 | Posts submitted by one user |
+| `GET /v1/reddit/user_activity/{username}` | $0.001 | Comment + submission activity by one user |
 
-`{name}` and `{post_id}` are path parameters — substitute the real subreddit
-name (no `r/` prefix) or Reddit post ID (the base-36 id from a post's
-permalink, e.g. the `1w65ged` in `/r/test/comments/1w65ged/...`). Only the
-query parameters below are known to be accepted; parameters not listed here
-are not documented and must not be invented:
+`{subreddit}`, `{id}`, `{username}` are path parameters — substitute the
+real subreddit name (no `r/` prefix), base-36 Reddit post ID, or Reddit
+username. Only the query parameters below are known to be accepted;
+parameters not listed here are not documented and must not be invented:
 
 | Route | Query parameters |
 | --- | --- |
-| `/subreddits/{name}/posts` | `sort` (optional; `new` is confirmed working), `limit` (optional positive integer) |
-| `/posts/{post_id}` | none |
-| `/posts/{post_id}/comments` | `subreddit` (required — the post's subreddit name), `limit` (optional positive integer) |
-| `/search` | `q` (required search text), `subreddit` (optional, scopes the search to one subreddit), `limit` (optional positive integer) |
+| `/v1/reddit/subreddit_posts/{subreddit}` | `sort` (optional; `new`/`hot`/`top` confirmed working), `limit` (optional positive integer) |
+| `/v1/reddit/post_by_id/{id}` | none |
+| `/v1/reddit/post_by_permalink` | `url` (required — full Reddit post URL) |
+| `/v1/reddit/search_posts` | `q` (required search text), `subreddit` (optional, scopes the search to one subreddit), `limit` (optional positive integer) |
+| `/v1/reddit/user_posts/{username}` | `sort` (optional; `new`/`hot`/`top` confirmed working), `limit` (optional positive integer) |
+| `/v1/reddit/user_activity/{username}` | `limit` (optional positive integer) |
 
 `limit` bounds the page size on every route that accepts it; the gateway does
 not publish an exact default or maximum, so request conservative page sizes
@@ -110,39 +150,65 @@ not publish an exact default or maximum, so request conservative page sizes
 curl "https://api.replynodes.com/v1/reddit/capabilities"
 ```
 
-**A subreddit's newest posts:**
+**A subreddit's newest posts (Bearer workspace-key):**
 
 ```bash
-curl -H "Authorization: Bearer $REDDIT_API_KEY" \
-  "https://api.replynodes.com/v1/reddit/subreddits/programming/posts?sort=new&limit=10"
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/reddit/subreddit_posts/programming?sort=new&limit=10"
 ```
 
-**A single post by ID:**
+**A subreddit's newest posts (x402 pay-per-call):**
 
 ```bash
-curl -H "Authorization: Bearer $REDDIT_API_KEY" \
-  "https://api.replynodes.com/v1/reddit/posts/EXAMPLE_POST_ID"
+# 1. trigger 402 to get the challenge
+curl -i "https://api.replynodes.com/v1/reddit/subreddit_posts/programming?sort=new&limit=10"
+# 2. sign the payment-required header with a Base USDC wallet, retry with X-PAYMENT
+curl -i -H "X-PAYMENT: <base64 payment proof>" \
+  "https://api.replynodes.com/v1/reddit/subreddit_posts/programming?sort=new&limit=10"
 ```
 
-**That post's comments (the post's subreddit is required):**
+**A single post by Reddit post ID:**
 
 ```bash
-curl -H "Authorization: Bearer $REDDIT_API_KEY" \
-  "https://api.replynodes.com/v1/reddit/posts/EXAMPLE_POST_ID/comments?subreddit=programming&limit=20"
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/reddit/post_by_id/EXAMPLE_POST_ID"
+```
+
+**A single post by full URL (permalink):**
+
+```bash
+curl -H "Authorization: Bearer ***" \
+  -G --data-urlencode "url=https://www.reddit.com/r/programming/comments/EXAMPLE_POST_ID/example_post_title/" \
+  "https://api.replynodes.com/v1/reddit/post_by_permalink"
 ```
 
 **Search, optionally scoped to one subreddit:**
 
 ```bash
-curl -H "Authorization: Bearer $REDDIT_API_KEY" \
-  --data-urlencode "q=rust async" -G \
+curl -H "Authorization: Bearer ***" \
+  -G --data-urlencode "q=rust async" \
   --data-urlencode "subreddit=programming" \
   --data-urlencode "limit=10" \
-  "https://api.replynodes.com/v1/reddit/search"
+  "https://api.replynodes.com/v1/reddit/search_posts"
+```
+
+**A user's submitted posts:**
+
+```bash
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/reddit/user_posts/example_user?sort=new&limit=10"
+```
+
+**A user's full activity (posts + comments):**
+
+```bash
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/reddit/user_activity/example_user?limit=10"
 ```
 
 `EXAMPLE_POST_ID` above is an illustrative placeholder, not a real post — swap
-in an ID returned by `/subreddits/{name}/posts` or `/search`.
+in an ID returned by `/v1/reddit/subreddit_posts/{subreddit}` or
+`/v1/reddit/search_posts`.
 
 ## Response shape
 
@@ -152,9 +218,11 @@ Every successful response is normalized to:
 { "data": <result>, "meta": { "request_id": "<opaque id>" } }
 ```
 
-`data` is a single object for `/capabilities` and `/posts/{post_id}`, and an
-array of items for `/subreddits/{name}/posts`, `/posts/{post_id}/comments`,
-and `/search`. Post items and comment items each carry a `source` field —
+`data` is a single object for `/capabilities`, `/v1/reddit/post_by_id/{id}`,
+and `/v1/reddit/post_by_permalink`; an array of items for
+`/v1/reddit/subreddit_posts/{subreddit}`, `/v1/reddit/search_posts`,
+`/v1/reddit/user_posts/{username}`, and
+`/v1/reddit/user_activity/{username}`. Post items carry a `source` field —
 `arctic-shift` when served from the primary source, `reddit-rss` when the
 gateway fell back to Reddit's own RSS/JSON feeds (observed, for example, on
 some comment reads). Treat `source` as informational only; do not branch
