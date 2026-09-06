@@ -50,7 +50,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/reddit-api",
-    "version": "1.0.4",
+    "version": "1.0.8",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -161,8 +161,8 @@
     },
     {
       "path": "llms.txt",
-      "bytes": 3785,
-      "sha256": "a17b8e5eef54cca396d0efc9eb277bda334bf1403d0462433cce2c68ff9fd9f6"
+      "bytes": 4005,
+      "sha256": "773786a9d1c0d5ed7360c8f214ddecc94a0c21b1c9f2be828e25a5bf0ecd472c"
     },
     {
       "path": "references/endpoints.md",

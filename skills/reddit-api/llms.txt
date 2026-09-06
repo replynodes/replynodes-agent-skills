@@ -6,7 +6,7 @@ Base URL: https://api.replynodes.com (fixed). Do not use any other gateway.
 
 ## Surface status
 
-- The five documented read operations have stable public contracts with bounded requests and normalized v1 responses.
+- The six documented read operations have stable public contracts with bounded requests and normalized v1 responses.
 - Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.
 - No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses from the live gateway.
 
@@ -17,6 +17,8 @@ Base URL: https://api.replynodes.com (fixed). Do not use any other gateway.
 - `GET /v1/reddit/posts/{post_id}` - Fetch one public post by ID (capability `post_by_id`).
 - `GET /v1/reddit/posts/{post_id}/comments?subreddit={name}` - Read the comments for one public post (capability `post_comments`).
 - `GET /v1/reddit/search?q={query}` - Search public posts by keyword (capability `search`).
+- `GET /v1/reddit/user_posts/{username}` - Get a user's submitted posts (capability `user_posts`).
+- `GET /v1/reddit/user_activity/{username}` - Get a user's full activity (posts + comments) (capability `user_activity`).
 
 ## Auth (two truthful paths)
 
