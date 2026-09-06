@@ -158,8 +158,19 @@
     "max_limit": 50,
     "cursor_param": "cursor (opaque)",
     "page_param": "page (1-indexed; mutually exclusive with cursor)",
-    "applies_to": ["stories_top","stories_new","stories_best","stories_ask","stories_show","stories_job","search"],
-    "never_applies_to": ["item","user"],
+    "applies_to": [
+      "stories_top",
+      "stories_new",
+      "stories_best",
+      "stories_ask",
+      "stories_show",
+      "stories_job",
+      "search"
+    ],
+    "never_applies_to": [
+      "item",
+      "user"
+    ],
     "max_comment_depth": 8,
     "default_comment_depth": 3
   },

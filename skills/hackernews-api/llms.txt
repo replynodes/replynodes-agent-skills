@@ -2,7 +2,7 @@
 
 > Read-only, normalized public-data reads of Hacker News stories, items, users, and search exposed through the ReplyNodes Hacker News public-read service: front-page and category feeds, single-item fetch with bounded comment threading, user profiles, and term search. GET-only read capabilities with Bearer workspace-key or x402 v2 negotiation at the gateway, bounded pages, normalized v1 payloads, and transparent errors plus an explicit unsupported-capability matrix.
 
-Base URL: deployment-specific. The supported public gateway base URL is https://api.replynodes.com. Use this deployment base unless your workspace is explicitly issued another HTTPS gateway URL; never use localhost.
+Base URL: https://api.replynodes.com/hackernews-api (fixed). Do not use any other gateway.
 
 ## Surface status
 

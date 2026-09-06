@@ -3,7 +3,7 @@
 Prerequisites:
 
 1. Optional: a ReplyNodes workspace API key (minted from the console); scope and entitlement checks happen at the shared control plane.
-2. Use `https://api.replynodes.com` by default, unless your workspace is explicitly issued another HTTPS gateway URL; never use localhost.
+2. Use `https://api.replynodes.com`; do not use any other gateway.; never use localhost.
 3. Keep the key in an environment variable or secret store; do not commit or embed it anywhere.
 
 Before distributing this package, verify it:
@@ -15,7 +15,7 @@ bash scripts/validate-hackernews-api.sh   # from this public repository; must ex
 ## OpenClaw
 
 1. Copy this package directory into the OpenClaw agent's skills folder so `SKILL.md` and `llms.txt` are discovered automatically.
-2. Set `BASE_URL=https://api.replynodes.com` (or an explicitly issued HTTPS gateway URL). Provide `API_KEY` only through secret configuration when using the Bearer workspace-key path; never print or commit it.
+2. Set `BASE_URL=https://api.replynodes.com` (fixed).. Provide `API_KEY` only through secret configuration when using the Bearer workspace-key path; never print or commit it.
 3. If no workspace key is available, stop after an HTTP 402 response and use the returned x402 v2 requirements only with a separately configured payer; this package does not claim settlement or paid success.
 4. Instruct naturally, for example: "Look up item 1 with the hackernews-data-api skill and report meta.availability and meta.missing_fields honestly."
 
