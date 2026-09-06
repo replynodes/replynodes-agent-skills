@@ -4,7 +4,7 @@
     "title": "App Store Public Reads",
     "version": "v1",
     "summary": "Read-only, normalized public-data reads of App Store applications exposed through the ReplyNodes App Store public-read service: app lookup, developer catalog lookup, storefront chart listings, privacy label lookup, ratings summaries, paged reviews, bounded term search, related-app listings, and type-ahead suggestions.",
-    "description": "Machine-readable specification for the supported public App Store read capabilities of the ReplyNodes App Store public-read service.\n\nSurface status:\n- The three documented read operations have stable public contracts with bounded requests and normalized v1 responses.\n- Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.\n- No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses.\n\nRead-only guarantees:\n- Every cataloged operation is an HTTP GET capability over public application data only.\n- No purchase, review-submission, account, login, or any other write or authenticated capability exists in this domain, now or later; it is excluded by policy rather than by configuration.\n- Only the documented operations are supported by this public package.\n- No request path carries or accepts credentials, keys, or login material of any kind; the read layer performs public reads server-side.\n- Only public platform data is returned; counters, scores, and prices are null when the source omits them - zeros are never fabricated - and unknown upstream fields are dropped.\n\nPublished from this public, sanitized skill-only provenance repository."
+    "description": "Machine-readable specification for the supported public App Store read capabilities of the ReplyNodes App Store public-read service.\n\nSurface status:\n- The nine documented read operations have stable public contracts with bounded requests and normalized v1 responses.\n- Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.\n- No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses.\n\nRead-only guarantees:\n- Every cataloged operation is an HTTP GET capability over public application data only.\n- No purchase, review-submission, account, login, or any other write or authenticated capability exists in this domain, now or later; it is excluded by policy rather than by configuration.\n- Only the documented operations are supported by this public package.\n- No request path carries or accepts credentials, keys, or login material of any kind; the read layer performs public reads server-side.\n- Only public platform data is returned; counters, scores, and prices are null when the source omits them - zeros are never fabricated - and unknown upstream fields are dropped.\n\nPublished from this public, sanitized skill-only provenance repository."
   },
   "servers": [
     {
@@ -15,6 +15,9 @@
   "security": [
     {
       "bearerAuth": []
+    },
+    {
+      "x402": []
     }
   ],
   "tags": [
@@ -394,6 +397,11 @@
         "type": "http",
         "scheme": "bearer",
         "description": "The gateway supports two honest access paths: a ReplyNodes workspace key in Authorization: Bearer <workspace-key>, or x402 v2 payment negotiation when the route returns HTTP 402. Scope/entitlement checks belong to the shared control plane; this package does not claim payment settlement or a successful paid request. ReplyNodes API keys are minted per workspace from the ReplyNodes console and are stored server-side only as SHA-256 hashes; treat them as sensitive material and never embed them in client-side code."
+      },
+      "x402": {
+        "type": "http",
+        "scheme": "x402",
+        "description": "x402 v2 payment negotiation in USDC on Base"
       }
     },
     "schemas": {

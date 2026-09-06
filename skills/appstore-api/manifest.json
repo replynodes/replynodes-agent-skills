@@ -4,7 +4,7 @@
   "name": "appstore-data-api",
   "title": "App Store Public Reads",
   "description": "Read-only access to public App Store application data: application lookup, developer catalog, storefront chart listings, privacy label, ratings summaries, paged reviews, bounded term search, related-app listings, and type-ahead suggestions \u2014 nine capabilities via one HTTPS gateway. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No purchase, review, account, login, or other mutation is supported.",
-  "version": "1.0.12",
+  "version": "1.1.6",
   "contract_version": "v1",
   "platform": "ios",
   "mode": "readonly",
@@ -43,7 +43,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/appstore-api",
-    "version": "1.0.12",
+    "version": "1.1.6",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -55,7 +55,7 @@
       "operation": "app",
       "method": "GET",
       "path": "/v1/appstore/app",
-      "auth_required": false,
+      "auth_required": true,
       "summary": "Look up one public App Store application"
     },
     {
@@ -64,7 +64,7 @@
       "operation": "developer",
       "method": "GET",
       "path": "/v1/appstore/developer",
-      "auth_required": false,
+      "auth_required": true,
       "summary": "Look up one public App Store developer"
     },
     {
@@ -73,7 +73,7 @@
       "operation": "list",
       "method": "GET",
       "path": "/v1/appstore/list",
-      "auth_required": false,
+      "auth_required": true,
       "summary": "List public App Store applications by storefront"
     },
     {
@@ -82,7 +82,7 @@
       "operation": "privacy",
       "method": "GET",
       "path": "/v1/appstore/privacy",
-      "auth_required": false,
+      "auth_required": true,
       "summary": "Look up one public App Store privacy label"
     },
     {
@@ -91,7 +91,7 @@
       "operation": "ratings",
       "method": "GET",
       "path": "/v1/appstore/ratings",
-      "auth_required": false,
+      "auth_required": true,
       "summary": "Get ratings summary for one public App Store application"
     },
     {
@@ -100,7 +100,7 @@
       "operation": "reviews",
       "method": "GET",
       "path": "/v1/appstore/reviews",
-      "auth_required": false,
+      "auth_required": true,
       "summary": "Get paged reviews for one public App Store application"
     },
     {
@@ -109,7 +109,7 @@
       "operation": "search",
       "method": "GET",
       "path": "/v1/appstore/search",
-      "auth_required": false,
+      "auth_required": true,
       "summary": "Search public App Store applications by term"
     },
     {
@@ -118,7 +118,7 @@
       "operation": "similar",
       "method": "GET",
       "path": "/v1/appstore/similar",
-      "auth_required": false,
+      "auth_required": true,
       "summary": "List public apps related to one App Store application"
     },
     {
@@ -127,7 +127,7 @@
       "operation": "suggest",
       "method": "GET",
       "path": "/v1/appstore/suggest",
-      "auth_required": false,
+      "auth_required": true,
       "summary": "Get type-ahead suggestions for public App Store applications"
     }
   ],
@@ -142,8 +142,8 @@
   "files": [
     {
       "path": "INSTALL.md",
-      "bytes": 3449,
-      "sha256": "54f02702da9a3e3fa5ac56f0b0aedcc2c2a1eb755ea3dcdd00c392dbffa9fd4e"
+      "bytes": 3448,
+      "sha256": "1d2e0d663259728963e01d229363df0742a055145bdb83506e06c92860baf636"
     },
     {
       "path": "LICENSE",
@@ -162,8 +162,8 @@
     },
     {
       "path": "SKILL.md",
-      "bytes": 18232,
-      "sha256": "9b0566678caed8419af6eab85678b287785951e719e0733254ba3b54f348dcfd"
+      "bytes": 18231,
+      "sha256": "088f7648d08bd422a792f35dee0deb56fa5975364883fc3fd2b9fd92d9778ea5"
     },
     {
       "path": "evidence/publication-evidence.json",
@@ -172,23 +172,23 @@
     },
     {
       "path": "llms.txt",
-      "bytes": 4645,
-      "sha256": "72b3bb0b457ea279025a07181fed467010a2372d368854811d8bf6496c8a6976"
+      "bytes": 4406,
+      "sha256": "e3200aa6e4b2a3a260926507370146ba97e95aea50f84348d804b989a3cbe5dc"
     },
     {
       "path": "references/appstore-mcp.schema.json",
-      "bytes": 8023,
-      "sha256": "2aa1e75b099e7dd61afc16adf542aaf4c56d3673ef048c44a706f7d4c8271944"
+      "bytes": 16134,
+      "sha256": "3157a305ffbd81b04f37b6e2d22d190a11c6e5e203f15d81a7631eb91030d052"
     },
     {
       "path": "references/appstore-public-v1.openapi.json",
-      "bytes": 24580,
-      "sha256": "dcec7204c4e4aea349c98d3ff952677abaeb7eacd840534359da2183cab3ad47"
+      "bytes": 24753,
+      "sha256": "9c77fd2cdb32785c07f339811a0b348e2cc22e2381655307fa41f7637648a472"
     },
     {
       "path": "references/endpoints.md",
-      "bytes": 10778,
-      "sha256": "f538f0bb1a244f61b8a10896f8939057410220d27946b210e268fb8c2ca570bb"
+      "bytes": 3481,
+      "sha256": "bd14d0cf311ac08469e87efa39b82859a6aea24fe6b427e71ac11203d2cbdcbd"
     },
     {
       "path": "skill-card.md",

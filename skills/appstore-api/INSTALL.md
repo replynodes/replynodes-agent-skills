@@ -21,7 +21,7 @@ bash scripts/validate-appstore-api.sh   # from this public repository; must exit
 
 ## Hermes
 
-1. Register the three function definitions printed in [references/endpoints.md](references/endpoints.md) (Hermes-style function-calling section).
+1. Register the nine function definitions printed in [references/endpoints.md](references/endpoints.md) (Hermes-style function-calling section).
 2. Execute each call by issuing the mapped HTTPS GET with the Authorization header set.
 3. There are no continuation tokens: search returns one bounded page (default 20, max 50).
 
