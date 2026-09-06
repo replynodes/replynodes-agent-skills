@@ -1,14 +1,14 @@
 ---
 name: hackernews-data-api
 title: Hacker News Public Reads
-description: Read-only, normalized public-data reads of Hacker News stories, items, users, and search through the ReplyNodes Hacker News public-read service: front-page and category feeds, single-item fetch with bounded comment threading, user profiles, and term search. Bearer workspace-key authentication or x402 v2 payment negotiation at the gateway, transparent bounded pages, normalized errors, and an explicit unsupported-capability matrix. Public reads only: no submit, vote, comment, login, or other mutation exists, and no platform credential material is involved.
+description: Read-only, normalized public-data reads of Hacker News stories, items, users, and search through the ReplyNodes Hacker News public-read service: front-page and category feeds, single-item fetch with bounded comment threading, user profiles, and term search. Every documented route answers HTTP 200 with no auth header at all — Hacker News is upstream-public data and the gateway does not currently gate it behind payment. A Bearer workspace key and an x402 v2 pay-per-call flow in USDC on Base are also accepted at the gateway for callers who want a metered/paid path, but neither is required. Transparent bounded pages, normalized errors, and an explicit unsupported-capability matrix. Public reads only: no submit, vote, comment, login, or other mutation exists, and no platform credential material is involved.
 version: 1.0.0
 contract_version: v1
 mode: readonly
-auth: Bearer workspace key or x402 v2 negotiation at the gateway; the read layer itself carries no credential material
+auth: Anonymous GET (no header, no charge) works today on every route; a Bearer workspace key or x402 v2 pay-per-call negotiation in USDC on Base are also accepted at the gateway for callers who want a metered/paid path; the read layer itself carries no credential material
 license: Apache-2.0
-keywords: [hacker news, hackernews-data-api, hn, read-only, public data, tech news, y combinator]
-search_terms: [hacker news, hackernews, hn, y combinator, tech news, stories, items, users, search, public feed]
+keywords: [hacker news, hackernews-data-api, hn, read-only, public data, tech news, y combinator, x402, pay-per-call, usdc, base, wallet]
+search_terms: [hacker news, hackernews, hn, y combinator, tech news, stories, items, users, search, public feed, x402, pay-per-call, usdc, base, wallet, bearer, anonymous, no auth, free]
 entrypoint: SKILL.md
 install_guide: INSTALL.md
 source: published from the public sanitized provenance repository; review changes in git
@@ -16,7 +16,7 @@ source: published from the public sanitized provenance repository; review change
 
 # Hacker News Public Reads
 
-Read-only, normalized public-data reads of Hacker News stories, items, users, and search through the ReplyNodes Hacker News public-read service: front-page and category feeds (top, new, best, ask, show, job), single-item fetch with bounded comment threading, user profiles, and term search. Bearer workspace-key authentication or x402 v2 payment negotiation at the gateway, transparent bounded pages, normalized errors, and an explicit unsupported-capability matrix. Public reads only: no submit, vote, comment, login, or other mutation exists, and no platform credential material is involved.
+Read-only, normalized public-data reads of Hacker News stories, items, users, and search through the ReplyNodes Hacker News public-read service: front-page and category feeds (top, new, best, ask, show, job), single-item fetch with bounded comment threading, user profiles, and term search. Every documented route answers HTTP 200 with no auth header at all; a Bearer workspace key or an x402 v2 pay-per-call negotiation at the gateway are also accepted for callers who want a metered/paid path. Transparent bounded pages, normalized errors, and an explicit unsupported-capability matrix. Public reads only: no submit, vote, comment, login, or other mutation exists, and no platform credential material is involved.
 
 This directory is the public `hackernews-data-api` agent skill package. This public package documents the nine supported GET capabilities and their normalized v1 contract.
 The supported public gateway base URL is https://api.replynodes.com. Use this deployment base unless your workspace is explicitly issued another HTTPS gateway URL; never use localhost.
@@ -26,7 +26,7 @@ The supported public gateway base URL is https://api.replynodes.com. Use this de
 - The nine documented read operations have stable public contracts with bounded requests and normalized v1 responses.
 - Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.
 - No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses from the live gateway.
-- A 402 payment-required response is the x402 v2 requirements advertisement, not evidence of settlement or successful paid access.
+- None of the nine routes currently return a 402 payment-required response to an anonymous caller; if the gateway begins gating a route in the future, a 402 there would be the x402 v2 requirements advertisement, not evidence of settlement or successful paid access.
 
 ## What this package does not claim
 
@@ -35,6 +35,7 @@ The supported public gateway base URL is https://api.replynodes.com. Use this de
 - No official platform partnership, endorsement, license grant, or data-sharing arrangement with the upstream platform is claimed.
 - No submit, vote, comment, favorite, login, account, or other write/authenticated capability exists or is advertised; the surface is GET-only public reads.
 - No credentials, session cookies, user identifiers, or fallback claims are included in this package.
+- No auto-credit, instant-balance, or settlement claim is made for the x402 path; x402 support is advertised at the gateway for parity with other ReplyNodes providers, but no route on this surface currently requires or processes an x402 payment proof.
 
 ## Capabilities (nine)
 
@@ -90,12 +91,102 @@ See [INSTALL.md](INSTALL.md) for OpenClaw, Hermes, ChatGPT, and Claude install p
 
 ## Auth
 
-Two truthful access outcomes exist for every documented endpoint:
+Every documented route in this package answers **HTTP 200 with no
+`Authorization` header at all** — Hacker News is upstream-public data, and
+the gateway does not currently gate any of the nine routes behind payment.
+A probe of `/v1/hackernews/stories_top?limit=1` with no key returns `200`
+with stories, not `402`. Two additional access paths are accepted at the
+gateway for callers who want a metered or paid workflow, but neither is
+required to read this surface today.
 
-1. **Bearer workspace key.** The caller configures a ReplyNodes API key (minted from the console) and sends it as `Authorization: Bearer ***` at the gateway; prepaid credits are debited synchronously before the upstream read runs and a failed request is never charged.
-2. **x402 v2 negotiation.** The caller omits auth and receives HTTP 402 with a machine-readable `accepts` block (scheme, network, asset, exact amount); an x402 v2 client settles the requirement and re-issues the same call with `X-PAYMENT`. A 402 response is the requirements advertisement, not evidence of settlement or successful paid access.
+**(a) Anonymous GET (default).** No header, no charge, `200` response.
+This is the access path this package documents by default.
 
-The two modes are mutually exclusive per call; the gateway routes them to the same handler. No other auth mode exists on this surface.
+```bash
+curl "https://api.replynodes.com/v1/hackernews/stories_top?limit=1"
+```
+
+**(b) Bearer workspace key.** For teams that want Hacker News reads to draw
+down a prepaid workspace balance instead of staying anonymous. Mint a key
+from the [ReplyNodes console](https://app.replynodes.com/auth).
+
+```bash
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/hackernews/stories_top?limit=1"
+```
+
+A Bearer key that is missing, malformed, expired, or revoked returns HTTP
+`401`; a bad key never falls back silently to the anonymous path — if you
+sent a key, a `401` means the key failed, not that the route requires
+payment.
+
+**(c) x402 v2 — advertised, not enforced on this surface.** The gateway's
+`/v1/hackernews/capabilities` response lists `x402_per_call` and
+`x402_topup` among its `payment_modes`, and the challenge shape matches
+other ReplyNodes gateways (asset
+`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` USDC on Base, network
+`eip155:8453`) for symmetry with providers that do carry a per-call price.
+As of this writing, none of the nine Hacker News capabilities carry an
+`amount_micros`, and no probe of any route without auth has returned `402`
+— every one returns `200`. Do not build a payment flow against this
+surface expecting a `402` challenge to appear; if the gateway begins
+gating Hacker News in the future, that challenge would arrive as
+`payment_mode: x402_per_call` in `/capabilities` with a nonzero
+`amount_micros` per route, using the same asset and network above. To
+fund a wallet in advance for other ReplyNodes gateways that do charge per
+call, see the [ReplyNodes top-up page](https://replynodes.com/topup?skill=hackernews-api).
+
+### Pricing
+
+`GET /v1/hackernews/capabilities` is free. None of the nine data routes
+currently carries a nonzero `amount_micros`, so a Bearer key debit (where
+a caller opts into one) is the only priced path on this surface today;
+there is no x402 settlement to trigger because no route returns `402`.
+
+### Examples by route
+
+**Front-page stories — anonymous, no key needed:**
+
+```bash
+curl "https://api.replynodes.com/v1/hackernews/stories_top?limit=10"
+```
+
+**Front-page stories — Bearer workspace key:**
+
+```bash
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/hackernews/stories_top?limit=10"
+```
+
+**Single item by ID — anonymous:**
+
+```bash
+curl "https://api.replynodes.com/v1/hackernews/item/EXAMPLE_ITEM_ID"
+```
+
+**Single item by ID — Bearer workspace key:**
+
+```bash
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/hackernews/item/EXAMPLE_ITEM_ID"
+```
+
+**User profile by handle — anonymous:**
+
+```bash
+curl "https://api.replynodes.com/v1/hackernews/user/EXAMPLE_HANDLE"
+```
+
+**User profile by handle — Bearer workspace key:**
+
+```bash
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/hackernews/user/EXAMPLE_HANDLE"
+```
+
+`EXAMPLE_ITEM_ID` and `EXAMPLE_HANDLE` above are illustrative placeholders,
+not real values — swap in an ID or handle returned by a feed or search
+call.
 
 ## Provenance & publication
 
