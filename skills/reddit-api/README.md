@@ -11,8 +11,7 @@ RSS is a fallback.
 Portable ClawHub-ready skill for the documented Reddit API surface at
 `https://api.replynodes.com/v1/reddit/*`.
 
-The gateway uses Bearer workspace-key authentication only; no OAuth, no
-Reddit credentials, and x402 v2 pay-per-call is supported (gateway returns HTTP 402 with challenge for priced requests) on any Reddit
+The gateway accepts both Bearer workspace-key authentication and x402 v2 pay-per-call; no OAuth, no Reddit credentials are involved.
 route. The package contains instructions only: it has no service code,
 dependencies, credentials, or upstream API access.
 
