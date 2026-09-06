@@ -12,7 +12,7 @@ ref, and package path. Publish only from a clean extracted archive.
 Reviewed source commit: `35e041aa0858ef26c7e5dc9e7b3306679feb4edb` on ref
 `feat/fomo-app-data-api-clawhub`, package path `skills/reddit-api`.
 
-The package describes Bearer workspace-key authentication observed at the
+The package describes Bearer workspace-key authentication observed at the gateway;
 x402 v2 pay-per-call is supported for Reddit routes; the gateway returns HTTP 402 with an x402 challenge for priced requests lacking sufficient Bearer credit.
-routes; that mode is documented separately for other ReplyNodes gateways and
-is not conflated with this package.
+This authentication approach is consistent with other ReplyNodes gateways.
+No Reddit credential material is involved in either authentication path.

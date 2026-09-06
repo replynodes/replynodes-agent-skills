@@ -2,7 +2,7 @@
 
 > Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Bearer workspace-key authentication, normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
 
-Base URL: https://api.replynodes.com (fixed). Do not use any other gateway.
+Base URL: https://api.replynodes.com/v1/reddit (fixed). Do not use any other gateway.
 
 ## Surface status
 
@@ -11,14 +11,13 @@ Base URL: https://api.replynodes.com (fixed). Do not use any other gateway.
 - No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses from the live gateway.
 
 ## Endpoints
-
 - `GET /v1/reddit/capabilities` - Free route/price catalog (capability `capabilities`).
-- `GET /v1/reddit/subreddits/{name}/posts` - List a subreddit's public posts (capability `subreddit_posts`).
-- `GET /v1/reddit/posts/{post_id}` - Fetch one public post by ID (capability `post_by_id`).
-- `GET /v1/reddit/posts/{post_id}/comments?subreddit={name}` - Read the comments for one public post (capability `post_comments`).
-- `GET /v1/reddit/search?q={query}` - Search public posts by keyword (capability `search`).
-- `GET /v1/reddit/user_posts/{username}` - Get a user's submitted posts (capability `user_posts`).
-- `GET /v1/reddit/user_activity/{username}` - Get a user's full activity (posts + comments) (capability `user_activity`).
+- `GET /v1/reddit/subreddit_posts/{subreddit}` - list a subreddit's posts (capability `subreddit_posts`).
+- `GET /v1/reddit/post_by_id/{id}` - get a single post by reddit post id (capability `post_by_id`).
+- `GET /v1/reddit/post_by_permalink` - get a single post by full url (permalink) (capability `post_by_permalink`).
+- `GET /v1/reddit/search_posts` - search posts by keyword (capability `search_posts`).
+- `GET /v1/reddit/user_posts/{username}` - get a user's submitted posts (capability `user_posts`).
+- `GET /v1/reddit/user_activity/{username}` - get a user's full activity (posts + comments) (capability `user_activity`).
 
 ## Auth (two truthful paths)
 

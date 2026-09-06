@@ -6,19 +6,19 @@
   "title": "Reddit Public Data API",
   "version": "v1",
   "contract_version": "v1",
-  "description": "Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported — a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.",
+  "description": "Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported \u2014 a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.",
   "readonly": true,
   "distribution_note": "Published package metadata is recorded in the generated package publication evidence; payment settlement is not claimed.",
   "transport": {
     "type": "streamable_http",
-    "url": "https://api.replynodes.com",
+    "url": "https://api.replynodes.com/v1/reddit",
     "authentication": {
       "type": "bearer",
       "location": "Authorization header",
       "credential_description": "Bearer workspace key issued per workspace, or x402 v2 payment negotiation after HTTP 402; this manifest stores no key or payer material."
     }
   },
-  "instructions": "# Reddit Public Data API (MCP)\n\nRead-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported — a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.\n\n## Surface status\n-The seven documented read operations have stable public contracts with bounded requests and normalized responses.\n-Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.\n\n## How to call\n- Use the fixed gateway URL: https://api.replynodes.com\n- Each tool maps to one HTTP GET capability: substitute path parameters into the endpoint path and pass optional parameters as query strings.\n- Authenticate at the gateway with header 'Authorization: Bearer ***' or follow x402 v2 payment requirements returned as HTTP 402; the manifest holds no key or payer material.\n\n## Results\n- Success: '{\\\"data\\\": [<result> or [array]], \\\"meta\\\": {\\\"request_id\\\": \\\"req-...\\\", \\\"contract_version\\\": \\\"v1\\\", \\\"generated_at\\\": \\\"...\\\", \\\"availability\\\": \\\"complete\\\"}}'.\n- Failure: '{\\\"error\\\": {\\\"code\\\": \\\"...\\\", \\\"message\\\": \\\"...\\\", \\\"request_id\\\": \\\"req-...\\\"}}'. honor HTTP status and any 'Retry-After' on 429.\n\n## Conduct\n- Read-only: these tools never mutate anything; refuse requests asking them to purchase, review, submit, or touch accounts.\n",
+  "instructions": "# Reddit Public Data API (MCP)\n\nRead-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported \u2014 a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.\n\n## Surface status\n-The seven documented read operations have stable public contracts with bounded requests and normalized responses.\n-Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.\n\n## How to call\n- Use the fixed gateway URL: https://api.replynodes.com\n- Each tool maps to one HTTP GET capability: substitute path parameters into the endpoint path and pass optional parameters as query strings.\n- Authenticate at the gateway with header 'Authorization: Bearer ***' or follow x402 v2 payment requirements returned as HTTP 402; the manifest holds no key or payer material.\n\n## Results\n- Success: '{\\\"data\\\": [<result> or [array]], \\\"meta\\\": {\\\"request_id\\\": \\\"req-...\\\", \\\"contract_version\\\": \\\"v1\\\", \\\"generated_at\\\": \\\"...\\\", \\\"availability\\\": \\\"complete\\\"}}'.\n- Failure: '{\\\"error\\\": {\\\"code\\\": \\\"...\\\", \\\"message\\\": \\\"...\\\", \\\"request_id\\\": \\\"req-...\\\"}}'. honor HTTP status and any 'Retry-After' on 429.\n\n## Conduct\n- Read-only: these tools never mutate anything; refuse requests asking them to purchase, review, submit, or touch accounts.\n",
   "tools": [
     {
       "name": "reddit_get_capabilities",
@@ -58,7 +58,11 @@
           "sort": {
             "type": "string",
             "description": "Optional sort order: new, hot, top (confirmed working).",
-            "enum": ["new", "hot", "top"]
+            "enum": [
+              "new",
+              "hot",
+              "top"
+            ]
           },
           "limit": {
             "type": "integer",
@@ -66,7 +70,9 @@
             "minimum": 1
           }
         },
-        "required": ["subreddit"],
+        "required": [
+          "subreddit"
+        ],
         "additionalProperties": false
       },
       "endpoint": {
@@ -92,7 +98,9 @@
             "description": "Base-36 Reddit post ID."
           }
         },
-        "required": ["id"],
+        "required": [
+          "id"
+        ],
         "additionalProperties": false
       },
       "endpoint": {
@@ -119,7 +127,9 @@
             "format": "uri"
           }
         },
-        "required": ["url"],
+        "required": [
+          "url"
+        ],
         "additionalProperties": false
       },
       "endpoint": {
@@ -154,7 +164,9 @@
             "minimum": 1
           }
         },
-        "required": ["q"],
+        "required": [
+          "q"
+        ],
         "additionalProperties": false
       },
       "endpoint": {
@@ -182,7 +194,11 @@
           "sort": {
             "type": "string",
             "description": "Optional sort order: new, hot, top (confirmed working).",
-            "enum": ["new", "hot", "top"]
+            "enum": [
+              "new",
+              "hot",
+              "top"
+            ]
           },
           "limit": {
             "type": "integer",
@@ -190,7 +206,9 @@
             "minimum": 1
           }
         },
-        "required": ["username"],
+        "required": [
+          "username"
+        ],
         "additionalProperties": false
       },
       "endpoint": {
@@ -221,7 +239,9 @@
             "minimum": 1
           }
         },
-        "required": ["username"],
+        "required": [
+          "username"
+        ],
         "additionalProperties": false
       },
       "endpoint": {

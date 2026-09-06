@@ -2,7 +2,7 @@
 
 Base URL: `https://api.replynodes.com/v1/reddit`
 
-All five routes below are the complete public surface. Nothing else is
+All seven routes below are the complete public surface. Nothing else is
 documented or supported; do not invent additional routes or parameters.
 
 ## `GET /capabilities`
@@ -21,12 +21,14 @@ Returns the provider status and the live route/price catalog:
     "provider": { "name": "reddit", "status": "available" },
     "routes": [
       "GET /v1/reddit/capabilities (free)",
-      "GET /v1/reddit/subreddits/{name}/posts price_micros=3000",
-      "GET /v1/reddit/posts/{post_id} price_micros=3000",
-      "GET /v1/reddit/posts/{post_id}/comments price_micros=3000",
-      "GET /v1/reddit/search price_micros=3000"
+      "GET /v1/reddit/subreddit_posts/{subreddit} price_micros=1000",
+      "GET /v1/reddit/post_by_id/{id} price_micros=1000",
+      "GET /v1/reddit/post_by_permalink price_micros=1000",
+      "GET /v1/reddit/search_posts price_micros=1000",
+      "GET /v1/reddit/user_posts/{username} price_micros=1000",
+      "GET /v1/reddit/user_activity/{username} price_micros=1000"
     ],
-    "service": "reddit-gateway",
+    "service": "replynodes-fetcher",
     "version": "dev"
   },
   "meta": { "request_id": "<opaque id>" }
@@ -36,61 +38,57 @@ Returns the provider status and the live route/price catalog:
 Use this first to confirm the gateway is reachable and pricing has not
 changed, at no cost.
 
-## `GET /subreddits/{name}/posts`
+## `GET /v1/reddit/subreddit_posts/{subreddit}`
 
-$0.003 (3000 USDC micros). Requires `Authorization: Bearer <workspace API key>`.
+$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
-| `name` | path | yes | Subreddit name, no `r/` prefix |
-| `sort` | query | no | `new` is confirmed working; other values are not verified against this gateway |
+| `subreddit` | path | yes | Subreddit name, no `r/` prefix |
+| `sort` | query | no | `new`/`hot`/`top` confirmed working |
 | `limit` | query | no | Positive integer page size; no published maximum — request conservative sizes |
 
 ```bash
-curl -H "Authorization: Bearer $REDDIT_API_KEY" \
-  "https://api.replynodes.com/v1/reddit/subreddits/programming/posts?sort=new&limit=10"
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/reddit/subreddit_posts/programming?sort=new&limit=10"
 ```
 
-Returns `data` as an array of post objects (`id`, `title`, `permalink`,
-`url`, `score`, `author`, `subreddit`, `created_at`, `source`).
+Returns `data` as an array of post objects (`id`, `title`, `permalink`, `url`, `score`, `author`, `subreddit`, `created_at`, `source`).
 
-## `GET /posts/{post_id}`
+## `GET /v1/reddit/post_by_id/{id}`
 
-$0.003. Requires `Authorization: Bearer <workspace API key>`.
+$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
-| `post_id` | path | yes | Reddit's base-36 post id, e.g. the `1w65ged` in `/r/x/comments/1w65ged/...` |
+| `id` | path | yes | Reddit's base-36 post id, e.g. the `1w65ged` in `/r/x/comments/1w65ged/...` |
 
 ```bash
-curl -H "Authorization: Bearer $REDDIT_API_KEY" \
-  "https://api.replynodes.com/v1/reddit/posts/EXAMPLE_POST_ID"
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/reddit/post_by_id/EXAMPLE_POST_ID"
 ```
 
 Returns `data` as a single post object (same fields as the list route above).
 
-## `GET /posts/{post_id}/comments`
+## `GET /v1/reddit/post_by_permalink`
 
-$0.003. Requires `Authorization: Bearer <workspace API key>`.
+$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
-| `post_id` | path | yes | Same post id format as above |
-| `subreddit` | query | yes | The post's subreddit name; the gateway needs it to resolve the comment thread |
-| `limit` | query | no | Positive integer page size; no published maximum |
+| `url` | query | yes | Full Reddit post URL |
 
 ```bash
-curl -H "Authorization: Bearer $REDDIT_API_KEY" \
-  "https://api.replynodes.com/v1/reddit/posts/EXAMPLE_POST_ID/comments?subreddit=programming&limit=20"
+curl -H "Authorization: Bearer ***" \
+  -G --data-urlencode "url=https://www.reddit.com/r/programming/comments/EXAMPLE_POST_ID/example_post_title/" \
+  "https://api.replynodes.com/v1/reddit/post_by_permalink"
 ```
 
-Returns `data` as an array of comment objects (`id`, `body`, `author`,
-`permalink`, `created_at`, `source`). `source` may be `arctic-shift` or
-`reddit-rss` depending on which upstream served the read.
+Returns `data` as a single post object (same fields as the list route above).
 
-## `GET /search`
+## `GET /v1/reddit/search_posts`
 
-$0.003. Requires `Authorization: Bearer <workspace API key>`.
+$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
@@ -99,14 +97,47 @@ $0.003. Requires `Authorization: Bearer <workspace API key>`.
 | `limit` | query | no | Positive integer page size; no published maximum |
 
 ```bash
-curl -H "Authorization: Bearer $REDDIT_API_KEY" \
+curl -H "Authorization: Bearer ***" \
   --data-urlencode "q=rust async" -G \
   --data-urlencode "subreddit=programming" \
   --data-urlencode "limit=10" \
-  "https://api.replynodes.com/v1/reddit/search"
+  "https://api.replynodes.com/v1/reddit/search_posts"
 ```
 
 Returns `data` as an array of post objects (same fields as the list route).
+
+## `GET /v1/reddit/user_posts/{username}`
+
+$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
+
+| Parameter | Location | Required | Notes |
+| --- | --- | --- | --- |
+| `username` | path | yes | Reddit username |
+| `sort` | query | no | `new`/`hot`/`top` confirmed working |
+| `limit` | query | no | Positive integer page size; no published maximum — request conservative sizes |
+
+```bash
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/reddit/user_posts/example_user?sort=new&limit=10"
+```
+
+Returns `data` as an array of post objects (same fields as the list route).
+
+## `GET /v1/reddit/user_activity/{username}`
+
+$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
+
+| Parameter | Location | Required | Notes |
+| --- | --- | --- | --- |
+| `username` | path | yes | Reddit username |
+| `limit` | query | no | Positive integer page size; no published maximum — request conservative sizes |
+
+```bash
+curl -H "Authorization: Bearer ***" \
+  "https://api.replynodes.com/v1/reddit/user_activity/example_user?limit=10"
+```
+
+Returns `data` as an array of objects representing combined post and comment activity (with `type` field indicating "post" or "comment"), same fields as individual post/comment objects.
 
 ## Errors
 
