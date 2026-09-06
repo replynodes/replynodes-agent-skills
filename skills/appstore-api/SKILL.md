@@ -2,7 +2,7 @@
 name: appstore-data-api
 title: App Store Public Reads
 description: Read-only, normalized public-data reads of App Store applications through the ReplyNodes App Store public-read service: app lookup, developer catalog lookup, storefront chart listings, privacy label lookup, ratings summaries, paged reviews, bounded term search, related-app listings, and type-ahead suggestions — nine capabilities via one HTTPS gateway. Two authentication paths are supported — a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and the documented routes match the live gateway surface. Public reads only: no purchase, review-submission, account, or other mutation exists, and no platform login material is involved.
-version: 1.0.11
+version: 1.0.12
 contract_version: v1
 mode: readonly
 auth: Bearer workspace key OR x402 v2 pay-per-call in USDC on Base at the gateway; the read layer itself carries no credential material

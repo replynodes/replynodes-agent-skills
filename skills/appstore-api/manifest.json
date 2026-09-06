@@ -4,7 +4,7 @@
   "name": "appstore-data-api",
   "title": "App Store Public Reads",
   "description": "Read-only access to public App Store application data: application lookup, developer catalog, storefront chart listings, privacy label, ratings summaries, paged reviews, bounded term search, related-app listings, and type-ahead suggestions \u2014 nine capabilities via one HTTPS gateway. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No purchase, review, account, login, or other mutation is supported.",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "contract_version": "v1",
   "platform": "ios",
   "mode": "readonly",
@@ -43,7 +43,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/appstore-api",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -193,7 +193,7 @@
     {
       "path": "SKILL.md",
       "bytes": 18232,
-      "sha256": "b86c7adf597f7f02432da8f9f513077fe1354cf5fad1e43e193b878d98053e4d"
+      "sha256": "9b0566678caed8419af6eab85678b287785951e719e0733254ba3b54f348dcfd"
     },
     {
       "path": "evidence/publication-evidence.json",
