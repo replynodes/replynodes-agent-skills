@@ -4,7 +4,7 @@
 > at the gateway, bounded pages, normalized v1 payloads, and
 > transparent errors plus an explicit unsupported-capability matrix.
 
-Base URL: deployment-specific. The supported public gateway base URL is https://api.replynodes.com. Use this deployment base unless your workspace is explicitly issued another HTTPS gateway URL; never use localhost:18789.
+Base URL: https://api.replynodes.com/appstore-api (fixed). Do not use any other gateway.
 
 ## Surface status
 

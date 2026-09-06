@@ -4,7 +4,7 @@
   "name": "appstore-data-api",
   "title": "App Store Public Reads",
   "description": "Read-only access to public App Store application data: application lookup by track ID or bundle ID, bounded term search, and related-app listings. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No purchase, review, account, login, or other mutation is supported.",
-  "version": "1.0.11",
+  "version": "1.0.10",
   "contract_version": "v1",
   "platform": "ios",
   "mode": "readonly",
@@ -43,7 +43,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/appstore-api",
-    "version": "1.0.11",
+    "version": "1.0.10",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -57,51 +57,6 @@
       "path": "/v1/appstore/app",
       "auth_required": false,
       "summary": "Look up one public App Store application"
-    },
-    {
-      "capability": "get_developer",
-      "mcp_tool": "appstore_get_developer",
-      "operation": "developer",
-      "method": "GET",
-      "path": "/v1/appstore/developer",
-      "auth_required": false,
-      "summary": "Look up one public App Store developer"
-    },
-    {
-      "capability": "list_apps",
-      "mcp_tool": "appstore_list_apps",
-      "operation": "list",
-      "method": "GET",
-      "path": "/v1/appstore/list",
-      "auth_required": false,
-      "summary": "List public App Store applications by storefront"
-    },
-    {
-      "capability": "get_privacy",
-      "mcp_tool": "appstore_get_privacy",
-      "operation": "privacy",
-      "method": "GET",
-      "path": "/v1/appstore/privacy",
-      "auth_required": false,
-      "summary": "Look up one public App Store privacy label"
-    },
-    {
-      "capability": "get_ratings",
-      "mcp_tool": "appstore_get_ratings",
-      "operation": "ratings",
-      "method": "GET",
-      "path": "/v1/appstore/ratings",
-      "auth_required": false,
-      "summary": "Get ratings summary for one public App Store application"
-    },
-    {
-      "capability": "get_reviews",
-      "mcp_tool": "appstore_get_reviews",
-      "operation": "reviews",
-      "method": "GET",
-      "path": "/v1/appstore/reviews",
-      "auth_required": false,
-      "summary": "Get paged reviews for one public App Store application"
     },
     {
       "capability": "search_apps",
@@ -120,15 +75,6 @@
       "path": "/v1/appstore/similar",
       "auth_required": false,
       "summary": "List public apps related to one App Store application"
-    },
-    {
-      "capability": "suggest_terms",
-      "mcp_tool": "appstore_suggest_terms",
-      "operation": "suggest",
-      "method": "GET",
-      "path": "/v1/appstore/suggest",
-      "auth_required": false,
-      "summary": "Get type-ahead suggestions for public App Store applications"
     }
   ],
   "unsupported_capabilities": [
@@ -172,8 +118,8 @@
   "files": [
     {
       "path": "INSTALL.md",
-      "bytes": 3449,
-      "sha256": "54f02702da9a3e3fa5ac56f0b0aedcc2c2a1eb755ea3dcdd00c392dbffa9fd4e"
+      "bytes": 3319,
+      "sha256": "c96c9995ef69422f0a26004a9065a75bc036f6234de11be8ebc753552793bd9b"
     },
     {
       "path": "LICENSE",
@@ -192,23 +138,23 @@
     },
     {
       "path": "SKILL.md",
-      "bytes": 18232,
-      "sha256": "b86c7adf597f7f02432da8f9f513077fe1354cf5fad1e43e193b878d98053e4d"
+      "bytes": 10044,
+      "sha256": "c5678e05d8d280e9ee2b0e762c7d5794ae37e1e3aed69a6fd4e229f1696946da"
     },
     {
       "path": "evidence/publication-evidence.json",
-      "bytes": 2847,
-      "sha256": "979077771324e86431cf899728e36dcbbdca6b96385b4bb35b2990cdbeebcc47"
+      "bytes": 985,
+      "sha256": "5f0c04def41240926844a907f9cc0af523b911f74e2437845d77503f7f54bb0a"
     },
     {
       "path": "llms.txt",
-      "bytes": 4407,
-      "sha256": "5d9779fbcfb3d252f7cba6afd20397bd48915c04a6f5fbf9b6f580f3161b9edb"
+      "bytes": 4540,
+      "sha256": "e15c20300ec0618cc744d90f165ad594e2e9eb675f487fa6f0bca6feb8bf482f"
     },
     {
       "path": "references/appstore-mcp.schema.json",
-      "bytes": 8023,
-      "sha256": "2aa1e75b099e7dd61afc16adf542aaf4c56d3673ef048c44a706f7d4c8271944"
+      "bytes": 8235,
+      "sha256": "64958711455974a43c65d1eee4bf081bcd5ab5e25c02ddba91e58f02657d2daf"
     },
     {
       "path": "references/appstore-public-v1.openapi.json",
