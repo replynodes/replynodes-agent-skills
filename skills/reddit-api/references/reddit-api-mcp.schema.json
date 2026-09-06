@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "manifest_kind": "replynodes/social-data-skills/reddit-api-mcp-manifest",
+  "manifest_version": 1,
+  "name": "reddit-data-api",
+  "title": "Reddit Public Data API",
+  "version": "v1",
+  "contract_version": "v1",
+  "description": "Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported — a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.",
+  "readonly": true,
+  "distribution_note": "Published package metadata is recorded in the generated package publication evidence; payment settlement is not claimed.",
+  "transport": {
+    "type": "streamable_http",
+    "url": "https://api.replynodes.com",
+    "authentication": {
+      "type": "bearer",
+      "location": "Authorization header",
+      "credential_description": "Bearer workspace key issued per workspace, or x402 v2 payment negotiation after HTTP 402; this manifest stores no key or payer material."
+    }
+  },
+  "instructions": "# Reddit Public Data API (MCP)\n\nRead-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported — a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.\n\n## Surface status\n-The seven documented read operations have stable public contracts with bounded requests and normalized responses.\n-Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.\n\n## How to call\n- Use the fixed gateway URL: https://api.replynodes.com\n- Each tool maps to one HTTP GET capability: substitute path parameters into the endpoint path and pass optional parameters as query strings.\n- Authenticate at the gateway with header 'Authorization: Bearer ***' or follow x402 v2 payment requirements returned as HTTP 402; the manifest holds no key or payer material.\n\n## Results\n- Success: '{\\\"data\\\": [<result> or [array]], \\\"meta\\\": {\\\"request_id\\\": \\\"req-...\\\", \\\"contract_version\\\": \\\"v1\\\", \\\"generated_at\\\": \\\"...\\\", \\\"availability\\\": \\\"complete\\\"}}'.\n- Failure: '{\\\"error\\\": {\\\"code\\\": \\\"...\\\", \\\"message\\\": \\\"...\\\", \\\"request_id\\\": \\\"req-...\\\"}}'. honor HTTP status and any 'Retry-After' on 429.\n\n## Conduct\n- Read-only: these tools never mutate anything; refuse requests asking them to purchase, review, submit, or touch accounts.\n",
+  "tools": [
+    {
+      "name": "reddit_get_capabilities",
+      "title": "Get the Reddit API capabilities catalog",
+      "description": "Get the current route/price/payment-modes catalog for the Reddit public-read service. This endpoint is free and requires no authentication.",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/reddit/capabilities",
+        "operation": "capabilities",
+        "auth_required": false
+      }
+    },
+    {
+      "name": "reddit_get_subreddit_posts",
+      "title": "List a subreddit's posts",
+      "description": "List recent posts from one subreddit. Returns an array of post items.",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "subreddit": {
+            "type": "string",
+            "description": "Subreddit name (without the 'r/' prefix)."
+          },
+          "sort": {
+            "type": "string",
+            "description": "Optional sort order: new, hot, top (confirmed working).",
+            "enum": ["new", "hot", "top"]
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Optional positive integer to bound the page size.",
+            "minimum": 1
+          }
+        },
+        "required": ["subreddit"],
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/reddit/subreddit_posts/{subreddit}",
+        "operation": "subreddit_posts",
+        "auth_required": false
+      }
+    },
+    {
+      "name": "reddit_get_post_by_id",
+      "title": "Get a single post by Reddit post ID",
+      "description": "Fetch a single post by its Reddit post ID. Returns a single post object.",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Base-36 Reddit post ID."
+          }
+        },
+        "required": ["id"],
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/reddit/post_by_id/{id}",
+        "operation": "post_by_id",
+        "auth_required": false
+      }
+    },
+    {
+      "name": "reddit_get_post_by_permalink",
+      "title": "Get a single post by full URL (permalink)",
+      "description": "Fetch a single post by its full Reddit URL. Returns a single post object.",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Full Reddit post URL (required).",
+            "format": "uri"
+          }
+        },
+        "required": ["url"],
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/reddit/post_by_permalink",
+        "operation": "post_by_permalink",
+        "auth_required": false
+      }
+    },
+    {
+      "name": "reddit_search_posts",
+      "title": "Search posts by keyword",
+      "description": "Search posts by keyword query. Returns an array of post items.",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Required search text."
+          },
+          "subreddit": {
+            "type": "string",
+            "description": "Optional: scopes the search to one subreddit."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Optional positive integer to bound the page size.",
+            "minimum": 1
+          }
+        },
+        "required": ["q"],
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/reddit/search_posts",
+        "operation": "search_posts",
+        "auth_required": false
+      }
+    },
+    {
+      "name": "reddit_get_user_posts",
+      "title": "Get a user's submitted posts",
+      "description": "List posts submitted by one user. Returns an array of post items.",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Reddit username."
+          },
+          "sort": {
+            "type": "string",
+            "description": "Optional sort order: new, hot, top (confirmed working).",
+            "enum": ["new", "hot", "top"]
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Optional positive integer to bound the page size.",
+            "minimum": 1
+          }
+        },
+        "required": ["username"],
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/reddit/user_posts/{username}",
+        "operation": "user_posts",
+        "auth_required": false
+      }
+    },
+    {
+      "name": "reddit_get_user_activity",
+      "title": "Get a user's full activity (posts + comments)",
+      "description": "List comment + submission activity by one user. Returns an array of activity items (posts and comments).",
+      "readonly_hint": true,
+      "destructive_hint": false,
+      "idempotent_hint": true,
+      "open_world_hint": true,
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Reddit username."
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Optional positive integer to bound the page size.",
+            "minimum": 1
+          }
+        },
+        "required": ["username"],
+        "additionalProperties": false
+      },
+      "endpoint": {
+        "method": "GET",
+        "path": "/v1/reddit/user_activity/{username}",
+        "operation": "user_activity",
+        "auth_required": false
+      }
+    }
+  ]
+}
