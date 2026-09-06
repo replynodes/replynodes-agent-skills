@@ -100,11 +100,15 @@ for the attempt, and honor `Retry-After` on 429.
 | Capability | Reason | Notes |
 | --- | --- | --- |
 | `list` | deferred scope | Storefront ranking crawls; high volume, deferred beyond #15. |
-| `developer` | deferred scope | Developer catalog enumeration; deferred beyond #15. |
-| `reviews` | deferred scope | Paged user reviews; pagination contract deferred beyond #15. |
-| `ratings` | deferred scope | Standalone ratings fetch; already embedded in app records. |
+| `developer` (standalone) | deferred scope | Developer catalog enumeration; deferred beyond #15. Developer name/id are **embedded in app records** when available (see `App.developer` in OpenAPI schema). |
+| `reviews` (standalone) | deferred scope | Paged user reviews; pagination contract deferred beyond #15. Review count is **embedded in app records** as `rating.reviews_count` when available. |
+| `ratings` (standalone) | deferred scope | Standalone ratings fetch; deferred beyond #15. Average score and counts are **embedded in app records** as `rating.score`, `rating.ratings_count` when available. |
 | `suggest` | deferred scope | Type-ahead suggestions; deferred beyond #15. |
 | `*write_or_authenticated` | read only policy | No purchase, review submission, account, login, or authenticated capability exists on this boundary, now or later. |
+
+**Clarification**: The three supported read operations return normalized `App` records that MAY include `developer`, `rating`, and `pricing` fields when the public source provides them. These are not separate capabilities — they are part of the single app record. No standalone endpoints exist for them.
+
+
 
 Anything not listed under Capabilities is out of scope. Do not improvise
 around this matrix; requests for these capabilities are refused rather than

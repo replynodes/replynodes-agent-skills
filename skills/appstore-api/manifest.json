@@ -85,22 +85,22 @@
       "notes": "Storefront ranking crawls; high volume, deferred beyond #15."
     },
     {
-      "name": "developer",
+      "name": "developer (standalone)",
       "status": "unsupported",
       "reason": "deferred_scope",
-      "notes": "Developer catalog enumeration; deferred beyond #15."
+      "notes": "Developer catalog enumeration; deferred beyond #15. Developer name/id are embedded in app records when available."
     },
     {
-      "name": "reviews",
+      "name": "reviews (standalone)",
       "status": "unsupported",
       "reason": "deferred_scope",
-      "notes": "Paged user reviews; pagination contract deferred beyond #15."
+      "notes": "Paged user reviews; pagination contract deferred beyond #15. Review count is embedded in app records as rating.reviews_count when available."
     },
     {
-      "name": "ratings",
+      "name": "ratings (standalone)",
       "status": "unsupported",
       "reason": "deferred_scope",
-      "notes": "Standalone ratings fetch; already embedded in app records."
+      "notes": "Standalone ratings fetch; deferred beyond #15. Average score and counts are embedded in app records as rating.score, rating.ratings_count when available."
     },
     {
       "name": "suggest",
@@ -118,8 +118,8 @@
   "files": [
     {
       "path": "INSTALL.md",
-      "bytes": 3319,
-      "sha256": "c96c9995ef69422f0a26004a9065a75bc036f6234de11be8ebc753552793bd9b"
+      "bytes": 3651,
+      "sha256": "63b88046e523090c1f26e6ac050339f810f9318cf35acd0d8842e4d59c5dcfcd"
     },
     {
       "path": "LICENSE",
@@ -138,13 +138,13 @@
     },
     {
       "path": "SKILL.md",
-      "bytes": 10044,
-      "sha256": "c5678e05d8d280e9ee2b0e762c7d5794ae37e1e3aed69a6fd4e229f1696946da"
+      "bytes": 10687,
+      "sha256": "b6c0d5874662db6c5b758071adfd8e4f992faa435cbdf9aaa6b97bbb020dcabb"
     },
     {
       "path": "evidence/publication-evidence.json",
-      "bytes": 985,
-      "sha256": "5f0c04def41240926844a907f9cc0af523b911f74e2437845d77503f7f54bb0a"
+      "bytes": 2847,
+      "sha256": "38a7cfeeb96ccbbd7d04e18dd0b1316c081312877057a94b2f6a622cd8845c92"
     },
     {
       "path": "llms.txt",
@@ -153,18 +153,18 @@
     },
     {
       "path": "references/appstore-mcp.schema.json",
-      "bytes": 8235,
-      "sha256": "64958711455974a43c65d1eee4bf081bcd5ab5e25c02ddba91e58f02657d2daf"
+      "bytes": 8626,
+      "sha256": "1a234260d1487640dcb82f19a749f12b223f761a98c4958399ba565b84d88403"
     },
     {
       "path": "references/appstore-public-v1.openapi.json",
-      "bytes": 24914,
-      "sha256": "beb761c0a4d8737fb216b60d85485eb2df0aae8340dfb8847666cc2375f6b9ca"
+      "bytes": 25220,
+      "sha256": "9513d1394067cbc68a323a406d45f3897781a5a18d4d1ac17b9f9b85a8c4dd6d"
     },
     {
       "path": "references/endpoints.md",
-      "bytes": 10778,
-      "sha256": "f538f0bb1a244f61b8a10896f8939057410220d27946b210e268fb8c2ca570bb"
+      "bytes": 11417,
+      "sha256": "45bc68e0de6f6ba4c7ab984af43c4547fb0a8b81410c0fb763387d12bc8c6953"
     },
     {
       "path": "skill-card.md",
