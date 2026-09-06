@@ -11,7 +11,7 @@ normalized `{ "data", "meta": { "request_id" } }` body. Live example values
 not reproduced in this package; every example in `SKILL.md` and
 `references/` is an illustrative placeholder, clearly labeled as such.
 
-Authentication was verified as Bearer workspace API key only: unauthenticated
+Authentication supports both Bearer workspace-key and x402 v2 pay-per-call; unauthenticated requests to priced routes return HTTP 402 with x402 challenge, and invalid Bearer tokens return HTTP 401.
 and invalid-key requests to every priced route returned HTTP 401
 `invalid_or_expired_token`, with no x402 payment challenge observed on any
 Reddit route. This package does not claim x402 support for Reddit.
