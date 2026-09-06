@@ -7,8 +7,7 @@
 Base URL: https://api.replynodes.com/appstore-api (fixed). Do not use any other gateway.
 
 ## Surface status
-
-- The three documented read operations have stable public contracts with bounded requests and normalized v1 responses.
+- The nine documented read operations have stable public contracts with bounded requests and normalized v1 responses.\n- The nine documented read operations have stable public contracts with bounded requests and normalized v1 responses.\n- The nine documented read operations have stable public contracts with bounded requests and normalized v1 responses.\n
 - Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.
 - No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses.
 

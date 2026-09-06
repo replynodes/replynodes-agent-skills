@@ -3,7 +3,7 @@
   "manifest_version": 1,
   "name": "appstore-data-api",
   "title": "App Store Public Reads",
-  "description": "Read-only access to public App Store application data: application lookup by track ID or bundle ID, bounded term search, and related-app listings. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No purchase, review, account, login, or other mutation is supported.",
+  "description": "Read-only access to public App Store application data: application lookup, developer catalog, storefront chart listings, privacy label, ratings summaries, paged reviews, bounded term search, related-app listings, and type-ahead suggestions \u2014 nine capabilities via one HTTPS gateway. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No purchase, review, account, login, or other mutation is supported.",
   "version": "1.0.11",
   "contract_version": "v1",
   "platform": "ios",
@@ -31,7 +31,7 @@
     "public app data"
   ],
   "surface_status": [
-    "This package documents three stable, read-only GET operations with bounded requests and normalized v1 responses.",
+    "This package documents nine stable, read-only GET operations with bounded requests and normalized v1 responses.",
     "The public routes are stable capability identifiers for agent tool bindings.",
     "No availability, uptime, latency, success-rate, or payment-settlement claim is made; example payloads are illustrative fixtures."
   ],
@@ -202,8 +202,8 @@
     },
     {
       "path": "llms.txt",
-      "bytes": 4407,
-      "sha256": "5d9779fbcfb3d252f7cba6afd20397bd48915c04a6f5fbf9b6f580f3161b9edb"
+      "bytes": 4645,
+      "sha256": "72b3bb0b457ea279025a07181fed467010a2372d368854811d8bf6496c8a6976"
     },
     {
       "path": "references/appstore-mcp.schema.json",
