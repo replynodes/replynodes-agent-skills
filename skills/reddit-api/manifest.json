@@ -4,7 +4,7 @@
   "name": "reddit-data-api",
   "title": "Reddit Public Data API",
   "description": "Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported \u2014 a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "contract_version": "v1",
   "platform": "social",
   "mode": "readonly",
@@ -50,7 +50,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/reddit-api",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -141,18 +141,18 @@
     },
     {
       "path": "PROVENANCE.md",
-      "bytes": 1310,
-      "sha256": "dcdbd593a4996ec5f975880801c5d668cf70cd12b96d704b8dcc49f3ab9d8694"
+      "bytes": 1451,
+      "sha256": "c0ab391e28c164fffceb2128a92a263784644968f934a33cbdcd1d072a0a9dec"
     },
     {
       "path": "PUBLICATION.md",
-      "bytes": 887,
-      "sha256": "483e971ec5cb725a3d9f6b10fc19f9081827387c67dd0df15664f18d251d54e9"
+      "bytes": 1011,
+      "sha256": "2ee28362bda7dfcb72af3808eec755e01fadc1bee268f6b68d7ed3d475d4fe2d"
     },
     {
       "path": "SKILL.md",
       "bytes": 13325,
-      "sha256": "0c3abab4ac1c6f161e8d5431d0484af13c7698cac71f0d9d0dd16581353b9bd7"
+      "sha256": "da9f7e83af8833c6decb2a69eeeffc7402b5ab88285dda1c5c32fc200a17983e"
     },
     {
       "path": "VERSION",
@@ -161,13 +161,13 @@
     },
     {
       "path": "llms.txt",
-      "bytes": 4005,
-      "sha256": "773786a9d1c0d5ed7360c8f214ddecc94a0c21b1c9f2be828e25a5bf0ecd472c"
+      "bytes": 3998,
+      "sha256": "cd24b85375a67c4e372d27c8daf4ab12858904d5f531b6f0ec69450e44091d9b"
     },
     {
       "path": "references/endpoints.md",
-      "bytes": 3839,
-      "sha256": "9be70071d2cf8e2d01ddf5a8fa6ae322bae74d1ba4ceeecfe634b1881c76f266"
+      "bytes": 5105,
+      "sha256": "d8b5640ece8017d9956f52c4f8d38d1f3e87ae73d3d9e6cd67ff787e7fb3c8b1"
     },
     {
       "path": "references/scenarios.md",
@@ -176,8 +176,8 @@
     },
     {
       "path": "references/reddit-api-mcp.schema.json",
-      "bytes": 10096,
-      "sha256": "f18ceccdc827cc629b0767ad49a9357fcb361d44b133a7973ac4faa4da9112d9"
+      "bytes": 10344,
+      "sha256": "401621f3ffe33b7945879a895484274261766c4264d30a96ea2d67f0480552e6"
     },
     {
       "path": "skill-card.md",
