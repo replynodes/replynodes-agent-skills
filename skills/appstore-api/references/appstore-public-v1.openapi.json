@@ -3,7 +3,7 @@
   "info": {
     "title": "App Store Public Reads",
     "version": "v1",
-    "summary": "Read-only, normalized public-data reads of App Store applications exposed through the ReplyNodes App Store public-read service: app lookup, bounded term search, and related-app listings.",
+    "summary": "Read-only, normalized public-data reads of App Store applications exposed through the ReplyNodes App Store public-read service: app lookup, developer catalog lookup, storefront chart listings, privacy label lookup, ratings summaries, paged reviews, bounded term search, related-app listings, and type-ahead suggestions.",
     "description": "Machine-readable specification for the supported public App Store read capabilities of the ReplyNodes App Store public-read service.\n\nSurface status:\n- The three documented read operations have stable public contracts with bounded requests and normalized v1 responses.\n- Route paths in this catalog are stable capability identifiers used for agent tool bindings; public gateway exposure for this platform is issued to your workspace at onboarding and must not be assumed reachable anywhere else.\n- No availability, uptime, latency, or success-rate figure is claimed anywhere in this package; example payloads are illustrative fixtures, not captured responses.\n\nRead-only guarantees:\n- Every cataloged operation is an HTTP GET capability over public application data only.\n- No purchase, review-submission, account, login, or any other write or authenticated capability exists in this domain, now or later; it is excluded by policy rather than by configuration.\n- Only the documented operations are supported by this public package.\n- No request path carries or accepts credentials, keys, or login material of any kind; the read layer performs public reads server-side.\n- Only public platform data is returned; counters, scores, and prices are null when the source omits them - zeros are never fabricated - and unknown upstream fields are dropped.\n\nPublished from this public, sanitized skill-only provenance repository."
   },
   "servers": [
@@ -40,7 +40,7 @@
             "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
             "schema": {
               "type": "string",
-              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
               "minLength": 3,
               "maxLength": 200
             }
@@ -52,115 +52,12 @@
             "description": "Alias for id; provide appId or id.",
             "schema": {
               "type": "string",
-              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
               "minLength": 3,
               "maxLength": 200
             }
-          },
-          {
-            "name": "country",
-            "in": "query",
-            "required": false,
-            "description": "Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).",
-            "schema": {
-              "type": "string",
-              "pattern": "^[a-z]{2}$"
-            }
-          },
-          {
-            "name": "language",
-            "in": "query",
-            "required": false,
-            "description": "Optional language hint, ISO 639-1 lowercase optionally followed by -<region> (e.g. en or en-us).",
-            "schema": {
-              "type": "string",
-              "pattern": "^[a-z]{2}(-[a-z]{2})?$"
-            }
           }
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success response. Single lookups carry exactly one element in data; searches and similar listings carry zero or more.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "Correlation identifier echoed as meta.request_id.",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Normalized error with code invalid_request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Normalized error with code not_found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Normalized error with code rate_limited.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            },
-            "headers": {
-              "Retry-After": {
-                "description": "Seconds until the quota window resets.",
-                "schema": {
-                  "type": "integer"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Normalized error with code upstream_unavailable.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Normalized error with code degraded.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          }
-        }
+        ]
       }
     },
     "/v1/appstore/search": {
@@ -179,7 +76,7 @@
             "description": "Free-text search query; required and never empty after trimming.",
             "schema": {
               "type": "string",
-              "pattern": "^\\S(.*)?$"
+              "pattern": "^\\\\S(.*)?$"
             }
           },
           {
@@ -214,97 +111,14 @@
               "pattern": "^[a-z]{2}(-[a-z]{2})?$"
             }
           }
-        ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success response. Single lookups carry exactly one element in data; searches and similar listings carry zero or more.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "Correlation identifier echoed as meta.request_id.",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Normalized error with code invalid_request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Normalized error with code not_found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Normalized error with code rate_limited.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            },
-            "headers": {
-              "Retry-After": {
-                "description": "Seconds until the quota window resets.",
-                "schema": {
-                  "type": "integer"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Normalized error with code upstream_unavailable.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Normalized error with code degraded.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          }
-        }
+        ]
       }
     },
     "/v1/appstore/similar": {
       "get": {
         "operationId": "get_similar_apps",
         "summary": "List public apps related to one App Store application",
-        "description": "Returns zero or more normalized public application records related to the app referenced by numeric track id or bundle id. No continuation tokens exist on this surface.",
+        "description": "Returns zero or more normalized public application records related to the app referenced by numeric track id or bundle id, as one bounded page (default 20 results, clamped to at most 50). No continuation tokens exist on this surface.",
         "tags": [
           "appstore"
         ],
@@ -316,7 +130,7 @@
             "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
             "schema": {
               "type": "string",
-              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
               "minLength": 3,
               "maxLength": 200
             }
@@ -328,7 +142,7 @@
             "description": "Alias for id; provide appId or id.",
             "schema": {
               "type": "string",
-              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\.[A-Za-z0-9-]+)+)$",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
               "minLength": 3,
               "maxLength": 200
             }
@@ -353,90 +167,224 @@
               "pattern": "^[a-z]{2}(-[a-z]{2})?$"
             }
           }
+        ]
+      }
+    },
+    "/v1/appstore/developer": {
+      "get": {
+        "operationId": "get_developer",
+        "summary": "Look up one public App Store developer",
+        "description": "Returns exactly one normalized public developer record referenced by numeric track id or bundle id, per contract v1 (company name, address, etc.). An unknown or non-public id yields not_found.",
+        "tags": [
+          "appstore"
         ],
-        "security": [
+        "parameters": [
           {
-            "bearerAuth": []
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "appId",
+            "in": "query",
+            "required": false,
+            "description": "Alias for id; provide appId or id.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
           }
+        ]
+      }
+    },
+    "/v1/appstore/list": {
+      "get": {
+        "operationId": "list_apps",
+        "summary": "List public App Store applications by storefront",
+        "description": "Returns zero or more normalized public application records for a given storefront category and country, as one bounded page (default 20 results, clamped to at most 50). No continuation tokens exist on this surface.",
+        "tags": [
+          "appstore"
         ],
-        "responses": {
-          "200": {
-            "description": "Success response. Single lookups carry exactly one element in data; searches and similar listings carry zero or more.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "Correlation identifier echoed as meta.request_id.",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppResponse"
-                }
-              }
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": true,
+            "description": "Storefront category (e.g. TOP_FREE, TOP_PAID, TOP_GROSSING).",
+            "schema": {
+              "type": "string"
             }
           },
-          "400": {
-            "description": "Normalized error with code invalid_request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Normalized error with code not_found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Normalized error with code rate_limited.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            },
-            "headers": {
-              "Retry-After": {
-                "description": "Seconds until the quota window resets.",
-                "schema": {
-                  "type": "integer"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Normalized error with code upstream_unavailable.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Normalized error with code degraded.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorEnvelope"
-                }
-              }
+          {
+            "name": "country",
+            "in": "query",
+            "required": true,
+            "description": "ISO 3166-1 alpha-2 country code (e.g. us).",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}$"
             }
           }
-        }
+        ]
+      }
+    },
+    "/v1/appstore/privacy": {
+      "get": {
+        "operationId": "get_privacy",
+        "summary": "Look up one public App Store privacy label",
+        "description": "Returns the normalized privacy label for one public App Store application referenced by numeric track id or bundle id.",
+        "tags": [
+          "appstore"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "appId",
+            "in": "query",
+            "required": false,
+            "description": "Alias for id; provide appId or id.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          }
+        ]
+      }
+    },
+    "/v1/appstore/ratings": {
+      "get": {
+        "operationId": "get_ratings",
+        "summary": "Get ratings summary for one public App Store application",
+        "description": "Returns the normalized ratings summary for one public App Store application referenced by numeric track id or bundle id.",
+        "tags": [
+          "appstore"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "appId",
+            "in": "query",
+            "required": false,
+            "description": "Alias for id; provide appId or id.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          }
+        ]
+      }
+    },
+    "/v1/appstore/reviews": {
+      "get": {
+        "operationId": "get_reviews",
+        "summary": "Get paged reviews for one public App Store application",
+        "description": "Returns zero or more normalized public review records for one public App Store application, as one bounded page (default 20 results, clamped to at most 50). No continuation tokens exist on this surface.",
+        "tags": [
+          "appstore"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "description": "Numeric track id (up to 19 digits) or reverse-DNS-style bundle id; provide id or appId.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "appId",
+            "in": "query",
+            "required": false,
+            "description": "Alias for id; provide appId or id.",
+            "schema": {
+              "type": "string",
+              "pattern": "^([0-9]{1,19}|[A-Za-z0-9][A-Za-z0-9-]*(?:\\\\.[A-Za-z0-9-]+)+)$",
+              "minLength": 3,
+              "maxLength": 200
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "description": "Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}$"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/appstore/suggest": {
+      "get": {
+        "operationId": "suggest_terms",
+        "summary": "Get type-ahead suggestions for public App Store applications",
+        "description": "Returns zero or more normalized type-ahead suggestions for public App Store applications based on a partial term, as one bounded page (default 20 results, clamped to at most 50). No continuation tokens exist on this surface.",
+        "tags": [
+          "appstore"
+        ],
+        "parameters": [
+          {
+            "name": "term",
+            "in": "query",
+            "required": true,
+            "description": "Partial search query; required and never empty after trimming.",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\\\S(.*)?$"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "description": "Optional storefront hint, ISO 3166-1 alpha-2 lowercase (e.g. us).",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z]{2}$"
+            }
+          }
+        ]
       }
     }
   },

@@ -133,40 +133,10 @@
   ],
   "unsupported_capabilities": [
     {
-      "name": "list",
-      "status": "unsupported",
-      "reason": "deferred_scope",
-      "notes": "Storefront ranking crawls; high volume, deferred beyond #15."
-    },
-    {
-      "name": "developer",
-      "status": "unsupported",
-      "reason": "deferred_scope",
-      "notes": "Developer catalog enumeration; deferred beyond #15."
-    },
-    {
-      "name": "reviews",
-      "status": "unsupported",
-      "reason": "deferred_scope",
-      "notes": "Paged user reviews; pagination contract deferred beyond #15."
-    },
-    {
-      "name": "ratings",
-      "status": "unsupported",
-      "reason": "deferred_scope",
-      "notes": "Standalone ratings fetch; already embedded in app records."
-    },
-    {
-      "name": "suggest",
-      "status": "unsupported",
-      "reason": "deferred_scope",
-      "notes": "Type-ahead suggestions; deferred beyond #15."
-    },
-    {
       "name": "*write_or_authenticated",
       "status": "unsupported",
       "reason": "read_only_policy",
-      "notes": "No purchase, review submission, account, login, or authenticated capability exists on this boundary, now or later."
+      "notes": "No purchase, review submission, account, login, or other mutation exists on this boundary, now or later."
     }
   ],
   "files": [
@@ -212,8 +182,8 @@
     },
     {
       "path": "references/appstore-public-v1.openapi.json",
-      "bytes": 24914,
-      "sha256": "beb761c0a4d8737fb216b60d85485eb2df0aae8340dfb8847666cc2375f6b9ca"
+      "bytes": 24580,
+      "sha256": "dcec7204c4e4aea349c98d3ff952677abaeb7eacd840534359da2183cab3ad47"
     },
     {
       "path": "references/endpoints.md",
@@ -224,6 +194,16 @@
       "path": "skill-card.md",
       "bytes": 846,
       "sha256": "ffab2090d5c418886387dcfaa88575361164370218165638629e3896540284e2"
+    },
+    {
+      "path": "scripts/validate-appstore-api.sh",
+      "bytes": 121,
+      "sha256": "64a72a63b85713cb576a32d2cee88b5246dc748477efc8dfa150d8ae9d90db08"
+    },
+    {
+      "path": "tests/test-appstore-api.sh",
+      "bytes": 115,
+      "sha256": "02d6b14c008950b07fcdc9ad6bf72c07cb62e3914ac7d6b88d16b9ceed24ee44"
     }
   ]
 }
