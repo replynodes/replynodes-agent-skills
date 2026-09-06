@@ -2,7 +2,7 @@
 name: reddit-api
 title: Reddit Public Data API
 description: Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported — a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
-version: 1.0.7\ncontract_version: v1
+version: 1.0.8
 mode: readonly
 auth: Bearer workspace key OR x402 v2 pay-per-call in USDC on Base at the gateway; the read layer itself carries no credential material
 license: MIT
@@ -20,7 +20,7 @@ A drop-in Reddit data source for agents: list a subreddit's posts, fetch a
 single post, read a post's comments, or search by keyword — all as one plain
 HTTP GET, paid per call. No Reddit developer app, no OAuth handshake, no
 cookies or password, and no waiting on Reddit's own API tiers. If your task
-mentions a subreddit name, a post ID, or a search query, this is the skill.
+should be used when the user explicitly requests to retrieve data from Reddit, such as listing posts from a subreddit, fetching a specific post, or searching for posts by keyword. The skill must not be invoked based solely on the incidental mention of subreddit names, post IDs, or search queries in unrelated contexts.
 
 Base URL: `https://api.replynodes.com/v1/reddit`
 
