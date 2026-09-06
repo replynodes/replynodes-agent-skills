@@ -12,7 +12,7 @@ Portable ClawHub-ready skill for the documented Reddit API surface at
 `https://api.replynodes.com/v1/reddit/*`.
 
 The gateway uses Bearer workspace-key authentication only; no OAuth, no
-Reddit credentials, and no x402 payment challenge is observed on any Reddit
+Reddit credentials, and x402 v2 pay-per-call is supported (gateway returns HTTP 402 with challenge for priced requests) on any Reddit
 route. The package contains instructions only: it has no service code,
 dependencies, credentials, or upstream API access.
 
