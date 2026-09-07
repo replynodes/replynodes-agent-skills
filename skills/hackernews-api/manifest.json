@@ -3,8 +3,8 @@
   "manifest_version": 1,
   "name": "hackernews-data-api",
   "title": "Hacker News Public Reads",
-  "description": "Read-only access to public Hacker News data: front-page and category feeds, single-item fetch with bounded comment threading, user profiles, and term search. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No submit, vote, comment, favorite, login, or other mutation is supported.",
-  "version": "1.0.0",
+  "description": "Read-only access to public Hacker News data: front-page and category feeds, single-item fetch with bounded comment threading, user profiles, and term search. No submit, vote, comment, favorite, login, or other mutation is supported.",
+  "version": "1.1.7",
   "contract_version": "v1",
   "platform": "hackernews",
   "mode": "readonly",
@@ -45,7 +45,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/hackernews-api",
-    "version": "1.0.0",
+    "version": "1.1.7",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -134,24 +134,10 @@
     }
   ],
   "auth": {
-    "modes": [
-      {
-        "name": "bearer_workspace_key",
-        "header": "Authorization",
-        "scheme": "Bearer",
-        "settlement": "prepaid_credit (synchronous debit before upstream read)",
-        "claim": "successful access only when upstream returns 200"
-      },
-      {
-        "name": "x402_v2_negotiation",
-        "trigger": "request without Authorization header on a metered route",
-        "response": "HTTP 402 with payment-required header (base64 JSON)",
-        "response_shape": "{\"accepts\":[{\"scheme\":\"exact\",\"network\":\"eip155:8453\",\"asset\":\"0x8335...\",\"amount\":\"<micros>\"}]}",
-        "settlement": "X-PAYMENT header carrying a signed x402 v2 payload",
-        "claim": "requirements advertisement, not settlement or successful paid access"
-      }
-    ],
-    "claim": "exactly two access modes exist; no third mode is supported or claimed"
+    "mode": "anonymous",
+    "credential_required": false,
+    "payment_required": false,
+    "description": "Anonymous public GETs only; no credential or payment flow is required or supported."
   },
   "pagination": {
     "default_limit": 20,
@@ -179,9 +165,56 @@
     "no live availability, uptime, latency, or success-rate figures",
     "no official platform partnership, endorsement, license grant, or data-sharing arrangement with the upstream platform",
     "no submit, vote, comment, favorite, login, account, or other write/authenticated capability",
-    "no credentials, session cookies, user identifiers, or fallback claims",
+    "no credentials, session cookies, user identifiers, or payment material",
     "no claim that the illustrative fixtures are captured responses from any live gateway",
     "no claim that a 402 payment requirement is settlement or successful paid access"
   ],
-  "license_doc": "LICENSE"
+  "license_doc": "LICENSE",
+  "files": [
+    {
+      "path": "INSTALL.md",
+      "bytes": 2275,
+      "sha256": "b6b50863ba51c68a419e85347ce472e6a8382388776c4bacc2f6ef2e30089ac4"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "PROVENANCE.md",
+      "bytes": 1277,
+      "sha256": "0a5aa3f590c4d59005f35bcb623f77a9098a7d3ae334a426faf88e0134bd650e"
+    },
+    {
+      "path": "PUBLICATION.md",
+      "bytes": 1493,
+      "sha256": "aac7a5434004398fedf03755d339a873b7629bb13904849dbd42b61d0ab24907"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 7590,
+      "sha256": "8cca67a7beaac17f38837a055404631b88a54f55a5e6f2783bb7dee6758cb40b"
+    },
+    {
+      "path": "llms.txt",
+      "bytes": 2697,
+      "sha256": "0b4f88955961d239601222b5456f585f76b17085a5cddd4c5161b64e4d4125b5"
+    },
+    {
+      "path": "references/endpoints.md",
+      "bytes": 4833,
+      "sha256": "795bbfe1d16aed2564a141abe47b37a69b88db089139a7cb27cd734c0ced5f72"
+    },
+    {
+      "path": "references/hackernews-mcp.schema.json",
+      "bytes": 6261,
+      "sha256": "92654a4c0da3f75c21ce07e833acca7ddef33aef3a18010d50c96a86abb5d827"
+    },
+    {
+      "path": "references/hackernews-public-v1.openapi.json",
+      "bytes": 14489,
+      "sha256": "d47f99ec075b77891152e9308d09b8b47b4cb482f048ec3e3fcecab5502935e6"
+    }
+  ]
 }

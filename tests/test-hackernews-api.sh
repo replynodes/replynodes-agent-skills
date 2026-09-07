@@ -22,11 +22,11 @@ expected = {
 }
 assert {c['path'] for c in m['capabilities']} == expected
 assert m['mode'] == 'readonly'
-assert m['version'] == '1.0.0'
+assert m['version'] == '1.1.7'
 PY
 )
 # Ensure no unexpected artifacts would be included in the published package.
-expected='CHECKSUMS.txt INSTALL.md LICENSE PROVENANCE.md PUBLICATION.md SKILL.md evidence/publication-evidence.json llms.txt manifest.json references/endpoints.md references/hackernews-mcp.schema.json references/hackernews-public-v1.openapi.json skill-card.md'
+expected='CHECKSUMS.txt INSTALL.md LICENSE PROVENANCE.md PUBLICATION.md SKILL.md evidence/publication-evidence.json llms.txt manifest.json references/endpoints.md references/hackernews-mcp.schema.json references/hackernews-public-v1.openapi.json'
 actual="$(cd "$tmp/skills/hackernews-api" && find . -type f -printf '%P\n' | sort | tr '\n' ' ' | sed 's/ $//')"
 [[ "$actual" == "$expected" ]] || { echo "unexpected archive layout: $actual" >&2; exit 1; }
 echo 'clean public archive and Hacker News package tests passed'

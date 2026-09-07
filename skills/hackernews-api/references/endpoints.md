@@ -22,7 +22,7 @@ All routes return the normalized v1 envelope described in `SKILL.md`:
 }
 ```
 
-A failed request (any non-2xx except 402) is never charged; the prepaid credit debit only settles after the upstream read returns a 2xx, and x402 v2 settlement happens only on the same condition.
+All routes are anonymous public GETs. They do not request credentials, payment proofs, wallets, cookies, or sessions, and this package has no write capability.
 
 ## Hermes function declarations
 
@@ -121,44 +121,18 @@ A failed request (any non-2xx except 402) is never charged; the prepaid credit d
 }
 ```
 
-## curl examples (Bearer workspace key)
+## curl examples (anonymous public GET)
 
 ```sh
-curl -sS https://api.replynodes.com/v1/hackernews/stories_top \
-  -H "Authorization: Bearer ***"
+curl -sS https://api.replynodes.com/v1/hackernews/stories_top
+curl -sS "https://api.replynodes.com/v1/hackernews/item/1?depth=3"
+curl -sS "https://api.replynodes.com/v1/hackernews/user/pg"
+curl -sS "https://api.replynodes.com/v1/hackernews/search?q=agi&tags=story,show_hn&limit=20"
 ```
-
-```sh
-curl -sS "https://api.replynodes.com/v1/hackernews/item/1?depth=3" \
-  -H "Authorization: Bearer ***"
-```
-
-```sh
-curl -sS "https://api.replynodes.com/v1/hackernews/user/pg" \
-  -H "Authorization: Bearer ***"
-```
-
-```sh
-curl -sS "https://api.replynodes.com/v1/hackernews/search?q=agi&tags=story,show_hn&limit=20" \
-  -H "Authorization: Bearer ***"
-```
-
-## curl example (x402 v2 accountless)
-
-```sh
-# 1. Probe without auth to get 402 + payment-required header
-curl -sSi https://api.replynodes.com/v1/hackernews/stories_top
-
-# 2. Re-issue same call with X-PAYMENT carrying a signed x402 v2 payload
-curl -sS https://api.replynodes.com/v1/hackernews/stories_top \
-  -H "X-PAYMENT: <base64 x402 payload>"
-```
-
-The 402 body is the requirements advertisement, not settlement or successful paid access. Settlement happens only when the upstream read returns 2xx.
 
 ## What this catalog does not claim
 
-- No claim that a 402 response is payment settlement or successful paid access.
+- No credential, payment, wallet, or write flow is supported or required.
 - No claim of registry publication status; see `PUBLICATION.md` for that.
 - No claim of upstream availability, uptime, latency, or success rate.
 - No claim that any illustrative example reflects a captured live response.

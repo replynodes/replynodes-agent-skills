@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 root="$(CDPATH= cd -- "$(dirname -- "$0")/../skills/hackernews-api" && pwd)"
-for f in SKILL.md INSTALL.md PUBLICATION.md LICENSE llms.txt manifest.json CHECKSUMS.txt skill-card.md PROVENANCE.md evidence/publication-evidence.json references/hackernews-mcp.schema.json references/hackernews-public-v1.openapi.json references/endpoints.md; do
+for f in SKILL.md INSTALL.md PUBLICATION.md LICENSE llms.txt manifest.json CHECKSUMS.txt PROVENANCE.md evidence/publication-evidence.json references/hackernews-mcp.schema.json references/hackernews-public-v1.openapi.json references/endpoints.md; do
   [[ -f "$root/$f" ]] || { echo "missing $f" >&2; exit 1; }
 done
 python3 - "$root" <<'PY'
@@ -10,7 +10,7 @@ root = pathlib.Path(sys.argv[1])
 for rel in ['manifest.json','evidence/publication-evidence.json','references/hackernews-mcp.schema.json','references/hackernews-public-v1.openapi.json']:
     json.loads((root / rel).read_text())
 m = json.loads((root / 'manifest.json').read_text())
-assert m['version'] == '1.0.0'
+assert m['version'] == '1.1.7'
 expected = {
     '/v1/hackernews/stories_top',
     '/v1/hackernews/stories_new',
@@ -29,8 +29,10 @@ assert m['source_of_truth']['repository'] == 'replynodes/replynodes-agent-skills
 assert m['source_of_truth']['path'] == 'skills/hackernews-api'
 assert m['mode'] == 'readonly'
 assert m['platform'] == 'hackernews'
-# Sanity: every auth-required capability entry is explicitly false (HN is public).
-assert all(c['auth_required'] is False for c in m['capabilities']), 'all capabilities must be unauthenticated (x402/bearer are gateway-level)'
+# Anonymous public GETs are the only documented access mode.
+assert m['auth']['mode'] == 'anonymous'
+assert m['auth']['credential_required'] is False
+assert m['auth']['payment_required'] is False
 # Sanity: prohibited_claims present.
 assert 'prohibited_claims' in m and len(m['prohibited_claims']) >= 5
 PY
@@ -50,12 +52,11 @@ for path in stories_top stories_new stories_best stories_ask stories_show storie
     echo "documented route $needle missing from SKILL.md" >&2; exit 1
   fi
 done
-# Truthful access documentation must mention both auth modes.
-if ! rg -qi 'x402 v2' "$root/SKILL.md" || ! rg -qi 'Bearer workspace' "$root/SKILL.md"; then
-  echo 'truthful access documentation missing' >&2; exit 1
+if ! rg -qi 'anonymous' "$root/SKILL.md" || rg -qi 'x402|Bearer workspace|Authorization: Bearer' "$root/INSTALL.md" "$root/llms.txt"; then
+  echo 'credential/payment guidance found in anonymous package' >&2; exit 1
 fi
 # No write-capability claims allowed.
 if rg -qi '(submit|vote|favorite)[[:space:]]+(post|stories|comments)' "$root/SKILL.md"; then
   echo 'write-capability claim found' >&2; exit 1
 fi
-echo 'public Hacker News package validation passed (v1.0.0)'
+echo 'public Hacker News package validation passed (v1.1.7)'

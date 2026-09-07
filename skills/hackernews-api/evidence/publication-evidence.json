@@ -2,39 +2,116 @@
   "schema": "replynodes/social-data-skills/publication-evidence/v1",
   "package": "@replynodes-ai/hackernews-api",
   "package_slug": "hackernews-api",
-  "version": "1.0.0",
+  "version": "1.1.7",
   "license": "Apache-2.0",
   "mode": "readonly",
   "generated_at": "2026-09-04",
   "platform": "hackernews",
   "supported_auth_modes": [
-    "bearer_workspace_key",
-    "x402_v2_negotiation"
+    "anonymous_public_get"
   ],
   "files": [
-    {"path": "SKILL.md", "role": "entrypoint"},
-    {"path": "INSTALL.md", "role": "install_guide"},
-    {"path": "LICENSE", "role": "license"},
-    {"path": "PROVENANCE.md", "role": "provenance"},
-    {"path": "PUBLICATION.md", "role": "publication_status"},
-    {"path": "skill-card.md", "role": "skill_card"},
-    {"path": "manifest.json", "role": "capability_manifest"},
-    {"path": "llms.txt", "role": "agent_indexable_summary"},
-    {"path": "references/endpoints.md", "role": "endpoints_catalog"},
-    {"path": "references/hackernews-public-v1.openapi.json", "role": "openapi_spec"},
-    {"path": "references/hackernews-mcp.schema.json", "role": "mcp_schema"},
-    {"path": "evidence/publication-evidence.json", "role": "publication_evidence"}
+    {
+      "path": "INSTALL.md",
+      "bytes": 2275,
+      "sha256": "b6b50863ba51c68a419e85347ce472e6a8382388776c4bacc2f6ef2e30089ac4"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "PROVENANCE.md",
+      "bytes": 1277,
+      "sha256": "0a5aa3f590c4d59005f35bcb623f77a9098a7d3ae334a426faf88e0134bd650e"
+    },
+    {
+      "path": "PUBLICATION.md",
+      "bytes": 1493,
+      "sha256": "aac7a5434004398fedf03755d339a873b7629bb13904849dbd42b61d0ab24907"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 7590,
+      "sha256": "8cca67a7beaac17f38837a055404631b88a54f55a5e6f2783bb7dee6758cb40b"
+    },
+    {
+      "path": "llms.txt",
+      "bytes": 2697,
+      "sha256": "0b4f88955961d239601222b5456f585f76b17085a5cddd4c5161b64e4d4125b5"
+    },
+    {
+      "path": "references/endpoints.md",
+      "bytes": 4833,
+      "sha256": "795bbfe1d16aed2564a141abe47b37a69b88db089139a7cb27cd734c0ced5f72"
+    },
+    {
+      "path": "references/hackernews-mcp.schema.json",
+      "bytes": 6261,
+      "sha256": "92654a4c0da3f75c21ce07e833acca7ddef33aef3a18010d50c96a86abb5d827"
+    },
+    {
+      "path": "references/hackernews-public-v1.openapi.json",
+      "bytes": 14489,
+      "sha256": "d47f99ec075b77891152e9308d09b8b47b4cb482f048ec3e3fcecab5502935e6"
+    }
   ],
   "capabilities": [
-    {"name": "get_stories_top", "operation": "stories_top", "method": "GET", "path": "/v1/hackernews/stories_top"},
-    {"name": "get_stories_new", "operation": "stories_new", "method": "GET", "path": "/v1/hackernews/stories_new"},
-    {"name": "get_stories_best", "operation": "stories_best", "method": "GET", "path": "/v1/hackernews/stories_best"},
-    {"name": "get_stories_ask", "operation": "stories_ask", "method": "GET", "path": "/v1/hackernews/stories_ask"},
-    {"name": "get_stories_show", "operation": "stories_show", "method": "GET", "path": "/v1/hackernews/stories_show"},
-    {"name": "get_stories_job", "operation": "stories_job", "method": "GET", "path": "/v1/hackernews/stories_job"},
-    {"name": "get_item", "operation": "item", "method": "GET", "path": "/v1/hackernews/item/{id}"},
-    {"name": "get_user", "operation": "user", "method": "GET", "path": "/v1/hackernews/user/{handle}"},
-    {"name": "search", "operation": "search", "method": "GET", "path": "/v1/hackernews/search"}
+    {
+      "name": "get_stories_top",
+      "operation": "stories_top",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_top"
+    },
+    {
+      "name": "get_stories_new",
+      "operation": "stories_new",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_new"
+    },
+    {
+      "name": "get_stories_best",
+      "operation": "stories_best",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_best"
+    },
+    {
+      "name": "get_stories_ask",
+      "operation": "stories_ask",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_ask"
+    },
+    {
+      "name": "get_stories_show",
+      "operation": "stories_show",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_show"
+    },
+    {
+      "name": "get_stories_job",
+      "operation": "stories_job",
+      "method": "GET",
+      "path": "/v1/hackernews/stories_job"
+    },
+    {
+      "name": "get_item",
+      "operation": "item",
+      "method": "GET",
+      "path": "/v1/hackernews/item/{id}"
+    },
+    {
+      "name": "get_user",
+      "operation": "user",
+      "method": "GET",
+      "path": "/v1/hackernews/user/{handle}"
+    },
+    {
+      "name": "search",
+      "operation": "search",
+      "method": "GET",
+      "path": "/v1/hackernews/search"
+    }
   ],
   "prohibited_claims": [
     "no registry or marketplace listing metrics",
@@ -54,8 +131,6 @@
     "note": "Registry publication status is recorded only after independent inspect and moderation checks."
   },
   "verification": {
-    "validation_script": "scripts/validate-hackernews-api.sh",
-    "test_script": "tests/test-hackernews-api.sh",
     "checksums_file": "CHECKSUMS.txt",
     "manifest_file": "manifest.json"
   },

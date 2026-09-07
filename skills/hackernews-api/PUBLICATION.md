@@ -1,9 +1,9 @@
 # Publication status & evidence - `hackernews-data-api` package
 
 Status: **PREPARED** for ClawHub as `@replynodes-ai/hackernews-api`.
-Version `1.0.0`. Moderation status: **PENDING**.
+Version `1.1.7`. Moderation status: **PENDING**.
 
-Prepared for ClawHub publication as @replynodes-ai/hackernews-api; registry evidence is recorded only after independent inspect and moderation checks.
+This package is a self-contained, anonymous, read-only Hacker News gateway skill. Registry evidence is recorded only after independent inspect and moderation checks.
 
 ## Evidence bundle
 
@@ -13,26 +13,15 @@ Prepared for ClawHub publication as @replynodes-ai/hackernews-api; registry evid
 | `sha256sum`-style checksums | `CHECKSUMS.txt` |
 | Machine-readable facts and prohibited-claims policy | `evidence/publication-evidence.json` |
 
-Digests are deterministic SHA-256 values over the committed bytes; regenerating twice produces byte-identical trees (enforced by this repository's public validation script).
+Digests are generated from exactly the files shipped in the clean archive. The extracted package can verify itself with `sha256sum -c CHECKSUMS.txt`.
 
-## Local verification (must pass before any distribution decision)
+## Verification boundary
 
-```sh
-bash scripts/validate-hackernews-api.sh
-bash tests/test-hackernews-api.sh
-```
+Repository-level validators and tests are source-repository tooling, not package contents. The distributed artifact is independently verifiable with its checksum inventory; it contains no executable install hooks, daemons, credential handlers, wallet code, or background activity.
 
 ## What this package does not claim
 
-- No registry or marketplace listing, download statistics, ratings, or community metrics exist for it.
-- No live availability, latency, uptime, or success-rate figures are asserted anywhere; example payloads are illustrative fixtures, not captured responses.
-- No official platform partnership, endorsement, license grant, or data-sharing arrangement is claimed.
-- No submit, vote, comment, favorite, login, account, or other write/authenticated capability exists or is advertised; the surface is GET-only public reads.
-- Route paths in this package are stable capability identifiers; public gateway exposure for this platform is issued to your workspace at onboarding.
-
-## Publication boundaries
-
-- The package is read-only and all documented routes are HTTP GET.
-- The gateway supports a Bearer workspace-key path and x402 v2 negotiation.
-- A 402 payment requirement is not evidence of settlement or successful paid access.
-- No credentials, payer secrets, or fallback claims are included in this package.
+- No registry metrics, live availability, latency, uptime, or success-rate figures.
+- No official Hacker News partnership, endorsement, or data-sharing arrangement.
+- No submit, vote, comment, favorite, login, account, credential, payment, or other write capability; the surface is anonymous GET-only public reads.
+- No payment settlement or wallet signing behavior.
