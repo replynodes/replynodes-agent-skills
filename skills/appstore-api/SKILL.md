@@ -2,7 +2,7 @@
 name: appstore-data-api
 title: App Store Public Reads
 description: Read-only, normalized public-data reads of App Store applications through the ReplyNodes App Store public-read service: app lookup by track id or bundle id, bounded term search, and related-app listings. Bearer workspace-key authentication or x402 v2 payment negotiation at the gateway, transparent bounded pages, normalized errors, and an explicit unsupported-capability matrix. Public reads only: no purchase, review, account, or other mutation exists, and no platform login material is involved.
-version: 1.1.13
+version: 1.1.14
 contract_version: v1
 mode: readonly
 auth: Bearer workspace key or x402 v2 negotiation at the gateway; the read layer itself carries no credential material
@@ -42,7 +42,6 @@ The supported public gateway base URL is https://api.replynodes.com. Use this de
 | `references/appstore-mcp.schema.json` | Read-only MCP-style tool manifest (byte-copy). |
 | `references/endpoints.md` | Worked HTTP examples and per-agent integration snippets (byte-copy). |
 | `evidence/publication-evidence.json` | Machine-readable local verification facts and prohibited-claims policy. |
-| `skill-card.md` | ClawHub verification card metadata. |
 
 ## Read-only guarantees
 
