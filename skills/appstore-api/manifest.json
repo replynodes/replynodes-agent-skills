@@ -4,7 +4,7 @@
   "name": "appstore-data-api",
   "title": "App Store Public Reads",
   "description": "Read-only access to public App Store application data: application lookup by track ID or bundle ID, bounded term search, and related-app listings. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No purchase, review, account, login, or other mutation is supported.",
-  "version": "1.0.13",
+  "version": "1.1.13",
   "contract_version": "v1",
   "platform": "ios",
   "mode": "readonly",
@@ -43,7 +43,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/appstore-api",
-    "version": "1.0.13",
+    "version": "1.1.13",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -134,12 +134,12 @@
     {
       "path": "PUBLICATION.md",
       "bytes": 2263,
-      "sha256": "876ac986e91edc95e2f3d0ad401d78c144b0a46b9c1fb96ed5d3f75076eda5a1"
+      "sha256": "4a6c70b3c9af92b4036756e6ca9c5329cf94bb85b8eeb137230b1f691eeef826"
     },
     {
       "path": "SKILL.md",
       "bytes": 10044,
-      "sha256": "9fb66cfd0c6e2d3970859cd5189f0f87f0ce69d33b99431c9f05122e99994dbf"
+      "sha256": "69541b578320e4e3ded98576727c090974fa761bf32b46b2ee20e53bdc33afe3"
     },
     {
       "path": "llms.txt",

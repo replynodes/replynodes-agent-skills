@@ -10,8 +10,8 @@ root=pathlib.Path(sys.argv[1])
 for rel in ['manifest.json','evidence/publication-evidence.json','references/appstore-mcp.schema.json','references/appstore-public-v1.openapi.json']:
     json.loads((root/rel).read_text())
 m=json.loads((root/'manifest.json').read_text())
-assert m['version'] == '1.0.13'
-assert m['distribution']['version'] == '1.0.13'
+assert m['version'] == '1.1.13'
+assert m['distribution']['version'] == '1.1.13'
 assert all(item['path'] != 'skill-card.md' for item in m['files'])
 for item in m['files']:
     p = root / item['path']
@@ -39,4 +39,4 @@ fi
 if ! rg -qi 'x402 v2' "$root/SKILL.md" || ! rg -qi 'Bearer workspace' "$root/SKILL.md"; then
   echo 'truthful access documentation missing' >&2; exit 1
 fi
-echo 'public App Store package validation passed (v1.0.13)'
+echo 'public App Store package validation passed (v1.1.13)'
