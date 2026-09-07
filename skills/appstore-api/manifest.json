@@ -4,7 +4,7 @@
   "name": "appstore-data-api",
   "title": "App Store Public Reads",
   "description": "Read-only access to public App Store application data: application lookup by track ID or bundle ID, bounded term search, and related-app listings. Requests use Bearer workspace-key authentication or truthful x402 v2 payment negotiation when the service returns HTTP 402. No purchase, review, account, login, or other mutation is supported.",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "contract_version": "v1",
   "platform": "ios",
   "mode": "readonly",
@@ -43,7 +43,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/appstore-api",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -118,8 +118,8 @@
   "files": [
     {
       "path": "INSTALL.md",
-      "bytes": 3319,
-      "sha256": "c96c9995ef69422f0a26004a9065a75bc036f6234de11be8ebc753552793bd9b"
+      "bytes": 3499,
+      "sha256": "d4d681b39f83ed81348feacdf1ebe9b90ff95b28cf0ebdd9e223d8b61bfdee11"
     },
     {
       "path": "LICENSE",
@@ -133,18 +133,13 @@
     },
     {
       "path": "PUBLICATION.md",
-      "bytes": 1977,
-      "sha256": "41b291379e5f52b451786cd9934316744c873ef75d6f3fdad336bf84dfcb7569"
+      "bytes": 2263,
+      "sha256": "b2f4b4362aa78a6d12c83435651f4e7ee8bd7b79d4a38e0e812a840fa08e9f23"
     },
     {
       "path": "SKILL.md",
       "bytes": 10044,
-      "sha256": "c5678e05d8d280e9ee2b0e762c7d5794ae37e1e3aed69a6fd4e229f1696946da"
-    },
-    {
-      "path": "evidence/publication-evidence.json",
-      "bytes": 985,
-      "sha256": "5f0c04def41240926844a907f9cc0af523b911f74e2437845d77503f7f54bb0a"
+      "sha256": "e0d664ba660e034eced02d51e780f9e1f24fb0d9e624a75558e350445743f8d9"
     },
     {
       "path": "llms.txt",
@@ -165,11 +160,6 @@
       "path": "references/endpoints.md",
       "bytes": 10778,
       "sha256": "f538f0bb1a244f61b8a10896f8939057410220d27946b210e268fb8c2ca570bb"
-    },
-    {
-      "path": "skill-card.md",
-      "bytes": 846,
-      "sha256": "ffab2090d5c418886387dcfaa88575361164370218165638629e3896540284e2"
     }
   ]
 }

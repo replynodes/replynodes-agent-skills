@@ -6,11 +6,13 @@ Prerequisites:
 2. Use `https://api.replynodes.com` by default, unless your workspace is explicitly issued another HTTPS gateway URL; never use localhost:18789.
 3. Keep the key in an environment variable or secret store; do not commit or embed it anywhere.
 
-Before distributing this package, verify it:
+For source maintainers, run the repository-level validation before distributing this package. For an extracted package, verify the immutable file inventory directly:
 
 ```sh
-bash scripts/validate-appstore-api.sh   # from this public repository; must exit 0
+sha256sum -c CHECKSUMS.txt
 ```
+
+Do not bypass marketplace trust warnings or use `--force`; inspect the exact archive and publisher/version first.
 
 ## OpenClaw
 

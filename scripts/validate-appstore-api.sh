@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 root="$(CDPATH= cd -- "$(dirname -- "$0")/../skills/appstore-api" && pwd)"
-for f in SKILL.md INSTALL.md PUBLICATION.md LICENSE llms.txt manifest.json CHECKSUMS.txt skill-card.md PROVENANCE.md evidence/publication-evidence.json references/appstore-mcp.schema.json references/appstore-public-v1.openapi.json references/endpoints.md; do
+for f in SKILL.md INSTALL.md PUBLICATION.md LICENSE llms.txt manifest.json CHECKSUMS.txt PROVENANCE.md evidence/publication-evidence.json references/appstore-mcp.schema.json references/appstore-public-v1.openapi.json references/endpoints.md; do
   [[ -f "$root/$f" ]] || { echo "missing $f" >&2; exit 1; }
 done
 python3 - "$root" <<'PY'
@@ -10,7 +10,15 @@ root=pathlib.Path(sys.argv[1])
 for rel in ['manifest.json','evidence/publication-evidence.json','references/appstore-mcp.schema.json','references/appstore-public-v1.openapi.json']:
     json.loads((root/rel).read_text())
 m=json.loads((root/'manifest.json').read_text())
-assert m['version'] == '1.0.10'
+assert m['version'] == '1.0.11'
+assert m['distribution']['version'] == '1.0.11'
+assert all(item['path'] != 'skill-card.md' for item in m['files'])
+for item in m['files']:
+    p = root / item['path']
+    assert p.is_file(), item['path']
+    assert item['bytes'] == p.stat().st_size, item['path']
+    import hashlib
+    assert item['sha256'] == hashlib.sha256(p.read_bytes()).hexdigest(), item['path']
 routes={c['path'] for c in m['capabilities']}
 assert routes == {'/v1/appstore/app','/v1/appstore/search','/v1/appstore/similar'}
 assert all(c['method'] == 'GET' for c in m['capabilities'])
@@ -31,4 +39,4 @@ fi
 if ! rg -qi 'x402 v2' "$root/SKILL.md" || ! rg -qi 'Bearer workspace' "$root/SKILL.md"; then
   echo 'truthful access documentation missing' >&2; exit 1
 fi
-echo 'public App Store package validation passed (v1.0.10)'
+echo 'public App Store package validation passed (v1.0.11)'

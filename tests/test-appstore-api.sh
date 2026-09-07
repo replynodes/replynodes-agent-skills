@@ -13,7 +13,7 @@ assert {c['path'] for c in m['capabilities']} == {'/v1/appstore/app','/v1/appsto
 PY
 )
 # Ensure no unexpected artifacts would be included in the published package.
-expected='CHECKSUMS.txt INSTALL.md LICENSE PROVENANCE.md PUBLICATION.md SKILL.md evidence/publication-evidence.json llms.txt manifest.json references/appstore-mcp.schema.json references/appstore-public-v1.openapi.json references/endpoints.md skill-card.md'
+expected='CHECKSUMS.txt INSTALL.md LICENSE PROVENANCE.md PUBLICATION.md SKILL.md evidence/publication-evidence.json llms.txt manifest.json references/appstore-mcp.schema.json references/appstore-public-v1.openapi.json references/endpoints.md'
 actual="$(cd "$tmp/skills/appstore-api" && find . -type f -printf '%P\n' | sort | tr '\n' ' ' | sed 's/ $//')"
 [[ "$actual" == "$expected" ]] || { echo "unexpected archive layout: $actual" >&2; exit 1; }
 echo 'clean public archive and App Store package tests passed'

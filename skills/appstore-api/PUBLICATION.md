@@ -1,7 +1,7 @@
 # Publication status & evidence - `appstore-data-api` package
 
 Status: **PREPARED** for ClawHub as `@replynodes-ai/appstore-api`.
-Version `1.0.10`. Moderation status: **PENDING**.
+Version `1.0.11`. Moderation status: **PENDING**.
 
 Prepared for ClawHub publication as @replynodes-ai/appstore-api; registry evidence is recorded only after independent inspect and moderation checks.
 
@@ -16,12 +16,15 @@ Prepared for ClawHub publication as @replynodes-ai/appstore-api; registry eviden
 Digests are deterministic SHA-256 values over the committed bytes; regenerating
 twice produces byte-identical trees (enforced by this repository’s public validation script).
 
-## Local verification (must pass before any distribution decision)
+## Verification boundary
+
+The repository-level validator and tests run from the public source repository, not from an extracted registry package. An extracted package is self-verifiable with the included immutable checksum inventory:
 
 ```sh
-bash scripts/validate-appstore-api.sh
-bash tests/test-appstore-api.sh
+sha256sum -c CHECKSUMS.txt
 ```
+
+The release process also performs a clean-archive smoke test before upload; registry verification is performed against the exact published version after upload.
 
 ## What this package does not claim
 
