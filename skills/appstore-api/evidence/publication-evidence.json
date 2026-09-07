@@ -2,7 +2,7 @@
   "evidence_kind": "replynodes/appstore-api/public-provenance-evidence",
   "evidence_version": 1,
   "package_name": "appstore-data-api",
-  "package_version": "1.0.12",
+  "package_version": "1.0.13",
   "contract_version": "v1",
   "readonly_only": true,
   "public_provenance": {
@@ -46,12 +46,12 @@
     {
       "path": "PUBLICATION.md",
       "bytes": 2263,
-      "sha256": "cbc5deb88a58ad32f0562b9da871820cc8e955ee18b9bff555f7dd335597203f"
+      "sha256": "876ac986e91edc95e2f3d0ad401d78c144b0a46b9c1fb96ed5d3f75076eda5a1"
     },
     {
       "path": "SKILL.md",
       "bytes": 10044,
-      "sha256": "9cd6dbd11224fcc1a8c0cabd87a716e687ba9a9ad50abd045d96da499cb05cc1"
+      "sha256": "9fb66cfd0c6e2d3970859cd5189f0f87f0ce69d33b99431c9f05122e99994dbf"
     },
     {
       "path": "llms.txt",
