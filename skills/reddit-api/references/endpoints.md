@@ -21,14 +21,15 @@ Returns the provider status and the live route/price catalog:
     "provider": { "name": "reddit", "status": "available" },
     "routes": [
       "GET /v1/reddit/capabilities (free)",
-      "GET /v1/reddit/subreddit_posts/{subreddit} price_micros=1000",
-      "GET /v1/reddit/post_by_id/{id} price_micros=1000",
-      "GET /v1/reddit/post_by_permalink price_micros=1000",
-      "GET /v1/reddit/search_posts price_micros=1000",
-      "GET /v1/reddit/user_posts/{username} price_micros=1000",
-      "GET /v1/reddit/user_activity/{username} price_micros=1000"
+      "GET /v1/reddit/subreddit_posts/{subreddit} price_credits=2",
+      "GET /v1/reddit/post_by_id/{id} price_credits=2",
+      "GET /v1/reddit/post_by_permalink price_credits=2",
+      "GET /v1/reddit/search_posts price_credits=2",
+      "GET /v1/reddit/user_posts/{username} price_credits=2",
+      "GET /v1/reddit/user_activity/{username} price_credits=2"
     ],
-    "service": "replynodes-fetcher",
+    "payment_modes": ["prepaid_credit"],
+    "service": "reddit-public-read",
     "version": "dev"
   },
   "meta": { "request_id": "<opaque id>" }
@@ -40,7 +41,7 @@ changed, at no cost.
 
 ## `GET /v1/reddit/subreddit_posts/{subreddit}`
 
-$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
+2 prepaid credits per request. Requires `Authorization: Bearer <fetcher API key>`; failed or provider-error requests cost zero credits.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
@@ -49,7 +50,7 @@ $0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402
 | `limit` | query | no | Positive integer page size; no published maximum — request conservative sizes |
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   "https://api.replynodes.com/v1/reddit/subreddit_posts/programming?sort=new&limit=10"
 ```
 
@@ -57,14 +58,14 @@ Returns `data` as an array of post objects (`id`, `title`, `permalink`, `url`, `
 
 ## `GET /v1/reddit/post_by_id/{id}`
 
-$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
+2 prepaid credits per request. Requires `Authorization: Bearer <fetcher API key>`; failed or provider-error requests cost zero credits.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
 | `id` | path | yes | Reddit's base-36 post id, e.g. the `1w65ged` in `/r/x/comments/1w65ged/...` |
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   "https://api.replynodes.com/v1/reddit/post_by_id/EXAMPLE_POST_ID"
 ```
 
@@ -72,14 +73,14 @@ Returns `data` as a single post object (same fields as the list route above).
 
 ## `GET /v1/reddit/post_by_permalink`
 
-$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
+2 prepaid credits per request. Requires `Authorization: Bearer <fetcher API key>`; failed or provider-error requests cost zero credits.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
 | `url` | query | yes | Full Reddit post URL |
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   -G --data-urlencode "url=https://www.reddit.com/r/programming/comments/EXAMPLE_POST_ID/example_post_title/" \
   "https://api.replynodes.com/v1/reddit/post_by_permalink"
 ```
@@ -88,7 +89,7 @@ Returns `data` as a single post object (same fields as the list route above).
 
 ## `GET /v1/reddit/search_posts`
 
-$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
+2 prepaid credits per request. Requires `Authorization: Bearer <fetcher API key>`; failed or provider-error requests cost zero credits.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
@@ -97,7 +98,7 @@ $0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402
 | `limit` | query | no | Positive integer page size; no published maximum |
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   --data-urlencode "q=rust async" -G \
   --data-urlencode "subreddit=programming" \
   --data-urlencode "limit=10" \
@@ -108,7 +109,7 @@ Returns `data` as an array of post objects (same fields as the list route).
 
 ## `GET /v1/reddit/user_posts/{username}`
 
-$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
+2 prepaid credits per request. Requires `Authorization: Bearer <fetcher API key>`; failed or provider-error requests cost zero credits.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
@@ -117,7 +118,7 @@ $0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402
 | `limit` | query | no | Positive integer page size; no published maximum — request conservative sizes |
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   "https://api.replynodes.com/v1/reddit/user_posts/example_user?sort=new&limit=10"
 ```
 
@@ -125,7 +126,7 @@ Returns `data` as an array of post objects (same fields as the list route).
 
 ## `GET /v1/reddit/user_activity/{username}`
 
-$0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402 v2 payment.
+2 prepaid credits per request. Requires `Authorization: Bearer <fetcher API key>`; failed or provider-error requests cost zero credits.
 
 | Parameter | Location | Required | Notes |
 | --- | --- | --- | --- |
@@ -133,7 +134,7 @@ $0.001 (1000 USDC micros). Requires `Authorization: Bearer *** API key>` or x402
 | `limit` | query | no | Positive integer page size; no published maximum — request conservative sizes |
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   "https://api.replynodes.com/v1/reddit/user_activity/example_user?limit=10"
 ```
 

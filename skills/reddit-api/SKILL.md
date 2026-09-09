@@ -1,14 +1,14 @@
 ---
 name: reddit-api
 title: Reddit Public Data API
-description: Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported — a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
-version: 1.0.9
+description: Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup, user activity, and keyword search via one HTTPS gateway. Authentication is a single Bearer ReplyNodes fetcher API key drawing down prepaid credit; there is no anonymous, wallet, or pay-per-call path. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
+version: 1.1.0
 mode: readonly
-auth: Bearer workspace key OR x402 v2 pay-per-call in USDC on Base at the gateway; the read layer itself carries no credential material
+auth: Bearer ReplyNodes fetcher API key (prepaid credit) at the gateway; no anonymous or pay-per-call path, and the read layer itself carries no credential material
 license: MIT
 homepage: https://api.replynodes.com/v1/reddit
-keywords: [reddit, reddit-api, reddit public data, subreddit posts, post comments, keyword search, public data, read-only, agent api, social data, x402, pay-per-call, usdc, base, wallet]
-search_terms: [reddit, subreddit, r/programming, r/python, post, comment, search, public data, read-only, bearer, x-read, agent, fetcher, normalized, no oauth, no credentials, x402, pay-per-call, usdc, base, wallet]
+keywords: [reddit, reddit-api, reddit public data, subreddit posts, post comments, keyword search, public data, read-only, agent api, social data, prepaid credit, fetcher key]
+search_terms: [reddit, subreddit, r/programming, r/python, post, comment, search, public data, read-only, bearer, x-read, agent, fetcher, normalized, no oauth, no credentials, prepaid credit, fetcher key, replynodes_api_key, setup, signup]
 entrypoint: SKILL.md
 install_guide: INSTALL.md
 source: published from the public sanitized provenance repository; review changes in git
@@ -28,13 +28,23 @@ This is a **read-only** surface. There is no posting, commenting, voting,
 messaging, editing, or deleting anywhere in this package — those capabilities
 do not exist on this gateway, not just in this skill's documentation of it.
 
+## Setup
+
+1. Create a free ReplyNodes account at [https://app.replynodes.com/auth](https://app.replynodes.com/auth).
+2. The free plan includes 500 one-time credits — no payment setup is required.
+3. Open [https://app.replynodes.com/developers](https://app.replynodes.com/developers) and create the single long-lived ReplyNodes fetcher API key.
+4. Store it as `REPLYNODES_API_KEY` in your agent's secret store; never paste it into chat, commit it, or put it in a URL.
+5. Send it as `Authorization: Bearer YOUR_FETCHER_KEY` on every request.
+
+Gateway: `https://api.replynodes.com`
+
 ## Quick reference
 
 | | |
 | --- | --- |
 | Base URL | `https://api.replynodes.com/v1/reddit` |
-| Auth | `Authorization: Bearer <workspace API key>` OR x402 v2 pay-per-call in USDC on Base |
-| Price | `/capabilities` is free; every other route is `price_micros=1000` ($0.001 / 1000 USDC micros) |
+| Auth | `Authorization: Bearer <ReplyNodes fetcher API key>` (prepaid credit) |
+| Price | `/capabilities` is free; every other route costs 2 prepaid credits per request; failed or provider-error requests cost zero |
 | Endpoints | 7, all `GET` (1 free + 6 priced) |
 | Read-only | Yes — no OAuth, no Reddit credentials, no writes |
 
@@ -54,74 +64,49 @@ Full param details for every row: [`references/endpoints.md`](references/endpoin
 
 ## Authentication
 
-Two payment paths hit the same routes; the gateway picks the right one
-from the headers you send. Neither path requires Reddit credentials.
-
-**(a) Bearer workspace-key** — for prepaid/team usage where a workspace
-already holds credits. Mint a key from the [ReplyNodes
-console](https://app.replynodes.com/auth).
+Every priced request needs the Bearer fetcher API key created in
+[Setup](#setup) above — there is no anonymous or pay-per-call path.
 
 ```bash
-export REDDIT_API_KEY="<your workspace API key>"
-curl -H "Authorization: Bearer ***" \
+export REPLYNODES_API_KEY="<your fetcher API key>"
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   "https://api.replynodes.com/v1/reddit/subreddit_posts/programming"
-```
-
-**(b) x402 v2 pay-per-call** — for anonymous single-call usage. The
-gateway answers a priced request with HTTP `402` plus an x402 v2
-challenge body (asset `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` USDC
-on Base, network `eip155:8453`, amount `1000` base units = `$0.001` per
-call). A wallet signs the challenge and retries with an `X-PAYMENT`
-header; on settlement the gateway releases the same response a Bearer
-caller would receive. To fund a wallet first, see the [ReplyNodes top-up
-page](https://replynodes.com/topup?skill=reddit-api).
-
-```bash
-# 1. anonymous probe — gateway returns 402 + payment-required header
-curl -i 'https://api.replynodes.com/v1/reddit/subreddit_posts/programming'
-# HTTP/2 402
-# payment-required: <base64 challenge>
-# {"x402Version":2,"accepts":[{"scheme":"exact","network":"eip155:8453",...}],"extensions":{"topup":{"topup_url":"/v1/billing/topup/intents"}}}
-
-# 2. sign challenge with a Base USDC wallet and retry
-curl -i \
-  -H "X-PAYMENT: <base64 payment proof>" \
-  'https://api.replynodes.com/v1/reddit/subreddit_posts/programming'
-# HTTP/2 200 + sanitized Reddit response (same body a Bearer caller sees)
 ```
 
 `GET /capabilities` needs no header and costs nothing — use it to confirm
 the gateway is up and to see the live route/price/payment-modes catalog
-before spending on data calls.
+(`payment_modes: ["prepaid_credit"]`) before spending credits on data
+calls.
 
-An unauthenticated request to any priced route returns HTTP `402` with
-the x402 challenge above (it does **not** return `401`). A Bearer key
-that is missing, malformed, expired, or revoked returns HTTP `401` with
-`code: invalid_or_expired_token`; the gateway does **not** fall back
-to x402 for that request — auth errors fail closed, exactly as
+Every other route costs 2 prepaid credits per request, debited
+synchronously before the upstream read runs; a request that fails or
+that the upstream provider errors on is never charged — failed and
+provider-error requests cost zero credits.
+
+A fetcher key that is missing, malformed, expired, or revoked returns
+HTTP `401` with `code: invalid_or_expired_token`; the gateway fails
+closed and does not fall back to any other access path, exactly as
 documented in [Errors](#errors).
 
-If your integration already speaks x402 for other ReplyNodes gateways
-(Hacker News, App Store, FOMO data API), the same v2 challenge shape
-applies here: asset `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`,
-network `eip155:8453`, amount in micros.
-
 Every response — success or error — carries an opaque `request_id` in
-`meta` (or in `error`) for support correlation. Never print, log, or
-ask a user to paste an API key into chat, and never log a signed
-`X-PAYMENT` proof — it is single-use bearer material.
+`meta` (or in `error`) for support correlation. Never print, log, or ask
+a user to paste `REPLYNODES_API_KEY` into chat, commit it, or put it in
+a URL.
 
-## Endpoints (7 — 1 free, 6 at $0.001/call)
+## Endpoints (7 — 1 free, 6 at 2 prepaid credits/request)
 
 | Endpoint | Price | What it returns |
 | --- | --- | --- |
 | `GET /capabilities` | free | Provider status, payment modes, and the live route/price catalog |
-| `GET /v1/reddit/subreddit_posts/{subreddit}` | $0.001 | Recent posts from one subreddit |
-| `GET /v1/reddit/post_by_id/{id}` | $0.001 | A single post by its Reddit post ID |
-| `GET /v1/reddit/post_by_permalink` | $0.001 | A single post by permalink (full URL in `url` query param) |
-| `GET /v1/reddit/search_posts?q={query}` | $0.001 | Posts matching a keyword query |
-| `GET /v1/reddit/user_posts/{username}` | $0.001 | Posts submitted by one user |
-| `GET /v1/reddit/user_activity/{username}` | $0.001 | Comment + submission activity by one user |
+| `GET /v1/reddit/subreddit_posts/{subreddit}` | 2 credits | Recent posts from one subreddit |
+| `GET /v1/reddit/post_by_id/{id}` | 2 credits | A single post by its Reddit post ID |
+| `GET /v1/reddit/post_by_permalink` | 2 credits | A single post by permalink (full URL in `url` query param) |
+| `GET /v1/reddit/search_posts?q={query}` | 2 credits | Posts matching a keyword query |
+| `GET /v1/reddit/user_posts/{username}` | 2 credits | Posts submitted by one user |
+| `GET /v1/reddit/user_activity/{username}` | 2 credits | Comment + submission activity by one user |
+
+Failed requests and requests that end in a provider error cost zero
+credits; only a completed successful read is charged.
 
 `{subreddit}`, `{id}`, `{username}` are path parameters — substitute the
 real subreddit name (no `r/` prefix), base-36 Reddit post ID, or Reddit
@@ -149,34 +134,24 @@ not publish an exact default or maximum, so request conservative page sizes
 curl "https://api.replynodes.com/v1/reddit/capabilities"
 ```
 
-**A subreddit's newest posts (Bearer workspace-key):**
+**A subreddit's newest posts:**
 
 ```bash
-curl -H "Authorization: Bearer ***" \
-  "https://api.replynodes.com/v1/reddit/subreddit_posts/programming?sort=new&limit=10"
-```
-
-**A subreddit's newest posts (x402 pay-per-call):**
-
-```bash
-# 1. trigger 402 to get the challenge
-curl -i "https://api.replynodes.com/v1/reddit/subreddit_posts/programming?sort=new&limit=10"
-# 2. sign the payment-required header with a Base USDC wallet, retry with X-PAYMENT
-curl -i -H "X-PAYMENT: <base64 payment proof>" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   "https://api.replynodes.com/v1/reddit/subreddit_posts/programming?sort=new&limit=10"
 ```
 
 **A single post by Reddit post ID:**
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   "https://api.replynodes.com/v1/reddit/post_by_id/EXAMPLE_POST_ID"
 ```
 
 **A single post by full URL (permalink):**
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   -G --data-urlencode "url=https://www.reddit.com/r/programming/comments/EXAMPLE_POST_ID/example_post_title/" \
   "https://api.replynodes.com/v1/reddit/post_by_permalink"
 ```
@@ -184,7 +159,7 @@ curl -H "Authorization: Bearer ***" \
 **Search, optionally scoped to one subreddit:**
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   -G --data-urlencode "q=rust async" \
   --data-urlencode "subreddit=programming" \
   --data-urlencode "limit=10" \
@@ -194,14 +169,14 @@ curl -H "Authorization: Bearer ***" \
 **A user's submitted posts:**
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   "https://api.replynodes.com/v1/reddit/user_posts/example_user?sort=new&limit=10"
 ```
 
 **A user's full activity (posts + comments):**
 
 ```bash
-curl -H "Authorization: Bearer ***" \
+curl -H "Authorization: Bearer $REPLYNODES_API_KEY" \
   "https://api.replynodes.com/v1/reddit/user_activity/example_user?limit=10"
 ```
 
