@@ -1,9 +1,10 @@
 # Installing the `reddit-data-api` skill package
 
 Prerequisites:
-1. Optional: a ReplyNodes workspace API key (minted from the console); scope and entitlement checks happen at the shared control plane.
-2. Use `https://api.replynodes.com`; do not use any other gateway.
-3. Keep the key in an environment variable or secret store; do not commit or embed it anywhere.
+1. Create a free ReplyNodes account at [https://app.replynodes.com/auth](https://app.replynodes.com/auth) — the free plan includes 500 one-time credits and no payment setup is required.
+2. Open [https://app.replynodes.com/developers](https://app.replynodes.com/developers) and create the single long-lived ReplyNodes fetcher API key.
+3. Use `https://api.replynodes.com`; do not use any other gateway.
+4. Store the key as `REPLYNODES_API_KEY` in an environment variable or agent secret store; never paste it into chat, commit it, or put it in a URL.
 
 Before distributing this package, verify it:
 
@@ -14,21 +15,21 @@ bash scripts/validate-reddit-api.sh   # from this public repository; must exit 0
 ## OpenClaw
 
 1. Copy this package directory into the OpenClaw agent's skills folder so `SKILL.md` and `llms.txt` are discovered automatically.
-2. Set `BASE_URL=https://api.replynodes.com` (fixed). Provide `API_KEY` only through secret configuration when using the Bearer workspace-key path; never print or commit it.
-3. If no workspace key is available, stop after an HTTP 402 response and use the returned x402 v2 requirements only with a separately configured payer; this package does not claim settlement or paid success.
+2. Set `BASE_URL=https://api.replynodes.com` (fixed). Provide `REPLYNODES_API_KEY` only through secret configuration; never print or commit it.
+3. Every priced route requires the fetcher key — there is no anonymous or pay-per-call path. A missing or invalid key returns HTTP 401; stop and report rather than retrying unchanged.
 4. Instruct naturally, for example: "Look up r/programming with the reddit-data-api skill, list new posts, and report meta.availability and null counters honestly."
 
 ## Hermes
 
 1. Register the seven function definitions printed in [references/endpoints.md](references/endpoints.md) (Hermes-style function-calling section).
-2. Execute each call by issuing the mapped HTTPS GET with the Authorization header set.
+2. Execute each call by issuing the mapped HTTPS GET with the Authorization header set to `Bearer $REPLYNODES_API_KEY`.
 3. There are no continuation tokens: search returns one bounded page (default 20, max 50).
 
 ## ChatGPT
 
 1. Import [references/reddit-public-v1.openapi.json](references/reddit-public-v1.openapi.json) as an action schema.
    Note: This file does not exist in this skill; instead, use the endpoints documented in references/endpoints.md.
-2. Choose API-key authentication with the Bearer scheme; save the workspace key as a stored credential rather than pasting it into conversations.
+2. Choose API-key authentication with the Bearer scheme; save `REPLYNODES_API_KEY` as a stored credential rather than pasting it into conversations.
 3. Exactly seven operations exist (`get_capabilities`, `get_subreddit_posts`, `get_post_by_id`, `get_post_by_permalink`, `search_posts`, `get_user_posts`, `get_user_activity`) and all are GET-only; nothing else can be invoked.
 
 ## Claude
@@ -40,7 +41,7 @@ bash scripts/validate-reddit-api.sh   # from this public repository; must exit 0
 ## generic HTTP
 
 1. Call any documented route with the client of your choice; worked curl snippets live in [references/endpoints.md](references/endpoints.md).
-2. Send the Authorization header on every documented request.
+2. Send `Authorization: Bearer $REPLYNODES_API_KEY` on every documented request.
 3. Retry only on 502/503 with backoff; treat 400/404 as terminal for the attempt and honor `Retry-After` on 429.
 
 ## MCP agents

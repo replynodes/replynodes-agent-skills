@@ -11,10 +11,11 @@ normalized `{ \"data\", \"meta\": { \"request_id\" } }` body. Live example value
 not reproduced in this package; every example in `SKILL.md` and
 `references/` is an illustrative placeholder, clearly labeled as such.
 
-Authentication supports both Bearer workspace-key and x402 v2 pay-per-call; unauthenticated requests to priced routes return HTTP 402 with x402 challenge, and invalid Bearer tokens return HTTP 401.
-and invalid-key requests to every priced route returned HTTP 401
-`invalid_or_expired_token`, with no x402 payment challenge observed on any
-Reddit route. This package confirms x402 v2 pay-per-call support for Reddit routes.
+Authentication was verified as a single Bearer ReplyNodes fetcher API key
+drawing down prepaid credit: every priced route requires the header, and
+invalid-key requests to every priced route returned HTTP 401
+`invalid_or_expired_token`. There is no anonymous, wallet, or pay-per-call
+path on any Reddit route.
 
 The package intentionally contains no service implementation, upstream
 private API details, internal hostnames or ports, raw live payloads, API

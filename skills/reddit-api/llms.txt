@@ -1,8 +1,18 @@
 # Reddit Public Data API
 
-> Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Bearer workspace-key authentication, normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
+> Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup, user activity, and keyword search via one HTTPS gateway. Authentication is a single Bearer ReplyNodes fetcher API key drawing down prepaid credit; there is no anonymous, wallet, or pay-per-call path. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.
 
 Base URL: https://api.replynodes.com/v1/reddit (fixed). Do not use any other gateway.
+
+## Setup
+
+1. Create a free ReplyNodes account at https://app.replynodes.com/auth.
+2. The free plan includes 500 one-time credits and no payment setup is required.
+3. Open https://app.replynodes.com/developers and create the single long-lived ReplyNodes fetcher API key.
+4. Store it as `REPLYNODES_API_KEY` in an agent secret store; never paste it into chat, commit it, or put it in a URL.
+5. Send it as `Authorization: Bearer YOUR_FETCHER_KEY`.
+
+Gateway: https://api.replynodes.com
 
 ## Surface status
 
@@ -19,11 +29,9 @@ Base URL: https://api.replynodes.com/v1/reddit (fixed). Do not use any other gat
 - `GET /v1/reddit/user_posts/{username}` - get a user's submitted posts (capability `user_posts`).
 - `GET /v1/reddit/user_activity/{username}` - get a user's full activity (posts + comments) (capability `user_activity`).
 
-## Auth (two truthful paths)
+## Auth (single truthful path)
 
-Bearer workspace key: `Authorization: Bearer ***` at the gateway; prepaid credits are debited synchronously before the upstream read runs and a failed request is never charged.
-
-x402 v2 pay-per-call: The gateway answers a priced request with HTTP `402` plus an x402 v2 challenge body (asset `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` USDC on Base, network `eip155:8453`, amount `1000` base units = `$0.001` per call). A wallet signs the challenge and retries with an `X-PAYMENT` header; on settlement the gateway releases the same response a Bearer caller would receive.
+Bearer ReplyNodes fetcher key: `Authorization: Bearer YOUR_FETCHER_KEY` at the gateway. `/capabilities` is free; every other route costs 2 prepaid credits per request, debited synchronously before the upstream read runs — a failed or provider-error request is never charged. There is no anonymous or pay-per-call path: a missing, malformed, expired, or revoked key returns HTTP `401` with `code: invalid_or_expired_token`.
 
 ## Bounded pages
 

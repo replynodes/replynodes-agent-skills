@@ -3,8 +3,8 @@
   "manifest_version": 1,
   "name": "reddit-data-api",
   "title": "Reddit Public Data API",
-  "description": "Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup with comments, and keyword search via one HTTPS gateway. Two authentication paths are supported \u2014 a Bearer workspace key for prepaid/team usage and an x402 v2 pay-per-call flow in USDC on Base for anonymous single-call usage. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.",
-  "version": "1.0.9",
+  "description": "Read-only, normalized public-data reads of Reddit through the ReplyNodes fetcher Reddit public-read service: subreddit post listings, single post lookup, user activity, and keyword search via one HTTPS gateway. Authentication is a single Bearer ReplyNodes fetcher API key drawing down prepaid credit; there is no anonymous, wallet, or pay-per-call path. Normalized JSON, transparent bounded pages, and an explicit unsupported-capability matrix. Public reads only: no posting, voting, commenting, account, OAuth, or any other write/authenticated capability exists, and no Reddit credential material is involved.",
+  "version": "1.1.0",
   "contract_version": "v1",
   "platform": "social",
   "mode": "readonly",
@@ -20,6 +20,18 @@
     "generic HTTP",
     "MCP agents"
   ],
+  "auth": {
+    "mode": "bearer_prepaid_credit",
+    "credential_required": true,
+    "credential_env_var": "REPLYNODES_API_KEY",
+    "signup_url": "https://app.replynodes.com/auth",
+    "developer_console_url": "https://app.replynodes.com/developers",
+    "free_plan_one_time_credits": 500,
+    "cost_credits_per_request": 2,
+    "cost_credits_on_failure": 0,
+    "invalid_credential_http_status": 401,
+    "invalid_credential_code": "invalid_or_expired_token"
+  },
   "search_terms": [
     "reddit",
     "reddit-api",
@@ -31,11 +43,11 @@
     "read-only",
     "agent api",
     "social data",
-    "x402",
-    "pay-per-call",
-    "usdc",
-    "base",
-    "wallet"
+    "prepaid credit",
+    "fetcher key",
+    "replynodes_api_key",
+    "setup",
+    "signup"
   ],
   "surface_status": [
     "This package documents seven stable, read-only GET operations with bounded requests and normalized responses.",
@@ -50,7 +62,7 @@
   "distribution": {
     "registry": "ClawHub",
     "package": "@replynodes-ai/reddit-api",
-    "version": "1.0.9",
+    "version": "1.1.0",
     "moderation": "pending independent registry verification",
     "public_discovery": false,
     "note": "Registry status is verified independently after publication."
@@ -63,6 +75,7 @@
       "method": "GET",
       "path": "/v1/reddit/capabilities",
       "auth_required": false,
+      "price_credits": 0,
       "summary": "Get the Reddit API capabilities catalog"
     },
     {
@@ -71,7 +84,8 @@
       "operation": "subreddit_posts",
       "method": "GET",
       "path": "/v1/reddit/subreddit_posts/{subreddit}",
-      "auth_required": false,
+      "auth_required": true,
+      "price_credits": 2,
       "summary": "List a subreddit's posts"
     },
     {
@@ -80,7 +94,8 @@
       "operation": "post_by_id",
       "method": "GET",
       "path": "/v1/reddit/post_by_id/{id}",
-      "auth_required": false,
+      "auth_required": true,
+      "price_credits": 2,
       "summary": "Get a single post by Reddit post ID"
     },
     {
@@ -89,7 +104,8 @@
       "operation": "post_by_permalink",
       "method": "GET",
       "path": "/v1/reddit/post_by_permalink",
-      "auth_required": false,
+      "auth_required": true,
+      "price_credits": 2,
       "summary": "Get a single post by full URL (permalink)"
     },
     {
@@ -98,7 +114,8 @@
       "operation": "search_posts",
       "method": "GET",
       "path": "/v1/reddit/search_posts",
-      "auth_required": false,
+      "auth_required": true,
+      "price_credits": 2,
       "summary": "Search posts by keyword"
     },
     {
@@ -107,7 +124,8 @@
       "operation": "user_posts",
       "method": "GET",
       "path": "/v1/reddit/user_posts/{username}",
-      "auth_required": false,
+      "auth_required": true,
+      "price_credits": 2,
       "summary": "Get a user's submitted posts"
     },
     {
@@ -116,7 +134,8 @@
       "operation": "user_activity",
       "method": "GET",
       "path": "/v1/reddit/user_activity/{username}",
-      "auth_required": false,
+      "auth_required": true,
+      "price_credits": 2,
       "summary": "Get a user's full activity (posts + comments)"
     }
   ],
@@ -131,8 +150,8 @@
   "files": [
     {
       "path": "INSTALL.md",
-      "bytes": 3406,
-      "sha256": "f9d260c62f1bda7dfe000394861f45e793066de57dbcd039318e9c07e04a2472"
+      "bytes": 3660,
+      "sha256": "bf967207e37da09de6d5f663426ce0ed4b1a7d1c28aa683d0bc8ba7b8886ec49"
     },
     {
       "path": "LICENSE",
@@ -141,48 +160,53 @@
     },
     {
       "path": "PROVENANCE.md",
-      "bytes": 1451,
-      "sha256": "c0ab391e28c164fffceb2128a92a263784644968f934a33cbdcd1d072a0a9dec"
+      "bytes": 1338,
+      "sha256": "b0c7b605bab2ca18f6a74444ca40af391437aff4344447c8b1395964a415dc6d"
     },
     {
       "path": "PUBLICATION.md",
-      "bytes": 1011,
-      "sha256": "2ee28362bda7dfcb72af3808eec755e01fadc1bee268f6b68d7ed3d475d4fe2d"
+      "bytes": 964,
+      "sha256": "4e9da0586338af748839250ccd72c3b569928e62f5df5160bf42f8c108802a40"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1065,
+      "sha256": "ccda4fe72f25dc42cdc2275b24269904546ebd073e4ea9f9483ad75484db954d"
     },
     {
       "path": "SKILL.md",
-      "bytes": 13325,
-      "sha256": "da9f7e83af8833c6decb2a69eeeffc7402b5ab88285dda1c5c32fc200a17983e"
+      "bytes": 12302,
+      "sha256": "42d398cee0aadb252000dce056e545fcd8dc5b4b7ef47809fc9ef5370963555a"
     },
     {
       "path": "VERSION",
       "bytes": 6,
-      "sha256": "326dd5d8641f399990de42def50ac29eb4c9222601c0a0a3fc3c947dd3bec65d"
+      "sha256": "1575e1af4a95f12f70b4ee6a6adce8160953d93ea17dc2611b90883ccc3ad3b8"
     },
     {
       "path": "llms.txt",
-      "bytes": 3998,
-      "sha256": "cd24b85375a67c4e372d27c8daf4ab12858904d5f531b6f0ec69450e44091d9b"
+      "bytes": 4442,
+      "sha256": "020b56151252877e383273b7526b3437072df5e4f86a59df9c271f456d2b4e03"
     },
     {
       "path": "references/endpoints.md",
-      "bytes": 5105,
-      "sha256": "d8b5640ece8017d9956f52c4f8d38d1f3e87ae73d3d9e6cd67ff787e7fb3c8b1"
-    },
-    {
-      "path": "references/scenarios.md",
-      "bytes": 1928,
-      "sha256": "745c6ccc781b049231209efb147614f3d50703d76eeb06bedc92cc44296f3600"
+      "bytes": 5488,
+      "sha256": "afc32c2b32b661cc7ef375fe971b5d2ce1c4e1a38dee768219e4beb4f49dcb03"
     },
     {
       "path": "references/reddit-api-mcp.schema.json",
-      "bytes": 10344,
-      "sha256": "401621f3ffe33b7945879a895484274261766c4264d30a96ea2d67f0480552e6"
+      "bytes": 10651,
+      "sha256": "25f2e2819a50501007114c5cb091091ecaeff6be806fe46df05f5f4106438d88"
+    },
+    {
+      "path": "references/scenarios.md",
+      "bytes": 2870,
+      "sha256": "f11bb5465f0eaf1b3dea3b24abd7adb178b552cb643afe6687f84a9ccf152ff8"
     },
     {
       "path": "skill-card.md",
-      "bytes": 565,
-      "sha256": "9c47b3546143f7049a5b73916cbe324951c82c2a8b1c9bc6f4ce2614cd0a8069"
+      "bytes": 607,
+      "sha256": "25616d9ebdfd1ea7d764f6dbc4b10be9ad00eaa52abdd238ee4ac71795efea01"
     }
   ]
 }
