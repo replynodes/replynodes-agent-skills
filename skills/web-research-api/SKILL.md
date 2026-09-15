@@ -1,9 +1,9 @@
 ---
 name: web-research-api
-title: APIs for Web search, web scraping, crawling, site maps, brand intelligence, Reddit, YouTube, and other public provider APIs — ReplyNodes
-description: Read-only ReplyNodes gateway for web search, web scraping, crawling, site maps, brand intelligence, Reddit, YouTube, and other public provider APIs. Use HTTPS GET routes with provider-specific prepaid Bearer access; never provide credentials or perform social writes.
+title: Web research and public data MCP for AI agents
+description: Web research and public data MCP for AI agents: scrape, crawl and map websites; search the web; retrieve brand assets and style guides; research App Store and Google Play apps; search Google Maps and Shopping; access YouTube, Reddit, Instagram, TikTok and Hacker News.
 homepage: https://api.replynodes.com
-version: 1.0.1
+version: 1.0.2
 license: MIT
 mode: readonly
 auth: Provider-specific prepaid Bearer access only where advertised by the live capabilities response; this skill never carries credentials
@@ -13,7 +13,7 @@ topics: [research, web, brand, reddit, youtube]
 entrypoint: SKILL.md
 ---
 
-# APIs for Web search, web scraping, crawling, site maps, brand intelligence, Reddit, YouTube, and other public provider APIs — ReplyNodes
+# Web research and public data MCP for AI agents
 
 Use the ReplyNodes read API for public web research: search the web, fetch a
 page as Markdown, crawl same-origin links, map a site, inspect public brand

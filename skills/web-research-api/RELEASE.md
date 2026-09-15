@@ -1,6 +1,6 @@
 # Release notes
 
-## v1.0.1
+## v1.0.2
 
 - Adds a compact, searchable Web Research API skill covering web search,
   Markdown scraping, crawl and site-map discovery, brand intelligence, Reddit,
@@ -10,3 +10,4 @@
   no-credentials handling, and the read-only/no-social-write boundary.
 - Corrects the public display title and documents provider-specific prepaid
   Bearer access only.
+- Sets the public title and summary to the owner-corrected MCP metadata.

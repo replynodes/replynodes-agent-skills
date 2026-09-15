@@ -1,4 +1,6 @@
-# Web Research API
+# Web research and public data MCP for AI agents
+
+Web research and public data MCP for AI agents: scrape, crawl and map websites; search the web; retrieve brand assets and style guides; research App Store and Google Play apps; search Google Maps and Shopping; access YouTube, Reddit, Instagram, TikTok and Hacker News.
 
 Install from the ReplyNodes agent-skills repository:
 
@@ -9,7 +11,7 @@ clawhub install @replynodes-ai/web-research-api --dir ./skills
 Or install from a reviewed Git tag:
 
 ```bash
-git clone --depth 1 --branch v1.0.1 https://github.com/replynodes/replynodes-agent-skills.git
+git clone --depth 1 --branch v1.0.2 https://github.com/replynodes/replynodes-agent-skills.git
 # use skills/web-research-api/SKILL.md as the skill entrypoint
 ```
 
@@ -29,4 +31,4 @@ Reddit, YouTube, and the existing read-only ReplyNodes provider APIs. See
 
 ## Version
 
-This release is `v1.0.1`.
+This release is `v1.0.2`.
