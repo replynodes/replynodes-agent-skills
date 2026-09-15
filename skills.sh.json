@@ -4,8 +4,28 @@
   "groupings": [
     {
       "title": "Research",
-      "description": "ReplyNodes web, brand, app-store, video, and community research for AI agents.",
-      "skills": ["replynodes"]
+      "description": "ReplyNodes read-only web, brand, app-store, video, and community research for AI agents.",
+      "skills": [
+        "replynodes",
+        "web-search",
+        "web-scraping",
+        "competitor-research",
+        "reddit-research",
+        "youtube-research",
+        "app-store-research",
+        "google-play-research"
+      ]
+    },
+    {
+      "title": "Brand research",
+      "description": "ReplyNodes read-only brand discovery, identity, styleguide, and typography research.",
+      "skills": [
+        "brand-intelligence",
+        "brand-search",
+        "brand-profile",
+        "brand-styleguide",
+        "brand-fonts"
+      ]
     }
   ]
 }

@@ -16,8 +16,18 @@ available tools and arguments.
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes
 ```
 
-Installing the skill gives an agent a safe research playbook and routing guide
-for the official ReplyNodes MCP.
+Installing the umbrella skill gives an agent a safe research playbook and routing guide
+for the official ReplyNodes MCP. For non-branded discovery, install a focused skill:
+
+```bash
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-search
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-scraping
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill reddit-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill competitor-research
+```
+
+Focused skills are intentionally small; the live MCP remains authoritative for
+available tools and arguments.
 
 ## Production MCP
 
@@ -33,12 +43,12 @@ Authorization: Bearer ${REPLYNODES_API_KEY}
 
 Keep the key in the agent's secret/environment store. Do not paste it into chat,
 URLs, source files, or logs. See the official [MCP documentation](https://docs.replynodes.com/docs/mcp),
-[pricing](https://replynodes.com/pricing), and [authentication instructions](https://replynodes.com/auth.md).
+[pricing](https://replynodes.com/pricing), and [authentication instructions](https://docs.replynodes.com/docs/auth).
 
 ## Skill contents
 
 - `SKILL.md` — activation triggers, routing, connection, boundaries, and workflows.
-- `references/live-capability-routing.md` — the verified live tool-family snapshot.
+- `skills/<intent>/SKILL.md` — focused, intent-first skills that route to the same read-only production MCP.
 - `references/research-workflows.md` — concise multi-source research recipes.
 
 ## Validation
