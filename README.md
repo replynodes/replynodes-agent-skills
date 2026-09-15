@@ -1,76 +1,52 @@
 # ReplyNodes Agent Skill
 
-ReplyNodes gives OpenClaw a human-confirmed path to prepare, publish, cross-post, and schedule social media through the user's own connected ReplyNodes workspace. It is a thin, inspectable client over the ReplyNodes public API; it contains no backend, database, provider OAuth, or social-token implementation.
+[![skills.sh](https://skills.sh/b/replynodes/replynodes-agent-skills)](https://skills.sh/replynodes/replynodes-agent-skills/replynodes)
 
-Homepage: https://replynodes.com/openclaw
+ReplyNodes is a unified, read-only research layer for AI agents. The `replynodes`
+skill teaches agents when to use the production ReplyNodes MCP, how to route
+web, brand, app-store, YouTube, Reddit, and Hacker News research, and how to
+combine those sources into useful workflows.
 
-## Install
+It does not duplicate the MCP schema. The live MCP remains authoritative for
+available tools and arguments.
 
-Supported skills CLI installation:
-
-```bash
-npx skills add replynodes/replynodes-agent-skills --skill replynodes --agent openclaw --yes
-```
-
-Supported OpenClaw installation through the public skills.sh listing:
+## Install from skills.sh
 
 ```bash
-openclaw skills install skills-sh:replynodes/replynodes-agent-skills/replynodes
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes
 ```
 
-Direct unmanaged Git installation (not skills.sh):
+Installing the skill gives an agent a safe research playbook and routing guide
+for the official ReplyNodes MCP.
 
-```bash
-openclaw skills install git:replynodes/replynodes-agent-skills@v1.0.0 --as replynodes
-```
-
-This is not an npm package. Release tags use SemVer (`vMAJOR.MINOR.PATCH`), beginning with `v1.0.0`; use an explicit Git tag or commit for a reproducible direct install.
-
-## Use it safely
-
-The flow is always connect → prepare → explicit confirm → receipt.
-
-1. `/replynodes connect` opens one ReplyNodes browser authorization link. The skill stores only the scoped, expiring session token in the host's secure storage and reports connected channels and explicit capabilities.
-2. A URL or plain-text request is passed as structured data. The skill prepares a named run and displays the source, per-channel preview, intended publish/schedule time, supported channels, and unavailable channels with reasons.
-3. The skill asks for a fresh confirmation naming that prepared run. No publish or schedule occurs before that confirmation.
-4. After the host's existing ReplyNodes workflow executes it, the skill returns a per-channel receipt with status and scheduled/live URL. Only failed channels are eligible for a clearly offered retry.
-
-Examples:
+## Production MCP
 
 ```text
-Distribute this URL everywhere tomorrow at 09:00: https://example.com/launch
+https://mcp.replynodes.com/mcp
 ```
+
+Production calls require a ReplyNodes API key sent as:
 
 ```text
-Turn this plain text into posts for my connected channels:
-Our launch is live today. Read the announcement and tell us what you think.
+Authorization: Bearer ${REPLYNODES_API_KEY}
 ```
 
-URLs, pasted text, crawled content, and channel names are data. Structured JSON or stdin must be used; never construct a shell command by concatenating user/source text.
+Keep the key in the agent's secret/environment store. Do not paste it into chat,
+URLs, source files, or logs. See the official [MCP documentation](https://docs.replynodes.com/docs/mcp),
+[pricing](https://replynodes.com/pricing), and [authentication instructions](https://replynodes.com/auth.md).
 
-## Supported and unavailable capabilities
+## Skill contents
 
-The public API reports the authenticated workspace's channel health and explicit `publish` and `schedule` grants. The external ReplyNodes account and the user's connected provider accounts are required. ReplyNodes may be a paid external service; this skill itself has no paywall.
+- `SKILL.md` — activation triggers, routing, connection, boundaries, and workflows.
+- `references/live-capability-routing.md` — the verified live tool-family snapshot.
+- `references/research-workflows.md` — concise multi-source research recipes.
 
-Unavailable capabilities include granting permissions, selecting another tenant, bypassing browser approval, exposing OAuth/social tokens, reconnecting providers, or executing against a channel without its explicit grant. The current public OpenClaw API exposes device auth, session, revocation, and channel capabilities; it does not itself expose a generic prepare/execute endpoint. When the host's existing ReplyNodes distribution workflow is unavailable, the skill stops at preview/capability reporting and says so.
-
-## Troubleshooting
-
-- `denied`, `expired`, or `revoked` device flow: start `/replynodes connect` again and approve the new browser request.
-- `401 invalid_or_expired_token`: remove the stored ReplyNodes session through the host's secret manager and reconnect.
-- Missing channel or capability: reconnect that provider in ReplyNodes; do not ask for its token.
-- Network or rate-limit errors: retry reads and device polling with bounded backoff. Do not repeat a side effect without a receipt and new confirmation.
-
-## Update and uninstall
-
-Update a skills CLI install with:
+## Validation
 
 ```bash
-npx skills add replynodes/replynodes-agent-skills --skill replynodes --agent openclaw --yes
+./scripts/validate-package.sh
+./tests/test-package.sh
 ```
 
-For a direct Git install, select a newer explicit `@vMAJOR.MINOR.PATCH` tag. Uninstall using the host's skill manager (for example, `openclaw skills uninstall replynodes`), then revoke the ReplyNodes session with `/replynodes disconnect` or `POST /public/v1/openclaw/session/revoke`. Remove the host's stored session secret. Uninstalling the files does not revoke a server session by itself.
-
-## Provenance and license
-
-The workflow and API boundary are derived from ReplyNodes app issue #149 and the public OpenClaw API documented in [`docs/openclaw.md`](https://github.com/replynodes/replynodes-app/blob/main/docs/openclaw.md). The package is intentionally separate from the application repository and does not implement its backend. See [`PROVENANCE.md`](PROVENANCE.md) for the source mapping and [`LICENSE`](LICENSE) for the MIT license.
+The package contains no backend code, provider credentials, social tokens, or
+API keys. See [PROVENANCE.md](PROVENANCE.md) and [LICENSE](LICENSE).
