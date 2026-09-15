@@ -1,6 +1,6 @@
 ---
 name: replynodes
-description: "Research the live web and public platforms with ReplyNodes: scrape and crawl websites, search the web, retrieve brand logos/colors/fonts/style guides, research Apple App Store and Google Play apps, and analyze YouTube, Reddit, and Hacker News through the ReplyNodes MCP."
+description: "Research the web and public platforms with ReplyNodes, a read-only MCP for AI agents: web search, website scraping, crawling, brand intelligence, Reddit, YouTube, Apple App Store, Google Play, and Hacker News."
 license: MIT
 compatibility: Requires an MCP-capable agent with network access and a ReplyNodes API key stored as REPLYNODES_API_KEY.
 metadata:
@@ -72,7 +72,7 @@ Authorization: Bearer ${REPLYNODES_API_KEY}
 Keep the key in the agent's secret/environment store. Never paste a real key
 into a prompt, URL, committed file, tool result, or log. If no key is available,
 direct the user to the official ReplyNodes authentication instructions at
-`https://replynodes.com/auth.md`; never fabricate a key.
+`https://docs.replynodes.com/docs/auth`; never fabricate a key.
 
 A generic remote-MCP configuration is:
 
