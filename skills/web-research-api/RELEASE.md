@@ -1,5 +1,12 @@
 # Release notes
 
+## v1.0.3
+
+- Adds the canonical `summary` frontmatter field used by ClawHub for the
+  registry summary, matching the exact public MCP description.
+- Preserves the read-only, no-credentials, no-social-write contract and all
+  provider routing.
+
 ## v1.0.2
 
 - Adds a compact, searchable Web Research API skill covering web search,

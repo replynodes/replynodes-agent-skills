@@ -1,9 +1,10 @@
 ---
 name: web-research-api
 title: Web research and public data MCP for AI agents
+summary: Web research and public data MCP for AI agents: scrape, crawl and map websites; search the web; retrieve brand assets and style guides; research App Store and Google Play apps; search Google Maps and Shopping; access YouTube, Reddit, Instagram, TikTok and Hacker News.
 description: Web research and public data MCP for AI agents: scrape, crawl and map websites; search the web; retrieve brand assets and style guides; research App Store and Google Play apps; search Google Maps and Shopping; access YouTube, Reddit, Instagram, TikTok and Hacker News.
 homepage: https://api.replynodes.com
-version: 1.0.2
+version: 1.0.3
 license: MIT
 mode: readonly
 auth: Provider-specific prepaid Bearer access only where advertised by the live capabilities response; this skill never carries credentials
