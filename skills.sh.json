@@ -1,0 +1,11 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Research",
+      "description": "ReplyNodes web, brand, app-store, video, and community research for AI agents.",
+      "skills": ["replynodes"]
+    }
+  ]
+}
