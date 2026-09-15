@@ -27,22 +27,33 @@ Umbrella research skill:
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes
 ```
 
-Focused intent skills:
+Focused intent skills (each has its own searchable marketplace entry):
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-search
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-scraping
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill reddit-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill competitor-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-intelligence
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-search
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-profile
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-styleguide
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-fonts
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill youtube-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill app-store-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill google-play-research
+npx skills add https://github.com/replynodes/replynodes-web-search --skill web-search
+npx skills add https://github.com/replynodes/replynodes-web-scraping --skill web-scraping
+npx skills add https://github.com/replynodes/replynodes-reddit-research --skill reddit-research
+npx skills add https://github.com/replynodes/replynodes-competitor-research --skill competitor-research
+npx skills add https://github.com/replynodes/replynodes-brand-intelligence --skill brand-intelligence
+npx skills add https://github.com/replynodes/replynodes-brand-search --skill brand-search
+npx skills add https://github.com/replynodes/replynodes-brand-profile --skill brand-profile
+npx skills add https://github.com/replynodes/replynodes-brand-styleguide --skill brand-styleguide
+npx skills add https://github.com/replynodes/replynodes-brand-fonts --skill brand-fonts
+npx skills add https://github.com/replynodes/replynodes-youtube-research --skill youtube-research
+npx skills add https://github.com/replynodes/replynodes-app-store-research --skill app-store-research
+npx skills add https://github.com/replynodes/replynodes-google-play-research --skill google-play-research
 ```
+
+Marketplace pages:
+
+- [Web search](https://www.skills.sh/replynodes/replynodes-web-search/web-search)
+- [Web scraping](https://www.skills.sh/replynodes/replynodes-web-scraping/web-scraping)
+- [Reddit research](https://www.skills.sh/replynodes/replynodes-reddit-research/reddit-research)
+- [Competitor research](https://www.skills.sh/replynodes/replynodes-competitor-research/competitor-research)
+- [Brand intelligence](https://www.skills.sh/replynodes/replynodes-brand-intelligence/brand-intelligence)
+- [YouTube research](https://www.skills.sh/replynodes/replynodes-youtube-research/youtube-research)
+- [App Store research](https://www.skills.sh/replynodes/replynodes-app-store-research/app-store-research)
+- [Google Play research](https://www.skills.sh/replynodes/replynodes-google-play-research/google-play-research)
 
 The official CLI needs `--full-depth` only when installing from a local clone that
 contains both the root umbrella and nested focused skills.
