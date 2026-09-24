@@ -1,6 +1,13 @@
 # Release checklist
 
-This branch prepares umbrella skill version `v2.0.0` from `VERSION`.
+This branch prepares package version `v2.0.1` from `VERSION`.
+
+## v2.0.1 release notes
+
+- Adds the focused `url-to-markdown` OpenClaw skill.
+- Documents the free read-only endpoint at `https://md.replynodes.com`.
+- Links the canonical implementation repository at
+  `https://github.com/replynodes/replynodes-markdown`.
 
 ## v2.0.0 release notes
 
