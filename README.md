@@ -42,6 +42,7 @@ npx skills add https://github.com/replynodes/replynodes-brand-fonts --skill bran
 npx skills add https://github.com/replynodes/replynodes-youtube-research --skill youtube-research
 npx skills add https://github.com/replynodes/replynodes-app-store-research --skill app-store-research
 npx skills add https://github.com/replynodes/replynodes-google-play-research --skill google-play-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill url-to-markdown
 ```
 
 Marketplace pages:
@@ -54,6 +55,7 @@ Marketplace pages:
 - [YouTube research](https://www.skills.sh/replynodes/replynodes-youtube-research/youtube-research)
 - [App Store research](https://www.skills.sh/replynodes/replynodes-app-store-research/app-store-research)
 - [Google Play research](https://www.skills.sh/replynodes/replynodes-google-play-research/google-play-research)
+- [URL to Markdown](https://www.skills.sh/replynodes/replynodes-agent-skills/url-to-markdown)
 
 The official CLI needs `--full-depth` only when installing from a local clone that
 contains both the root umbrella and nested focused skills.

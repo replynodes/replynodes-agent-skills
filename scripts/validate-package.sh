@@ -21,8 +21,13 @@ for path in paths:
     assert desc and 1 <= len(desc.group(1).strip()) <= 1024, f"{path}: description required"
     expected = "replynodes" if path == root / "SKILL.md" else path.parent.name
     assert name.group(1).strip('"\'') == expected, f"{path}: name must be {expected}"
-    assert "https://mcp.replynodes.com/mcp" in body, f"{path}: canonical MCP endpoint missing"
-    assert "REPLYNODES_API_KEY" in body, f"{path}: secret-store guidance missing"
+    if path.parent.name == "url-to-markdown":
+        assert "https://md.replynodes.com" in body, f"{path}: markdown endpoint missing"
+        assert "https://github.com/replynodes/replynodes-markdown" in front + "\n" + body, f"{path}: canonical repository missing"
+        assert "REPLYNODES_API_KEY" not in front + "\n" + body, f"{path}: API-key path is not allowed"
+    else:
+        assert "https://mcp.replynodes.com/mcp" in body, f"{path}: canonical MCP endpoint missing"
+        assert "REPLYNODES_API_KEY" in body, f"{path}: secret-store guidance missing"
     assert re.search(r"read[- ]only", (front + "\n" + body), re.I), f"{path}: read-only boundary missing"
     assert not re.search(r"Bearer\s+[A-Za-z0-9_-]{40,}", front + "\n" + body), f"{path}: possible credential"
 print(f"validated {len(paths)} skill files")
