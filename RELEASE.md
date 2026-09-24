@@ -1,6 +1,11 @@
 # Release checklist
 
-This branch prepares package version `v2.0.1` from `VERSION`.
+This branch prepares package version `v2.0.2` from `VERSION`.
+
+## v2.0.2 release notes
+
+- Updates the focused `url-to-markdown` skill to version `1.0.1`.
+- Uses `https://replynodes.com` as the documented public example target.
 
 ## v2.0.1 release notes
 
