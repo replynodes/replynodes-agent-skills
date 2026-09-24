@@ -1,16 +1,25 @@
 ---
 name: url-to-markdown
-description: "Turn a public web URL into clean Markdown for LLM context with a free, read-only agent workflow."
+description: "Fetch any public webpage URL and get clean Markdown text for LLM context. Free, no API key, read-only. Use to read, summarize, cite, or extract article text from a link, or when a normal web fetch returns noisy HTML, cookie banners, or navigation clutter."
 license: MIT
 metadata:
   author: ReplyNodes
-  version: "1.0.0"
+  version: "1.1.0"
   repository: https://github.com/replynodes/replynodes-markdown
   endpoint: https://md.replynodes.com
   keywords: [web, markdown, URL, LLM context, agent, read]
 ---
 
 # URL to Markdown
+
+## When to use
+
+- The user pastes a link and asks to read, summarize, quote, or cite it
+- The agent needs the main text of an article, docs page, blog post, or product page
+- A normal web fetch returned raw or noisy HTML, cookie banners, or navigation clutter
+- The page content has to fit into LLM context as compact Markdown
+
+Do not use for login-only pages, private or local URLs, or anything that requires submitting forms.
 
 Use this skill when an agent needs to read a public web page as clean Markdown for
 LLM context. It sends the user's URL to the free ReplyNodes Markdown endpoint and
