@@ -1,6 +1,5 @@
 ---
 name: url-to-markdown
-title: URL to Markdown
 description: "Turn a public web URL into clean Markdown for LLM context with a free, read-only agent workflow."
 license: MIT
 metadata:
