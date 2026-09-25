@@ -19,6 +19,13 @@ Use it for:
 ReplyNodes does not provide write, publish, schedule, account-login, or private
 provider operations. The live MCP `tools/list` response is always authoritative.
 
+Two endpoints need no account and no API key at all:
+
+- `https://md.replynodes.com/{url}` — a public page as clean Markdown.
+- `https://brand.replynodes.com/{domain}` — a complete brand kit for one public
+  domain (identity, logos, colors, fonts, styleguide). See the `brand-profile`
+  skill for the response shape, caching, and limits.
+
 ## Install
 
 Umbrella research skill:
