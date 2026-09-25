@@ -23,7 +23,7 @@ For a single known domain, request the public brand-kit endpoint. No API key,
 account, signup, MCP server, or credits are required:
 
 ```bash
-curl --fail-with-body https://brand.replynodes.com/vercel.com
+curl --fail-with-body https://brand.replynodes.com/replynodes.com
 ```
 
 Send a bare public domain only — no scheme, port, path, query, or credentials.
