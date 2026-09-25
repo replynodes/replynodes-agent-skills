@@ -37,7 +37,9 @@ and `meta` (`domain`, `cached`, `fetched_at`, `cache_ttl_seconds`, `source`,
 `docs`). Only `domain`, `url`, and `meta` are always present: every other brand
 field is included only when the public page exposes it, so a site may legitimately
 return colors and fonts but no `logos[]`, or no `name`/`description` at all. The
-`styleguide` object is omitted when that part of the extraction is unavailable.
+`styleguide` object is normally present, with its own `status` of `extracted`,
+`partial`, or `unavailable`; the key is omitted entirely only when that part of
+the extraction call fails.
 
 Behavior and limits:
 
