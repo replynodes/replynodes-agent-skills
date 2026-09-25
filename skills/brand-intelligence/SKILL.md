@@ -2,7 +2,7 @@
 name: brand-intelligence
 description: "Research a company or brand with ReplyNodes read-only public data: discover the brand, retrieve identity signals, inspect logos/colors, and find fonts or styleguide information."
 license: MIT
-compatibility: Requires an MCP-capable agent, network access, and REPLYNODES_API_KEY in a secret store.
+compatibility: The free single-domain shortcut needs only network access; the authenticated MCP route requires an MCP-capable agent and REPLYNODES_API_KEY in a secret store.
 metadata:
   author: ReplyNodes
   version: "1.1.0"

@@ -32,10 +32,12 @@ small usage document.
 
 The JSON response contains the canonical brand fields (`domain`, `url`, `name`,
 `description`, `favicon`, `og_image`, `primary_logo`, `logos[]`, `colors[]`,
-`fonts[]`, `social_links[]`, and `backdrops[]` when present), a merged
-`styleguide` object, and `meta` (`domain`, `cached`, `fetched_at`,
-`cache_ttl_seconds`, `source`, `docs`). `styleguide` is omitted when that part of
-the extraction is unavailable.
+`fonts[]`, `social_links[]`, and `backdrops[]`), a merged `styleguide` object,
+and `meta` (`domain`, `cached`, `fetched_at`, `cache_ttl_seconds`, `source`,
+`docs`). Only `domain`, `url`, and `meta` are always present: every other brand
+field is included only when the public page exposes it, so a site may legitimately
+return colors and fonts but no `logos[]`, or no `name`/`description` at all. The
+`styleguide` object is omitted when that part of the extraction is unavailable.
 
 Behavior and limits:
 
