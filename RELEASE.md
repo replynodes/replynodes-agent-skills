@@ -1,6 +1,16 @@
 # Release checklist
 
-This branch prepares package version `v2.0.1` from `VERSION`.
+This branch prepares package version `v2.0.2` from `VERSION`.
+
+## v2.0.2 release notes
+
+- Documents the free, zero-auth brand-kit endpoint at
+  `https://brand.replynodes.com` in the `brand-profile` skill.
+- Adds a single-domain shortcut note to `brand-intelligence` that links to
+  `brand-profile` for the full contract.
+- Keeps the keyed MCP `brand_retrieve` path as the authenticated alternative.
+- Lists the two no-key endpoints (`md.replynodes.com`, `brand.replynodes.com`)
+  in the README so agents can find the zero-setup path.
 
 ## v2.0.1 release notes
 

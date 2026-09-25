@@ -5,7 +5,7 @@ license: MIT
 compatibility: Requires an MCP-capable agent, network access, and REPLYNODES_API_KEY in a secret store.
 metadata:
   author: ReplyNodes
-  version: "1.0.0"
+  version: "1.1.0"
   endpoint: https://mcp.replynodes.com/mcp
 ---
 
@@ -19,6 +19,14 @@ Connect to `https://mcp.replynodes.com/mcp` with
 `Authorization: Bearer ${REPLYNODES_API_KEY}`. Keep the key in a secret store;
 never paste, expose, commit, or log it. Run `initialize` and `tools/list`; live
 schemas are authoritative.
+
+## Free single-domain shortcut
+
+For a single known domain, resolve the same public brand data with the free,
+zero-auth endpoint at `https://brand.replynodes.com/{domain}` — no API key, MCP
+server, or signup. See the `brand-profile` skill for the request form, response
+shape, caching, rate limits, and error codes. Use the MCP route above when you
+need authentication, billing, bulk, or programmatic access.
 
 ## Route the request
 
