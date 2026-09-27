@@ -23,7 +23,7 @@ for path in paths:
     assert name.group(1).strip('"\'') == expected, f"{path}: name must be {expected}"
     if path.parent.name == "url-to-markdown":
         assert "https://md.replynodes.com" in body, f"{path}: markdown endpoint missing"
-        assert "https://github.com/replynodes/replynodes-markdown" in front + "\n" + body, f"{path}: canonical repository missing"
+        assert "https://github.com/replynodes/replynodes-agent-skills" in front + "\n" + body, f"{path}: canonical repository missing"
         assert "REPLYNODES_API_KEY" not in front + "\n" + body, f"{path}: API-key path is not allowed"
     else:
         assert "https://mcp.replynodes.com/mcp" in body, f"{path}: canonical MCP endpoint missing"

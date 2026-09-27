@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: ReplyNodes
   version: "1.1.0"
-  repository: https://github.com/replynodes/replynodes-markdown
+  repository: https://github.com/replynodes/replynodes-agent-skills
   endpoint: https://md.replynodes.com
   keywords: [web, markdown, URL, LLM context, agent, read]
 ---
