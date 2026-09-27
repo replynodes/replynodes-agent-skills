@@ -24,9 +24,10 @@
 - The ClawHub merge already read back:
   `https://clawhub.ai/replynodes-ai/skills/brand-logo-fetch` redirects to
   `https://clawhub.ai/replynodes-ai/skills/brand-logo`.
-- The old `https://github.com/replynodes/agent-skills` repository is not yet
-  claimed to be archived; its redirect/archive remains pending until its PR is
-  merged and the repository is archived.
+- The old `https://github.com/replynodes/agent-skills` repository is archived,
+  as verified after merged commit
+  `713b38db9c7315267466174784ce80a41e27aab3`; it is preserved for historical
+  provenance.
 - This repository contains authored instructions and deterministic validation
   only. It deliberately excludes backend source, database/provider access,
   credentials, provider tokens, account IDs, workspace IDs, and secrets.
