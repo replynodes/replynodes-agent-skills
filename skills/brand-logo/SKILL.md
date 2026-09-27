@@ -1,6 +1,6 @@
 ---
 name: brand-logo
-description: "Retrieve one public-domain logo image with ReplyNodes' free, read-only, zero-auth logo endpoint. Use this focused skill for logo-only requests; use brand-profile for broader identity context and brand-intelligence for wider research."
+description: "Retrieve one public-domain logo image with ReplyNodes' free, read-only, zero-auth logo endpoint. Use this focused skill for logo-only requests; use brand-kit for broader identity context and brand-intelligence for wider research."
 license: MIT
 compatibility: Requires network access only for the public logo request; no account, API key, or MCP connection is needed.
 metadata:
