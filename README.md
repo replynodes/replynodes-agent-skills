@@ -27,7 +27,7 @@ Three endpoints need no account and no API key at all:
 - `https://md.replynodes.com/{url}` — a public page as clean Markdown.
 - `https://brand.replynodes.com/{domain}` — a free, zero-auth brand kit for one
   public domain (identity, logos, colors, fonts, styleguide). See the
-  `brand-kit` skill for the request and response contract.
+  `brand-kit-fetch` skill for the request and response contract.
 - `https://img.replynodes.com/{domain}` — one public-domain logo image with no
   signup or API key. See the focused `brand-logo` skill for response and
   fallback behavior.
@@ -52,7 +52,7 @@ Umbrella research skill:
 ```bash
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-logo
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-kit
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-kit-fetch
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-profile
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-intelligence
 ```
@@ -78,7 +78,7 @@ Marketplace source pages:
 
 - [ReplyNodes Agent Skills on skills.sh](https://www.skills.sh/replynodes/replynodes-agent-skills/replynodes)
 - [Brand logo](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-logo)
-- [Brand kit](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-kit)
+- [Brand kit](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-kit-fetch)
 - [Brand profile](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-profile)
 - [Brand intelligence](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-intelligence)
 - [URL to Markdown](https://www.skills.sh/replynodes/replynodes-agent-skills/url-to-markdown)
