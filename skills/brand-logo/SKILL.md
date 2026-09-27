@@ -14,7 +14,8 @@ metadata:
 Use this skill only when the user wants the logo image for one known public
 domain. It is intentionally logo-only: route requests for colors, fonts,
 descriptions, styleguide information, company context, or multi-source research
-to `brand-profile` or `brand-intelligence` instead.
+to `brand-kit` or `brand-intelligence` instead. Use `brand-kit` for the broader
+logo, colors, fonts, typography, and visual identity context.
 
 ## Verified zero-auth request
 

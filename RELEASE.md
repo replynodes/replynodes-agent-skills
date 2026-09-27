@@ -1,6 +1,14 @@
 # Release checklist
 
-This branch prepares package version `v2.0.2` from `VERSION`.
+This branch prepares package version `v2.0.3` from `VERSION`.
+
+## v2.0.3 release notes
+
+- Adds the agent-first `brand-kit` skill for the free, zero-auth
+  `https://brand.replynodes.com/{domain}` endpoint.
+- Keeps `brand-logo` focused on logo-only retrieval and links broader identity
+  requests to `brand-kit`.
+- Adds `brand-kit` to the skills.sh taxonomy and README install/discovery links.
 
 ## v2.0.2 release notes
 
