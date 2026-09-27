@@ -35,9 +35,12 @@ the canonical Agent Skills source is
 The permanent logo/Markdown acquisition hub is
 [`free-markdown-brand-logo-api`](https://github.com/replynodes/free-markdown-brand-logo-api);
 it contains examples only and does not duplicate these skills. The canonical
-repository above is the maintained source; the old
+repository above is the maintained source. Current ClawHub listings are
+[URL to Markdown](https://clawhub.ai/replynodes-ai/skills/url-to-markdown) and
+[Brand Logo](https://clawhub.ai/replynodes-ai/skills/brand-logo). The old
 [`replynodes/agent-skills`](https://github.com/replynodes/agent-skills) repository
-remains pending external-listing migration and redirect verification.
+is archived and preserved for historical provenance; the canonical repository
+above is the maintained source.
 
 ## Install
 
