@@ -34,9 +34,10 @@ the canonical Agent Skills source is
 [`replynodes/replynodes-agent-skills`](https://github.com/replynodes/replynodes-agent-skills).
 The permanent logo/Markdown acquisition hub is
 [`free-markdown-brand-logo-api`](https://github.com/replynodes/free-markdown-brand-logo-api);
-it contains examples only and does not duplicate these skills. The old
+it contains examples only and does not duplicate these skills. The canonical
+repository above is the maintained source; the old
 [`replynodes/agent-skills`](https://github.com/replynodes/agent-skills) repository
-is deprecated; use the canonical repository above.
+remains pending external-listing migration and redirect verification.
 
 ## Install
 
