@@ -16,8 +16,17 @@
   `https://www.skills.sh/replynodes/replynodes-agent-skills/brand-logo`.
 - Acquisition hub: `https://github.com/replynodes/free-markdown-brand-logo-api`.
   It contains examples only and no duplicate Agent Skills files.
-- ClawHub migration: not migrated or verified in this change; no external
-  ClawHub listing change is claimed.
+- ClawHub migration: verified. ClawHub latest
+  `@replynodes-ai/url-to-markdown` is `1.1.2`, and its published metadata
+  repository is `https://github.com/replynodes/replynodes-agent-skills`.
+  ClawHub latest `@replynodes-ai/brand-logo` is `1.0.0` from canonical
+  `skills/brand-logo`.
+- The ClawHub merge already read back:
+  `https://clawhub.ai/replynodes-ai/skills/brand-logo-fetch` redirects to
+  `https://clawhub.ai/replynodes-ai/skills/brand-logo`.
+- The old `https://github.com/replynodes/agent-skills` repository is not yet
+  claimed to be archived; its redirect/archive remains pending until its PR is
+  merged and the repository is archived.
 - This repository contains authored instructions and deterministic validation
   only. It deliberately excludes backend source, database/provider access,
   credentials, provider tokens, account IDs, workspace IDs, and secrets.
