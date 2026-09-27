@@ -2,9 +2,11 @@
 
 [![skills.sh](https://skills.sh/b/replynodes/replynodes-agent-skills)](https://skills.sh/replynodes/replynodes-agent-skills/replynodes)
 
-ReplyNodes is a **read-only web and public-data research layer for AI agents**.
+ReplyNodes is a **web and public-data context layer for AI agents**.
 It provides current public context through a production MCP instead of asking an
-agent to guess from model memory or use provider credentials directly.
+agent to guess from model memory or use provider credentials directly. Most
+research tools are read-oriented; the live MCP `tools/list` is authoritative and
+also includes authenticated monitor operations.
 
 Use it for:
 
@@ -16,8 +18,9 @@ Use it for:
 - competitor research, product research, market research, and multi-source
   public-data workflows.
 
-ReplyNodes does not provide write, publish, schedule, account-login, or private
-provider operations. The live MCP `tools/list` response is always authoritative.
+This repository does not provide social publishing or scheduling. Do not infer
+the complete server surface from this README; discover the live tools at
+`https://mcp.replynodes.com/mcp` with `tools/list`.
 
 Three endpoints need no account and no API key at all:
 
