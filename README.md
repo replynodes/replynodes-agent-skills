@@ -25,6 +25,18 @@ Two endpoints need no account and no API key at all:
 - `https://brand.replynodes.com/{domain}` — a complete brand kit for one public
   domain (identity, logos, colors, fonts, styleguide). See the `brand-profile`
   skill for the response shape, caching, and limits.
+- `https://img.replynodes.com/{domain}` — one public-domain logo image with no
+  signup or API key. See the focused `brand-logo` skill for response and
+  fallback behavior.
+
+The [ReplyNodes home page](https://replynodes.com/) is the product entry point;
+the canonical Agent Skills source is
+[`replynodes/replynodes-agent-skills`](https://github.com/replynodes/replynodes-agent-skills).
+The permanent logo/Markdown acquisition hub is
+[`free-markdown-brand-logo-api`](https://github.com/replynodes/free-markdown-brand-logo-api);
+it contains examples only and does not duplicate these skills. The old
+[`replynodes/agent-skills`](https://github.com/replynodes/agent-skills) repository
+is deprecated; use the canonical repository above.
 
 ## Install
 
@@ -32,37 +44,39 @@ Umbrella research skill:
 
 ```bash
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-logo
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-profile
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-intelligence
 ```
 
-Focused intent skills (each has its own searchable marketplace entry):
+Focused intent skills from the canonical repository (each can be selected by
+slug):
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-web-search --skill web-search
-npx skills add https://github.com/replynodes/replynodes-web-scraping --skill web-scraping
-npx skills add https://github.com/replynodes/replynodes-reddit-research --skill reddit-research
-npx skills add https://github.com/replynodes/replynodes-competitor-research --skill competitor-research
-npx skills add https://github.com/replynodes/replynodes-brand-intelligence --skill brand-intelligence
-npx skills add https://github.com/replynodes/replynodes-brand-search --skill brand-search
-npx skills add https://github.com/replynodes/replynodes-brand-profile --skill brand-profile
-npx skills add https://github.com/replynodes/replynodes-brand-styleguide --skill brand-styleguide
-npx skills add https://github.com/replynodes/replynodes-brand-fonts --skill brand-fonts
-npx skills add https://github.com/replynodes/replynodes-youtube-research --skill youtube-research
-npx skills add https://github.com/replynodes/replynodes-app-store-research --skill app-store-research
-npx skills add https://github.com/replynodes/replynodes-google-play-research --skill google-play-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-search
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-scraping
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill reddit-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill competitor-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-search
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-styleguide
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-fonts
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill youtube-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill app-store-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill google-play-research
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill url-to-markdown
 ```
 
-Marketplace pages:
+Marketplace source pages:
 
-- [Web search](https://www.skills.sh/replynodes/replynodes-web-search/web-search)
-- [Web scraping](https://www.skills.sh/replynodes/replynodes-web-scraping/web-scraping)
-- [Reddit research](https://www.skills.sh/replynodes/replynodes-reddit-research/reddit-research)
-- [Competitor research](https://www.skills.sh/replynodes/replynodes-competitor-research/competitor-research)
-- [Brand intelligence](https://www.skills.sh/replynodes/replynodes-brand-intelligence/brand-intelligence)
-- [YouTube research](https://www.skills.sh/replynodes/replynodes-youtube-research/youtube-research)
-- [App Store research](https://www.skills.sh/replynodes/replynodes-app-store-research/app-store-research)
-- [Google Play research](https://www.skills.sh/replynodes/replynodes-google-play-research/google-play-research)
+- [ReplyNodes Agent Skills on skills.sh](https://www.skills.sh/replynodes/replynodes-agent-skills/replynodes)
+- [Brand logo](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-logo)
+- [Brand profile](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-profile)
+- [Brand intelligence](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-intelligence)
 - [URL to Markdown](https://www.skills.sh/replynodes/replynodes-agent-skills/url-to-markdown)
+
+The source repository and its `skills.sh.json` taxonomy are the canonical
+distribution metadata. Do not infer that a marketplace or ClawHub listing has
+updated until its external page is read back.
 
 The official CLI needs `--full-depth` only when installing from a local clone that
 contains both the root umbrella and nested focused skills.

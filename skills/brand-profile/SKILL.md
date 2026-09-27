@@ -1,6 +1,6 @@
 ---
 name: brand-profile
-description: "Retrieve a brand profile with ReplyNodes: public logos, colors, identity metadata, and company signals for a known brand or domain. A single domain resolves through a free, read-only, zero-auth brand-kit endpoint with no API key."
+description: "Retrieve broader brand identity context with ReplyNodes: public logos, colors, identity metadata, and company signals for a known brand or domain. Route logo-only intent to brand-logo first; a single domain resolves through a free, read-only, zero-auth brand-kit endpoint with no API key."
 license: MIT
 compatibility: The free one-domain endpoint needs only network access; the authenticated MCP route requires an MCP-capable agent and REPLYNODES_API_KEY in a secret store.
 metadata:
@@ -12,8 +12,10 @@ metadata:
 
 # ReplyNodes brand profile
 
-Use this skill when the user asks “find this company’s logo,” “get brand colors,”
-“retrieve brand identity,” or wants public brand metadata for a known domain.
+Use this skill when the user asks for brand identity context, colors, company
+signals, or public brand metadata for a known domain. If the request is only to
+retrieve a logo image, route to `brand-logo` first; this skill is broader than
+logo-only retrieval.
 ReplyNodes retrieves public signals and is read-only; it does not upload, edit, or
 license assets.
 

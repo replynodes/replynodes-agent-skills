@@ -1,6 +1,6 @@
 ---
 name: brand-intelligence
-description: "Research a company or brand with ReplyNodes read-only public data: discover the brand, retrieve identity signals, inspect logos/colors, and find fonts or styleguide information."
+description: "Research a company or brand with ReplyNodes read-only public data: discover the brand, retrieve identity signals, inspect logos/colors, and find fonts or styleguide information. Route logo-only intent to brand-logo first."
 license: MIT
 compatibility: The free single-domain shortcut needs only network access; the authenticated MCP route requires an MCP-capable agent and REPLYNODES_API_KEY in a secret store.
 metadata:
@@ -12,8 +12,10 @@ metadata:
 # ReplyNodes brand intelligence
 
 Use this skill for company research, brand intelligence, competitor research, or
-requests to understand a brand's public identity. It retrieves public signals
-only and is read-only: it does not modify brand assets, accounts, or websites.
+requests to understand a brand's public identity. If the user only wants one
+logo image, route to `brand-logo` first; this skill is for wider research and
+context. It retrieves public signals only and is read-only: it does not modify
+brand assets, accounts, or websites.
 
 Connect to `https://mcp.replynodes.com/mcp` with
 `Authorization: Bearer ${REPLYNODES_API_KEY}`. Keep the key in a secret store;
