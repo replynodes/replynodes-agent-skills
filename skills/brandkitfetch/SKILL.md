@@ -1,5 +1,5 @@
 ---
-name: brand-kit-fetch
+name: brandkitfetch
 description: "Free Brand Kit Fetch for AI agents. Get a company’s existing logos, colors, fonts, typography and visual identity from its domain via brand.replynodes.com."
 license: MIT
 compatibility: Requires network access only; the public endpoint is free and zero-auth.
@@ -74,7 +74,7 @@ or quota rules.
 
 ## Brand Kit Fetch vs Brand Logo
 
-- **brand-kit-fetch**: fetch an existing company’s public logo, colors, fonts,
+- **brandkitfetch**: fetch an existing company’s public logo, colors, fonts,
   typography, and broader visual identity.
 - **brand-logo**: logo-only lookup for one logo image.
 

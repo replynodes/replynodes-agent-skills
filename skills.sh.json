@@ -21,7 +21,7 @@
       "title": "Brand research",
       "description": "ReplyNodes read-only brand discovery, identity, styleguide, and typography research.",
       "skills": [
-        "brand-kit-fetch",
+        "brandkitfetch",
         "brand-intelligence",
         "brand-search",
         "brand-profile",

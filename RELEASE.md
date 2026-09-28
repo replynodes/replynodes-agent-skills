@@ -4,15 +4,15 @@ This branch prepares package version `v2.0.3` from `VERSION`.
 
 ## v2.0.3 release notes
 
-- Adds the agent-first `brand-kit-fetch` skill for the free, zero-auth
+- Adds the agent-first `brandkitfetch` skill for the free, zero-auth
   `https://brand.replynodes.com/{domain}` endpoint.
 - Keeps `brand-logo` focused on logo-only retrieval and links broader identity
-  requests to `brand-kit-fetch`.
-- Adds `brand-kit-fetch` to the skills.sh taxonomy and README install/discovery links.
+  requests to `brandkitfetch`.
+- Adds `brandkitfetch` to the skills.sh taxonomy and README install/discovery links.
 
 ## v2.0.2 release notes
 
-- Documents the free, zero-auth brand-kit-fetch endpoint at
+- Documents the free, zero-auth brandkitfetch endpoint at
   `https://brand.replynodes.com` in the `brand-profile` skill.
 - Adds a single-domain shortcut note to `brand-intelligence` that links to
   `brand-profile` for the full contract.
