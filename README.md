@@ -22,7 +22,7 @@ This repository does not provide social publishing or scheduling. Do not infer
 the complete server surface from this README; discover the live tools at
 `https://mcp.replynodes.com/mcp` with `tools/list`.
 
-Three endpoints need no account and no API key at all:
+Four endpoints need no account and no API key at all:
 
 - `https://md.replynodes.com/{url}` — a public page as clean Markdown.
 - `https://brand.replynodes.com/{domain}` — a free, zero-auth brand kit for one
