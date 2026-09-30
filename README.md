@@ -22,7 +22,7 @@ This repository does not provide social publishing or scheduling. Do not infer
 the complete server surface from this README; discover the live tools at
 `https://mcp.replynodes.com/mcp` with `tools/list`.
 
-Four endpoints need no account and no API key at all:
+These three documented endpoints are live and need no account or API key:
 
 - `https://md.replynodes.com/{url}` — a public page as clean Markdown.
 - `https://brand.replynodes.com/{domain}` — a free, zero-auth brand kit for one
@@ -31,9 +31,12 @@ Four endpoints need no account and no API key at all:
 - `https://img.replynodes.com/{domain}` — one public-domain logo image with no
   signup or API key. See the focused `brand-logo` skill for response and
   fallback behavior.
-- `https://pdf.replynodes.com/` — read a public PDF as clean Markdown with no
-  account or API key. See the focused `pdf-to-markdown` skill for the POST
-  request, limits, and safety boundaries.
+
+The documented no-key direct HTTP contract for
+`https://pdf.replynodes.com/` is pending production deployment and readback.
+Do not treat current production availability or live conversion success as
+established. See the focused `pdf-to-markdown` skill for the POST request,
+limits, and safety boundaries.
 
 The [ReplyNodes home page](https://replynodes.com/) is the product entry point;
 the canonical Agent Skills source is
