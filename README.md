@@ -31,6 +31,9 @@ Three endpoints need no account and no API key at all:
 - `https://img.replynodes.com/{domain}` — one public-domain logo image with no
   signup or API key. See the focused `brand-logo` skill for response and
   fallback behavior.
+- `https://pdf.replynodes.com/` — read a public PDF as clean Markdown with no
+  account or API key. See the focused `pdf-to-markdown` skill for the POST
+  request, limits, and safety boundaries.
 
 The [ReplyNodes home page](https://replynodes.com/) is the product entry point;
 the canonical Agent Skills source is
@@ -72,7 +75,11 @@ npx skills add https://github.com/replynodes/replynodes-agent-skills --skill you
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill app-store-research
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill google-play-research
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill url-to-markdown
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill pdf-to-markdown
 ```
+
+Read the [PDF to Markdown skill source](skills/pdf-to-markdown/SKILL.md) for
+the direct REST contract, limits, and safety boundaries.
 
 Marketplace source pages:
 
