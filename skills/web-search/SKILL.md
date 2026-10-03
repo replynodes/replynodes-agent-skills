@@ -30,7 +30,7 @@ are authoritative.
 
 ## Route this intent
 
-Start with the exact live tool `web_search_web_search`. Search for the entity,
+Start with the exact live tool `web_search`. Search for the entity,
 question, or distinctive terms, then inspect promising primary URLs with
 `webcontext_scrape` when evidence needs page text. Preserve source URLs and dates.
 Prefer primary sources; cross-check important or consequential claims.

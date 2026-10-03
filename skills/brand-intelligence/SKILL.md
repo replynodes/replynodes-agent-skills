@@ -11,10 +11,11 @@ metadata:
 
 # ReplyNodes brand intelligence
 
-Use this skill for company research, brand intelligence, competitor research, or
-requests to understand a brand's public identity. If the user only wants one
-logo image, route to `brand-logo` first; this skill is for wider research and
-context. It retrieves public signals only and is read-only: it does not modify
+Use this skill for identity-only brand intelligence or requests to understand a
+brand's public identity. General company profile/context routes to
+`company-research`; competitor comparisons route to `competitor-research`. If
+the user only wants one logo image, route to `brand-logo` first; this skill is
+for wider identity context. It retrieves public signals only and is read-only: it does not modify
 brand assets, accounts, or websites.
 
 Connect to `https://mcp.replynodes.com/mcp` with

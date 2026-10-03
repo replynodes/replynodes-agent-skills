@@ -5,7 +5,11 @@ schemas with MCP `tools/list` before execution.
 
 ## Company profile
 
-1. `web_search_web_search` for the official domain and independent coverage.
+For a general company profile or context request, route to `company-research`.
+Identity-only requests route to `brand-intelligence`; competitor comparisons
+route to `competitor-research`.
+
+1. `web_search` for the official domain and independent coverage.
 2. `webcontext_map` to discover the site structure.
 3. `webcontext_crawl` for bounded relevant pages.
 4. `brand_retrieve`, then `brand_fonts` or `brand_styleguide` for public identity

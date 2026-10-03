@@ -6,7 +6,7 @@ server remains authoritative if this file and production differ.
 
 ## Web and website research (5)
 
-- `web_search_web_search` — structured public web search.
+- `web_search` — structured public web search.
 - `webcontext_scrape` — clean Markdown for one URL.
 - `webcontext_crawl` — bounded same-origin crawl.
 - `webcontext_map` — discover and deduplicate site URLs.

@@ -13,6 +13,10 @@ tar -C "$root" --exclude=.git --exclude='*.swp' -cf - . | tar -C "$tmp" -xf -
 cmp "$root/SKILL.md" "$tmp/SKILL.md"
 cmp "$root/references/live-capability-routing.md" "$tmp/references/live-capability-routing.md"
 cmp "$root/references/research-workflows.md" "$tmp/references/research-workflows.md"
+cmp "$root/references/company-brief-contract.md" "$tmp/references/company-brief-contract.md"
+cmp "$root/references/company-brief.schema.json" "$tmp/references/company-brief.schema.json"
+
+"$root/tests/test-company-brief-schema.sh"
 
 # The official Agent Skills validator is run separately because it expects the
 # skill directory itself to be named `replynodes`; this repository is the source
