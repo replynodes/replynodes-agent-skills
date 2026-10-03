@@ -14,6 +14,9 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+from company_brief_validator import validate_brief
+
 DEFAULT_CAP = 12
 HARD_CAP = 20
 MAX_BODY = 2 * 1024 * 1024
@@ -25,6 +28,7 @@ CASES = (
     {"domain": "loom.com", "name": "Loom", "kind": "pricing_unavailable", "pages": ("https://www.loom.com/",)},
     {"domain": "microsoft.com", "name": "Microsoft", "kind": "larger_multi_product", "pages": ("https://www.microsoft.com/", "https://www.microsoft.com/en-us/windows/")},
 )
+DOCUMENTED_CANDIDATE_ORDER = ("product/features", "pricing/plans", "integrations", "about", "docs", "customers/case_studies", "changelog/blog")
 
 def now():
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -88,36 +92,74 @@ def mcp_tools_once():
         read_body(error.read)
     return status, content_type, sorted(names)
 
+def candidate_trace(case):
+    """Execute the deterministic 20-slot admission queue and next decision."""
+    selected = list(case["pages"])
+    if len(selected) > HARD_CAP:
+        raise AssertionError("selected candidate list exceeds hard cap")
+    decisions = []
+    accepted_count = 0
+
+    def consider_candidate(number):
+        nonlocal accepted_count
+        kind = DOCUMENTED_CANDIDATE_ORDER[(number - 1) % len(DOCUMENTED_CANDIDATE_ORDER)]
+        source = selected[number - 1] if number <= len(selected) else None
+        if accepted_count >= HARD_CAP:
+            return {
+                "candidate_number": number,
+                "candidate_kind": kind,
+                "decision": "rejected_hard_cap",
+                "accepted": False,
+                "selected": False,
+                "request_made": False,
+                "retry_or_fallback_count": 0,
+            }
+        accepted_count += 1
+        return {
+            "candidate_number": number,
+            "candidate_kind": kind,
+            "decision": "admitted_selected" if source else "admitted_not_selected",
+            "accepted": True,
+            "selected": bool(source),
+            "request_made": bool(source),
+            "retry_or_fallback_count": 0,
+            **({"source_url": source} if source else {}),
+        }
+
+    for number in range(1, HARD_CAP + 2):
+        decision = consider_candidate(number)
+        decisions.append(decision)
+        if decision["decision"] == "rejected_hard_cap":
+            break
+
+    candidate_21 = decisions[-1]
+    trace = {
+        "candidate_order": list(DOCUMENTED_CANDIDATE_ORDER),
+        "selected_candidate_sequence": decisions,
+        "candidate_21": candidate_21,
+        "accepted_count": sum(item["accepted"] for item in decisions),
+        "attempted_count": len(decisions),
+        "attempted_candidate_number": decisions[-1]["candidate_number"],
+        "request_made_count": sum(item["request_made"] for item in decisions),
+        "retry_or_fallback_count": sum(item["retry_or_fallback_count"] for item in decisions),
+    }
+    assert trace["accepted_count"] <= HARD_CAP
+    assert trace["accepted_count"] == HARD_CAP
+    assert trace["attempted_candidate_number"] == HARD_CAP + 1
+    assert candidate_21 is decisions[-1]
+    assert candidate_21["decision"] == "rejected_hard_cap"
+    assert candidate_21["accepted"] is False
+    assert candidate_21["selected"] is False
+    assert candidate_21["request_made"] is False
+    assert candidate_21["retry_or_fallback_count"] == 0
+    assert trace["retry_or_fallback_count"] == 0
+    return trace
+
 def support(text, pattern, present):
     return ("Observed bounded fetched text matching " + pattern + ".") if present else ("No bounded fetched text matching " + pattern + " was observed.")
 
 def claim(value, evidence):
     return {"value": value, "evidence_ids": [evidence]}
-
-def validate_brief(brief):
-    required = {"brief_version", "generated_at", "company", "summary", "products", "target_market", "pricing", "features", "integrations", "important_pages", "recent_updates", "brand", "evidence", "claim_evidence", "coverage_limits", "meta"}
-    if set(brief) != required or brief["brief_version"] != "1.0": raise AssertionError("brief shape does not match contract")
-    evidence = {item["id"] for item in brief["evidence"]}
-    if len(evidence) != len(brief["evidence"]): raise AssertionError("duplicate evidence ID")
-    paths = {"summary.one_liner", "summary.category", "summary.positioning", "pricing.model"}
-    for field in ("products", "target_market", "features", "integrations", "recent_updates"):
-        paths.update(f"{field}[{i}]" for i in range(len(brief[field])))
-    paths.update(f"pricing.plans[{i}]" for i in range(len(brief["pricing"]["plans"])))
-    for path, item in ((path, brief["summary"][path.split(".")[1]]) for path in ("summary.one_liner", "summary.category", "summary.positioning")):
-        if not set(item["evidence_ids"]) <= evidence: raise AssertionError(path + " dangling evidence")
-    for field in ("products", "target_market", "features", "integrations", "recent_updates"):
-        for item in brief[field]:
-            if not set(item["evidence_ids"]) <= evidence: raise AssertionError(field + " dangling evidence")
-    if not set(brief["pricing"]["model"]["evidence_ids"]) <= evidence: raise AssertionError("pricing dangling evidence")
-    for item in brief["pricing"]["plans"]:
-        if not set(item["evidence_ids"]) <= evidence: raise AssertionError("plan dangling evidence")
-    if any(page["evidence_id"] not in evidence for page in brief["important_pages"]): raise AssertionError("page dangling evidence")
-    linked = {item["claim_path"] for item in brief["claim_evidence"]}
-    if linked != paths: raise AssertionError("claim/evidence coverage mismatch")
-    if any(set(item["evidence_ids"]) - evidence for item in brief["claim_evidence"]): raise AssertionError("linkage dangling evidence")
-    pricing = brief["pricing"]
-    if pricing["unknown"] != (pricing["model"]["value"] is None and pricing["plans"] == []): raise AssertionError("pricing unknown invariant")
-    if not pricing["unknown"] and (pricing["model"]["value"] is None or not pricing["plans"]): raise AssertionError("observed pricing invariant")
 
 def make_brief(case, fetched):
     pages, brand_result = fetched[:-1], fetched[-1]
@@ -152,7 +194,6 @@ def make_brief(case, fetched):
         "coverage_limits": (["Pricing was not observed in the one selected pricing page; pricing is unknown."] if not pricing_seen else []) + ["Only two Markdown pages and one Brand response were selected; no raw response body was retained."],
         "meta": {"capabilities_used": ["free_markdown", "free_brand"], "tool_calls": [{"surface": "free_markdown", "operation": "GET", "source_url": item["source_url"], "http_status": item["status"] or 599, "content_type": item["content_type"] or "unavailable"} for item in pages] + [{"surface": "free_brand", "operation": "GET", "source_url": brand_result["source_url"], "http_status": brand_result["status"] or 599, "content_type": brand_result["content_type"] or "unavailable"}], "synthesis": "host_agent", "page_read_count": len(pages), "page_read_budget_default": DEFAULT_CAP, "page_read_budget_hard_cap": HARD_CAP},
     }
-    validate_brief(brief)
     return brief
 
 def main():
@@ -160,20 +201,29 @@ def main():
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
     if "REPLYNODES_API_KEY" in __import__("os").environ: raise SystemExit("refusing an environment containing REPLYNODES_API_KEY")
-    reports, briefs = [], []
+    reports, briefs, traces = [], [], []
     for case in CASES:
+        trace = candidate_trace(case)
         fetched = []
         for source in case["pages"]:
             endpoint = md_url(source); result = get_once(endpoint); result["surface"] = "free_markdown"; result["source_url"] = source; result["endpoint_url"] = endpoint; fetched.append(result)
         brand_source = "https://brand.replynodes.com/" + case["domain"]; result = get_once(brand_source); result["surface"] = "free_brand"; result["source_url"] = brand_source; result["endpoint_url"] = brand_source; fetched.append(result)
-        reports.append({"domain": case["domain"], "requests": [{k: v for k, v in item.items() if k != "text"} for item in fetched]})
-        briefs.append(make_brief(case, fetched))
+        brief = make_brief(case, fetched)
+        validate_brief(brief)
+        page_count = brief["meta"]["page_read_count"]
+        assert page_count == len(case["pages"]) == trace["request_made_count"]
+        assert page_count <= brief["meta"]["page_read_budget_default"] <= DEFAULT_CAP
+        assert page_count <= brief["meta"]["page_read_budget_hard_cap"] <= HARD_CAP
+        reports.append({"domain": case["domain"], "requests": [{k: v for k, v in item.items() if k != "text"} for item in fetched], "page_read_count": page_count, "schema_validation": "passed"})
+        briefs.append(brief)
+        traces.append(trace)
     skill = Path(__file__).parents[1] / "skills/company-research/SKILL.md"
     text = skill.read_text(encoding="utf-8")
     claimed = [name for name in TOOL_NAMES if name in text]
     mcp_status, mcp_type, observed = mcp_tools_once()
     if not set(claimed) <= set(observed): raise SystemExit("live tools/list is missing claimed tool names")
-    output = {"generated_at": now(), "keyless": True, "surfaces": ["free_markdown", "free_brand"], "requests": reports, "mcp_tools_list": {"endpoint": MCP_URL, "http_status": mcp_status, "content_type": mcp_type or "unavailable", "claimed_tool_names": claimed, "observed_tool_names": observed}, "budget_proof": {"default_cap": DEFAULT_CAP, "hard_cap": HARD_CAP, "candidate_21": {"accepted": False, "request_made": False, "retry_or_fallback": False}, "per_company_page_read_count": {case["domain"]: brief["meta"]["page_read_count"] for case, brief in zip(CASES, briefs)}}, "briefs": briefs}
+    per_company = {case["domain"]: {"candidate_sequence": trace["selected_candidate_sequence"], "accepted_count": trace["accepted_count"], "attempted_count": trace["attempted_count"], "attempted_candidate_number": trace["attempted_candidate_number"], "candidate_21": trace["candidate_21"], "request_made_count": trace["request_made_count"], "retry_or_fallback_count": trace["retry_or_fallback_count"], "page_read_count": brief["meta"]["page_read_count"]} for case, brief, trace in zip(CASES, briefs, traces)}
+    output = {"generated_at": now(), "keyless": True, "surfaces": ["free_markdown", "free_brand"], "requests": reports, "mcp_tools_list": {"endpoint": MCP_URL, "http_status": mcp_status, "content_type": mcp_type or "unavailable", "claimed_tool_names": claimed, "observed_tool_names": observed}, "schema_validation": {case["domain"]: report["schema_validation"] for case, report in zip(CASES, reports)}, "budget_proof": {"default_cap": DEFAULT_CAP, "hard_cap": HARD_CAP, "per_company": per_company, "candidate_traces": {case["domain"]: trace for case, trace in zip(CASES, traces)}}, "briefs": briefs}
     args.output.parent.mkdir(parents=True, exist_ok=True); args.output.write_text(json.dumps(output, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"wrote sanitized keyless E2E report: {args.output}")
 

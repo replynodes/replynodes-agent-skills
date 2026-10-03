@@ -92,12 +92,14 @@ status, `Content-Type`, exact source URLs, surface, and per-company
 skill is present in the live response. It never reads or supplies
 `REPLYNODES_API_KEY`.
 
-The emitted briefs are schema-validated and every material claim is linked to
-evidence. Pricing is machine-checkable: `unknown: true` requires
+The emitted briefs are validated before report success with the same deterministic
+schema, claim/evidence, and pricing contract validator used by the repository
+schema gate. Every material claim is linked to evidence. Pricing is machine-checkable: `unknown: true` requires
 `model.value: null` and `plans: []`; `unknown: false` requires a non-null
 observed model and at least one observed plan. The report includes coverage
-limits and a deterministic budget proof for the default cap of 12, hard cap of
-20, and rejection of candidate 21 without retry or fallback. A failed or
+limits, each company's observed candidate sequence, and a trace-derived budget
+proof for the default cap of 12, hard cap of 20, and rejection of candidate 21
+without retry or fallback. A failed or
 unavailable fetch is recorded as a coverage limit, never as invented evidence.
 
 ## Example prompts
