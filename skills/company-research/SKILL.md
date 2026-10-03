@@ -81,15 +81,24 @@ time, and a bounded excerpt or support note. `meta.synthesis` is always
 
 ## Bounded keyless E2E procedure
 
-For a local three-domain smoke run, use the real public domains
-`replynodes.com`, `github.com`, and `stripe.com` (or three user-supplied public
-domains). For each domain, perform only the homepage Markdown GET and Brand GET,
-record the raw HTTP status and `Content-Type` plus the exact source URLs, then
-produce a brief with `page_read_budget_default: 12`,
-`page_read_budget_hard_cap: 20`, and assert `0 <= page_read_count <= 12`.
-Do not supply `REPLYNODES_API_KEY`, call paid MCP, retry failed/duplicate
-candidates, or retain the raw response outside local untracked evidence. A
-failure is a coverage limit, not permission to exceed the cap.
+Run `tests/run-company-research-keyless-e2e.py --output PATH` for the
+reproducible three-case check: `linear.app` (public pricing), `loom.com`
+(pricing unavailable), and `microsoft.com` (larger multi-product). The runner
+uses only the free Markdown and Brand HTTP surfaces, makes one no-retry request
+per selected page/endpoint, keeps no raw response bodies, and records sanitized
+status, `Content-Type`, exact source URLs, surface, and per-company
+`page_read_count`. It also makes one keyless `tools/list` request to
+`https://mcp.replynodes.com/mcp` and asserts that every tool named in this
+skill is present in the live response. It never reads or supplies
+`REPLYNODES_API_KEY`.
+
+The emitted briefs are schema-validated and every material claim is linked to
+evidence. Pricing is machine-checkable: `unknown: true` requires
+`model.value: null` and `plans: []`; `unknown: false` requires a non-null
+observed model and at least one observed plan. The report includes coverage
+limits and a deterministic budget proof for the default cap of 12, hard cap of
+20, and rejection of candidate 21 without retry or fallback. A failed or
+unavailable fetch is recorded as a coverage limit, never as invented evidence.
 
 ## Example prompts
 

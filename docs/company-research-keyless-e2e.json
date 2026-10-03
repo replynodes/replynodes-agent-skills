@@ -1,0 +1,768 @@
+{
+  "briefs": [
+    {
+      "brand": {
+        "colors": [],
+        "description": null,
+        "fonts": [],
+        "logo_url": null,
+        "name": "Linear",
+        "unknown": false
+      },
+      "brief_version": "1.0",
+      "claim_evidence": [
+        {
+          "claim_path": "summary.one_liner",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.category",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.positioning",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "products[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "target_market[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "pricing.model",
+          "evidence_ids": [
+            "selected-page"
+          ]
+        },
+        {
+          "claim_path": "features[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "pricing.plans[0]",
+          "evidence_ids": [
+            "selected-page"
+          ]
+        }
+      ],
+      "company": {
+        "domain": "linear.app",
+        "homepage_url": "https://linear.app/",
+        "name": "Linear"
+      },
+      "coverage_limits": [
+        "Only two Markdown pages and one Brand response were selected; no raw response body was retained."
+      ],
+      "evidence": [
+        {
+          "excerpt_or_support": "Bounded homepage Markdown fetch completed; response body omitted.",
+          "fetched_at": "2026-10-03T17:09:11Z",
+          "id": "homepage",
+          "kind": "first_party",
+          "source_url": "https://linear.app/"
+        },
+        {
+          "excerpt_or_support": "Observed bounded fetched text matching pricing or product evidence.",
+          "fetched_at": "2026-10-03T17:09:11Z",
+          "id": "selected-page",
+          "kind": "first_party",
+          "source_url": "https://linear.app/pricing"
+        },
+        {
+          "excerpt_or_support": "Bounded Brand fetch completed; response body omitted.",
+          "fetched_at": "2026-10-03T17:09:11Z",
+          "id": "brand",
+          "kind": "first_party",
+          "source_url": "https://brand.replynodes.com/linear.app"
+        }
+      ],
+      "features": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Features described in bounded first-party text."
+        }
+      ],
+      "generated_at": "2026-10-03T17:09:11Z",
+      "important_pages": [
+        {
+          "category": "homepage",
+          "evidence_id": "homepage",
+          "url": "https://linear.app/"
+        },
+        {
+          "category": "pricing_plans",
+          "evidence_id": "selected-page",
+          "url": "https://linear.app/pricing"
+        }
+      ],
+      "integrations": [],
+      "meta": {
+        "capabilities_used": [
+          "free_markdown",
+          "free_brand"
+        ],
+        "page_read_budget_default": 12,
+        "page_read_budget_hard_cap": 20,
+        "page_read_count": 2,
+        "synthesis": "host_agent",
+        "tool_calls": [
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://linear.app/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://linear.app/pricing",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "application/json; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://brand.replynodes.com/linear.app",
+            "surface": "free_brand"
+          }
+        ]
+      },
+      "pricing": {
+        "model": {
+          "evidence_ids": [
+            "selected-page"
+          ],
+          "value": "subscription pricing observed in bounded first-party text"
+        },
+        "plans": [
+          {
+            "evidence_ids": [
+              "selected-page"
+            ],
+            "value": "Observed pricing plan text"
+          }
+        ],
+        "unknown": false
+      },
+      "products": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Products described in bounded first-party text."
+        }
+      ],
+      "recent_updates": [],
+      "summary": {
+        "category": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Software company."
+        },
+        "one_liner": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public company information observed in bounded first-party text."
+        },
+        "positioning": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public positioning is supported by the bounded homepage fetch."
+        }
+      },
+      "target_market": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public users and teams described by the company."
+        }
+      ]
+    },
+    {
+      "brand": {
+        "colors": [],
+        "description": null,
+        "fonts": [],
+        "logo_url": null,
+        "name": "Loom",
+        "unknown": false
+      },
+      "brief_version": "1.0",
+      "claim_evidence": [
+        {
+          "claim_path": "summary.one_liner",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.category",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.positioning",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "products[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "target_market[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "pricing.model",
+          "evidence_ids": [
+            "selected-page"
+          ]
+        },
+        {
+          "claim_path": "features[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        }
+      ],
+      "company": {
+        "domain": "loom.com",
+        "homepage_url": "https://www.loom.com/",
+        "name": "Loom"
+      },
+      "coverage_limits": [
+        "Pricing was not observed in the one selected pricing page; pricing is unknown.",
+        "Only two Markdown pages and one Brand response were selected; no raw response body was retained."
+      ],
+      "evidence": [
+        {
+          "excerpt_or_support": "Bounded homepage Markdown fetch completed; response body omitted.",
+          "fetched_at": "2026-10-03T17:09:11Z",
+          "id": "homepage",
+          "kind": "first_party",
+          "source_url": "https://www.loom.com/"
+        },
+        {
+          "excerpt_or_support": "No bounded fetched text matching pricing or product evidence was observed.",
+          "fetched_at": "2026-10-03T17:09:11Z",
+          "id": "selected-page",
+          "kind": "first_party",
+          "source_url": "https://www.loom.com/"
+        },
+        {
+          "excerpt_or_support": "Bounded Brand fetch completed; response body omitted.",
+          "fetched_at": "2026-10-03T17:09:11Z",
+          "id": "brand",
+          "kind": "first_party",
+          "source_url": "https://brand.replynodes.com/loom.com"
+        }
+      ],
+      "features": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Features described in bounded first-party text."
+        }
+      ],
+      "generated_at": "2026-10-03T17:09:11Z",
+      "important_pages": [
+        {
+          "category": "homepage",
+          "evidence_id": "homepage",
+          "url": "https://www.loom.com/"
+        }
+      ],
+      "integrations": [],
+      "meta": {
+        "capabilities_used": [
+          "free_markdown",
+          "free_brand"
+        ],
+        "page_read_budget_default": 12,
+        "page_read_budget_hard_cap": 20,
+        "page_read_count": 1,
+        "synthesis": "host_agent",
+        "tool_calls": [
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.loom.com/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "application/json; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://brand.replynodes.com/loom.com",
+            "surface": "free_brand"
+          }
+        ]
+      },
+      "pricing": {
+        "model": {
+          "evidence_ids": [
+            "selected-page"
+          ],
+          "value": null
+        },
+        "plans": [],
+        "unknown": true
+      },
+      "products": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Products described in bounded first-party text."
+        }
+      ],
+      "recent_updates": [],
+      "summary": {
+        "category": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Software company."
+        },
+        "one_liner": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public company information observed in bounded first-party text."
+        },
+        "positioning": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public positioning is supported by the bounded homepage fetch."
+        }
+      },
+      "target_market": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public users and teams described by the company."
+        }
+      ]
+    },
+    {
+      "brand": {
+        "colors": [],
+        "description": null,
+        "fonts": [],
+        "logo_url": null,
+        "name": "Microsoft",
+        "unknown": false
+      },
+      "brief_version": "1.0",
+      "claim_evidence": [
+        {
+          "claim_path": "summary.one_liner",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.category",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.positioning",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "products[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "target_market[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "pricing.model",
+          "evidence_ids": [
+            "selected-page"
+          ]
+        },
+        {
+          "claim_path": "features[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "pricing.plans[0]",
+          "evidence_ids": [
+            "selected-page"
+          ]
+        }
+      ],
+      "company": {
+        "domain": "microsoft.com",
+        "homepage_url": "https://www.microsoft.com/",
+        "name": "Microsoft"
+      },
+      "coverage_limits": [
+        "Only two Markdown pages and one Brand response were selected; no raw response body was retained."
+      ],
+      "evidence": [
+        {
+          "excerpt_or_support": "Bounded homepage Markdown fetch completed; response body omitted.",
+          "fetched_at": "2026-10-03T17:09:11Z",
+          "id": "homepage",
+          "kind": "first_party",
+          "source_url": "https://www.microsoft.com/"
+        },
+        {
+          "excerpt_or_support": "Observed bounded fetched text matching pricing or product evidence.",
+          "fetched_at": "2026-10-03T17:09:11Z",
+          "id": "selected-page",
+          "kind": "first_party",
+          "source_url": "https://www.microsoft.com/en-us/windows/"
+        },
+        {
+          "excerpt_or_support": "Bounded Brand fetch completed; response body omitted.",
+          "fetched_at": "2026-10-03T17:09:11Z",
+          "id": "brand",
+          "kind": "first_party",
+          "source_url": "https://brand.replynodes.com/microsoft.com"
+        }
+      ],
+      "features": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Features described in bounded first-party text."
+        }
+      ],
+      "generated_at": "2026-10-03T17:09:11Z",
+      "important_pages": [
+        {
+          "category": "homepage",
+          "evidence_id": "homepage",
+          "url": "https://www.microsoft.com/"
+        },
+        {
+          "category": "product_features",
+          "evidence_id": "selected-page",
+          "url": "https://www.microsoft.com/en-us/windows/"
+        }
+      ],
+      "integrations": [],
+      "meta": {
+        "capabilities_used": [
+          "free_markdown",
+          "free_brand"
+        ],
+        "page_read_budget_default": 12,
+        "page_read_budget_hard_cap": 20,
+        "page_read_count": 2,
+        "synthesis": "host_agent",
+        "tool_calls": [
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.microsoft.com/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.microsoft.com/en-us/windows/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "application/json; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://brand.replynodes.com/microsoft.com",
+            "surface": "free_brand"
+          }
+        ]
+      },
+      "pricing": {
+        "model": {
+          "evidence_ids": [
+            "selected-page"
+          ],
+          "value": "subscription pricing observed in bounded first-party text"
+        },
+        "plans": [
+          {
+            "evidence_ids": [
+              "selected-page"
+            ],
+            "value": "Observed pricing plan text"
+          }
+        ],
+        "unknown": false
+      },
+      "products": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Products described in bounded first-party text."
+        }
+      ],
+      "recent_updates": [],
+      "summary": {
+        "category": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Software company."
+        },
+        "one_liner": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public company information observed in bounded first-party text."
+        },
+        "positioning": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public positioning is supported by the bounded homepage fetch."
+        }
+      },
+      "target_market": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public users and teams described by the company."
+        }
+      ]
+    }
+  ],
+  "budget_proof": {
+    "candidate_21": {
+      "accepted": false,
+      "request_made": false,
+      "retry_or_fallback": false
+    },
+    "default_cap": 12,
+    "hard_cap": 20,
+    "per_company_page_read_count": {
+      "linear.app": 2,
+      "loom.com": 1,
+      "microsoft.com": 2
+    }
+  },
+  "generated_at": "2026-10-03T17:09:12Z",
+  "keyless": true,
+  "mcp_tools_list": {
+    "claimed_tool_names": [
+      "web_search",
+      "webcontext_map",
+      "webcontext_scrape",
+      "webcontext_crawl",
+      "brand_retrieve",
+      "brand_search",
+      "brand_styleguide",
+      "brand_fonts",
+      "brand_logo"
+    ],
+    "content_type": "text/event-stream",
+    "endpoint": "https://mcp.replynodes.com/mcp",
+    "http_status": 200,
+    "observed_tool_names": [
+      "app",
+      "brand_fonts",
+      "brand_logo",
+      "brand_retrieve",
+      "brand_search",
+      "brand_styleguide",
+      "developer",
+      "get_company_events",
+      "get_company_history",
+      "get_company_intelligence",
+      "get_fetcher_healthz",
+      "get_fetcher_readyz",
+      "get_recent_company_events",
+      "get_v1_hackernews_capabilities",
+      "googleplay_app_details",
+      "googleplay_availability",
+      "googleplay_categories",
+      "googleplay_category_apps",
+      "googleplay_data_safety",
+      "googleplay_developer",
+      "googleplay_permissions",
+      "googleplay_reviews",
+      "googleplay_search",
+      "googleplay_similar_apps",
+      "googleplay_suggest",
+      "hackernews_item",
+      "hackernews_search",
+      "hackernews_stories_ask",
+      "hackernews_stories_best",
+      "hackernews_stories_job",
+      "hackernews_stories_new",
+      "hackernews_stories_show",
+      "hackernews_stories_top",
+      "hackernews_user",
+      "list",
+      "monitor_changes",
+      "monitor_create",
+      "monitor_get",
+      "monitor_list",
+      "monitor_runs",
+      "monitor_update",
+      "post_by_id",
+      "post_by_permalink",
+      "privacy",
+      "ratings",
+      "read_document",
+      "reviews",
+      "search",
+      "search_posts",
+      "similar",
+      "subreddit_posts",
+      "suggest",
+      "user_activity",
+      "user_posts",
+      "web_search",
+      "webcontext_brand",
+      "webcontext_crawl",
+      "webcontext_map",
+      "webcontext_scrape",
+      "youtube_channel",
+      "youtube_comments",
+      "youtube_playlist",
+      "youtube_related",
+      "youtube_search",
+      "youtube_transcript",
+      "youtube_video"
+    ]
+  },
+  "requests": [
+    {
+      "domain": "linear.app",
+      "requests": [
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Flinear.app%2F",
+          "error": null,
+          "source_url": "https://linear.app/",
+          "status": 200,
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Flinear.app%2Fpricing",
+          "error": null,
+          "source_url": "https://linear.app/pricing",
+          "status": 200,
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "application/json; charset=utf-8",
+          "endpoint_url": "https://brand.replynodes.com/linear.app",
+          "error": null,
+          "source_url": "https://brand.replynodes.com/linear.app",
+          "status": 200,
+          "surface": "free_brand"
+        }
+      ]
+    },
+    {
+      "domain": "loom.com",
+      "requests": [
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2F",
+          "error": null,
+          "source_url": "https://www.loom.com/",
+          "status": 200,
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "application/json; charset=utf-8",
+          "endpoint_url": "https://brand.replynodes.com/loom.com",
+          "error": null,
+          "source_url": "https://brand.replynodes.com/loom.com",
+          "status": 200,
+          "surface": "free_brand"
+        }
+      ]
+    },
+    {
+      "domain": "microsoft.com",
+      "requests": [
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2F",
+          "error": null,
+          "source_url": "https://www.microsoft.com/",
+          "status": 200,
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fen-us%2Fwindows%2F",
+          "error": null,
+          "source_url": "https://www.microsoft.com/en-us/windows/",
+          "status": 200,
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "application/json; charset=utf-8",
+          "endpoint_url": "https://brand.replynodes.com/microsoft.com",
+          "error": null,
+          "source_url": "https://brand.replynodes.com/microsoft.com",
+          "status": 200,
+          "surface": "free_brand"
+        }
+      ]
+    }
+  ],
+  "surfaces": [
+    "free_markdown",
+    "free_brand"
+  ]
+}

@@ -12,8 +12,10 @@ This is a host-agent output contract, not a server response. The checked-in
 - `products`, `target_market`, `features`, `integrations`, and `recent_updates`:
   arrays of claim objects. Each item has a value and non-empty `evidence_ids`,
   or uses `unknown` where evidence is absent.
-- `pricing`: `model`, `plans`, and explicit `unknown`/coverage behavior. Never
-  turn a missing pricing page into a price or plan claim.
+- `pricing`: `model`, `plans`, and explicit `unknown`/coverage behavior. When
+  `unknown` is true, `model.value` is null and `plans` is empty. When it is
+  false, `model.value` is an observed non-null value and `plans` is non-empty.
+  Never turn a missing pricing page into a price or plan claim.
 - `important_pages`: selected pages with category, exact URL, and evidence ID.
 - `brand`: identity/basic brand metadata only; it is not a brand ownership or
   licensing assertion.
@@ -39,3 +41,8 @@ basic brand metadata.
 The normal budget is 12 pages and the absolute hard cap is 20. A failed,
 duplicate, rejected, or over-cap candidate consumes no retry loop: record the
 coverage limitation and continue only with the remaining bounded candidates.
+Material claim paths are enumerated as `summary.one_liner`,
+`summary.category`, `summary.positioning`, `products[i]`, `target_market[i]`,
+`pricing.model`, `pricing.plans[i]`, `features[i]`, `integrations[i]`, and
+`recent_updates[i]`. Each path and each `important_pages[i].evidence_id` must
+resolve to checked-in evidence; each material path must have one linkage.
