@@ -67,91 +67,91 @@
       "evidence": [
         {
           "excerpt_or_support": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
+          "fetched_at": "2026-10-04T00:58:02Z",
           "id": "homepage",
           "kind": "first_party",
           "source_url": "https://linear.app/"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
+          "fetched_at": "2026-10-04T00:58:02Z",
           "id": "selected-page",
+          "kind": "first_party",
+          "source_url": "https://linear.app/plan"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-2",
           "kind": "first_party",
           "source_url": "https://linear.app/now/introducing-loops"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-2",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-3",
           "kind": "first_party",
           "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/6600ca96-e49b-4fd9-c03a-7979faddad00/f=auto,fit=scale-down,metadata=none,width=2560"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-3",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-4",
           "kind": "first_party",
           "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/c7fa8f5f-d439-4329-6a65-de549b51e300/f=auto,fit=scale-down,metadata=none,width=2560"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-4",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-5",
           "kind": "first_party",
           "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/f28b59f4-538c-4517-cfd7-510913015200/f=auto,fit=scale-down,metadata=none"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-5",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-6",
           "kind": "first_party",
           "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/c2f6447a-d507-43c1-f3ab-3f2c6fbceb00/f=auto,fit=scale-down,metadata=none"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-6",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-7",
           "kind": "first_party",
           "source_url": "https://linear.app/customers"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-7",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-8",
           "kind": "first_party",
           "source_url": "https://linear.app/intake"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-8",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-9",
           "kind": "first_party",
           "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/086b510a-f5da-414b-bc9d-228afb968600/f=auto,fit=scale-down,metadata=none"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-9",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-10",
           "kind": "first_party",
           "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/302b16a5-f9ca-42f2-dbae-3c76f19b2d00/f=auto,fit=scale-down,metadata=none"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-10",
+          "fetched_at": "2026-10-04T00:58:02Z",
+          "id": "selected-page-11",
           "kind": "first_party",
           "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/1eb8f8b2-3593-473f-ba8a-acac99aa0300/f=auto,fit=scale-down,metadata=none"
         },
         {
-          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
-          "id": "selected-page-11",
-          "kind": "first_party",
-          "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/6550520e-9e50-441d-b9e8-579be321f900/f=auto,fit=scale-down,metadata=none"
-        },
-        {
           "excerpt_or_support": "Brand fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:23Z",
+          "fetched_at": "2026-10-04T00:58:02Z",
           "id": "brand",
           "kind": "first_party",
           "source_url": "https://brand.replynodes.com/linear.app"
@@ -165,7 +165,7 @@
           "value": "Features described in bounded first-party text."
         }
       ],
-      "generated_at": "2026-10-04T00:45:23Z",
+      "generated_at": "2026-10-04T00:58:02Z",
       "important_pages": [
         {
           "category": "homepage",
@@ -173,59 +173,59 @@
           "url": "https://linear.app/"
         },
         {
-          "category": "unknown",
+          "category": "pricing_plans",
           "evidence_id": "selected-page",
-          "url": "https://linear.app/now/introducing-loops"
+          "url": "https://linear.app/plan"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-2",
-          "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/6600ca96-e49b-4fd9-c03a-7979faddad00/f=auto,fit=scale-down,metadata=none,width=2560"
+          "url": "https://linear.app/now/introducing-loops"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-3",
-          "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/c7fa8f5f-d439-4329-6a65-de549b51e300/f=auto,fit=scale-down,metadata=none,width=2560"
+          "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/6600ca96-e49b-4fd9-c03a-7979faddad00/f=auto,fit=scale-down,metadata=none,width=2560"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-4",
-          "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/f28b59f4-538c-4517-cfd7-510913015200/f=auto,fit=scale-down,metadata=none"
+          "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/c7fa8f5f-d439-4329-6a65-de549b51e300/f=auto,fit=scale-down,metadata=none,width=2560"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-5",
+          "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/f28b59f4-538c-4517-cfd7-510913015200/f=auto,fit=scale-down,metadata=none"
+        },
+        {
+          "category": "unknown",
+          "evidence_id": "selected-page-6",
           "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/c2f6447a-d507-43c1-f3ab-3f2c6fbceb00/f=auto,fit=scale-down,metadata=none"
         },
         {
           "category": "customers_case_studies",
-          "evidence_id": "selected-page-6",
+          "evidence_id": "selected-page-7",
           "url": "https://linear.app/customers"
         },
         {
           "category": "unknown",
-          "evidence_id": "selected-page-7",
+          "evidence_id": "selected-page-8",
           "url": "https://linear.app/intake"
         },
         {
           "category": "unknown",
-          "evidence_id": "selected-page-8",
+          "evidence_id": "selected-page-9",
           "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/086b510a-f5da-414b-bc9d-228afb968600/f=auto,fit=scale-down,metadata=none"
         },
         {
           "category": "unknown",
-          "evidence_id": "selected-page-9",
+          "evidence_id": "selected-page-10",
           "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/302b16a5-f9ca-42f2-dbae-3c76f19b2d00/f=auto,fit=scale-down,metadata=none"
         },
         {
           "category": "unknown",
-          "evidence_id": "selected-page-10",
-          "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/1eb8f8b2-3593-473f-ba8a-acac99aa0300/f=auto,fit=scale-down,metadata=none"
-        },
-        {
-          "category": "unknown",
           "evidence_id": "selected-page-11",
-          "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/6550520e-9e50-441d-b9e8-579be321f900/f=auto,fit=scale-down,metadata=none"
+          "url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/1eb8f8b2-3593-473f-ba8a-acac99aa0300/f=auto,fit=scale-down,metadata=none"
         }
       ],
       "integrations": [],
@@ -244,6 +244,13 @@
             "http_status": 200,
             "operation": "GET",
             "source_url": "https://linear.app/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://linear.app/plan",
             "surface": "free_markdown"
           },
           {
@@ -314,13 +321,6 @@
             "http_status": 200,
             "operation": "GET",
             "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/1eb8f8b2-3593-473f-ba8a-acac99aa0300/f=auto,fit=scale-down,metadata=none",
-            "surface": "free_markdown"
-          },
-          {
-            "content_type": "text/markdown; charset=utf-8",
-            "http_status": 200,
-            "operation": "GET",
-            "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/6550520e-9e50-441d-b9e8-579be321f900/f=auto,fit=scale-down,metadata=none",
             "surface": "free_markdown"
           },
           {
@@ -447,91 +447,91 @@
       "evidence": [
         {
           "excerpt_or_support": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:24Z",
+          "fetched_at": "2026-10-04T00:58:03Z",
           "id": "homepage",
           "kind": "first_party",
           "source_url": "https://www.loom.com/"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:24Z",
+          "fetched_at": "2026-10-04T00:58:03Z",
           "id": "selected-page",
+          "kind": "first_party",
+          "source_url": "https://www.loom.com/pricing"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T00:58:03Z",
+          "id": "selected-page-2",
           "kind": "first_party",
           "source_url": "https://www.loom.com/signup"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:24Z",
-          "id": "selected-page-2",
+          "fetched_at": "2026-10-04T00:58:03Z",
+          "id": "selected-page-3",
           "kind": "first_party",
           "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch unavailable; url=https://www.loom.com/looms/videos?reminderToRecord=true; status=502; error=HTTPError.",
-          "fetched_at": "2026-10-04T00:45:24Z",
-          "id": "selected-page-3",
+          "fetched_at": "2026-10-04T00:58:03Z",
+          "id": "selected-page-4",
           "kind": "first_party",
           "source_url": "https://www.loom.com/looms/videos?reminderToRecord=true"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:24Z",
-          "id": "selected-page-4",
+          "fetched_at": "2026-10-04T00:58:03Z",
+          "id": "selected-page-5",
           "kind": "first_party",
           "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fscreen.jpg&w=1920&q=75"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:24Z",
-          "id": "selected-page-5",
+          "fetched_at": "2026-10-04T00:58:03Z",
+          "id": "selected-page-6",
           "kind": "first_party",
           "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fbubbs%2Fayana-sm.jpg&w=640&q=75"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:24Z",
-          "id": "selected-page-6",
+          "fetched_at": "2026-10-04T00:58:03Z",
+          "id": "selected-page-7",
           "kind": "first_party",
           "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fvisual-studio-code.jpg&w=1920&q=75"
         },
         {
-          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:24Z",
-          "id": "selected-page-7",
+          "excerpt_or_support": "Selected Markdown fetch unavailable; url=https://www.loom.com/security; status=429; error=HTTPError.",
+          "fetched_at": "2026-10-04T00:58:03Z",
+          "id": "selected-page-8",
           "kind": "first_party",
           "source_url": "https://www.loom.com/security"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch unavailable; url=https://www.loom.com/use-case; status=429; error=HTTPError.",
-          "fetched_at": "2026-10-04T00:45:24Z",
-          "id": "selected-page-8",
+          "fetched_at": "2026-10-04T00:58:03Z",
+          "id": "selected-page-9",
           "kind": "first_party",
           "source_url": "https://www.loom.com/use-case"
         },
         {
-          "excerpt_or_support": "Selected Markdown fetch unavailable; url=https://www.loom.com/pricing; status=429; error=HTTPError.",
-          "fetched_at": "2026-10-04T00:45:24Z",
-          "id": "selected-page-9",
-          "kind": "first_party",
-          "source_url": "https://www.loom.com/pricing"
-        },
-        {
           "excerpt_or_support": "Selected Markdown fetch unavailable; url=https://www.loom.com/enterprise; status=429; error=HTTPError.",
-          "fetched_at": "2026-10-04T00:45:24Z",
+          "fetched_at": "2026-10-04T00:58:03Z",
           "id": "selected-page-10",
           "kind": "first_party",
           "source_url": "https://www.loom.com/enterprise"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch unavailable; url=https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fglow.webp&w=3840&q=75; status=429; error=HTTPError.",
-          "fetched_at": "2026-10-04T00:45:24Z",
+          "fetched_at": "2026-10-04T00:58:03Z",
           "id": "selected-page-11",
           "kind": "first_party",
           "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fglow.webp&w=3840&q=75"
         },
         {
           "excerpt_or_support": "Brand fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:24Z",
+          "fetched_at": "2026-10-04T00:58:03Z",
           "id": "brand",
           "kind": "first_party",
           "source_url": "https://brand.replynodes.com/loom.com"
@@ -545,7 +545,7 @@
           "value": "Features described in bounded first-party text."
         }
       ],
-      "generated_at": "2026-10-04T00:45:24Z",
+      "generated_at": "2026-10-04T00:58:03Z",
       "important_pages": [
         {
           "category": "homepage",
@@ -553,49 +553,49 @@
           "url": "https://www.loom.com/"
         },
         {
-          "category": "unknown",
+          "category": "pricing_plans",
           "evidence_id": "selected-page",
-          "url": "https://www.loom.com/signup"
+          "url": "https://www.loom.com/pricing"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-2",
-          "url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75"
+          "url": "https://www.loom.com/signup"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-3",
-          "url": "https://www.loom.com/looms/videos?reminderToRecord=true"
+          "url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-4",
-          "url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fscreen.jpg&w=1920&q=75"
+          "url": "https://www.loom.com/looms/videos?reminderToRecord=true"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-5",
-          "url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fbubbs%2Fayana-sm.jpg&w=640&q=75"
+          "url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fscreen.jpg&w=1920&q=75"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-6",
-          "url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fvisual-studio-code.jpg&w=1920&q=75"
+          "url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fbubbs%2Fayana-sm.jpg&w=640&q=75"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-7",
-          "url": "https://www.loom.com/security"
+          "url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fvisual-studio-code.jpg&w=1920&q=75"
         },
         {
           "category": "unknown",
           "evidence_id": "selected-page-8",
-          "url": "https://www.loom.com/use-case"
+          "url": "https://www.loom.com/security"
         },
         {
-          "category": "pricing_plans",
+          "category": "unknown",
           "evidence_id": "selected-page-9",
-          "url": "https://www.loom.com/pricing"
+          "url": "https://www.loom.com/use-case"
         },
         {
           "category": "unknown",
@@ -624,6 +624,13 @@
             "http_status": 200,
             "operation": "GET",
             "source_url": "https://www.loom.com/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.loom.com/pricing",
             "surface": "free_markdown"
           },
           {
@@ -669,8 +676,8 @@
             "surface": "free_markdown"
           },
           {
-            "content_type": "text/markdown; charset=utf-8",
-            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "http_status": 429,
             "operation": "GET",
             "source_url": "https://www.loom.com/security",
             "surface": "free_markdown"
@@ -680,13 +687,6 @@
             "http_status": 429,
             "operation": "GET",
             "source_url": "https://www.loom.com/use-case",
-            "surface": "free_markdown"
-          },
-          {
-            "content_type": "application/json; charset=utf-8",
-            "http_status": 429,
-            "operation": "GET",
-            "source_url": "https://www.loom.com/pricing",
             "surface": "free_markdown"
           },
           {
@@ -828,14 +828,14 @@
       "evidence": [
         {
           "excerpt_or_support": "Homepage Markdown fetch unavailable; url=https://www.microsoft.com/; status=429; error=HTTPError.",
-          "fetched_at": "2026-10-04T00:45:24Z",
+          "fetched_at": "2026-10-04T00:58:03Z",
           "id": "homepage",
           "kind": "first_party",
           "source_url": "https://www.microsoft.com/"
         },
         {
           "excerpt_or_support": "Brand fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T00:45:24Z",
+          "fetched_at": "2026-10-04T00:58:03Z",
           "id": "brand",
           "kind": "first_party",
           "source_url": "https://brand.replynodes.com/microsoft.com"
@@ -849,7 +849,7 @@
           "value": null
         }
       ],
-      "generated_at": "2026-10-04T00:45:24Z",
+      "generated_at": "2026-10-04T00:58:03Z",
       "important_pages": [
         {
           "category": "homepage",
@@ -1164,11 +1164,11 @@
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 12,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/6550520e-9e50-441d-b9e8-579be321f900/f=auto,fit=scale-down,metadata=none"
           },
           {
@@ -1230,11 +1230,11 @@
             "accepted": true,
             "candidate_kind": "pricing_plans",
             "candidate_number": 18,
-            "decision": "admitted_not_selected",
+            "decision": "admitted_selected",
             "rejected": false,
-            "request_made": false,
+            "request_made": true,
             "retry_or_fallback_count": 0,
-            "selected": false,
+            "selected": true,
             "source_url": "https://linear.app/plan"
           },
           {
@@ -1651,11 +1651,11 @@
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 12,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/6550520e-9e50-441d-b9e8-579be321f900/f=auto,fit=scale-down,metadata=none"
           },
           {
@@ -1717,11 +1717,11 @@
             "accepted": true,
             "candidate_kind": "pricing_plans",
             "candidate_number": 18,
-            "decision": "admitted_not_selected",
+            "decision": "admitted_selected",
             "rejected": false,
-            "request_made": false,
+            "request_made": true,
             "retry_or_fallback_count": 0,
-            "selected": false,
+            "selected": true,
             "source_url": "https://linear.app/plan"
           },
           {
@@ -1940,7 +1940,7 @@
       }
     }
   },
-  "generated_at": "2026-10-04T00:45:26Z",
+  "generated_at": "2026-10-04T00:58:04Z",
   "keyless": true,
   "mcp_tools_list": {
     "claimed_tool_names": [
@@ -2040,6 +2040,15 @@
           "surface": "free_markdown"
         },
         {
+          "category": "pricing_plans",
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Flinear.app%2Fplan",
+          "error": null,
+          "source_url": "https://linear.app/plan",
+          "status": 200,
+          "surface": "free_markdown"
+        },
+        {
           "category": "unknown",
           "content_type": "text/markdown; charset=utf-8",
           "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Flinear.app%2Fnow%2Fintroducing-loops",
@@ -2130,15 +2139,6 @@
           "surface": "free_markdown"
         },
         {
-          "category": "unknown",
-          "content_type": "text/markdown; charset=utf-8",
-          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Flinear.app%2Fcdn-cgi%2Fimagedelivery%2FfO02fVwohEs9s9UHFwon6A%2F6550520e-9e50-441d-b9e8-579be321f900%2Ff%3Dauto%2Cfit%3Dscale-down%2Cmetadata%3Dnone",
-          "error": null,
-          "source_url": "https://linear.app/cdn-cgi/imagedelivery/fO02fVwohEs9s9UHFwon6A/6550520e-9e50-441d-b9e8-579be321f900/f=auto,fit=scale-down,metadata=none",
-          "status": 200,
-          "surface": "free_markdown"
-        },
-        {
           "content_type": "application/json; charset=utf-8",
           "endpoint_url": "https://brand.replynodes.com/linear.app",
           "error": null,
@@ -2158,6 +2158,15 @@
           "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2F",
           "error": null,
           "source_url": "https://www.loom.com/",
+          "status": 200,
+          "surface": "free_markdown"
+        },
+        {
+          "category": "pricing_plans",
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2Fpricing",
+          "error": null,
+          "source_url": "https://www.loom.com/pricing",
           "status": 200,
           "surface": "free_markdown"
         },
@@ -2217,11 +2226,11 @@
         },
         {
           "category": "unknown",
-          "content_type": "text/markdown; charset=utf-8",
+          "content_type": "application/json; charset=utf-8",
           "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2Fsecurity",
-          "error": null,
+          "error": "HTTPError",
           "source_url": "https://www.loom.com/security",
-          "status": 200,
+          "status": 429,
           "surface": "free_markdown"
         },
         {
@@ -2230,15 +2239,6 @@
           "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2Fuse-case",
           "error": "HTTPError",
           "source_url": "https://www.loom.com/use-case",
-          "status": 429,
-          "surface": "free_markdown"
-        },
-        {
-          "category": "pricing_plans",
-          "content_type": "application/json; charset=utf-8",
-          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2Fpricing",
-          "error": "HTTPError",
-          "source_url": "https://www.loom.com/pricing",
           "status": 429,
           "surface": "free_markdown"
         },

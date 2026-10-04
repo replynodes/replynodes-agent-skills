@@ -86,6 +86,7 @@ def normalized_hostname(url):
     hostname = urllib.parse.urlparse(url).hostname
     if hostname is None: return None
     hostname = hostname.lower()
+    if hostname.endswith("."): hostname = hostname[:-1]
     return hostname[4:] if hostname.startswith("www.") else hostname
 
 def discover_candidates(homepage, homepage_text):
@@ -116,6 +117,14 @@ def candidate_trace(candidates, execution):
     attempted_count = len(decisions)
     return {"candidate_order": [{"source_url": source, "category": category} for source, category in candidates[:HARD_CAP + 1]], "selected_candidate_sequence": decisions, "candidate_21": decisions[HARD_CAP] if len(decisions) > HARD_CAP else None, "accepted_count": sum(item["accepted"] for item in decisions), "attempted_count": attempted_count, "attempted_candidate_number": attempted_count or None, "request_made_count": sum(item["request_made"] for item in decisions), "retry_or_fallback_count": sum(item["retry_or_fallback_count"] for item in decisions)}
 
+def select_candidates(candidates):
+    """Keep homepage first, then prioritize discovered pricing pages within the cap."""
+    if not candidates: return []
+    homepage, remainder = candidates[0], candidates[1:HARD_CAP]
+    pricing = [candidate for candidate in remainder if candidate[1] == "pricing_plans"]
+    non_pricing = [candidate for candidate in remainder if candidate[1] != "pricing_plans"]
+    return [homepage] + (pricing + non_pricing)[:DEFAULT_CAP - 1]
+
 def claim(value, evidence): return {"value": value, "evidence_ids": [evidence]}
 
 def failure_support(result, source_url, label):
@@ -126,11 +135,12 @@ def success_support(label): return f"{label} succeeded with non-empty text; resp
 
 def grounded_pricing(text):
     lower = text.lower()
-    if re.search(r"\b(?:pricing|plans?)\s+(?:is\s+)?(?:unavailable|not\s+publicly\s+available)\b|\bnot\s+publicly\s+available\b|\bcontact\s+sales\b", lower): return False
+    named_plan = r"\b(?:free|starter|basic|pro|business|enterprise)(?:\s*/\s*(?:free|starter|basic|pro|business|enterprise))*\s+plans?\b"
+    if re.search(rf"\b(?:pricing|plans?)\s+(?:is\s+)?(?:unavailable|not\s+available|not\s+publicly\s+available)\b|\bnot\s+publicly\s+available\b|\bcontact\s+sales\b|{named_plan}\s+(?:is\s+|are\s+)?(?:unavailable|not\s+available|not\s+publicly\s+available)\b", lower): return False
     amount = r"(?:[$€£]\s*\d+(?:[.,]\d+)?|\b\d+(?:[.,]\d+)?\s*(?:usd|eur|gbp)\b)"
     price_context = rf"\b(?:pricing|plans?|price|cost)\b[^.\n]{{0,100}}{amount}|{amount}[^.\n]{{0,100}}\b(?:pricing|plans?|price|cost)\b"
-    named_plan = r"\b(?:free|starter|basic|pro|business|enterprise)\s+plan\b"
-    return bool(re.search(price_context, lower) or re.search(named_plan, lower))
+    positive_named_plan = rf"{named_plan}(?!\s+(?:is\s+|are\s+)?(?:unavailable|not\s+available|not\s+publicly\s+available)\b)"
+    return bool(re.search(price_context, lower) or re.search(positive_named_plan, lower))
 
 def designated_pricing_page(page):
     return page.get("category") == "pricing_plans" and page_category(page.get("source_url", "")) == "pricing_plans"
@@ -171,7 +181,7 @@ def main():
     for case in CASES:
         endpoint = md_url(case["homepage"]); home = get_once(endpoint); home.update({"surface": "free_markdown", "source_url": case["homepage"], "endpoint_url": endpoint})
         candidates = discover_candidates(case["homepage"], home["text"] if successful(home) else "")
-        selected = candidates[:DEFAULT_CAP]
+        selected = select_candidates(candidates)
         execution = {case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}}
         fetched = [home]
         for source, category in selected[1:]:

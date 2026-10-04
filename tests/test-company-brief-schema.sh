@@ -120,7 +120,7 @@ assert unavailable_brief["pricing"] == {"model": {"value": None, "evidence_ids":
 assert any("pricing" in item.lower() and "unknown" in item.lower() for item in unavailable_brief["coverage_limits"])
 runner.validate_brief(unavailable_brief)
 
-for text in ("Contact sales for pricing.", "Pricing is not publicly available."):
+for text in ("Contact sales for pricing.", "Pricing is not publicly available.", "Free plan not available.", "Pro/Enterprise plan unavailable/not publicly available."):
     non_positive_page = fake_fetch(200, text)
     non_positive_page.update({"source_url": "https://example.test/pricing", "category": "pricing_plans"})
     non_positive_brief = runner.make_brief(failed_case, [successful_home, non_positive_page, successful_brand])
@@ -135,6 +135,18 @@ assert discovered == [(failed_case["homepage"], "homepage"), ("https://example.t
 www_homepage = "https://www.example.test/"
 www_discovery = runner.discover_candidates(www_homepage, "[Canonical](https://example.test/pricing) [Typo](https://ww.example.test/plans) [External](https://other.test/pricing)")
 assert www_discovery == [(www_homepage, "homepage"), ("https://example.test/pricing", "pricing_plans")]
+dot_homepage = "https://www.example.test./"
+dot_discovery = runner.discover_candidates(dot_homepage, "[Pricing](https://example.test./pricing)")
+assert dot_discovery == [(dot_homepage, "homepage"), ("https://example.test./pricing", "pricing_plans")]
+assert runner.normalized_hostname("https://www.example.test.:443/") == "example.test"
+prioritized = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 12)] + [("https://example.test/pricing", "pricing_plans")]
+selected = runner.select_candidates(prioritized)
+assert len(selected) == runner.DEFAULT_CAP
+assert selected[1] == ("https://example.test/pricing", "pricing_plans")
+assert [source for source, _ in selected[2:]] == [f"https://example.test/page-{i}" for i in range(1, 11)]
+prioritized_trace = runner.candidate_trace(prioritized, {source: {"selected": True, "request_made": True} for source, _ in selected})
+pricing_trace = prioritized_trace["selected_candidate_sequence"][12]
+assert pricing_trace["candidate_number"] == 13 and pricing_trace["selected"] is True and pricing_trace["request_made"] is True
 many = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 21)]
 trace = runner.candidate_trace(many, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
 assert trace["accepted_count"] == 20 and trace["candidate_21"]["accepted"] is False
