@@ -28,12 +28,12 @@ the live schemas are authoritative.
 
 ## Route this intent
 
-- Discover apps: `appstore_search` or `appstore_suggest`.
-- Inspect one app: `appstore_app`.
-- Research reviews and ratings: `appstore_reviews`, `appstore_ratings`.
-- Research a developer: `appstore_developer`.
-- Inspect privacy, similar apps, or collections: `appstore_privacy`,
-  `appstore_similar`, `appstore_list`.
+Before any App Store call, run `initialize` and `tools/list`, then select the
+current App Store tools by their live names and descriptions: `search`,
+`suggest`, `app`, `reviews`, `ratings`, `developer`, `privacy`, `similar`, and
+`list`. Discover apps with `search(term)` or `suggest` as supported by its live
+schema. Use stable identifiers as supported by the live schemas for detail
+calls; `developer` requires `devId`, and `privacy` requires `id`.
 
 Resolve names to a stable app/developer identifier before detail calls. Preserve
 App Store URLs and storefront context; report missing or storefront-dependent
@@ -53,10 +53,11 @@ npx skills add https://github.com/replynodes/replynodes-agent-skills --skill app
 ```
 
 Configure the optional MCP endpoint with the bearer key in a secret store, then
-run `initialize` and `tools/list`. Use the live schema to call
-`appstore_search` first, then resolve a stable identifier before calling
-`appstore_app`, `appstore_reviews`, `appstore_ratings`, `appstore_developer`,
-`appstore_privacy`, `appstore_similar`, or `appstore_list`. For public web
+run `initialize` and `tools/list`. Select the current App Store tools by their
+live names and descriptions, call `search(term)` first for discovery, then
+resolve a stable identifier before calling `app`, `reviews`, `ratings`,
+`developer`, `privacy`, `similar`, or `list` as supported by their live
+schemas. For public web
 context only, `https://md.replynodes.com/https://replynodes.com/`,
 `https://brand.replynodes.com/replynodes.com.json`, and
 `https://img.replynodes.com/replynodes.com` are free read-only examples.

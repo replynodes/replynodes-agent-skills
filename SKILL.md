@@ -126,7 +126,7 @@ when the question is comparative or investigative.
 | What pages exist on a site? | Optional MCP `webcontext_map` | `webcontext_crawl` for selected pages |
 | Several same-origin pages | Optional MCP `webcontext_crawl` | `webcontext_scrape` for focused passages |
 | Company identity and assets | Free Brand JSON, then Logo if needed | Optional MCP brand tools |
-| iOS app research | Optional MCP `appstore_search` | `appstore_app`, `appstore_reviews`, `appstore_ratings`, `appstore_privacy`, `appstore_similar`, `appstore_developer` |
+| iOS app research | After `initialize` and `tools/list`, select the App Store `search` tool by its live name and description | Select the live App Store tools `suggest`, `app`, `reviews`, `ratings`, `developer`, `privacy`, `similar`, or `list` by their names and descriptions |
 | Android app research | Optional MCP only when live tools support it | Trust `tools/list` |
 | YouTube coverage | Optional MCP only when live tools support it | Trust `tools/list` |
 | Reddit opinions or discussion | Optional MCP only when live tools support it | Trust `tools/list` |
