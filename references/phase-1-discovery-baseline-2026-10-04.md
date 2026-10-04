@@ -25,14 +25,14 @@ No second telemetry or attribution mechanism was added.
 | GitHub stars | 2 | `gh api repos/replynodes/replynodes-agent-skills` |
 | Public source slugs | `replynodes`, `company-research`, `competitor-research`, `url-to-markdown`, `brand-kit`, `app-store-research` | `skills.sh.json` on `origin/main` |
 | Canonical skills.sh source page | HTTP 200 | GET `https://skills.sh/replynodes/replynodes-agent-skills/replynodes` |
-| Per-skill pages | HTTP 200 for all six | GET canonical skills.sh URLs |
-| Install counts | replynodes 6; company-research 2; competitor-research 1; url-to-markdown 1; brand-kit 1; app-store-research 0 | `InteractionCounter.userInteractionCount` and visible `Installs` value from each canonical skills.sh page, read 2026-10-04T09:51Z; public/external telemetry only |
+| Per-skill pages | HTTP 200 for five pages; `app-store-research` HTTP 404/unavailable | GET canonical skills.sh URLs; app-store status is an external index/publication blocker |
+| Install counts | replynodes 6; company-research 2; competitor-research 1; url-to-markdown 1; brand-kit 1; app-store-research unavailable | `InteractionCounter.userInteractionCount` and visible `Installs` value from five canonical skills.sh pages, read 2026-10-04T09:51Z; app-store page has no count; public/external telemetry only |
 | Search ranking | Not observable from the public query pages used below | `GET https://skills.sh/?q=<urlencoded query>` returned no ranked skill result payload |
 
-The two legacy brand URLs remain an external skills.sh owner/index action, not
-something this repository can delete: `brandkitfetch` and `brand-kit-fetch`.
-They are not in `skills.sh.json`, README install commands, or the public
-canonical surface.
+The five available canonical skill pages returned HTTP 200. The
+`app-store-research` page returned HTTP 404 and is recorded as an external
+skills.sh publication/index blocker; the repository source still declares the
+slug in `skills.sh.json`.
 
 ## Repeatable task-query discovery baseline
 
@@ -68,11 +68,19 @@ position when the site exposes one.
 
 ## Existing attribution contract
 
-The existing bounded attribution contract in `replynodes-fetcher` already
-contains the `skill` field in its allowlist. Audited source of truth:
-`replynodes/replynodes-fetcher@77f73b1fb40202c10439f17df59ca4fc36371bec7`,
-`docs/attribution-audit.md`, lines 1-6 and 36-37 (origin/main at the review
-timestamp). No second mechanism is introduced.
+The two legacy brand URLs remain an external skills.sh owner/index action, not
+something this repository can delete: `brandkitfetch` and `brand-kit-fetch`.
+They are not in `skills.sh.json`, README install commands, or the public
+canonical surface.
+
+The attribution source is the private `replynodes-fetcher` repository, so its
+GitHub URL is intentionally not presented as public evidence. The local audit
+used the exact fetched ref `origin/main` at commit
+`77f73b1fb40202c10439f17df59ca4fc36371bec7`, file
+`docs/attribution-audit.md`, where the bounded attribution keys include
+`skill` (the key list is at line 36 in that exact checkout). This is an
+operator-verifiable repository/ref/path citation, not a claim that an
+unauthenticated public URL can read the private source.
 
 | Skill | Attribution ready? | Implementation / blocker |
 |---|---|---|
