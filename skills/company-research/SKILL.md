@@ -84,9 +84,11 @@ time, and a bounded excerpt or support note. `meta.synthesis` is always
 Run `tests/run-company-research-keyless-e2e.py --output PATH` for the
 reproducible three-case check: `linear.app` (public pricing), `loom.com`
 (pricing unavailable), and `microsoft.com` (larger multi-product). The runner
-uses only the free Markdown and Brand HTTP surfaces, makes one no-retry request
-per selected page/endpoint, keeps no raw response bodies, and records sanitized
-status, `Content-Type`, exact source URLs, surface, and per-company
+uses free Markdown, one bounded direct public homepage request for HTML link
+discovery, and Brand HTTP surfaces. It makes one no-retry request per selected
+page/endpoint, with at most one bounded direct-pricing fallback after a Markdown
+429, keeps no raw response bodies, and records sanitized status, `Content-Type`,
+exact source and endpoint URLs, surface, and per-company
 `page_read_count`. It also makes one keyless `tools/list` request to
 `https://mcp.replynodes.com/mcp` and asserts that every tool named in this
 skill is present in the live response. It never reads or supplies

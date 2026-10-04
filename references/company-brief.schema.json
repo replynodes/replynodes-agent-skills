@@ -105,8 +105,8 @@
       "type": "object", "additionalProperties": false,
       "required": ["surface", "operation", "source_url", "http_status", "content_type"],
       "properties": {
-        "surface": {"type": "string", "enum": ["free_markdown", "free_brand", "mcp"]}, "operation": {"type": "string", "minLength": 1},
-        "source_url": {"type": "string", "format": "uri", "pattern": "^https://"}, "http_status": {"type": "integer", "minimum": 100, "maximum": 599},
+        "surface": {"type": "string", "enum": ["free_markdown", "free_homepage_discovery", "free_direct_pricing", "free_brand", "mcp"]}, "operation": {"type": "string", "minLength": 1},
+        "source_url": {"type": "string", "format": "uri", "pattern": "^https://"}, "endpoint_url": {"type": "string", "format": "uri", "pattern": "^https://"}, "http_status": {"type": "integer", "minimum": 100, "maximum": 599},
         "content_type": {"type": "string", "minLength": 1}
       }
     }

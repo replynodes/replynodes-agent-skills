@@ -2,6 +2,7 @@
 import datetime
 import json
 import re
+import urllib.parse
 from pathlib import Path
 
 
@@ -88,6 +89,30 @@ def material_claims(brief):
 
 def check_contract(brief, schema=None, schema_path=SCHEMA_PATH):
     validate_schema(brief, schema=schema, schema_path=schema_path)
+    capabilities = set(brief["meta"]["capabilities_used"])
+    discovery_calls = [call for call in brief["meta"]["tool_calls"] if call["surface"] == "free_homepage_discovery"]
+    if "free_homepage_discovery" not in capabilities or len(discovery_calls) != 1:
+        raise AssertionError("homepage discovery requires exactly one declared and recorded call")
+    discovery_call = discovery_calls[0]
+    if discovery_call["operation"] != "GET" or discovery_call["source_url"] != brief["company"]["homepage_url"] or discovery_call["endpoint_url"] != brief["company"]["homepage_url"]:
+        raise AssertionError("homepage discovery call must GET the declared homepage")
+    direct_calls = [call for call in brief["meta"]["tool_calls"] if call["surface"] == "free_direct_pricing"]
+    if len(direct_calls) > 1:
+        raise AssertionError("at most one direct pricing fallback is allowed")
+    if direct_calls:
+        direct = direct_calls[0]
+        homepage_host = urllib.parse.urlparse(brief["company"]["homepage_url"]).hostname.removeprefix("www.").rstrip(".").lower()
+        direct_host = urllib.parse.urlparse(direct["source_url"]).hostname
+        if direct_host:
+            direct_host = direct_host.removeprefix("www.").rstrip(".").lower()
+        if "free_direct_pricing" not in capabilities or direct["operation"] != "GET" or direct["source_url"] != direct["endpoint_url"] or direct_host != homepage_host or not re.search(r"(?:^|[/_-])(pricing|plans?)(?:[/_-]|$)", urllib.parse.urlparse(direct["source_url"]).path.lower()) or not direct["content_type"].lower().startswith("text/html"):
+            raise AssertionError("direct pricing fallback must use one exact first-party pricing URL")
+        markdown = [call for call in brief["meta"]["tool_calls"] if call["surface"] == "free_markdown" and call["source_url"] == direct["source_url"]]
+        if len(markdown) != 1 or markdown[0]["http_status"] != 429:
+            raise AssertionError("direct pricing fallback requires the selected Markdown request to be HTTP 429")
+    for call in brief["meta"]["tool_calls"]:
+        if call["endpoint_url"] != call["source_url"] and call["surface"] != "free_markdown":
+            raise AssertionError("only Markdown may use a transformed endpoint URL")
     evidence_ids = [item["id"] for item in brief["evidence"]]
     if len(evidence_ids) != len(set(evidence_ids)):
         raise AssertionError("evidence IDs must be unique")
