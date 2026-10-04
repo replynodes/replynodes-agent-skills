@@ -57,7 +57,7 @@ credential-bearing, or unreachable URLs remain outside the contract.
 
 ```text
 GET https://brand.replynodes.com/replynodes.com.json  →  200 application/json
-# abridged observed response
+# abridged observed response (fields truncated for readability)
 {"identity":{"domain":"replynodes.com"},"brand_kit":{"name":"ReplyNodes","colors":["#A2D98A"]},"quality":{"score":80},"provenance":{"canonical_api":"https://brand.replynodes.com/replynodes.com"}}
 ```
 
