@@ -24,15 +24,20 @@ and design-system signals. Inspect each live input schema before calling it.
 
 ## Apple App Store (9)
 
-- `appstore_app`
-- `appstore_developer`
-- `appstore_list`
-- `appstore_privacy`
-- `appstore_ratings`
-- `appstore_reviews`
-- `appstore_search`
-- `appstore_similar`
-- `appstore_suggest`
+The current live MCP names are verified by `initialize` + `tools/list`; inspect the
+live schemas before every call because this provider inventory can change:
+
+- `search`
+- `suggest`
+- `app`
+- `reviews`
+- `ratings`
+- `developer`
+- `privacy`
+- `similar`
+- `list`
+
+Do not infer provider tool names from older snapshots or internal prefixes.
 
 ## Google Play (11)
 
