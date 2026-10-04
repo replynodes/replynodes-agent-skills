@@ -17,8 +17,9 @@ cmp "$root/references/company-brief-contract.md" "$tmp/references/company-brief-
 cmp "$root/references/company-brief.schema.json" "$tmp/references/company-brief.schema.json"
 
 "$root/tests/test-company-brief-schema.sh"
+"$root/tests/test-distribution.sh"
 
-# The official Agent Skills validator is run separately because it expects the
+# The official Agent Skills validator is run separately because it expects a
 # skill directory itself to be named `replynodes`; this repository is the source
 # repository and intentionally has a different directory name.
 
