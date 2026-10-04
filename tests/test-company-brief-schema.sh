@@ -6,7 +6,7 @@ import copy, json, sys
 from pathlib import Path
 root = Path(sys.argv[1])
 sys.path.insert(0, str(root / "tests"))
-from company_brief_validator import check_contract, validate_schema
+from company_brief_validator import check_contract, material_claims, validate_schema
 
 schema = json.loads((root / "references/company-brief.schema.json").read_text())
 fixture = json.loads((root / "tests/fixtures/company-brief.json").read_text())
@@ -45,5 +45,73 @@ del negative["meta"]["page_read_budget_hard_cap"]
 try: validate_schema(negative, schema=schema)
 except AssertionError: pass
 else: raise AssertionError("negative schema assertion unexpectedly passed")
+
+import importlib.util
+runner_spec = importlib.util.spec_from_file_location("company_research_runner", root / "tests/run-company-research-keyless-e2e.py")
+runner = importlib.util.module_from_spec(runner_spec)
+runner_spec.loader.exec_module(runner)
+
+def fake_fetch(status, text, error=None, content_type="text/markdown"):
+    return {"status": status, "content_type": content_type, "text": text, "error": error}
+
+failed_home = fake_fetch(503, "Public company information observed in bounded first-party text.", "HTTPError")
+failed_home.update({"source_url": "https://example.test/", "category": "homepage"})
+successful_brand = fake_fetch(200, "Brand identity")
+successful_brand.update({"source_url": "https://brand.replynodes.com/example.test"})
+failed_case = {"domain": "example.test", "name": "Example", "homepage": "https://example.test/"}
+failed_home_brief = runner.make_brief(failed_case, [failed_home, successful_brand])
+assert all(item["value"] is None for item in material_claims(failed_home_brief).values())
+assert any("homepage coverage is unavailable" in item.lower() for item in failed_home_brief["coverage_limits"])
+assert "unavailable" in failed_home_brief["evidence"][0]["excerpt_or_support"].lower()
+assert "succeeded" in failed_home_brief["evidence"][-1]["excerpt_or_support"].lower()
+assert all(word not in failed_home_brief["evidence"][0]["excerpt_or_support"].lower() for word in ("successful", "observed", "completed"))
+
+successful_home = fake_fetch(200, "Homepage text")
+successful_home.update({"source_url": "https://example.test/", "category": "homepage"})
+failed_brand = fake_fetch(None, "", "URLError", "")
+failed_brand.update({"source_url": "https://brand.replynodes.com/example.test"})
+failed_brand_brief = runner.make_brief(failed_case, [successful_home, failed_brand])
+assert failed_brand_brief["brand"]["name"] is None
+assert failed_brand_brief["brand"]["description"] is None
+assert failed_brand_brief["brand"]["logo_url"] is None
+assert failed_brand_brief["brand"]["colors"] == [] and failed_brand_brief["brand"]["fonts"] == []
+assert failed_brand_brief["brand"]["unknown"] is True
+assert all(item["value"] is not None for path, item in material_claims(failed_brand_brief).items() if path != "pricing.model")
+assert "succeeded" in failed_brand_brief["evidence"][0]["excerpt_or_support"].lower()
+assert "unavailable" in failed_brand_brief["evidence"][-1]["excerpt_or_support"].lower()
+
+failed_page = fake_fetch(502, "Pricing plan observed at $99.", "HTTPError")
+failed_page.update({"source_url": "https://example.test/pricing/plans", "category": "pricing_plans"})
+failed_page_brief = runner.make_brief(failed_case, [successful_home, failed_page, successful_brand])
+assert failed_page_brief["pricing"] == {"model": {"value": None, "evidence_ids": ["selected-page"]}, "plans": [], "unknown": True}
+assert "unavailable" in failed_page_brief["evidence"][1]["excerpt_or_support"].lower()
+assert "succeeded" not in failed_page_brief["evidence"][1]["excerpt_or_support"].lower()
+runner.validate_brief(failed_page_brief)
+
+product_page = fake_fetch(200, "Our plans include a free trial and $ symbol month text.")
+product_page.update({"source_url": "https://example.test/en-us/windows/", "category": "product_features"})
+generic_pricing_brief = runner.make_brief(failed_case, [successful_home, product_page, successful_brand])
+assert generic_pricing_brief["pricing"] == {"model": {"value": None, "evidence_ids": ["selected-page"]}, "plans": [], "unknown": True}
+runner.validate_brief(generic_pricing_brief)
+
+pricing_page = fake_fetch(200, "Pricing plans start at $19 USD per month.")
+pricing_page.update({"source_url": "https://example.test/pricing/plans", "category": "pricing_plans"})
+grounded_pricing_brief = runner.make_brief(failed_case, [successful_home, pricing_page, successful_brand])
+assert grounded_pricing_brief["pricing"]["unknown"] is False
+assert grounded_pricing_brief["pricing"]["plans"]
+runner.validate_brief(grounded_pricing_brief)
+
+discovery_text = "[Product](/product) [Pricing](https://example.test/pricing/plans) [External](https://other.test/about)"
+discovered = runner.discover_candidates(failed_case["homepage"], discovery_text)
+assert discovered == [(failed_case["homepage"], "homepage"), ("https://example.test/product", "product_features"), ("https://example.test/pricing/plans", "pricing_plans")]
+many = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 21)]
+trace = runner.candidate_trace(many, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
+assert trace["accepted_count"] == 20 and trace["candidate_21"]["accepted"] is False
+assert trace["candidate_21"]["selected"] is False and trace["candidate_21"]["request_made"] is False
+assert trace["attempted_count"] == 21 and trace["attempted_candidate_number"] == 21
+short = many[:5]
+short_trace = runner.candidate_trace(short, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
+assert short_trace["candidate_21"] is None
+assert short_trace["attempted_count"] == len(short) and short_trace["attempted_candidate_number"] == len(short)
 print("company brief schema fixture passed (schema, claim/evidence integrity, pricing, and negative cases)")
 PY
