@@ -1,0 +1,2781 @@
+{
+  "briefs": [
+    {
+      "brand": {
+        "colors": [],
+        "description": null,
+        "fonts": [],
+        "logo_url": null,
+        "name": "Figma",
+        "unknown": false
+      },
+      "brief_version": "1.0",
+      "claim_evidence": [
+        {
+          "claim_path": "summary.one_liner",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.category",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.positioning",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "products[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "target_market[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "pricing.model",
+          "evidence_ids": [
+            "selected-page"
+          ]
+        },
+        {
+          "claim_path": "features[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        }
+      ],
+      "company": {
+        "domain": "figma.com",
+        "homepage_url": "https://www.figma.com/",
+        "name": "Figma"
+      },
+      "coverage_limits": [
+        "No grounded pricing evidence succeeded from a pricing-designated page; pricing is unknown.",
+        "Brand output is limited to identity metadata; no brand claims were inferred.",
+        "Only bounded homepage-link candidates and selected pages were requested; no raw response body was retained."
+      ],
+      "evidence": [
+        {
+          "excerpt_or_support": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "homepage",
+          "kind": "first_party",
+          "source_url": "https://www.figma.com/"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "selected-page",
+          "kind": "first_party",
+          "source_url": "https://www.figma.com/product-development/"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "selected-page-2",
+          "kind": "first_party",
+          "source_url": "https://www.figma.com/product-managers/"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "selected-page-3",
+          "kind": "first_party",
+          "source_url": "https://www.figma.com/product-integrations/"
+        },
+        {
+          "excerpt_or_support": "Brand fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "brand",
+          "kind": "first_party",
+          "source_url": "https://brand.replynodes.com/figma.com"
+        }
+      ],
+      "features": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Features described in bounded first-party text."
+        }
+      ],
+      "generated_at": "2026-10-04T03:15:34Z",
+      "important_pages": [
+        {
+          "category": "homepage",
+          "evidence_id": "homepage",
+          "url": "https://www.figma.com/"
+        },
+        {
+          "category": "product_features",
+          "evidence_id": "selected-page",
+          "url": "https://www.figma.com/product-development/"
+        },
+        {
+          "category": "product_features",
+          "evidence_id": "selected-page-2",
+          "url": "https://www.figma.com/product-managers/"
+        },
+        {
+          "category": "product_features",
+          "evidence_id": "selected-page-3",
+          "url": "https://www.figma.com/product-integrations/"
+        }
+      ],
+      "integrations": [],
+      "meta": {
+        "capabilities_used": [
+          "free_markdown",
+          "free_homepage_discovery",
+          "free_brand"
+        ],
+        "page_read_budget_default": 12,
+        "page_read_budget_hard_cap": 20,
+        "page_read_count": 4,
+        "synthesis": "host_agent",
+        "tool_calls": [
+          {
+            "content_type": "text/html; charset=utf-8",
+            "endpoint_url": "https://www.figma.com/",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.figma.com/",
+            "surface": "free_homepage_discovery"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2F",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.figma.com/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-development%2F",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.figma.com/product-development/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-managers%2F",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.figma.com/product-managers/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-integrations%2F",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.figma.com/product-integrations/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "application/json; charset=utf-8",
+            "endpoint_url": "https://brand.replynodes.com/figma.com",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://brand.replynodes.com/figma.com",
+            "surface": "free_brand"
+          }
+        ]
+      },
+      "pricing": {
+        "model": {
+          "evidence_ids": [
+            "selected-page"
+          ],
+          "value": null
+        },
+        "plans": [],
+        "unknown": true
+      },
+      "products": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Products described in bounded first-party text."
+        }
+      ],
+      "recent_updates": [],
+      "summary": {
+        "category": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Software company."
+        },
+        "one_liner": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public company information observed in bounded first-party text."
+        },
+        "positioning": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public positioning is supported by the bounded homepage fetch."
+        }
+      },
+      "target_market": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public users and teams described by the company."
+        }
+      ]
+    },
+    {
+      "brand": {
+        "colors": [],
+        "description": null,
+        "fonts": [],
+        "logo_url": null,
+        "name": "Loom",
+        "unknown": false
+      },
+      "brief_version": "1.0",
+      "claim_evidence": [
+        {
+          "claim_path": "summary.one_liner",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.category",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.positioning",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "products[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "target_market[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "pricing.model",
+          "evidence_ids": [
+            "selected-page"
+          ]
+        },
+        {
+          "claim_path": "features[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "pricing.plans[0]",
+          "evidence_ids": [
+            "selected-page"
+          ]
+        }
+      ],
+      "company": {
+        "domain": "loom.com",
+        "homepage_url": "https://www.loom.com/",
+        "name": "Loom"
+      },
+      "coverage_limits": [
+        "Brand output is limited to identity metadata; no brand claims were inferred.",
+        "Only bounded homepage-link candidates and selected pages were requested; no raw response body was retained."
+      ],
+      "evidence": [
+        {
+          "excerpt_or_support": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "homepage",
+          "kind": "first_party",
+          "source_url": "https://www.loom.com/"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "selected-page",
+          "kind": "first_party",
+          "source_url": "https://www.loom.com/pricing"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "selected-page-2",
+          "kind": "first_party",
+          "source_url": "https://www.loom.com/signup"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "selected-page-3",
+          "kind": "first_party",
+          "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75"
+        },
+        {
+          "excerpt_or_support": "Brand fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:34Z",
+          "id": "brand",
+          "kind": "first_party",
+          "source_url": "https://brand.replynodes.com/loom.com"
+        }
+      ],
+      "features": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Features described in bounded first-party text."
+        }
+      ],
+      "generated_at": "2026-10-04T03:15:34Z",
+      "important_pages": [
+        {
+          "category": "homepage",
+          "evidence_id": "homepage",
+          "url": "https://www.loom.com/"
+        },
+        {
+          "category": "pricing_plans",
+          "evidence_id": "selected-page",
+          "url": "https://www.loom.com/pricing"
+        },
+        {
+          "category": "unknown",
+          "evidence_id": "selected-page-2",
+          "url": "https://www.loom.com/signup"
+        },
+        {
+          "category": "unknown",
+          "evidence_id": "selected-page-3",
+          "url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75"
+        }
+      ],
+      "integrations": [],
+      "meta": {
+        "capabilities_used": [
+          "free_markdown",
+          "free_homepage_discovery",
+          "free_brand"
+        ],
+        "page_read_budget_default": 12,
+        "page_read_budget_hard_cap": 20,
+        "page_read_count": 4,
+        "synthesis": "host_agent",
+        "tool_calls": [
+          {
+            "content_type": "text/html; charset=utf-8",
+            "endpoint_url": "https://www.loom.com/",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.loom.com/",
+            "surface": "free_homepage_discovery"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2F",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.loom.com/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2Fpricing",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.loom.com/pricing",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2Fsignup",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.loom.com/signup",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2F_next%2Fimage%3Furl%3Dhttps%253A%252F%252Fcdn.sanity.io%252Fimages%252Fpvn35iyy%252Fproduction%252F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg%26w%3D2048%26q%3D75",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "application/json; charset=utf-8",
+            "endpoint_url": "https://brand.replynodes.com/loom.com",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://brand.replynodes.com/loom.com",
+            "surface": "free_brand"
+          }
+        ]
+      },
+      "pricing": {
+        "model": {
+          "evidence_ids": [
+            "selected-page"
+          ],
+          "value": "subscription pricing grounded in a designated pricing page"
+        },
+        "plans": [
+          {
+            "evidence_ids": [
+              "selected-page"
+            ],
+            "value": "Observed pricing plan text from a designated pricing page"
+          }
+        ],
+        "unknown": false
+      },
+      "products": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Products described in bounded first-party text."
+        }
+      ],
+      "recent_updates": [],
+      "summary": {
+        "category": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Software company."
+        },
+        "one_liner": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public company information observed in bounded first-party text."
+        },
+        "positioning": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public positioning is supported by the bounded homepage fetch."
+        }
+      },
+      "target_market": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public users and teams described by the company."
+        }
+      ]
+    },
+    {
+      "brand": {
+        "colors": [],
+        "description": null,
+        "fonts": [],
+        "logo_url": null,
+        "name": "Microsoft",
+        "unknown": false
+      },
+      "brief_version": "1.0",
+      "claim_evidence": [
+        {
+          "claim_path": "summary.one_liner",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.category",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "summary.positioning",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "products[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "target_market[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        },
+        {
+          "claim_path": "pricing.model",
+          "evidence_ids": [
+            "selected-page"
+          ]
+        },
+        {
+          "claim_path": "features[0]",
+          "evidence_ids": [
+            "homepage"
+          ]
+        }
+      ],
+      "company": {
+        "domain": "microsoft.com",
+        "homepage_url": "https://www.microsoft.com/",
+        "name": "Microsoft"
+      },
+      "coverage_limits": [
+        "No grounded pricing evidence succeeded from a pricing-designated page; pricing is unknown.",
+        "Brand output is limited to identity metadata; no brand claims were inferred.",
+        "Only bounded homepage-link candidates and selected pages were requested; no raw response body was retained."
+      ],
+      "evidence": [
+        {
+          "excerpt_or_support": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:39Z",
+          "id": "homepage",
+          "kind": "first_party",
+          "source_url": "https://www.microsoft.com/"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:39Z",
+          "id": "selected-page",
+          "kind": "first_party",
+          "source_url": "https://www.microsoft.com/de-de/windows/"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:39Z",
+          "id": "selected-page-2",
+          "kind": "first_party",
+          "source_url": "https://www.microsoft.com/de-de/power-platform"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:39Z",
+          "id": "selected-page-3",
+          "kind": "first_party",
+          "source_url": "https://www.microsoft.com/de-de/windows-365"
+        },
+        {
+          "excerpt_or_support": "Brand fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:39Z",
+          "id": "brand",
+          "kind": "first_party",
+          "source_url": "https://brand.replynodes.com/microsoft.com"
+        }
+      ],
+      "features": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Features described in bounded first-party text."
+        }
+      ],
+      "generated_at": "2026-10-04T03:15:39Z",
+      "important_pages": [
+        {
+          "category": "homepage",
+          "evidence_id": "homepage",
+          "url": "https://www.microsoft.com/"
+        },
+        {
+          "category": "product_features",
+          "evidence_id": "selected-page",
+          "url": "https://www.microsoft.com/de-de/windows/"
+        },
+        {
+          "category": "product_features",
+          "evidence_id": "selected-page-2",
+          "url": "https://www.microsoft.com/de-de/power-platform"
+        },
+        {
+          "category": "product_features",
+          "evidence_id": "selected-page-3",
+          "url": "https://www.microsoft.com/de-de/windows-365"
+        }
+      ],
+      "integrations": [],
+      "meta": {
+        "capabilities_used": [
+          "free_markdown",
+          "free_homepage_discovery",
+          "free_brand"
+        ],
+        "page_read_budget_default": 12,
+        "page_read_budget_hard_cap": 20,
+        "page_read_count": 4,
+        "synthesis": "host_agent",
+        "tool_calls": [
+          {
+            "content_type": "text/html; charset=utf-8",
+            "endpoint_url": "https://www.microsoft.com/",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.microsoft.com/",
+            "surface": "free_homepage_discovery"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2F",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.microsoft.com/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fwindows%2F",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.microsoft.com/de-de/windows/",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fpower-platform",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.microsoft.com/de-de/power-platform",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fwindows-365",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.microsoft.com/de-de/windows-365",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "application/json; charset=utf-8",
+            "endpoint_url": "https://brand.replynodes.com/microsoft.com",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://brand.replynodes.com/microsoft.com",
+            "surface": "free_brand"
+          }
+        ]
+      },
+      "pricing": {
+        "model": {
+          "evidence_ids": [
+            "selected-page"
+          ],
+          "value": null
+        },
+        "plans": [],
+        "unknown": true
+      },
+      "products": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Products described in bounded first-party text."
+        }
+      ],
+      "recent_updates": [],
+      "summary": {
+        "category": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Software company."
+        },
+        "one_liner": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public company information observed in bounded first-party text."
+        },
+        "positioning": {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public positioning is supported by the bounded homepage fetch."
+        }
+      },
+      "target_market": [
+        {
+          "evidence_ids": [
+            "homepage"
+          ],
+          "value": "Public users and teams described by the company."
+        }
+      ]
+    }
+  ],
+  "budget_proof": {
+    "candidate_traces": {
+      "figma.com": {
+        "accepted_count": 20,
+        "attempted_candidate_number": 21,
+        "attempted_count": 21,
+        "candidate_21": {
+          "accepted": false,
+          "candidate_kind": "unknown",
+          "candidate_number": 21,
+          "decision": "rejected_hard_cap",
+          "rejected": true,
+          "request_made": false,
+          "retry_or_fallback_count": 0,
+          "selected": false,
+          "source_url": "https://www.figma.com/slides/"
+        },
+        "candidate_order": [
+          {
+            "category": "homepage",
+            "source_url": "https://www.figma.com/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/signup"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/design-explore/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/build-ship/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/design/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/make/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/ui-kits/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/website-templates/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/social-media-templates"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/mobile-apps"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/presentations"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/wireframes"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/illustrations"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/portfolio-templates"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/web-ads"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/community/icons"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/dev-mode/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/motion/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/figjam/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.figma.com/slides/"
+          }
+        ],
+        "request_made_count": 1,
+        "retry_or_fallback_count": 0,
+        "selected_candidate_sequence": [
+          {
+            "accepted": true,
+            "candidate_kind": "homepage",
+            "candidate_number": 1,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.figma.com/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 2,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/signup"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 3,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/design-explore/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 4,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/build-ship/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 5,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/design/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 6,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/make/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 7,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 8,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/ui-kits/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 9,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/website-templates/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 10,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/social-media-templates"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 11,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/mobile-apps"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 12,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/presentations"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 13,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/wireframes"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 14,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/illustrations"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 15,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/portfolio-templates"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 16,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/web-ads"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 17,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/icons"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 18,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/dev-mode/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 19,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/motion/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 20,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/figjam/"
+          },
+          {
+            "accepted": false,
+            "candidate_kind": "unknown",
+            "candidate_number": 21,
+            "decision": "rejected_hard_cap",
+            "rejected": true,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/slides/"
+          }
+        ]
+      },
+      "loom.com": {
+        "accepted_count": 20,
+        "attempted_candidate_number": 21,
+        "attempted_count": 21,
+        "candidate_21": {
+          "accepted": false,
+          "candidate_kind": "unknown",
+          "candidate_number": 21,
+          "decision": "rejected_hard_cap",
+          "rejected": true,
+          "request_made": false,
+          "retry_or_fallback_count": 0,
+          "selected": false,
+          "source_url": "https://www.loom.com/use-case/design"
+        },
+        "candidate_order": [
+          {
+            "category": "homepage",
+            "source_url": "https://www.loom.com/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/signup"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/looms/videos?reminderToRecord=true"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fscreen.jpg&w=1920&q=75"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fbubbs%2Fayana-sm.jpg&w=640&q=75"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fvisual-studio-code.jpg&w=1920&q=75"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/security"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/use-case"
+          },
+          {
+            "category": "pricing_plans",
+            "source_url": "https://www.loom.com/pricing"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/enterprise"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fglow.webp&w=3840&q=75"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fenterprise.webp&w=3840&q=75"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/screen-recorder"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/products/chrome-screen-recorder"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/desktop"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/products/ios-screen-recorder"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/use-case/sales"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/use-case/engineering"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/use-case/support"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.loom.com/use-case/design"
+          }
+        ],
+        "request_made_count": 4,
+        "retry_or_fallback_count": 0,
+        "selected_candidate_sequence": [
+          {
+            "accepted": true,
+            "candidate_kind": "homepage",
+            "candidate_number": 1,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.loom.com/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 2,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.loom.com/signup"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 3,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 4,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/looms/videos?reminderToRecord=true"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 5,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fscreen.jpg&w=1920&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 6,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fbubbs%2Fayana-sm.jpg&w=640&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 7,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fvisual-studio-code.jpg&w=1920&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 8,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/security"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 9,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "pricing_plans",
+            "candidate_number": 10,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.loom.com/pricing"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 11,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/enterprise"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 12,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fglow.webp&w=3840&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 13,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fenterprise.webp&w=3840&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 14,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/screen-recorder"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 15,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/products/chrome-screen-recorder"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 16,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/desktop"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 17,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/products/ios-screen-recorder"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 18,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case/sales"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 19,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case/engineering"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 20,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case/support"
+          },
+          {
+            "accepted": false,
+            "candidate_kind": "unknown",
+            "candidate_number": 21,
+            "decision": "rejected_hard_cap",
+            "rejected": true,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case/design"
+          }
+        ]
+      },
+      "microsoft.com": {
+        "accepted_count": 20,
+        "attempted_candidate_number": 21,
+        "attempted_count": 21,
+        "candidate_21": {
+          "accepted": false,
+          "candidate_kind": "unknown",
+          "candidate_number": 21,
+          "decision": "rejected_hard_cap",
+          "rejected": true,
+          "request_made": false,
+          "retry_or_fallback_count": 0,
+          "selected": false,
+          "source_url": "https://www.microsoft.com/de-de/sovereignty?icid=DSM_More_Sovereignty"
+        },
+        "candidate_order": [
+          {
+            "category": "homepage",
+            "source_url": "https://www.microsoft.com/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365"
+          },
+          {
+            "category": "product_features",
+            "source_url": "https://www.microsoft.com/de-de/windows/"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/surface"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/store/b/sale?cid=DSM_TopNavDeals"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/store/b/business"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/onedrive/online-cloud-storage"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/onenote/digital-note-taking-app"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/microsoft-teams/group-chat-software"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/store/b/xbox?icid=DSM_All_ShopXbox"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/store/b/accessories?icid=CNavDevicesAccessories"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/store/b/virtualreality?icid=CNavVirtualReality"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/store/top-paid/games/xbox?icid=DSM_All_XboxGames"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/ai?icid=DSM_All_AI"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/security"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/dynamics-365"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/business"
+          },
+          {
+            "category": "product_features",
+            "source_url": "https://www.microsoft.com/de-de/power-platform"
+          },
+          {
+            "category": "product_features",
+            "source_url": "https://www.microsoft.com/de-de/windows-365"
+          },
+          {
+            "category": "unknown",
+            "source_url": "https://www.microsoft.com/de-de/sovereignty?icid=DSM_More_Sovereignty"
+          }
+        ],
+        "request_made_count": 4,
+        "retry_or_fallback_count": 0,
+        "selected_candidate_sequence": [
+          {
+            "accepted": true,
+            "candidate_kind": "homepage",
+            "candidate_number": 1,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.microsoft.com/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 2,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "product_features",
+            "candidate_number": 3,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.microsoft.com/de-de/windows/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 4,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/surface"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 5,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/sale?cid=DSM_TopNavDeals"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 6,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/business"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 7,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/onedrive/online-cloud-storage"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 8,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 9,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/onenote/digital-note-taking-app"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 10,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-teams/group-chat-software"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 11,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/xbox?icid=DSM_All_ShopXbox"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 12,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/accessories?icid=CNavDevicesAccessories"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 13,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/virtualreality?icid=CNavVirtualReality"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 14,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/top-paid/games/xbox?icid=DSM_All_XboxGames"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 15,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/ai?icid=DSM_All_AI"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 16,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/security"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 17,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/dynamics-365"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 18,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/business"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "product_features",
+            "candidate_number": 19,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.microsoft.com/de-de/power-platform"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "product_features",
+            "candidate_number": 20,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.microsoft.com/de-de/windows-365"
+          },
+          {
+            "accepted": false,
+            "candidate_kind": "unknown",
+            "candidate_number": 21,
+            "decision": "rejected_hard_cap",
+            "rejected": true,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/sovereignty?icid=DSM_More_Sovereignty"
+          }
+        ]
+      }
+    },
+    "default_cap": 12,
+    "hard_cap": 20,
+    "per_company": {
+      "figma.com": {
+        "accepted_count": 20,
+        "attempted_candidate_number": 21,
+        "attempted_count": 21,
+        "candidate_21": {
+          "accepted": false,
+          "candidate_kind": "unknown",
+          "candidate_number": 21,
+          "decision": "rejected_hard_cap",
+          "rejected": true,
+          "request_made": false,
+          "retry_or_fallback_count": 0,
+          "selected": false,
+          "source_url": "https://www.figma.com/slides/"
+        },
+        "candidate_sequence": [
+          {
+            "accepted": true,
+            "candidate_kind": "homepage",
+            "candidate_number": 1,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.figma.com/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 2,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/signup"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 3,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/design-explore/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 4,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/build-ship/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 5,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/design/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 6,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/make/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 7,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 8,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/ui-kits/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 9,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/website-templates/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 10,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/social-media-templates"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 11,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/mobile-apps"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 12,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/presentations"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 13,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/wireframes"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 14,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/illustrations"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 15,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/portfolio-templates"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 16,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/web-ads"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 17,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/community/icons"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 18,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/dev-mode/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 19,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/motion/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 20,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/figjam/"
+          },
+          {
+            "accepted": false,
+            "candidate_kind": "unknown",
+            "candidate_number": 21,
+            "decision": "rejected_hard_cap",
+            "rejected": true,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.figma.com/slides/"
+          }
+        ],
+        "page_read_count": 4,
+        "request_made_count": 1,
+        "retry_or_fallback_count": 0
+      },
+      "loom.com": {
+        "accepted_count": 20,
+        "attempted_candidate_number": 21,
+        "attempted_count": 21,
+        "candidate_21": {
+          "accepted": false,
+          "candidate_kind": "unknown",
+          "candidate_number": 21,
+          "decision": "rejected_hard_cap",
+          "rejected": true,
+          "request_made": false,
+          "retry_or_fallback_count": 0,
+          "selected": false,
+          "source_url": "https://www.loom.com/use-case/design"
+        },
+        "candidate_sequence": [
+          {
+            "accepted": true,
+            "candidate_kind": "homepage",
+            "candidate_number": 1,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.loom.com/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 2,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.loom.com/signup"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 3,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 4,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/looms/videos?reminderToRecord=true"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 5,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fscreen.jpg&w=1920&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 6,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fbubbs%2Fayana-sm.jpg&w=640&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 7,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fvisual-studio-code.jpg&w=1920&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 8,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/security"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 9,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "pricing_plans",
+            "candidate_number": 10,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.loom.com/pricing"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 11,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/enterprise"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 12,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fglow.webp&w=3840&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 13,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.loom.com%2Fassets%2Fmarketing%2Fhome%2Fenterprise.webp&w=3840&q=75"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 14,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/screen-recorder"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 15,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/products/chrome-screen-recorder"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 16,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/desktop"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 17,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/products/ios-screen-recorder"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 18,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case/sales"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 19,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case/engineering"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 20,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case/support"
+          },
+          {
+            "accepted": false,
+            "candidate_kind": "unknown",
+            "candidate_number": 21,
+            "decision": "rejected_hard_cap",
+            "rejected": true,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.loom.com/use-case/design"
+          }
+        ],
+        "page_read_count": 4,
+        "request_made_count": 4,
+        "retry_or_fallback_count": 0
+      },
+      "microsoft.com": {
+        "accepted_count": 20,
+        "attempted_candidate_number": 21,
+        "attempted_count": 21,
+        "candidate_21": {
+          "accepted": false,
+          "candidate_kind": "unknown",
+          "candidate_number": 21,
+          "decision": "rejected_hard_cap",
+          "rejected": true,
+          "request_made": false,
+          "retry_or_fallback_count": 0,
+          "selected": false,
+          "source_url": "https://www.microsoft.com/de-de/sovereignty?icid=DSM_More_Sovereignty"
+        },
+        "candidate_sequence": [
+          {
+            "accepted": true,
+            "candidate_kind": "homepage",
+            "candidate_number": 1,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.microsoft.com/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 2,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "product_features",
+            "candidate_number": 3,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.microsoft.com/de-de/windows/"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 4,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/surface"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 5,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/sale?cid=DSM_TopNavDeals"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 6,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/business"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 7,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/onedrive/online-cloud-storage"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 8,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 9,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/onenote/digital-note-taking-app"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 10,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-teams/group-chat-software"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 11,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/xbox?icid=DSM_All_ShopXbox"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 12,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/accessories?icid=CNavDevicesAccessories"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 13,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/b/virtualreality?icid=CNavVirtualReality"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 14,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/store/top-paid/games/xbox?icid=DSM_All_XboxGames"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 15,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/ai?icid=DSM_All_AI"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 16,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/security"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 17,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/dynamics-365"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "unknown",
+            "candidate_number": 18,
+            "decision": "admitted_not_selected",
+            "rejected": false,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/microsoft-365/business"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "product_features",
+            "candidate_number": 19,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.microsoft.com/de-de/power-platform"
+          },
+          {
+            "accepted": true,
+            "candidate_kind": "product_features",
+            "candidate_number": 20,
+            "decision": "admitted_selected",
+            "rejected": false,
+            "request_made": true,
+            "retry_or_fallback_count": 0,
+            "selected": true,
+            "source_url": "https://www.microsoft.com/de-de/windows-365"
+          },
+          {
+            "accepted": false,
+            "candidate_kind": "unknown",
+            "candidate_number": 21,
+            "decision": "rejected_hard_cap",
+            "rejected": true,
+            "request_made": false,
+            "retry_or_fallback_count": 0,
+            "selected": false,
+            "source_url": "https://www.microsoft.com/de-de/sovereignty?icid=DSM_More_Sovereignty"
+          }
+        ],
+        "page_read_count": 4,
+        "request_made_count": 4,
+        "retry_or_fallback_count": 0
+      }
+    }
+  },
+  "generated_at": "2026-10-04T03:15:39Z",
+  "keyless": true,
+  "mcp_tools_list": {
+    "claimed_tool_names": [
+      "web_search",
+      "webcontext_map",
+      "webcontext_scrape",
+      "webcontext_crawl",
+      "brand_retrieve",
+      "brand_search",
+      "brand_styleguide",
+      "brand_fonts",
+      "brand_logo"
+    ],
+    "content_type": "text/event-stream",
+    "endpoint": "https://mcp.replynodes.com/mcp",
+    "http_status": 200,
+    "observed_tool_names": [
+      "app",
+      "brand_fonts",
+      "brand_logo",
+      "brand_retrieve",
+      "brand_search",
+      "brand_styleguide",
+      "developer",
+      "get_company_events",
+      "get_company_history",
+      "get_company_intelligence",
+      "get_fetcher_healthz",
+      "get_fetcher_readyz",
+      "get_recent_company_events",
+      "get_v1_hackernews_capabilities",
+      "googleplay_app_details",
+      "googleplay_availability",
+      "googleplay_categories",
+      "googleplay_category_apps",
+      "googleplay_data_safety",
+      "googleplay_developer",
+      "googleplay_permissions",
+      "googleplay_reviews",
+      "googleplay_search",
+      "googleplay_similar_apps",
+      "googleplay_suggest",
+      "hackernews_item",
+      "hackernews_search",
+      "hackernews_stories_ask",
+      "hackernews_stories_best",
+      "hackernews_stories_job",
+      "hackernews_stories_new",
+      "hackernews_stories_show",
+      "hackernews_stories_top",
+      "hackernews_user",
+      "list",
+      "monitor_changes",
+      "monitor_create",
+      "monitor_get",
+      "monitor_list",
+      "monitor_runs",
+      "monitor_update",
+      "post_by_id",
+      "post_by_permalink",
+      "privacy",
+      "ratings",
+      "read_document",
+      "reviews",
+      "search",
+      "search_posts",
+      "similar",
+      "subreddit_posts",
+      "suggest",
+      "user_activity",
+      "user_posts",
+      "web_search",
+      "webcontext_brand",
+      "webcontext_crawl",
+      "webcontext_map",
+      "webcontext_scrape",
+      "youtube_channel",
+      "youtube_comments",
+      "youtube_playlist",
+      "youtube_related",
+      "youtube_search",
+      "youtube_transcript",
+      "youtube_video"
+    ]
+  },
+  "requests": [
+    {
+      "domain": "figma.com",
+      "page_read_count": 4,
+      "requests": [
+        {
+          "content_type": "text/html; charset=utf-8",
+          "endpoint_url": "https://www.figma.com/",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.figma.com/",
+          "surface": "free_homepage_discovery"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2F",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.figma.com/",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-development%2F",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.figma.com/product-development/",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-managers%2F",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.figma.com/product-managers/",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-integrations%2F",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.figma.com/product-integrations/",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "application/json; charset=utf-8",
+          "endpoint_url": "https://brand.replynodes.com/figma.com",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://brand.replynodes.com/figma.com",
+          "surface": "free_brand"
+        }
+      ],
+      "schema_validation": "passed"
+    },
+    {
+      "domain": "loom.com",
+      "page_read_count": 4,
+      "requests": [
+        {
+          "content_type": "text/html; charset=utf-8",
+          "endpoint_url": "https://www.loom.com/",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.loom.com/",
+          "surface": "free_homepage_discovery"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2F",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.loom.com/",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2Fpricing",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.loom.com/pricing",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2Fsignup",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.loom.com/signup",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.loom.com%2F_next%2Fimage%3Furl%3Dhttps%253A%252F%252Fcdn.sanity.io%252Fimages%252Fpvn35iyy%252Fproduction%252F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg%26w%3D2048%26q%3D75",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "application/json; charset=utf-8",
+          "endpoint_url": "https://brand.replynodes.com/loom.com",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://brand.replynodes.com/loom.com",
+          "surface": "free_brand"
+        }
+      ],
+      "schema_validation": "passed"
+    },
+    {
+      "domain": "microsoft.com",
+      "page_read_count": 4,
+      "requests": [
+        {
+          "content_type": "text/html; charset=utf-8",
+          "endpoint_url": "https://www.microsoft.com/",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.microsoft.com/",
+          "surface": "free_homepage_discovery"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2F",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.microsoft.com/",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fwindows%2F",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.microsoft.com/de-de/windows/",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fpower-platform",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.microsoft.com/de-de/power-platform",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fwindows-365",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.microsoft.com/de-de/windows-365",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "application/json; charset=utf-8",
+          "endpoint_url": "https://brand.replynodes.com/microsoft.com",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://brand.replynodes.com/microsoft.com",
+          "surface": "free_brand"
+        }
+      ],
+      "schema_validation": "passed"
+    }
+  ],
+  "schema_validation": {
+    "figma.com": "passed",
+    "loom.com": "passed",
+    "microsoft.com": "passed"
+  },
+  "surfaces": [
+    "free_markdown",
+    "free_homepage_discovery",
+    "free_direct_pricing",
+    "free_brand"
+  ]
+}

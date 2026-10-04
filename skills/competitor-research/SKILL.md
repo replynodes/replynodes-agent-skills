@@ -12,7 +12,9 @@ metadata:
 # ReplyNodes competitor research
 
 Use this skill for “research competitors,” “compare this company,” “identify
-alternatives,” or “research this market.” ReplyNodes is a read-only public-data
+alternatives,” or “research this market.” General company context without a
+comparison routes to `company-research`; identity-only requests route to
+`brand-intelligence`. ReplyNodes is a read-only public-data
 layer: it gathers evidence but does not contact companies, publish content, or
 modify provider data.
 
@@ -25,7 +27,7 @@ use live tool schemas rather than stale capability lists.
 
 ## Research workflow and routing
 
-1. Resolve the target and candidate names with `web_search_web_search`.
+1. Resolve the target and candidate names with `web_search`.
 2. Scrape official sites with `webcontext_scrape`; use `webcontext_map` or
    `webcontext_crawl` when the site structure matters.
 3. Compare public identity and assets with `brand_search` and `brand_retrieve`.

@@ -71,6 +71,7 @@ npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-scraping
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill reddit-research
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill competitor-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-search
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-styleguide
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-fonts
@@ -91,6 +92,7 @@ Marketplace source pages:
 - [Brand kit](https://www.skills.sh/replynodes/replynodes-agent-skills/brandkitfetch)
 - [Brand profile](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-profile)
 - [Brand intelligence](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-intelligence)
+- [Company research](https://www.skills.sh/replynodes/replynodes-agent-skills/company-research)
 - [URL to Markdown](https://www.skills.sh/replynodes/replynodes-agent-skills/url-to-markdown)
 
 The source repository and its `skills.sh.json` taxonomy are the canonical

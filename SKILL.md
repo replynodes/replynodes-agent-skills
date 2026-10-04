@@ -95,7 +95,7 @@ when the question is comparative or investigative.
 
 | User intent | Start with | Add when useful |
 |---|---|---|
-| Unknown topic or current public fact | `web_search_web_search` | `webcontext_scrape` on primary sources |
+| Unknown topic or current public fact | `web_search` | `webcontext_scrape` on primary sources |
 | One known webpage | `webcontext_scrape` | `webcontext_brand` for brand signals |
 | What pages exist on a site? | `webcontext_map` | `webcontext_crawl` for selected pages |
 | Several same-origin pages | `webcontext_crawl` | `webcontext_scrape` for focused passages |
