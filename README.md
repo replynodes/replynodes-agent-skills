@@ -56,7 +56,7 @@ above is the maintained source.
 Install the focused company research skill from the canonical repository:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth
 ```
 
 Other focused research and brand skills in this repository include:
@@ -82,8 +82,8 @@ The source repository and its `skills.sh.json` taxonomy are the canonical
 distribution metadata. Do not infer that a marketplace or ClawHub listing has
 updated until its external page is read back.
 
-The official CLI needs `--full-depth` only when installing from a local clone that
-contains both the root umbrella and nested focused skills.
+The official CLI needs `--full-depth` for this remote install so a clean install
+discovers the nested focused skill rather than only the root skill.
 
 ## Production MCP
 
