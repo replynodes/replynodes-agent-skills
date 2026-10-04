@@ -82,6 +82,12 @@ def page_category(url):
         if re.search(pattern, path): return category
     return "unknown"
 
+def normalized_hostname(url):
+    hostname = urllib.parse.urlparse(url).hostname
+    if hostname is None: return None
+    hostname = hostname.lower()
+    return hostname[4:] if hostname.startswith("www.") else hostname
+
 def discover_candidates(homepage, homepage_text):
     """Parse actual same-site Markdown links from the fetched homepage."""
     base = urllib.parse.urlparse(homepage)
@@ -91,7 +97,9 @@ def discover_candidates(homepage, homepage_text):
         href = html.unescape(markdown_href or bare_href).strip()
         if not href or href.startswith(("#", "mailto:", "javascript:")): continue
         parsed = urllib.parse.urlparse(urllib.parse.urljoin(homepage, href))
-        if parsed.scheme != "https" or parsed.netloc.lower().lstrip("www.") != base.netloc.lower().lstrip("www."): continue
+        try: same_port = parsed.port == base.port
+        except ValueError: same_port = False
+        if parsed.scheme != "https" or normalized_hostname(parsed.geturl()) != normalized_hostname(homepage) or not same_port: continue
         normalized = urllib.parse.urlunparse(("https", parsed.netloc.lower(), parsed.path or "/", "", parsed.query, ""))
         if normalized not in [item[0] for item in found]: found.append((normalized, page_category(normalized)))
     return found
@@ -118,32 +126,38 @@ def success_support(label): return f"{label} succeeded with non-empty text; resp
 
 def grounded_pricing(text):
     lower = text.lower()
-    numeric = re.search(r"(?:[$€£]\s*\d|\b\d+(?:\.\d+)?\s*(?:usd|eur|gbp)\b)", lower)
-    explicit = re.search(r"\b(?:pricing|plans?)\b", lower)
-    return bool(numeric or explicit)
+    if re.search(r"\b(?:pricing|plans?)\s+(?:is\s+)?(?:unavailable|not\s+publicly\s+available)\b|\bnot\s+publicly\s+available\b|\bcontact\s+sales\b", lower): return False
+    amount = r"(?:[$€£]\s*\d+(?:[.,]\d+)?|\b\d+(?:[.,]\d+)?\s*(?:usd|eur|gbp)\b)"
+    price_context = rf"\b(?:pricing|plans?|price|cost)\b[^.\n]{{0,100}}{amount}|{amount}[^.\n]{{0,100}}\b(?:pricing|plans?|price|cost)\b"
+    named_plan = r"\b(?:free|starter|basic|pro|business|enterprise)\s+plan\b"
+    return bool(re.search(price_context, lower) or re.search(named_plan, lower))
 
 def designated_pricing_page(page):
     return page.get("category") == "pricing_plans" and page_category(page.get("source_url", "")) == "pricing_plans"
 
 def make_brief(case, fetched, candidates=None):
-    pages, brand_result = fetched[:-1], fetched[-1]; home = pages[0]; secondary = pages[1] if len(pages) > 1 else None
-    home_id, second_id, brand_id = "homepage", "selected-page", "brand"
-    home_ok = successful(home); secondary_ok = secondary is not None and successful(secondary)
-    pricing_seen = bool(secondary_ok and designated_pricing_page(secondary) and grounded_pricing(secondary["text"]))
-    evidence = [{"id": home_id, "source_url": home["source_url"], "kind": "first_party", "fetched_at": now(), "excerpt_or_support": success_support("Homepage Markdown fetch") if home_ok else failure_support(home, home["source_url"], "Homepage Markdown fetch")}]
-    if secondary is not None: evidence.append({"id": second_id, "source_url": secondary["source_url"], "kind": "first_party", "fetched_at": now(), "excerpt_or_support": success_support("Selected Markdown fetch") if secondary_ok else failure_support(secondary, secondary["source_url"], "Selected Markdown fetch")})
+    pages, brand_result = fetched[:-1], fetched[-1]; home = pages[0]
+    home_id, brand_id = "homepage", "brand"
+    home_ok = successful(home)
+    page_ids = [home_id] + ["selected-page" if index == 1 else f"selected-page-{index}" for index in range(1, len(pages))]
+    page_ok = [successful(page) for page in pages]
+    evidence = []
+    for index, page in enumerate(pages):
+        label = "Homepage Markdown fetch" if index == 0 else "Selected Markdown fetch"
+        evidence.append({"id": page_ids[index], "source_url": page["source_url"], "kind": "first_party", "fetched_at": now(), "excerpt_or_support": success_support(label) if page_ok[index] else failure_support(page, page["source_url"], label)})
     evidence.append({"id": brand_id, "source_url": brand_result["source_url"], "kind": "first_party", "fetched_at": now(), "excerpt_or_support": success_support("Brand fetch") if successful(brand_result) else failure_support(brand_result, brand_result["source_url"], "Brand fetch")})
-    pricing_evidence = second_id if secondary is not None else home_id
+    pricing_candidate = next((index for index, page in enumerate(pages) if page_ok[index] and designated_pricing_page(page)), None)
+    pricing_match = next((index for index, page in enumerate(pages) if page_ok[index] and designated_pricing_page(page) and grounded_pricing(page.get("text", ""))), None)
+    pricing_seen = pricing_match is not None
+    pricing_evidence = page_ids[pricing_match if pricing_seen else pricing_candidate] if (pricing_seen or pricing_candidate is not None) else (page_ids[1] if len(pages) > 1 else home_id)
     pricing_model = claim("subscription pricing grounded in a designated pricing page", pricing_evidence) if pricing_seen else claim(None, pricing_evidence)
-    plans = [claim("Observed pricing plan text from a designated pricing page", second_id)] if pricing_seen else []
+    plans = [claim("Observed pricing plan text from a designated pricing page", pricing_evidence)] if pricing_seen else []
     paths = [("summary.one_liner", home_id), ("summary.category", home_id), ("summary.positioning", home_id), ("products[0]", home_id), ("target_market[0]", home_id), ("pricing.model", pricing_evidence), ("features[0]", home_id)]
-    if plans: paths.append(("pricing.plans[0]", second_id))
-    selected_pages = [{"category": "homepage", "url": home["source_url"], "evidence_id": home_id}]
-    if secondary is not None: selected_pages.append({"category": secondary.get("category", "unknown"), "url": secondary["source_url"], "evidence_id": second_id})
+    if plans: paths.append(("pricing.plans[0]", pricing_evidence))
+    selected_pages = [{"category": page.get("category", "homepage") if index else "homepage", "url": page["source_url"], "evidence_id": page_ids[index]} for index, page in enumerate(pages)]
     coverage = []
     if not home_ok: coverage.append("Homepage coverage is unavailable; material company claims remain unknown.")
-    if secondary is None: coverage.append("No bounded homepage link with a selected page category was available; pricing is unknown.")
-    elif not secondary_ok: coverage.append("Selected page coverage is unavailable; pricing and page-specific claims remain unknown.")
+    if len(pages) == 1: coverage.append("No bounded homepage link with a selected page category was available; pricing is unknown.")
     elif not pricing_seen: coverage.append("No grounded pricing evidence succeeded from a pricing-designated page; pricing is unknown.")
     coverage.append("Brand coverage is unavailable; identity metadata is unknown." if not successful(brand_result) else "Brand output is limited to identity metadata; no brand claims were inferred.")
     coverage.append("Only bounded homepage-link candidates and selected pages were requested; no raw response body was retained.")

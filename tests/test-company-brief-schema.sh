@@ -101,9 +101,40 @@ assert grounded_pricing_brief["pricing"]["unknown"] is False
 assert grounded_pricing_brief["pricing"]["plans"]
 runner.validate_brief(grounded_pricing_brief)
 
+product_page = fake_fetch(200, "Product details and feature overview.")
+product_page.update({"source_url": "https://example.test/product", "category": "product_features"})
+later_pricing_page = fake_fetch(200, "Plans start at $29 USD per month.")
+later_pricing_page.update({"source_url": "https://example.test/pricing/plans", "category": "pricing_plans"})
+later_pricing_brief = runner.make_brief(failed_case, [successful_home, product_page, later_pricing_page, successful_brand])
+assert later_pricing_brief["pricing"]["unknown"] is False
+assert later_pricing_brief["pricing"]["model"]["evidence_ids"] == ["selected-page-2"]
+assert later_pricing_brief["pricing"]["plans"][0]["evidence_ids"] == ["selected-page-2"]
+assert {item["evidence_id"] for item in later_pricing_brief["important_pages"]} >= {"selected-page", "selected-page-2"}
+assert later_pricing_brief["important_pages"][2]["url"] == later_pricing_page["source_url"]
+runner.validate_brief(later_pricing_brief)
+
+unavailable_page = fake_fetch(200, "Pricing unavailable in this region.")
+unavailable_page.update({"source_url": "https://example.test/pricing", "category": "pricing_plans"})
+unavailable_brief = runner.make_brief(failed_case, [successful_home, product_page, unavailable_page, successful_brand])
+assert unavailable_brief["pricing"] == {"model": {"value": None, "evidence_ids": ["selected-page-2"]}, "plans": [], "unknown": True}
+assert any("pricing" in item.lower() and "unknown" in item.lower() for item in unavailable_brief["coverage_limits"])
+runner.validate_brief(unavailable_brief)
+
+for text in ("Contact sales for pricing.", "Pricing is not publicly available."):
+    non_positive_page = fake_fetch(200, text)
+    non_positive_page.update({"source_url": "https://example.test/pricing", "category": "pricing_plans"})
+    non_positive_brief = runner.make_brief(failed_case, [successful_home, non_positive_page, successful_brand])
+    assert non_positive_brief["pricing"]["unknown"] is True
+    assert non_positive_brief["pricing"]["model"]["value"] is None
+    assert non_positive_brief["pricing"]["plans"] == []
+    runner.validate_brief(non_positive_brief)
+
 discovery_text = "[Product](/product) [Pricing](https://example.test/pricing/plans) [External](https://other.test/about)"
 discovered = runner.discover_candidates(failed_case["homepage"], discovery_text)
 assert discovered == [(failed_case["homepage"], "homepage"), ("https://example.test/product", "product_features"), ("https://example.test/pricing/plans", "pricing_plans")]
+www_homepage = "https://www.example.test/"
+www_discovery = runner.discover_candidates(www_homepage, "[Canonical](https://example.test/pricing) [Typo](https://ww.example.test/plans) [External](https://other.test/pricing)")
+assert www_discovery == [(www_homepage, "homepage"), ("https://example.test/pricing", "pricing_plans")]
 many = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 21)]
 trace = runner.candidate_trace(many, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
 assert trace["accepted_count"] == 20 and trace["candidate_21"]["accepted"] is False
