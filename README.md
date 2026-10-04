@@ -53,34 +53,17 @@ above is the maintained source.
 
 ## Install
 
-Umbrella research skill:
+Install the focused company research skill from the canonical repository:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-logo
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brandkitfetch
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-profile
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-intelligence
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth
 ```
 
-Focused intent skills from the canonical repository (each can be selected by
-slug):
+Other focused research and brand skills in this repository include:
 
-```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-search
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-scraping
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill reddit-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill competitor-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-search
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-styleguide
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-fonts
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill youtube-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill app-store-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill google-play-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill url-to-markdown
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill pdf-to-markdown
-```
+- Research: `company-research`, `web-search`, `web-scraping`, `competitor-research`, `reddit-research`, `youtube-research`, `app-store-research`, `google-play-research`.
+- Brand: `brand-logo`, `brandkitfetch`, `brand-profile`, `brand-intelligence`, `brand-search`, `brand-styleguide`, `brand-fonts`.
+- Utilities: `url-to-markdown`, `pdf-to-markdown`.
 
 Read the [PDF to Markdown skill source](skills/pdf-to-markdown/SKILL.md) for
 the direct REST contract, limits, and safety boundaries.
@@ -99,8 +82,8 @@ The source repository and its `skills.sh.json` taxonomy are the canonical
 distribution metadata. Do not infer that a marketplace or ClawHub listing has
 updated until its external page is read back.
 
-The official CLI needs `--full-depth` only when installing from a local clone that
-contains both the root umbrella and nested focused skills.
+The official CLI needs `--full-depth` for this remote install so a clean install
+discovers the nested focused skill rather than only the root skill.
 
 ## Production MCP
 
