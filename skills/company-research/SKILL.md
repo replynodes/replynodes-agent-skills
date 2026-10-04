@@ -6,7 +6,7 @@ compatibility: "Free and keyless for the domain-to-brief path (network access on
 metadata:
   internal: false
   author: ReplyNodes
-  version: "1.0.1"
+  version: "1.0.2"
   endpoint: https://mcp.replynodes.com/mcp
 ---
 
