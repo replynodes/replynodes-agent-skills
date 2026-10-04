@@ -82,8 +82,9 @@ time, and a bounded excerpt or support note. `meta.synthesis` is always
 ## Bounded keyless E2E procedure
 
 Run `tests/run-company-research-keyless-e2e.py --output PATH` for the
-reproducible three-case check: `linear.app` (public pricing), `loom.com`
-(pricing unavailable), and `microsoft.com` (larger multi-product). The runner
+reproducible three-case check: `figma.com` (pricing may be unknown when its
+pricing link is outside the bounded selection), `loom.com` (public pricing),
+and `microsoft.com` (larger multi-product with pricing unknown). The runner
 uses free Markdown, one bounded direct public homepage request for HTML link
 discovery, and Brand HTTP surfaces. It makes one no-retry request per selected
 page/endpoint, with at most one bounded direct-pricing fallback after a Markdown
