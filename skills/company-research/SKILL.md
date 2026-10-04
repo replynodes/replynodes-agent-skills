@@ -50,25 +50,15 @@ Observed excerpts:
   that helps all types of businesses accept payments, build flexible billing
   models and manage money movement.”
 
-Abridged brief out — the host agent synthesizes it, and every claim carries
-`evidence_ids`:
+Try:
 
-```json
-{
-  "company": {"domain": "stripe.com", "homepage_url": "https://stripe.com/"},
-  "summary": {
-    "one_liner": {"value": "Financial infrastructure for businesses to accept payments and move money.", "evidence_ids": ["homepage", "brand"]},
-    "positioning": {"value": "Financial infrastructure to grow your revenue.", "evidence_ids": ["homepage"]}
-  },
-  "products": [{"value": "Payment and financial tools described in first-party homepage text.", "evidence_ids": ["homepage"]}],
-  "pricing": {"unknown": true, "model": {"value": null}, "plans": []},
-  "coverage_limits": ["Illustrative run: no pricing-designated page was among the bounded pages read."],
-  "meta": {"synthesis": "host_agent", "page_read_count": 2, "page_read_budget_default": 12, "page_read_budget_hard_cap": 20}
-}
-```
+> Research `stripe.com`. Give me what the company does, products, pricing,
+> target customers, integrations, important first-party pages, and source URLs.
 
-Nothing is fabricated: when a price, customer, or integration is not present in
-the evidence, the brief marks it `unknown` instead of guessing.
+Expected categories include the company summary, products and features, pricing,
+target market, integrations, important pages, and exact evidence URLs. The host
+agent synthesizes the result; every material claim carries evidence, and missing
+facts stay `unknown` instead of being guessed.
 
 ## Use cases
 
