@@ -268,7 +268,7 @@ def main():
         trace = candidate_trace(candidates, execution)
         brand_source = "https://brand.replynodes.com/" + case["domain"]; brand_result = get_once(brand_source); brand_result.update({"surface": "free_brand", "source_url": brand_source, "endpoint_url": brand_source}); brand_result["attempts"] = [brand_result.copy()]; fetched.append(brand_result)
         brief = make_brief(case, fetched, candidates, discovery); validate_brief(brief); assert brief["meta"]["page_read_count"] <= DEFAULT_CAP <= brief["meta"]["page_read_budget_default"]
-        sanitized_requests = sanitize_request_records([discovery] + [record for page in fetched for record in page.get("attempts", [page])] + [brand_result])
+        sanitized_requests = sanitize_request_records([discovery] + [record for page in fetched for record in page.get("attempts", [page])])
         assert all("text" not in record and "error" not in record and "status" not in record for record in sanitized_requests)
         reports.append({"domain": case["domain"], "requests": sanitized_requests, "page_read_count": brief["meta"]["page_read_count"], "schema_validation": "passed"}); briefs.append(brief); traces.append(trace)
     if not any(not brief["pricing"]["unknown"] for brief in briefs):
