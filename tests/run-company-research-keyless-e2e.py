@@ -156,16 +156,15 @@ def candidate_trace(candidates, execution):
     attempted_count = len(decisions)
     return {"candidate_order": [{"source_url": source, "category": category} for source, category in candidates[:HARD_CAP + 1]], "selected_candidate_sequence": decisions, "candidate_21": decisions[HARD_CAP] if len(decisions) > HARD_CAP else None, "accepted_count": sum(item["accepted"] for item in decisions), "attempted_count": attempted_count, "attempted_candidate_number": attempted_count or None, "request_made_count": sum(item["request_made"] for item in decisions), "retry_or_fallback_count": sum(item["retry_or_fallback_count"] for item in decisions)}
 
+CATEGORY_ORDER = {"product_features": 0, "pricing_plans": 1, "integrations": 2, "about": 3, "docs": 4, "customers_case_studies": 5, "changelog_blog": 6, "unknown": 7}
+
 def select_candidates(candidates):
-    """Keep the homepage and prioritize the first in-cap pricing candidate within DEFAULT_CAP."""
+    """Keep homepage and select deterministic category-priority candidates."""
     if not candidates: return []
     homepage = candidates[0]
-    in_cap = candidates[1:DEFAULT_CAP]
-    pricing = next((candidate for candidate in in_cap if candidate[1] == "pricing_plans"), None)
+    ranked = sorted(enumerate(candidates[1:], 1), key=lambda item: (CATEGORY_ORDER.get(item[1][1], 99), item[0]))
     selected = [homepage]
-    if pricing is not None:
-        selected.append(pricing)
-    selected.extend(candidate for candidate in in_cap if candidate != pricing and len(selected) < E2E_TARGET_READS)
+    selected.extend(candidate for _, candidate in ranked[:E2E_TARGET_READS - 1])
     return selected
 
 def claim(value, evidence): return {"value": value, "evidence_ids": [evidence]}

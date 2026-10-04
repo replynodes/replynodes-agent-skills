@@ -114,6 +114,12 @@ direct_pricing_brief = runner.make_brief(failed_case, [successful_home, direct_p
 assert "free_direct_pricing" in direct_pricing_brief["meta"]["capabilities_used"]
 assert [call["surface"] for call in direct_pricing_brief["meta"]["tool_calls"]].count("free_direct_pricing") == 1
 runner.validate_brief(direct_pricing_brief)
+direct_failed = fake_fetch(None, "", "URLError", "")
+direct_failed.update({"surface": "free_direct_pricing", "source_url": pricing_page["source_url"], "endpoint_url": pricing_page["source_url"], "category": "pricing_plans"})
+direct_failed["attempts"] = [markdown_429, direct_failed.copy()]
+direct_failed_brief = runner.make_brief(failed_case, [successful_home, direct_failed, successful_brand])
+assert direct_failed_brief["pricing"]["unknown"] is True
+runner.validate_brief(direct_failed_brief)
 
 figma_pricing_page = fake_fetch(200, "Professional Monthly $16 /mo; Organization $55 /mo. Enterprise plan — contact sales.")
 figma_pricing_page.update({"source_url": "https://example.test/pricing", "category": "pricing_plans"})
@@ -173,16 +179,18 @@ prioritized = [(failed_case["homepage"], "homepage")] + [(f"https://example.test
 selected = runner.select_candidates(prioritized)
 assert len(selected) == runner.E2E_TARGET_READS
 assert selected[1:] == [("https://example.test/pricing", "pricing_plans")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, runner.E2E_TARGET_READS - 1)]
+out_of_order = [(failed_case["homepage"], "homepage"), ("https://example.test/about", "about"), ("https://example.test/integrations", "integrations"), ("https://example.test/product", "product_features"), ("https://example.test/pricing", "pricing_plans")]
+assert runner.select_candidates(out_of_order)[1:] == [("https://example.test/product", "product_features"), ("https://example.test/pricing", "pricing_plans"), ("https://example.test/integrations", "integrations")]
 prioritized_trace = runner.candidate_trace(prioritized, {source: {"selected": True, "request_made": True} for source, _ in selected})
 pricing_trace = next(item for item in prioritized_trace["selected_candidate_sequence"] if item["source_url"] == "https://example.test/pricing")
 assert pricing_trace["selected"] is True and pricing_trace["request_made"] is True
 prioritized_13 = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 12)] + [("https://example.test/pricing", "pricing_plans")]
 selected_13 = runner.select_candidates(prioritized_13)
 assert len(selected_13) == runner.E2E_TARGET_READS
-assert all(source != "https://example.test/pricing" for source, _ in selected_13)
+assert ("https://example.test/pricing", "pricing_plans") in selected_13
 prioritized_13_trace = runner.candidate_trace(prioritized_13, {source: {"selected": True, "request_made": True} for source, _ in selected_13})
 pricing_trace_13 = next(item for item in prioritized_13_trace["selected_candidate_sequence"] if item["source_url"] == "https://example.test/pricing")
-assert pricing_trace_13["selected"] is False and pricing_trace_13["request_made"] is False
+assert pricing_trace_13["selected"] is True and pricing_trace_13["request_made"] is True
 many = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 21)]
 trace = runner.candidate_trace(many, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
 assert trace["accepted_count"] == 20 and trace["candidate_21"]["accepted"] is False

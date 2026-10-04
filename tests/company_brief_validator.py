@@ -105,7 +105,8 @@ def check_contract(brief, schema=None, schema_path=SCHEMA_PATH):
         direct_host = urllib.parse.urlparse(direct["source_url"]).hostname
         if direct_host:
             direct_host = direct_host.removeprefix("www.").rstrip(".").lower()
-        if "free_direct_pricing" not in capabilities or direct["operation"] != "GET" or direct["source_url"] != direct["endpoint_url"] or direct_host != homepage_host or not re.search(r"(?:^|[/_-])(pricing|plans?)(?:[/_-]|$)", urllib.parse.urlparse(direct["source_url"]).path.lower()) or not direct["content_type"].lower().startswith("text/html"):
+        direct_ok = 200 <= direct["http_status"] < 300
+        if "free_direct_pricing" not in capabilities or direct["operation"] != "GET" or direct["source_url"] != direct["endpoint_url"] or direct_host != homepage_host or not re.search(r"(?:^|[/_-])(pricing|plans?)(?:[/_-]|$)", urllib.parse.urlparse(direct["source_url"]).path.lower()) or (direct_ok and not direct["content_type"].lower().startswith("text/html")):
             raise AssertionError("direct pricing fallback must use one exact first-party pricing URL")
         markdown = [call for call in brief["meta"]["tool_calls"] if call["surface"] == "free_markdown" and call["source_url"] == direct["source_url"]]
         if len(markdown) != 1 or markdown[0]["http_status"] != 429:

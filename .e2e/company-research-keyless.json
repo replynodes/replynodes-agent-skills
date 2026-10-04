@@ -67,35 +67,35 @@
       "evidence": [
         {
           "excerpt_or_support": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "homepage",
           "kind": "first_party",
           "source_url": "https://www.figma.com/"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "selected-page",
           "kind": "first_party",
-          "source_url": "https://www.figma.com/signup"
+          "source_url": "https://www.figma.com/product-development/"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "selected-page-2",
           "kind": "first_party",
-          "source_url": "https://www.figma.com/design-explore/"
+          "source_url": "https://www.figma.com/product-managers/"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "selected-page-3",
           "kind": "first_party",
-          "source_url": "https://www.figma.com/build-ship/"
+          "source_url": "https://www.figma.com/product-integrations/"
         },
         {
           "excerpt_or_support": "Brand fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "brand",
           "kind": "first_party",
           "source_url": "https://brand.replynodes.com/figma.com"
@@ -109,7 +109,7 @@
           "value": "Features described in bounded first-party text."
         }
       ],
-      "generated_at": "2026-10-04T03:00:23Z",
+      "generated_at": "2026-10-04T03:15:34Z",
       "important_pages": [
         {
           "category": "homepage",
@@ -117,19 +117,19 @@
           "url": "https://www.figma.com/"
         },
         {
-          "category": "unknown",
+          "category": "product_features",
           "evidence_id": "selected-page",
-          "url": "https://www.figma.com/signup"
+          "url": "https://www.figma.com/product-development/"
         },
         {
-          "category": "unknown",
+          "category": "product_features",
           "evidence_id": "selected-page-2",
-          "url": "https://www.figma.com/design-explore/"
+          "url": "https://www.figma.com/product-managers/"
         },
         {
-          "category": "unknown",
+          "category": "product_features",
           "evidence_id": "selected-page-3",
-          "url": "https://www.figma.com/build-ship/"
+          "url": "https://www.figma.com/product-integrations/"
         }
       ],
       "integrations": [],
@@ -162,26 +162,26 @@
           },
           {
             "content_type": "text/markdown; charset=utf-8",
-            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fsignup",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-development%2F",
             "http_status": 200,
             "operation": "GET",
-            "source_url": "https://www.figma.com/signup",
+            "source_url": "https://www.figma.com/product-development/",
             "surface": "free_markdown"
           },
           {
             "content_type": "text/markdown; charset=utf-8",
-            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fdesign-explore%2F",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-managers%2F",
             "http_status": 200,
             "operation": "GET",
-            "source_url": "https://www.figma.com/design-explore/",
+            "source_url": "https://www.figma.com/product-managers/",
             "surface": "free_markdown"
           },
           {
             "content_type": "text/markdown; charset=utf-8",
-            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fbuild-ship%2F",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-integrations%2F",
             "http_status": 200,
             "operation": "GET",
-            "source_url": "https://www.figma.com/build-ship/",
+            "source_url": "https://www.figma.com/product-integrations/",
             "surface": "free_markdown"
           },
           {
@@ -314,35 +314,35 @@
       "evidence": [
         {
           "excerpt_or_support": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "homepage",
           "kind": "first_party",
           "source_url": "https://www.loom.com/"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "selected-page",
           "kind": "first_party",
           "source_url": "https://www.loom.com/pricing"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "selected-page-2",
           "kind": "first_party",
           "source_url": "https://www.loom.com/signup"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "selected-page-3",
           "kind": "first_party",
           "source_url": "https://www.loom.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Fpvn35iyy%2Fproduction%2F4177fae3d4d58b470dd83c0a031533b7dad15dc9-1298x1298.jpg&w=2048&q=75"
         },
         {
           "excerpt_or_support": "Brand fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:23Z",
+          "fetched_at": "2026-10-04T03:15:34Z",
           "id": "brand",
           "kind": "first_party",
           "source_url": "https://brand.replynodes.com/loom.com"
@@ -356,7 +356,7 @@
           "value": "Features described in bounded first-party text."
         }
       ],
-      "generated_at": "2026-10-04T03:00:23Z",
+      "generated_at": "2026-10-04T03:15:34Z",
       "important_pages": [
         {
           "category": "homepage",
@@ -563,35 +563,35 @@
       "evidence": [
         {
           "excerpt_or_support": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:24Z",
+          "fetched_at": "2026-10-04T03:15:39Z",
           "id": "homepage",
           "kind": "first_party",
           "source_url": "https://www.microsoft.com/"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:24Z",
+          "fetched_at": "2026-10-04T03:15:39Z",
           "id": "selected-page",
-          "kind": "first_party",
-          "source_url": "https://www.microsoft.com/de-de/microsoft-365"
-        },
-        {
-          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:24Z",
-          "id": "selected-page-2",
           "kind": "first_party",
           "source_url": "https://www.microsoft.com/de-de/windows/"
         },
         {
           "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:24Z",
+          "fetched_at": "2026-10-04T03:15:39Z",
+          "id": "selected-page-2",
+          "kind": "first_party",
+          "source_url": "https://www.microsoft.com/de-de/power-platform"
+        },
+        {
+          "excerpt_or_support": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "fetched_at": "2026-10-04T03:15:39Z",
           "id": "selected-page-3",
           "kind": "first_party",
-          "source_url": "https://www.microsoft.com/surface"
+          "source_url": "https://www.microsoft.com/de-de/windows-365"
         },
         {
           "excerpt_or_support": "Brand fetch succeeded with non-empty text; response body omitted.",
-          "fetched_at": "2026-10-04T03:00:24Z",
+          "fetched_at": "2026-10-04T03:15:39Z",
           "id": "brand",
           "kind": "first_party",
           "source_url": "https://brand.replynodes.com/microsoft.com"
@@ -605,7 +605,7 @@
           "value": "Features described in bounded first-party text."
         }
       ],
-      "generated_at": "2026-10-04T03:00:24Z",
+      "generated_at": "2026-10-04T03:15:39Z",
       "important_pages": [
         {
           "category": "homepage",
@@ -613,19 +613,19 @@
           "url": "https://www.microsoft.com/"
         },
         {
-          "category": "unknown",
+          "category": "product_features",
           "evidence_id": "selected-page",
-          "url": "https://www.microsoft.com/de-de/microsoft-365"
+          "url": "https://www.microsoft.com/de-de/windows/"
         },
         {
           "category": "product_features",
           "evidence_id": "selected-page-2",
-          "url": "https://www.microsoft.com/de-de/windows/"
+          "url": "https://www.microsoft.com/de-de/power-platform"
         },
         {
-          "category": "unknown",
+          "category": "product_features",
           "evidence_id": "selected-page-3",
-          "url": "https://www.microsoft.com/surface"
+          "url": "https://www.microsoft.com/de-de/windows-365"
         }
       ],
       "integrations": [],
@@ -658,14 +658,6 @@
           },
           {
             "content_type": "text/markdown; charset=utf-8",
-            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fmicrosoft-365",
-            "http_status": 200,
-            "operation": "GET",
-            "source_url": "https://www.microsoft.com/de-de/microsoft-365",
-            "surface": "free_markdown"
-          },
-          {
-            "content_type": "text/markdown; charset=utf-8",
             "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fwindows%2F",
             "http_status": 200,
             "operation": "GET",
@@ -674,10 +666,18 @@
           },
           {
             "content_type": "text/markdown; charset=utf-8",
-            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fsurface",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fpower-platform",
             "http_status": 200,
             "operation": "GET",
-            "source_url": "https://www.microsoft.com/surface",
+            "source_url": "https://www.microsoft.com/de-de/power-platform",
+            "surface": "free_markdown"
+          },
+          {
+            "content_type": "text/markdown; charset=utf-8",
+            "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fwindows-365",
+            "http_status": 200,
+            "operation": "GET",
+            "source_url": "https://www.microsoft.com/de-de/windows-365",
             "surface": "free_markdown"
           },
           {
@@ -842,7 +842,7 @@
             "source_url": "https://www.figma.com/slides/"
           }
         ],
-        "request_made_count": 4,
+        "request_made_count": 1,
         "retry_or_fallback_count": 0,
         "selected_candidate_sequence": [
           {
@@ -860,33 +860,33 @@
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 2,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.figma.com/signup"
           },
           {
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 3,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.figma.com/design-explore/"
           },
           {
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 4,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.figma.com/build-ship/"
           },
           {
@@ -1534,11 +1534,11 @@
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 2,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.microsoft.com/de-de/microsoft-365"
           },
           {
@@ -1556,11 +1556,11 @@
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 4,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.microsoft.com/surface"
           },
           {
@@ -1721,22 +1721,22 @@
             "accepted": true,
             "candidate_kind": "product_features",
             "candidate_number": 19,
-            "decision": "admitted_not_selected",
+            "decision": "admitted_selected",
             "rejected": false,
-            "request_made": false,
+            "request_made": true,
             "retry_or_fallback_count": 0,
-            "selected": false,
+            "selected": true,
             "source_url": "https://www.microsoft.com/de-de/power-platform"
           },
           {
             "accepted": true,
             "candidate_kind": "product_features",
             "candidate_number": 20,
-            "decision": "admitted_not_selected",
+            "decision": "admitted_selected",
             "rejected": false,
-            "request_made": false,
+            "request_made": true,
             "retry_or_fallback_count": 0,
-            "selected": false,
+            "selected": true,
             "source_url": "https://www.microsoft.com/de-de/windows-365"
           },
           {
@@ -1787,33 +1787,33 @@
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 2,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.figma.com/signup"
           },
           {
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 3,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.figma.com/design-explore/"
           },
           {
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 4,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.figma.com/build-ship/"
           },
           {
@@ -2005,7 +2005,7 @@
           }
         ],
         "page_read_count": 4,
-        "request_made_count": 4,
+        "request_made_count": 1,
         "retry_or_fallback_count": 0
       },
       "loom.com": {
@@ -2291,11 +2291,11 @@
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 2,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.microsoft.com/de-de/microsoft-365"
           },
           {
@@ -2313,11 +2313,11 @@
             "accepted": true,
             "candidate_kind": "unknown",
             "candidate_number": 4,
-            "decision": "admitted_selected",
+            "decision": "admitted_not_selected",
             "rejected": false,
-            "request_made": true,
+            "request_made": false,
             "retry_or_fallback_count": 0,
-            "selected": true,
+            "selected": false,
             "source_url": "https://www.microsoft.com/surface"
           },
           {
@@ -2478,22 +2478,22 @@
             "accepted": true,
             "candidate_kind": "product_features",
             "candidate_number": 19,
-            "decision": "admitted_not_selected",
+            "decision": "admitted_selected",
             "rejected": false,
-            "request_made": false,
+            "request_made": true,
             "retry_or_fallback_count": 0,
-            "selected": false,
+            "selected": true,
             "source_url": "https://www.microsoft.com/de-de/power-platform"
           },
           {
             "accepted": true,
             "candidate_kind": "product_features",
             "candidate_number": 20,
-            "decision": "admitted_not_selected",
+            "decision": "admitted_selected",
             "rejected": false,
-            "request_made": false,
+            "request_made": true,
             "retry_or_fallback_count": 0,
-            "selected": false,
+            "selected": true,
             "source_url": "https://www.microsoft.com/de-de/windows-365"
           },
           {
@@ -2514,7 +2514,7 @@
       }
     }
   },
-  "generated_at": "2026-10-04T03:00:25Z",
+  "generated_at": "2026-10-04T03:15:39Z",
   "keyless": true,
   "mcp_tools_list": {
     "claimed_tool_names": [
@@ -2623,26 +2623,26 @@
         },
         {
           "content_type": "text/markdown; charset=utf-8",
-          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fsignup",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-development%2F",
           "http_status": 200,
           "operation": "GET",
-          "source_url": "https://www.figma.com/signup",
+          "source_url": "https://www.figma.com/product-development/",
           "surface": "free_markdown"
         },
         {
           "content_type": "text/markdown; charset=utf-8",
-          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fdesign-explore%2F",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-managers%2F",
           "http_status": 200,
           "operation": "GET",
-          "source_url": "https://www.figma.com/design-explore/",
+          "source_url": "https://www.figma.com/product-managers/",
           "surface": "free_markdown"
         },
         {
           "content_type": "text/markdown; charset=utf-8",
-          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fbuild-ship%2F",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.figma.com%2Fproduct-integrations%2F",
           "http_status": 200,
           "operation": "GET",
-          "source_url": "https://www.figma.com/build-ship/",
+          "source_url": "https://www.figma.com/product-integrations/",
           "surface": "free_markdown"
         },
         {
@@ -2733,14 +2733,6 @@
         },
         {
           "content_type": "text/markdown; charset=utf-8",
-          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fmicrosoft-365",
-          "http_status": 200,
-          "operation": "GET",
-          "source_url": "https://www.microsoft.com/de-de/microsoft-365",
-          "surface": "free_markdown"
-        },
-        {
-          "content_type": "text/markdown; charset=utf-8",
           "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fwindows%2F",
           "http_status": 200,
           "operation": "GET",
@@ -2749,10 +2741,18 @@
         },
         {
           "content_type": "text/markdown; charset=utf-8",
-          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fsurface",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fpower-platform",
           "http_status": 200,
           "operation": "GET",
-          "source_url": "https://www.microsoft.com/surface",
+          "source_url": "https://www.microsoft.com/de-de/power-platform",
+          "surface": "free_markdown"
+        },
+        {
+          "content_type": "text/markdown; charset=utf-8",
+          "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fwww.microsoft.com%2Fde-de%2Fwindows-365",
+          "http_status": 200,
+          "operation": "GET",
+          "source_url": "https://www.microsoft.com/de-de/windows-365",
           "surface": "free_markdown"
         },
         {
