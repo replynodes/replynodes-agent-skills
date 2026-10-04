@@ -26,7 +26,7 @@ No second telemetry or attribution mechanism was added.
 | Public source slugs | `replynodes`, `company-research`, `competitor-research`, `url-to-markdown`, `brand-kit`, `app-store-research` | `skills.sh.json` on `origin/main` |
 | Canonical skills.sh source page | HTTP 200 | GET `https://skills.sh/replynodes/replynodes-agent-skills/replynodes` |
 | Per-skill pages | HTTP 200 for all six | GET canonical skills.sh URLs |
-| Install counts | Not exposed as a stable machine-readable field by the observed page/API | Direct page/API readback; do not infer counts from unrelated numeric markup |
+| Install counts | replynodes 6; company-research 2; competitor-research 1; url-to-markdown 1; brand-kit 1; app-store-research 0 | `InteractionCounter.userInteractionCount` and visible `Installs` value from each canonical skills.sh page, read 2026-10-04T09:51Z; public/external telemetry only |
 | Search ranking | Not observable from the public query pages used below | `GET https://skills.sh/?q=<urlencoded query>` returned no ranked skill result payload |
 
 The two legacy brand URLs remain an external skills.sh owner/index action, not
@@ -69,8 +69,10 @@ position when the site exposes one.
 ## Existing attribution contract
 
 The existing bounded attribution contract in `replynodes-fetcher` already
-contains the `skill` field in its allowlist (`services/replynodes-fetcher`
-request attribution audit, origin/main). No second mechanism is introduced.
+contains the `skill` field in its allowlist. Audited source of truth:
+`replynodes/replynodes-fetcher@77f73b1fb40202c10439f17df59ca4fc36371bec7`,
+`docs/attribution-audit.md`, lines 1-6 and 36-37 (origin/main at the review
+timestamp). No second mechanism is introduced.
 
 | Skill | Attribution ready? | Implementation / blocker |
 |---|---|---|
