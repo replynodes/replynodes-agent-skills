@@ -1,6 +1,6 @@
 ---
 name: company-research
-description: "Research any company from its domain and return a cited brief covering what it does, products, pricing, target market, integrations, and key pages."
+description: "When a user wants a cited, bounded public company brief from a known domain, return what the company does, offers, serves, and publishes, with evidence and unknowns."
 license: MIT
 compatibility: The keyless path needs network access; optional keyed MCP access needs an MCP-capable agent and REPLYNODES_API_KEY in a secret store.
 metadata:
@@ -33,13 +33,15 @@ service.
    keyed `web_search` or verified Brand evidence; otherwise ask for a domain
    or leave identity unresolved. Preserve every exact resolved source URL in
    evidence.
-2. The default keyless path reads the homepage through
-   `https://md.replynodes.com/{url}` (URL-encode the source URL) and retrieves
-   identity/basic brand metadata through
-   `https://brand.replynodes.com/{domain}`. Record each raw HTTP status,
-   content type, and exact source URL. A paid MCP key is optional, never
-   required for the normal path.
-3. If keyed MCP is available, connect to `https://mcp.replynodes.com/mcp`, run
+2. The default no-key path reads the homepage first through
+   `GET https://md.replynodes.com/<target>`; for example,
+   `https://md.replynodes.com/https://replynodes.com/`. Then retrieve
+   machine-readable identity/basic brand metadata through
+   `GET https://brand.replynodes.com/{domain}.json`. Record each raw HTTP
+   status, content type, and exact source URL. A paid MCP key is optional,
+   never required for this normal path.
+3. If optional authenticated MCP is available, connect to
+   `https://mcp.replynodes.com/mcp`, run
    `initialize` and `tools/list`, and inspect each live tool schema before a
    call. Use only the live names `web_search`, `webcontext_map`,
    `webcontext_scrape`, `webcontext_crawl`, `brand_retrieve`, `brand_search`,
@@ -50,8 +52,9 @@ service.
 
 ## Bounded evidence workflow
 
-- Read the homepage first through free Markdown. Discover important pages with
-  `webcontext_map` when keyed; otherwise use links present on the homepage plus
+- Read the homepage first through free Markdown, then Brand JSON. Discover
+  important pages with optional authenticated `webcontext_map`; otherwise use
+  links present on the homepage plus
   this deterministic, bounded candidate order: product/features,
   pricing/plans, integrations, about, docs, customers/case studies, and a
   relevant changelog/blog page. Use `webcontext_scrape` for selected pages and
@@ -95,3 +98,16 @@ runner behavior.
 - “Give me a cited public brief on this company, including products, pricing, and integrations.”
 - “What does this company do and who is its target market? Mark unknowns.”
 - “Build a current, bounded company profile from official sources.”
+
+## Install and first use
+
+```bash
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth
+curl --fail-with-body 'https://md.replynodes.com/https://replynodes.com/'
+curl --fail-with-body 'https://brand.replynodes.com/replynodes.com.json'
+```
+
+An agent can use those two free responses as the first evidence, then use
+optional authenticated MCP `web_search`, `webcontext_map`, `webcontext_scrape`,
+or `webcontext_crawl` only for bounded enrichment. A company name without a
+verified domain cannot be resolved keylessly; do not guess.
