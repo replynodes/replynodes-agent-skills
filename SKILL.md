@@ -4,6 +4,7 @@ description: "Research the web and public platforms with ReplyNodes, a read-only
 license: MIT
 compatibility: Requires an MCP-capable agent with network access and a ReplyNodes API key stored as REPLYNODES_API_KEY.
 metadata:
+  internal: false
   author: ReplyNodes
   version: "2.0.0"
   endpoint: https://mcp.replynodes.com/mcp

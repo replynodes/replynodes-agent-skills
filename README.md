@@ -27,7 +27,7 @@ These three documented endpoints are live and need no account or API key:
 - `https://md.replynodes.com/{url}` — a public page as clean Markdown.
 - `https://brand.replynodes.com/{domain}` — a free, zero-auth brand kit for one
   public domain (identity, logos, colors, fonts, styleguide). See the
-  `brandkitfetch` skill for the request and response contract.
+  `brand-kit` skill for the request and response contract.
 - `https://img.replynodes.com/{domain}` — one public-domain logo image with no
   signup or API key. See the focused `brand-logo` skill for response and
   fallback behavior.
@@ -51,30 +51,43 @@ repository above is the maintained source. Current ClawHub listings are
 is archived and preserved for historical provenance; the canonical repository
 above is the maintained source.
 
-## Install
+## Install and discovery
 
-Install the focused company research skill from the canonical repository:
+The canonical public acquisition set is exactly `replynodes`,
+`company-research`, `competitor-research`, `url-to-markdown`, `brand-kit`, and
+`app-store-research`. Install a public skill from this repository with its
+canonical name:
 
 ```bash
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes --full-depth
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill competitor-research --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill url-to-markdown --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-kit --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill app-store-research --full-depth
 ```
 
-Other focused research and brand skills in this repository include:
+The other useful nested skills are preserved as internal/provider skills:
+`brand-fonts`, `brand-intelligence`, `brand-logo`, `brand-profile`,
+`brand-search`, `brand-styleguide`, `google-play-research`, `pdf-to-markdown`,
+`reddit-research`, `web-scraping`, `web-search`, and `youtube-research`. They
+are hidden from normal discovery by `metadata.internal: true`; in particular,
+`pdf-to-markdown` remains internal while its production gate/readback is
+pending. An exact internal install must opt in to internal discovery and
+disable CLI telemetry:
 
-- Research: `company-research`, `web-search`, `web-scraping`, `competitor-research`, `reddit-research`, `youtube-research`, `app-store-research`, `google-play-research`.
-- Brand: `brand-logo`, `brandkitfetch`, `brand-profile`, `brand-intelligence`, `brand-search`, `brand-styleguide`, `brand-fonts`.
-- Utilities: `url-to-markdown`, `pdf-to-markdown`.
+```bash
+INSTALL_INTERNAL_SKILLS=1 DISABLE_TELEMETRY=1 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-search --full-depth
+```
 
-Read the [PDF to Markdown skill source](skills/pdf-to-markdown/SKILL.md) for
-the direct REST contract, limits, and safety boundaries.
+Use the same two environment variables for any other retained internal skill;
+see the [skill-surface inventory](references/skill-surface-inventory.md) for
+the complete classification and validation commands.
 
 Marketplace source pages:
 
 - [ReplyNodes Agent Skills on skills.sh](https://www.skills.sh/replynodes/replynodes-agent-skills/replynodes)
-- [Brand logo](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-logo)
-- [Brand kit](https://www.skills.sh/replynodes/replynodes-agent-skills/brandkitfetch)
-- [Brand profile](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-profile)
-- [Brand intelligence](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-intelligence)
+- [Brand kit](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-kit)
 - [Company research](https://www.skills.sh/replynodes/replynodes-agent-skills/company-research)
 - [URL to Markdown](https://www.skills.sh/replynodes/replynodes-agent-skills/url-to-markdown)
 

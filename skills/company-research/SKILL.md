@@ -4,6 +4,7 @@ description: "Research any company from its domain and return a cited brief cove
 license: MIT
 compatibility: The keyless path needs network access; optional keyed MCP access needs an MCP-capable agent and REPLYNODES_API_KEY in a secret store.
 metadata:
+  internal: false
   author: ReplyNodes
   version: "1.0.0"
   endpoint: https://mcp.replynodes.com/mcp

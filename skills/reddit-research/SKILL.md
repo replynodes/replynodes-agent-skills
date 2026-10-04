@@ -4,6 +4,7 @@ description: "Research Reddit read-only with ReplyNodes: search discussions, fin
 license: MIT
 compatibility: Requires an MCP-capable agent, network access, and REPLYNODES_API_KEY in a secret store.
 metadata:
+  internal: true
   author: ReplyNodes
   version: "1.0.0"
   endpoint: https://mcp.replynodes.com/mcp

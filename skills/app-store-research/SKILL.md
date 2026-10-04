@@ -4,6 +4,7 @@ description: "Research Apple App Store apps with ReplyNodes read-only tools: sea
 license: MIT
 compatibility: Requires an MCP-capable agent, network access, and REPLYNODES_API_KEY in a secret store.
 metadata:
+  internal: false
   author: ReplyNodes
   version: "1.0.0"
   endpoint: https://mcp.replynodes.com/mcp

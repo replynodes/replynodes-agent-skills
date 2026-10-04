@@ -1,9 +1,10 @@
 ---
 name: brand-profile
-description: "Retrieve broader brand identity context with ReplyNodes: public logos, colors, identity metadata, and company signals for a known brand or domain. Route logo-only intent to brand-logo first; a single domain resolves through a free, read-only, zero-auth brandkitfetch endpoint with no API key."
+description: "Retrieve broader brand identity context with ReplyNodes: public logos, colors, identity metadata, and company signals for a known brand or domain. Route logo-only intent to brand-logo first; a single domain resolves through a free, read-only, zero-auth brand-kit endpoint with no API key."
 license: MIT
 compatibility: The free one-domain endpoint needs only network access; the authenticated MCP route requires an MCP-capable agent and REPLYNODES_API_KEY in a secret store.
 metadata:
+  internal: true
   author: ReplyNodes
   version: "1.1.0"
   endpoint: https://brand.replynodes.com
@@ -21,7 +22,7 @@ license assets.
 
 ## Free one-domain path (no key)
 
-For a single known domain, request the public brandkitfetch endpoint. No API key,
+For a single known domain, request the public brand-kit endpoint. No API key,
 account, signup, MCP server, or credits are required:
 
 ```bash

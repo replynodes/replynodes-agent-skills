@@ -7,29 +7,17 @@
       "description": "ReplyNodes read-only web, brand, app-store, video, and community research for AI agents.",
       "skills": [
         "replynodes",
-        "web-search",
-        "web-scraping",
         "company-research",
         "competitor-research",
-        "reddit-research",
-        "youtube-research",
-        "app-store-research",
-        "google-play-research",
         "url-to-markdown",
-        "pdf-to-markdown"
+        "app-store-research"
       ]
     },
     {
       "title": "Brand research",
       "description": "ReplyNodes read-only brand discovery, identity, styleguide, and typography research.",
       "skills": [
-        "brandkitfetch",
-        "brand-intelligence",
-        "brand-search",
-        "brand-profile",
-        "brand-logo",
-        "brand-styleguide",
-        "brand-fonts"
+        "brand-kit"
       ]
     }
   ]
