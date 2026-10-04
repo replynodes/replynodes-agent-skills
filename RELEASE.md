@@ -4,9 +4,6 @@ This branch prepares package version `v2.0.3` from `VERSION`.
 
 ## v2.0.3 release notes
 
-These entries are historical release evidence. `brandkitfetch` is the legacy
-name; the current canonical skill name is `brand-kit`.
-
 - Adds the agent-first `brandkitfetch` skill for the free, zero-auth
   `https://brand.replynodes.com/{domain}` endpoint.
 - Keeps `brand-logo` focused on logo-only retrieval and links broader identity

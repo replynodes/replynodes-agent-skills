@@ -65,73 +65,52 @@ passes.
 
 ## ReplyNodes repositories
 
-The GitHub API organization listing
-(`https://api.github.com/orgs/replynodes/repos?per_page=100`) and each
-repository metadata URL (`https://api.github.com/repos/replynodes/<name>`) were
-read on 2026-10-04. `ARCHIVE` records an already archived repository. `REDIRECT`
-records the requested user-facing disposition for an archived legacy source;
-it does not claim GitHub has configured a redirect. `OWNER ACTION` means an
-external owner decision/change is still pending.
+This bounded inventory contains only the 22 repositories in the fresh
+organization API evidence supplied for this repair. The `archived` and
+`private` values and descriptions below are observed GitHub metadata; URLs are
+the exact repository URLs. `ARCHIVE` is observed GitHub archive state, while
+`REDIRECT` is a requested user-facing disposition and does not claim that
+GitHub redirect configuration was performed. No external repository changes
+are performed by this issue.
 
-| Repository | Status | Evidence and disposition |
+| Repository | Observed GitHub metadata (archived/private/description) | Disposition/evidence |
 | --- | --- | --- |
-| [`replynodes/replynodes-agent-skills`](https://github.com/replynodes/replynodes-agent-skills) | KEEP | Canonical maintained source; GitHub API reports `archived: false`. |
-| [`replynodes/agent-skills`](https://github.com/replynodes/agent-skills) | ARCHIVE; REDIRECT | GitHub API reports `archived: true`; preserve historical provenance and direct users to the canonical source. |
-| [`replynodes/replynodes-brand-logo-fetch`](https://github.com/replynodes/replynodes-brand-logo-fetch) | ARCHIVE; REDIRECT | GitHub API reports `archived: true` and describes it as retired; direct users to the canonical internal/public skill surface as appropriate. |
-| [`replynodes/social-data-skills`](https://github.com/replynodes/social-data-skills) | OWNER ACTION | GitHub API reports `archived: false` and describes it as a retired historical provider repository; owner should archive it and redirect users where it duplicates this source. |
-| [`replynodes/replynodes-app-store-research`](https://github.com/replynodes/replynodes-app-store-research) | OWNER ACTION | Unarchived standalone repository duplicating the canonical `app-store-research` skill; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-brand-fonts`](https://github.com/replynodes/replynodes-brand-fonts) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `brand-fonts` capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-brand-intelligence`](https://github.com/replynodes/replynodes-brand-intelligence) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `brand-intelligence` capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-brand-profile`](https://github.com/replynodes/replynodes-brand-profile) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `brand-profile` capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-brand-search`](https://github.com/replynodes/replynodes-brand-search) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `brand-search` capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-brand-styleguide`](https://github.com/replynodes/replynodes-brand-styleguide) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `brand-styleguide` capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-competitor-research`](https://github.com/replynodes/replynodes-competitor-research) | OWNER ACTION | Unarchived standalone repository duplicating the canonical `competitor-research` skill; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-google-play-research`](https://github.com/replynodes/replynodes-google-play-research) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `google-play-research` capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-markdown`](https://github.com/replynodes/replynodes-markdown) | OWNER ACTION | Unarchived standalone repository duplicating the retained Markdown capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-reddit-research`](https://github.com/replynodes/replynodes-reddit-research) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `reddit-research` capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-web-scraping`](https://github.com/replynodes/replynodes-web-scraping) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `web-scraping` capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-web-search`](https://github.com/replynodes/replynodes-web-search) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `web-search` capability; owner action is needed to archive and redirect. |
-| [`replynodes/replynodes-youtube-research`](https://github.com/replynodes/replynodes-youtube-research) | OWNER ACTION | Unarchived standalone repository duplicating the retained internal `youtube-research` capability; owner action is needed to archive and redirect. |
-| [`replynodes/brand-kit`](https://github.com/replynodes/brand-kit) | KEEP | Independent Node CLI/project; not treated as a duplicate of this repository's Agent Skill source. |
-| [`replynodes/free-markdown-brand-logo-api`](https://github.com/replynodes/free-markdown-brand-logo-api) | KEEP | Independent API/acquisition hub; not a duplicate of these skill bodies. |
-| [`replynodes/awesome-social-media-skills`](https://github.com/replynodes/awesome-social-media-skills) | KEEP | Independent curated social-media skills project. |
-| [`replynodes/x-thought`](https://github.com/replynodes/x-thought) | KEEP | Independent legacy X writing skill; not a ReplyNodes MCP skill duplicate. |
-| [`replynodes/linkedin-skills`](https://github.com/replynodes/linkedin-skills) | KEEP | Independent LinkedIn writing/research project; not a duplicate of this source. |
+| [replynodes-agent-skills](https://github.com/replynodes/replynodes-agent-skills) | `archived: false`; `private: false`; “Web and public-data research skills for AI agents -- web search, scraping, brand intelligence, Reddit, YouTube, App Store, Google Play and MCP.” | KEEP — canonical agent-skills source. |
+| [agent-skills](https://github.com/replynodes/agent-skills) | `archived: true`; `private: false`; “ReplyNodes Agent Skills” | ARCHIVE / REDIRECT — ARCHIVE is observed GitHub state; REDIRECT is requested user-facing disposition. |
+| [replynodes-brand-logo-fetch](https://github.com/replynodes/replynodes-brand-logo-fetch) | `archived: true`; `private: false`; “Retired legacy repository; use the canonical ReplyNodes brand-logo skill.” | ARCHIVE / REDIRECT — ARCHIVE is observed GitHub state; REDIRECT is requested user-facing disposition. |
+| [social-data-skills](https://github.com/replynodes/social-data-skills) | `archived: false`; `private: false`; “Retired historical social-provider skill repository; pending archival decision.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-markdown](https://github.com/replynodes/replynodes-markdown) | `archived: false`; `private: false`; “Legacy Markdown endpoint documentation; use free-markdown-brand-logo-api as the unified Markdown, Brand, and Logo acquisition hub.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-youtube-research](https://github.com/replynodes/replynodes-youtube-research) | `archived: false`; `private: false`; “Read-only youtube-research research skill for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-google-play-research](https://github.com/replynodes/replynodes-google-play-research) | `archived: false`; `private: false`; “Read-only google-play-research research skill for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-brand-intelligence](https://github.com/replynodes/replynodes-brand-intelligence) | `archived: false`; `private: false`; “Read-only brand-intelligence research skill for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-brand-search](https://github.com/replynodes/replynodes-brand-search) | `archived: false`; `private: false`; “Read-only brand-search research skill for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-app-store-research](https://github.com/replynodes/replynodes-app-store-research) | `archived: false`; `private: false`; “Read-only app-store-research research skill for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-brand-profile](https://github.com/replynodes/replynodes-brand-profile) | `archived: false`; `private: false`; “Read-only brand-profile research skill for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-brand-styleguide](https://github.com/replynodes/replynodes-brand-styleguide) | `archived: false`; `private: false`; “Read-only brand-styleguide research skill for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-brand-fonts](https://github.com/replynodes/replynodes-brand-fonts) | `archived: false`; `private: false`; “Read-only brand-fonts research skill for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-competitor-research](https://github.com/replynodes/replynodes-competitor-research) | `archived: false`; `private: false`; “Read-only competitor and market research skills for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-web-search](https://github.com/replynodes/replynodes-web-search) | `archived: false`; `private: false`; “Read-only web search and source discovery skills for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-web-scraping](https://github.com/replynodes/replynodes-web-scraping) | `archived: false`; `private: false`; “Read-only website scraping, Markdown extraction, crawling, and mapping skills for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [replynodes-reddit-research](https://github.com/replynodes/replynodes-reddit-research) | `archived: false`; `private: false`; “Read-only Reddit research skills for AI agents using ReplyNodes MCP.” | OWNER ACTION — unarchived duplicate/legacy standalone repository; owner action remains pending. |
+| [brand-kit](https://github.com/replynodes/brand-kit) | `archived: false`; `private: false`; “Pure Node.js CLI for generating deterministic brand kits from the ReplyNodes public aggregate” | KEEP. |
+| [free-markdown-brand-logo-api](https://github.com/replynodes/free-markdown-brand-logo-api) | `archived: false`; `private: false`; “Free Markdown API, Brand API, and Logo API for developers and AI agents — no signup, no API key.” | KEEP. |
+| [awesome-social-media-skills](https://github.com/replynodes/awesome-social-media-skills) | `archived: false`; `private: false`; “Curated, portable AI agent skills for researching, creating, repurposing, publishing, and analyzing social-media content. 26 skills, MIT licensed.” | KEEP. |
+| [x-thought](https://github.com/replynodes/x-thought) | `archived: false`; `private: false`; “Independent legacy X writing skill for Hermes Agent; not a current ReplyNodes publishing or MCP surface.” | KEEP. |
+| [linkedin-skills](https://github.com/replynodes/linkedin-skills) | `archived: false`; `private: false`; “Claude skills for LinkedIn. 11 Claude Code and Codex skills that write human-sounding LinkedIn posts, craft comments that get noticed, analyze your feed, and build a publishing cadence, all from your terminal. Content engineering by Creative Content Crafts. MIT.” | KEEP. |
 
-Existing unarchived standalone duplicate repositories need owner action to
-archive and redirect to this canonical source. No such external repository
-change is performed by this issue.
+## skills.sh external index/cleanup
 
-## skills.sh ghost/index entries
+The four URLs below were freshly probed and each returned HTTP 200 with the
+exact title shown. They are external cleanup items, not evidence that a legacy
+directory remains in this repository. Each is OWNER ACTION / external cleanup
+pending.
 
-These pages are outside this repository and cannot be deleted by changing the
-working tree. On 2026-10-04 each URL returned HTTP 200 with the shown page
-title. They are therefore external index/cleanup blockers, not evidence that a
-legacy directory remains here:
-
-| URL | Status | Observed evidence and pending action |
+| URL | Observed evidence | Disposition |
 | --- | --- | --- |
-| [`brandkitfetch`](https://www.skills.sh/replynodes/replynodes-agent-skills/brandkitfetch) | OWNER ACTION | HTTP 200; title `brandkitfetch — replynodes/replynodes-agent-skills`. Request skills.sh/index owner cleanup. |
-| [`brand-kit-fetch`](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-kit-fetch) | OWNER ACTION | HTTP 200; title `brand-kit-fetch — replynodes/replynodes-agent-skills`. Request removal/redirect as a legacy alias. |
-| [`brand-kit`](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-kit) | OWNER ACTION | HTTP 200; title `brand-kit — replynodes/replynodes-agent-skills`; request a fresh readback after the canonical rename. |
-| [`pdf-to-markdown`](https://www.skills.sh/replynodes/replynodes-agent-skills/pdf-to-markdown) | OWNER ACTION | HTTP 200; title `pdf-to-markdown — replynodes/replynodes-agent-skills`; request index cleanup or internal-state refresh while the production gate/readback is pending. |
+| [brandkitfetch](https://www.skills.sh/replynodes/replynodes-agent-skills/brandkitfetch) | HTTP 200; title `brandkitfetch — replynodes/replynodes-agent-skills` | OWNER ACTION / external cleanup pending |
+| [brand-kit-fetch](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-kit-fetch) | HTTP 200; title `brand-kit-fetch — replynodes/replynodes-agent-skills` | OWNER ACTION / external cleanup pending |
+| [brand-kit](https://www.skills.sh/replynodes/replynodes-agent-skills/brand-kit) | HTTP 200; title `brand-kit — replynodes/replynodes-agent-skills` | OWNER ACTION / external cleanup pending |
+| [pdf-to-markdown](https://www.skills.sh/replynodes/replynodes-agent-skills/pdf-to-markdown) | HTTP 200; title `pdf-to-markdown — replynodes/replynodes-agent-skills` | OWNER ACTION / external cleanup pending |
 
-External cleanup/contact action is pending with the skills.sh index owner. This
-document makes no claim that any ghost page has been deleted or updated.
-
-## External lookup blocker
-
-The command
-
-```text
-gh issue view 666 --repo replynodes/replynodes-agent-skills --json number,title,body,comments,state
-```
-
-returned
-
-```text
-GraphQL: Could not resolve to an issue or pull request with the number 666. (repository.issue)
-```
-
-Implementation proceeded from the user-provided brief and local repository/CLI
-evidence; issue metadata was not found.
+External cleanup/contact remains pending; this issue does not claim it was
+completed.
