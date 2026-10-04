@@ -2,7 +2,7 @@
 name: app-store-research
 description: "When a user wants Apple App Store discovery or a sourced app, review, rating, developer, privacy, similar-app, or collection brief, return read-only evidence using stable identifiers."
 license: MIT
-compatibility: App Store research is optional authenticated MCP access only: use an MCP-capable agent, network access, and REPLYNODES_API_KEY in a secret store. No verified no-key App Store endpoint is documented here.
+compatibility: "App Store research is optional authenticated MCP access only: use an MCP-capable agent, network access, and REPLYNODES_API_KEY in a secret store. No verified no-key App Store endpoint is documented here."
 metadata:
   internal: false
   author: ReplyNodes
