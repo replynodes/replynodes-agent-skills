@@ -53,34 +53,17 @@ above is the maintained source.
 
 ## Install
 
-Umbrella research skill:
+Install the focused company research skill from the canonical repository:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-logo
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brandkitfetch
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-profile
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-intelligence
-```
-
-Focused intent skills from the canonical repository (each can be selected by
-slug):
-
-```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-search
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill web-scraping
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill reddit-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill competitor-research
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-search
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-styleguide
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-fonts
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill youtube-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill app-store-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill google-play-research
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill url-to-markdown
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill pdf-to-markdown
 ```
+
+Other focused research and brand skills in this repository include:
+
+- Research: `company-research`, `web-search`, `web-scraping`, `competitor-research`, `reddit-research`, `youtube-research`, `app-store-research`, `google-play-research`.
+- Brand: `brand-logo`, `brandkitfetch`, `brand-profile`, `brand-intelligence`, `brand-search`, `brand-styleguide`, `brand-fonts`.
+- Utilities: `url-to-markdown`, `pdf-to-markdown`.
 
 Read the [PDF to Markdown skill source](skills/pdf-to-markdown/SKILL.md) for
 the direct REST contract, limits, and safety boundaries.
