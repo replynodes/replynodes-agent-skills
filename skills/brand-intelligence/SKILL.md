@@ -4,6 +4,7 @@ description: "Research a company or brand with ReplyNodes read-only public data:
 license: MIT
 compatibility: The free single-domain shortcut needs only network access; the authenticated MCP route requires an MCP-capable agent and REPLYNODES_API_KEY in a secret store.
 metadata:
+  internal: true
   author: ReplyNodes
   version: "1.1.0"
   endpoint: https://mcp.replynodes.com/mcp

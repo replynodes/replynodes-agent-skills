@@ -1,9 +1,10 @@
 ---
 name: brand-logo
-description: "Retrieve one public-domain logo image with ReplyNodes' free, read-only, zero-auth logo endpoint. Use this focused skill for logo-only requests; use brandkitfetch for broader identity context and brand-intelligence for wider research."
+description: "Retrieve one public-domain logo image with ReplyNodes' free, read-only, zero-auth logo endpoint. Use this focused skill for logo-only requests; use brand-kit for broader identity context and brand-intelligence for wider research."
 license: MIT
 compatibility: Requires network access only for the public logo request; no account, API key, or MCP connection is needed.
 metadata:
+  internal: true
   author: ReplyNodes
   version: "1.0.0"
   endpoint: https://img.replynodes.com
@@ -14,7 +15,7 @@ metadata:
 Use this skill only when the user wants the logo image for one known public
 domain. It is intentionally logo-only: route requests for colors, fonts,
 descriptions, styleguide information, company context, or multi-source research
-to `brandkitfetch` or `brand-intelligence` instead. Use `brandkitfetch` for the broader
+to `brand-kit` or `brand-intelligence` instead. Use `brand-kit` for the broader
 logo, colors, fonts, typography, and visual identity context.
 
 ## Verified zero-auth request

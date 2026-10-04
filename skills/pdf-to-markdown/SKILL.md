@@ -4,6 +4,7 @@ description: "Read a public PDF and extract PDF text as clean Markdown for AI ag
 license: MIT
 compatibility: Requires network access for the direct public PDF conversion or an MCP-capable agent with a ReplyNodes API key in a secret store.
 metadata:
+  internal: true
   author: ReplyNodes
   version: "1.0.0"
   repository: https://github.com/replynodes/replynodes-agent-skills

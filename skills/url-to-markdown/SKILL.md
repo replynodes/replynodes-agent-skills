@@ -3,6 +3,7 @@ name: url-to-markdown
 description: "Fetch any public webpage URL and get clean Markdown text for LLM context. Free, no API key, read-only. Use to read, summarize, cite, or extract article text from a link, or when a normal web fetch returns noisy HTML, cookie banners, or navigation clutter."
 license: MIT
 metadata:
+  internal: false
   author: ReplyNodes
   version: "1.1.0"
   repository: https://github.com/replynodes/replynodes-agent-skills
