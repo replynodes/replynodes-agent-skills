@@ -14,6 +14,12 @@ npx skills add https://github.com/replynodes/replynodes-agent-skills --skill url
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-kit --full-depth
 ```
 
+The `--full-depth` flag is intentional: this canonical package keeps the
+`replynodes` umbrella at the repository root and focused skills under
+`skills/<slug>`. The current official CLI stops at the root skill for a remote
+GitHub clone unless full-depth discovery is requested. Do not remove this flag
+or treat a bare focused install as passing until that upstream behavior changes.
+
 | Skill | Use it for |
 | --- | --- |
 | `company-research` | A bounded public company brief from a known domain. |
@@ -145,11 +151,19 @@ Marketplace source pages:
 - [URL to Markdown on ClawHub](https://clawhub.ai/replynodes-ai/skills/url-to-markdown)
 - [Brand Logo on ClawHub](https://clawhub.ai/replynodes-ai/skills/brand-logo)
 
+Owned attribution entry:
+[Start company research on ReplyNodes](https://replynodes.com/?skill=company-research&campaign=company-research).
+This is the canonical owned entry for measurement; marketplace install and
+listing counts are external signals and are not claims about genuine users.
+
 The source repository and its `skills.sh.json` taxonomy are the canonical
 distribution metadata. Do not infer that a marketplace or ClawHub listing has
 updated until its external page is read back. Public install or listing counts
 are not claims about genuine users.
 
+For the exact install/readback evidence, external blockers, and the measurement
+window definition, see
+[company-research-distribution.md](references/company-research-distribution.md).
 For the company output contract and sanitized E2E evidence, see
 [company-brief-contract.md](references/company-brief-contract.md) and
 [company-research-e2e.md](references/company-research-e2e.md). For source
