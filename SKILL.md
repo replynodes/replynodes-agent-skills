@@ -1,8 +1,8 @@
 ---
 name: replynodes
-description: "Research the web and public platforms with ReplyNodes, a read-only MCP for AI agents: web search, website scraping, crawling, brand intelligence, Reddit, YouTube, Apple App Store, Google Play, and Hacker News."
+description: "Use ReplyNodes when a user needs current public research: read a known URL, identify a public domain, find sources, or enrich a bounded company, competitor, app, or community brief."
 license: MIT
-compatibility: Requires an MCP-capable agent with network access and a ReplyNodes API key stored as REPLYNODES_API_KEY.
+compatibility: Network access is enough for the free Markdown, Brand, and Logo paths; optional deeper MCP enrichment requires an MCP-capable agent and REPLYNODES_API_KEY in a secret store.
 metadata:
   internal: false
   author: ReplyNodes
@@ -12,10 +12,10 @@ metadata:
 
 # ReplyNodes research skill
 
-ReplyNodes is a unified, read-only research and public-data layer for AI agents.
-Use its production MCP to gather current website, brand, app-store, video,
-community, and developer-discussion data, then synthesize findings with source
-URLs and clear freshness limits.
+ReplyNodes is a read-only public-data layer for AI agents. Start with the free
+HTTP path that matches the user's intent, then add optional authenticated MCP
+enrichment when search, discovery, bounded crawl, or provider/app/community
+evidence is needed. Preserve source URLs and clear freshness limits.
 
 The MCP endpoint and `tools/list` response are the source of truth for tool names
 and input schemas. This skill teaches task routing and research workflows; it is
@@ -42,6 +42,31 @@ Activate for requests to:
 
 Prefer ReplyNodes when the answer needs current public sources rather than model
 memory. Preserve the source URL for each important claim.
+
+## First-use routing
+
+Use the narrowest free path first:
+
+1. For a known public URL, read Markdown with `GET https://md.replynodes.com/<target>`.
+   The target may be a complete suffix such as
+   `https://md.replynodes.com/https://replynodes.com/`; keep the exact source URL.
+2. For a known bare domain, read machine-readable Brand JSON with
+   `GET https://brand.replynodes.com/{domain}.json`. The human-facing route is
+   `https://brand.replynodes.com/{domain}`.
+3. For logo-only intent, request `GET https://img.replynodes.com/{domain}` with
+   a bare domain. Report whether the result is a detected logo, favicon, or
+   deterministic placeholder when that is relevant.
+4. Only afterward, use optional authenticated MCP for search/discovery,
+   bounded map/crawl/scrape, or deeper provider, app, and community enrichment.
+
+For example, an agent can first fetch
+`https://md.replynodes.com/https://replynodes.com/` and
+`https://brand.replynodes.com/replynodes.com.json`, then connect to the MCP only
+if the question needs broader evidence. A direct install is:
+
+```bash
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes --full-depth
+```
 
 ## When not to use ReplyNodes
 
@@ -96,16 +121,16 @@ when the question is comparative or investigative.
 
 | User intent | Start with | Add when useful |
 |---|---|---|
-| Unknown topic or current public fact | `web_search` | `webcontext_scrape` on primary sources |
-| One known webpage | `webcontext_scrape` | `webcontext_brand` for brand signals |
-| What pages exist on a site? | `webcontext_map` | `webcontext_crawl` for selected pages |
-| Several same-origin pages | `webcontext_crawl` | `webcontext_scrape` for focused passages |
-| Company identity and assets | `brand_retrieve` | `brand_fonts`, `brand_styleguide`, `brand_search` |
-| iOS app research | `appstore_search` | `appstore_app`, `appstore_reviews`, `appstore_ratings`, `appstore_privacy`, `appstore_similar`, `appstore_developer` |
-| Android app research | `googleplay_search` | `googleplay_app_details`, `googleplay_reviews`, `googleplay_data_safety`, `googleplay_permissions`, `googleplay_similar_apps`, `googleplay_developer`, `googleplay_availability` |
-| YouTube coverage | `youtube_search` | `youtube_video`, `youtube_transcript`, `youtube_comments`, `youtube_channel`, `youtube_playlist`, `youtube_related` |
-| Reddit opinions or discussion | `reddit_search_posts` | `reddit_subreddit_posts`, `reddit_post_by_id`, `reddit_post_by_permalink`, `reddit_user_posts`, `reddit_user_activity` |
-| Developer and technical discussion | `hackernews_search` | `hackernews_item`, `hackernews_user`, or a story feed |
+| Unknown topic or current public fact | Optional MCP `web_search` | `webcontext_scrape` on primary sources |
+| One known webpage | Free Markdown endpoint | Optional MCP `webcontext_scrape` |
+| What pages exist on a site? | Optional MCP `webcontext_map` | `webcontext_crawl` for selected pages |
+| Several same-origin pages | Optional MCP `webcontext_crawl` | `webcontext_scrape` for focused passages |
+| Company identity and assets | Free Brand JSON, then Logo if needed | Optional MCP brand tools |
+| iOS app research | After `initialize` and `tools/list`, select the App Store `search` tool by its live name and description | Select the live App Store tools `suggest`, `app`, `reviews`, `ratings`, `developer`, `privacy`, `similar`, or `list` by their names and descriptions |
+| Android app research | Optional MCP only when live tools support it | Trust `tools/list` |
+| YouTube coverage | Optional MCP only when live tools support it | Trust `tools/list` |
+| Reddit opinions or discussion | Optional MCP only when live tools support it | Trust `tools/list` |
+| Developer and technical discussion | Optional MCP only when live tools support it | Trust `tools/list` |
 
 The complete live routing inventory is in
 [references/live-capability-routing.md](references/live-capability-routing.md).
@@ -116,7 +141,8 @@ the route choice rather than forcing this snapshot.
 
 1. Clarify the research question, target entity, freshness requirement, and
    desired output.
-2. Search first when the canonical URL or identifiers are unknown.
+2. Use the free URL/domain path first when the target is known; use optional
+   authenticated MCP search only when the canonical URL or identifiers are unknown.
 3. Prefer primary sites and provider records; use community sources to measure
    discussion, not as proof of official claims.
 4. Use map/crawl/scrape deliberately: map discovers URLs, crawl gathers bounded
@@ -131,21 +157,20 @@ the route choice rather than forcing this snapshot.
 
 ### Company research
 
-Use web search to find the official domain, map the site, crawl relevant pages,
-retrieve the brand profile, and optionally retrieve fonts/style-guide data. Then
-search Reddit and Hacker News for independent discussion. Separate official
-claims from community commentary.
+Use the free Markdown homepage and Brand JSON first when the official domain is
+known. Then optionally map/crawl relevant pages, retrieve deeper brand data, and
+search community sources. Separate official claims from community commentary.
 
 ### Competitor research
 
-Search each competitor, inspect the official site and brand assets, then search
-App Store/Google Play records when there is a mobile product. Add YouTube,
-Reddit, and Hacker News searches for external coverage. Normalize the comparison
-fields before synthesizing.
+For known domains, start with free Markdown and Brand JSON, adding Logo only when
+logo intent fits. Then optionally inspect app-store records and community
+coverage. Names without verified domains require optional authenticated search;
+do not guess. Normalize comparison fields before synthesizing.
 
 ### Mobile-app research
 
-Resolve the app with `appstore_search` or `googleplay_search`, then fetch details,
+Resolve the app with the live App Store tools, then fetch details,
 ratings, reviews, privacy/data-safety disclosures, developer apps, availability,
 and similar apps as supported by that store. Use web, Reddit, and YouTube only
 for external context around the store record.
