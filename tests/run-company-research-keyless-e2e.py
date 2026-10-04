@@ -239,6 +239,9 @@ def make_brief(case, fetched, candidates=None, discovery=None):
     if any(page.get("surface") == "free_direct_pricing" for page in pages): capabilities.append("free_direct_pricing")
     return {"brief_version": "1.0", "generated_at": now(), "company": {"domain": case["domain"], "name": case["name"], "homepage_url": case["homepage"]}, "summary": {"one_liner": claim(home_claim, home_id), "category": claim("Software company." if home_ok else None, home_id), "positioning": claim("Public positioning is supported by the bounded homepage fetch." if home_ok else None, home_id)}, "products": [claim("Products described in bounded first-party text." if home_ok else None, home_id)], "target_market": [claim("Public users and teams described by the company." if home_ok else None, home_id)], "pricing": {"model": pricing_model, "plans": plans, "unknown": not pricing_seen}, "features": [claim("Features described in bounded first-party text." if home_ok else None, home_id)], "integrations": [], "important_pages": selected_pages, "recent_updates": [], "brand": {"name": case["name"] if successful(brand_result) else None, "description": None, "logo_url": None, "colors": [], "fonts": [], "unknown": not successful(brand_result)}, "evidence": evidence, "claim_evidence": [{"claim_path": path, "evidence_ids": [evidence_id]} for path, evidence_id in paths], "coverage_limits": coverage, "meta": {"capabilities_used": capabilities, "tool_calls": discovery_call + page_calls + [request_record(brand_result)], "synthesis": "host_agent", "page_read_count": len(pages), "page_read_budget_default": DEFAULT_CAP, "page_read_budget_hard_cap": HARD_CAP}}
 
+def sanitize_request_records(records):
+    return [request_record(record) for record in records]
+
 def main():
     parser = argparse.ArgumentParser(); parser.add_argument("--output", required=True, type=Path); args = parser.parse_args()
     if "REPLYNODES_API_KEY" in __import__("os").environ: raise SystemExit("refusing an environment containing REPLYNODES_API_KEY")
@@ -265,7 +268,9 @@ def main():
         trace = candidate_trace(candidates, execution)
         brand_source = "https://brand.replynodes.com/" + case["domain"]; brand_result = get_once(brand_source); brand_result.update({"surface": "free_brand", "source_url": brand_source, "endpoint_url": brand_source}); brand_result["attempts"] = [brand_result.copy()]; fetched.append(brand_result)
         brief = make_brief(case, fetched, candidates, discovery); validate_brief(brief); assert brief["meta"]["page_read_count"] <= DEFAULT_CAP <= brief["meta"]["page_read_budget_default"]
-        reports.append({"domain": case["domain"], "requests": [request_record(discovery)] + [record for page in fetched for record in page.get("attempts", [page])] + [request_record(brand_result)], "page_read_count": brief["meta"]["page_read_count"], "schema_validation": "passed"}); briefs.append(brief); traces.append(trace)
+        sanitized_requests = sanitize_request_records([discovery] + [record for page in fetched for record in page.get("attempts", [page])] + [brand_result])
+        assert all("text" not in record and "error" not in record and "status" not in record for record in sanitized_requests)
+        reports.append({"domain": case["domain"], "requests": sanitized_requests, "page_read_count": brief["meta"]["page_read_count"], "schema_validation": "passed"}); briefs.append(brief); traces.append(trace)
     if not any(not brief["pricing"]["unknown"] for brief in briefs):
         raise SystemExit("live keyless E2E found no grounded public-pricing case")
     skill = Path(__file__).parents[1] / "skills/company-research/SKILL.md"; claimed = [name for name in TOOL_NAMES if name in skill.read_text(encoding="utf-8")]; mcp_status, mcp_type, observed = mcp_tools_once()

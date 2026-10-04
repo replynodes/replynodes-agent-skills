@@ -53,6 +53,7 @@ import importlib.util
 runner_spec = importlib.util.spec_from_file_location("company_research_runner", root / "tests/run-company-research-keyless-e2e.py")
 runner = importlib.util.module_from_spec(runner_spec)
 runner_spec.loader.exec_module(runner)
+assert runner.sanitize_request_records([{"surface": "free_markdown", "source_url": "https://example.test/", "endpoint_url": "https://md.replynodes.com/x", "status": 200, "content_type": "text/markdown", "text": "secret body", "error": None}]) == [{"surface": "free_markdown", "source_url": "https://example.test/", "endpoint_url": "https://md.replynodes.com/x", "http_status": 200, "content_type": "text/markdown", "operation": "GET"}]
 
 def fake_fetch(status, text, error=None, content_type="text/markdown"):
     return {"status": status, "content_type": content_type, "text": text, "error": error}
