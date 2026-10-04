@@ -83,7 +83,7 @@ no-key App Store data path is claimed by this package.
 - `hackernews_item`
 - `hackernews_user`
 
-## Company intelligence and monitors (9)
+## Company intelligence and monitors (10)
 
 - `get_company_events`
 - `get_company_history`
@@ -96,7 +96,7 @@ no-key App Store data path is claimed by this package.
 - `monitor_changes`
 - `monitor_runs`
 
-## Gateway health and capabilities (4)
+## Gateway health and capabilities (3)
 
 - `get_fetcher_healthz`
 - `get_fetcher_readyz`
