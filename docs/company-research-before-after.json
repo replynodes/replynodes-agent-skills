@@ -24,8 +24,8 @@
           "homepage-features-1-1": "Receive ongoing assistance and day-to-day support for technical questions with tiered plans based on your needs.",
           "homepage-features-2-1": "Launch and scale payments products with lower operational overhead using embedded components and no-code tools.",
           "homepage-products-0-1": "Flexible solutions for every business model.",
-          "homepage-products-1-1": "The backbone of global commerce",
-          "homepage-products-2-1": "Powering businesses of all sizes.",
+          "homepage-products-1-1": "Embed payments in your platform",
+          "homepage-products-2-1": "The backbone of global commerce",
           "homepage-products-3-1": "Hertz unifies commerce with Stripe.",
           "homepage-signal-0-1": "Flexible solutions for every business model.",
           "homepage-signal-1-1": "Gamma expands to US$100m ARR and 70 million users with Stripe. Read Gamma's story",
@@ -69,8 +69,8 @@
         },
         "products": [
           "Flexible solutions for every business model",
+          "Embed payments in your platform",
           "The backbone of global commerce",
-          "Powering businesses of all sizes",
           "Hertz unifies commerce with Stripe"
         ],
         "signals": [
@@ -343,7 +343,7 @@
           "homepage-products-0-1": "Loom powers great campaigns.",
           "homepage-products-1-1": "Loom for Enterprise",
           "homepage-products-2-1": "Powerful features for easy, custom recordings",
-          "homepage-products-3-1": "Keep your content safe",
+          "homepage-products-3-1": "Ship faster with AI bug reports",
           "homepage-signal-0-1": "Loom enables us to maximize our impact as a distributed company by helping us collaborate and share ideas more easily.",
           "homepage-summary-category-1": "Asynchronous Communication Let Loom AI Do the Work: Say Goodbye to Manual Documentation How to use async video messaging to improve communication Lightning fast screen recording Andrew Reynolds (MetaLab) Customer support Video messaging for all use cases One video is worth a thousand words Resources (Main)",
           "homepage-summary-one-liner-1": "Millions of people across 400,000 companies choose Loom",
@@ -395,7 +395,7 @@
           "Loom powers great campaigns",
           "Loom for Enterprise",
           "Powerful features for easy, custom recordings",
-          "Keep your content safe"
+          "Ship faster with AI bug reports"
         ],
         "signals": [
           [
@@ -778,7 +778,7 @@
       "name": "Microsoft"
     }
   ],
-  "generated_at": "2026-10-05T13:30:04Z",
+  "generated_at": "2026-10-05T14:03:03Z",
   "method": "Qualitative before/after comparison. Before is the placeholder-based V2 baseline at origin/main (merge 31b5d71a3a27acc201b771843b7af8d72cda1d01). After is the same public companies re-run through the deterministic extraction runner. The after side is intentionally more conservative than the first phase-2 revision: a field is populated only when the consumed body supplies text of that field's type (customer names from explicit customer/case-study context, connectors from explicit integration context, pricing plans from a recognized plan name paired with an observed amount), and anything ambiguous stays an explicit unknown instead of a mis-typed claim. Improvements list only real changes; fields that became unknown under the stricter typing are called out rather than counted as gains. Both runs use the same bounded 8/12 page budget, attribution, read-only surfaces, and host_agent synthesis contract.",
   "stripe_headline": "Stripe now returns real financial-infrastructure positioning, product/capability names, case-study customer examples, and grounded pricing (Standard plan fee) instead of generic placeholders; integrations stay an explicit unknown because the consumed partners page exposes no clean connector name."
 }

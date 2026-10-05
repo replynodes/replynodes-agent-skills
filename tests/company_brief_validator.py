@@ -39,7 +39,7 @@ def _tokens(value):
 
 
 RAW_EXCERPT = re.compile(r"\]\(|https?://|www\.|\?\w+=|%[0-9A-Fa-f]{2}|<[a-z/][^>]*>", re.I)
-CTA_TEXT = re.compile(r"^(?:get|sign|log|contact|try|learn|read|view|watch|start|book|download|see|explore|join|subscribe|talk|buy|request|schedule|apply|meet|discover|unlock|enable\w*|embed\w*|monet(?:is|iz)\w*|automate\w*|ship\w*|power\w*|streamline\w*|simplify\w*)\b", re.I)
+CTA_TEXT = re.compile(r"^(?:get|sign|log|contact|try|learn|read|view|watch|start|book|download|see|explore|join|subscribe|talk|buy|request|schedule|apply|meet|discover|unlock|enable (?:any|your|the|a|an)\b|embed (?:your|the|a|an)\b|monet(?:is|iz)(?:e|ing)?\b|automate (?:your|the|a|an)\b|ship (?:your|the|a|an)\b|powering (?:businesses|teams|companies|your|the)\b|streamline (?:your|the|a|an)\b|simplify (?:your|the|a|an))\b", re.I)
 PRICE_TEXT = re.compile(r"[$€£]\s?\d|\d[\d.,]*\s?[€$£]|\b(?:USD|EUR|GBP)\b|\d[\d.,]*\s?%", re.I)
 GENERIC_TEXT = re.compile(r"\b(?:logo|icon|menu|login|sign up|get started|learn more|read more|see more|view all|marketplace|ecosystem|integrations?|apps?|apis?|connectors?|faq|frequently asked questions|featured|additional|exclusive|compare features|add-ons?|clients?|partners?|customers?)\b", re.I)
 PRODUCT_GENERIC = re.compile(r"\b(?:logo|icon|menu|login|sign up|get started|learn more|read more|see more|view all|marketplace|ecosystem|integrations?|faq|frequently asked questions|featured|additional|exclusive|compare features|add-ons?)\b", re.I)
@@ -111,7 +111,7 @@ def content_quality_issues(brief):
         if key and key in seen_plans:
             issues.append(f"pricing.plans[{index}]: duplicate plan")
         seen_plans.add(key)
-        if ERROR_TEXT.search(value) or len(value.split()) > 12 or value.count("—") > 1 or ("—" not in value and not PRICE_TEXT.search(value)):
+        if ERROR_TEXT.search(value) or len(value.split()) > 12 or value.count("—") > 1 or not PRICE_TEXT.search(value):
             issues.append(f"pricing.plans[{index}]: plan is not coherent plan evidence")
     return issues
 

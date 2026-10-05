@@ -527,8 +527,10 @@ GENERIC_LABEL = re.compile(
 CTA_START = re.compile(
     r"^(?:get|sign|log|contact|try|learn|read|view|watch|start|book|download|see|explore|join|"
     r"subscribe|talk|buy|request|schedule|apply|meet|discover|unlock|take|build|create|find|"
-    r"compare|choose|select|pick|reach|connect|switch|migrate|enable\w*|embed\w*|monet(?:is|iz)\w*|"
-    r"automate\w*|ship\w*|power\w*|streamline\w*|simplify\w*)\b",
+    r"compare|choose|select|pick|reach|connect|switch|migrate|"
+    r"enable (?:any|your|the|a|an)\b|embed (?:your|the|a|an)\b|monet(?:is|iz)(?:e|ing)?\b|"
+    r"automate (?:your|the|a|an)\b|ship (?:your|the|a|an)\b|powering (?:businesses|teams|companies|your|the)\b|"
+    r"streamline (?:your|the|a|an)\b|simplify (?:your|the|a|an))\b",
     re.I,
 )
 CTA_PHRASE = re.compile(

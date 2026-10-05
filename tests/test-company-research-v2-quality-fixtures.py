@@ -140,6 +140,10 @@ assert "Enable any billing model" not in runner.extract_products(product_blocks,
 assert "Automate your path to production" not in runner.extract_products(product_blocks, "GitHub")
 assert "Powering businesses of all sizes" not in runner.extract_products(product_blocks, "Stripe")
 assert "Atlas Payments" in runner.extract_products(product_blocks, "Example")
+legit_blocks, _ = runner.block_units("## Power BI\n## Power Platform\n## Embedded Payments\n## Streamline Ops\n")
+legit_products = runner.extract_products(legit_blocks, "Example")
+assert {"Power BI", "Power Platform", "Embedded Payments", "Streamline Ops"}.issubset(set(legit_products)), legit_products
+assert any("plan is not coherent" in issue for issue in content_quality_issues({**copy.deepcopy(base), "pricing": {**copy.deepcopy(base["pricing"]), "unknown": False, "plans": [{"value": "Enterprise — Custom", "evidence_ids": []}]}}))
 
 # --- Finding 7: excerpts are normalized/auditable -----------------------------------
 cleaned = runner.normalize_excerpt("![Cover](https://x/y.png) Hello [World](https://a.b/c) <b>bold</b>")
