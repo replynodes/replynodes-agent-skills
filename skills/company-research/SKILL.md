@@ -113,7 +113,11 @@ attribution rather than infer it. The exact handoff is one header,
 calls only: Markdown `GET`/`HEAD` to `md.replynodes.com` for the homepage or
 selected pages, Brand `GET`/`HEAD` to `brand.replynodes.com`, and optional MCP
 requests to `mcp.replynodes.com` that are part of this workflow. It is not for
-target-company URLs or other skills/surfaces. Downstream handling is fail
+target-company URLs or other skills/surfaces. Jev Web Analyzer traffic, generic
+API traffic, `capability=other`, `surface=direct_api`, and `/v1/internal/brand`
+are not Company Research and must neither receive nor be inferred as this
+handoff; the eligible `brand.replynodes.com` public Brand surface is distinct
+from `/v1/internal/brand`. Downstream handling is fail
 closed: exactly one exact value is eligible; malformed, duplicate,
 unknown, case-mismatched, or oversized values are unattributed.
 
