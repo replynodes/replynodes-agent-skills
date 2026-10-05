@@ -26,12 +26,26 @@ is present in the live response.
 The runner performs deterministic, bounded extraction from the consumed
 first-party Markdown/HTML bodies: it derives the summary, products, features,
 target market, pricing model/plans, integrations, customers, and current
-signals from real body text, and links every populated claim to a bounded
-excerpt taken from the body. Fields with no reliable evidence stay empty and are
-listed as explicit `unknowns`. Filler/placeholder text is rejected. Every
-selected successful page records its claim contribution in
-`meta.page_contribution`; a page from a supported category must contribute at
-least one claim.
+signals from real body text, and links every populated claim to a bounded,
+normalized excerpt taken from the body. Extraction is conservative and fails
+closed to an explicit `unknown` rather than emitting a mis-typed claim: customers
+require explicit customer/case-study context, integrations require explicit
+connector/ecosystem evidence, pricing plans require a recognized plan name paired
+with an observed amount and are deduplicated, positioning rejects CTA/signup
+copy, and error/not-found bodies never yield claims, signals, or pricing. Fields
+with no reliable evidence stay empty and are listed as explicit `unknowns`.
+Filler/placeholder text is rejected. Every selected successful page records its
+claim contribution in `meta.page_contribution`; a page from a supported category
+must contribute at least one claim, or is recorded honestly with a support note
+when no claim survives the type checks.
+
+The validator applies independent, field-aware content checks in addition to
+excerpt/claim token relevance, so a benchmark cannot go green on a wrong-type
+claim whose excerpt merely repeats it. Regression fixtures for each review
+finding live in `tests/test-company-research-v2-quality-fixtures.py` (benchmark
+false-green, customer context, integration evidence, pricing coherence, error
+pages, positioning CTA rejection, excerpt normalization) and run in the package
+test.
 
 For the Company Research-owned Markdown, Brand, and workflow MCP calls, the
 runner explicitly hands off exactly one `X-ReplyNodes-Skill: company-research`

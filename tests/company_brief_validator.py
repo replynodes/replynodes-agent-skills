@@ -38,6 +38,82 @@ def _tokens(value):
     return {token for token in re.findall(r"[a-z0-9]{4,}", value.lower()) if token not in STOPWORDS}
 
 
+RAW_EXCERPT = re.compile(r"\]\(|https?://|www\.|\?\w+=|%[0-9A-Fa-f]{2}|<[a-z/][^>]*>", re.I)
+CTA_TEXT = re.compile(r"^(?:get|sign|log|contact|try|learn|read|view|watch|start|book|download|see|explore|join|subscribe|talk|buy|request|schedule|apply|meet|discover|unlock)\b", re.I)
+PRICE_TEXT = re.compile(r"[$€£]\s?\d|\d[\d.,]*\s?[€$£]|\b(?:USD|EUR|GBP)\b|\d[\d.,]*\s?%", re.I)
+GENERIC_TEXT = re.compile(r"\b(?:logo|icon|menu|login|sign up|get started|learn more|read more|see more|view all|marketplace|ecosystem|integrations?|apps?|apis?|connectors?|faq|frequently asked questions|featured|additional|exclusive|compare features|add-ons?|clients?|partners?|customers?)\b", re.I)
+PRODUCT_GENERIC = re.compile(r"\b(?:logo|icon|menu|login|sign up|get started|learn more|read more|see more|view all|marketplace|ecosystem|integrations?|faq|frequently asked questions|featured|additional|exclusive|compare features|add-ons?)\b", re.I)
+ERROR_TEXT = re.compile(r"\b(?:not found|cannot be found|page not found|error while loading|access denied|something went wrong|temporarily unavailable|page you requested)\b", re.I)
+ERROR_SUPPORT = re.compile(r"\b(?:unavailable|error/not-found|no claims derived|no readable content)\b", re.I)
+SOCIAL_LABELS = {"facebook", "twitter", "x", "linkedin", "youtube", "instagram", "tiktok", "pinterest", "snapchat", "threads", "whatsapp", "telegram", "reddit", "discord", "twitch", "vimeo", "weibo", "wechat", "vk"}
+NAME_CONNECTORS = {"of", "and", "the", "&", "de", "del", "la", "le", "van", "von", "der", "du", "den", "di"}
+
+
+def _is_cta_text(value):
+    return bool(CTA_TEXT.match(value.strip()))
+
+
+def _looks_like_customer(value):
+    v = re.sub(r"\s+", " ", str(value)).strip(" ·•|>-")
+    if len(v) < 2 or len(v) > 40 or re.search(r"[.!?]$", v):
+        return False
+    if any(ch in v for ch in ",;|/—–"):
+        return False
+    words = v.split()
+    if not (1 <= len(words) <= 3):
+        return False
+    for word in words:
+        core = word.strip("&.-'’")
+        if core and (core[0].isupper() or core.isupper()):
+            continue
+        if word.lower() in NAME_CONNECTORS:
+            continue
+        return False
+    if v.lower() in SOCIAL_LABELS or GENERIC_TEXT.search(v) or re.search(r"\blogo\b|\bicon\b", v, re.I):
+        return False
+    return True
+
+
+def content_quality_issues(brief):
+    """Independent, field-aware content checks that reject wrong-type/noisy claims
+    even when an excerpt trivially overlaps the claim text."""
+    issues = []
+    excerpts = {item["id"]: item["excerpt_or_support"] for item in brief["evidence"]}
+    for path, item in material_claims(brief).items():
+        value = item["value"]
+        if value is None:
+            continue
+        value = str(value)
+        if RAW_EXCERPT.search(value):
+            issues.append(f"{path}: claim value contains raw markup/URL noise")
+        if ERROR_TEXT.search(value):
+            issues.append(f"{path}: claim value is error/not-found text")
+        if path in ("summary.one_liner", "summary.positioning") and _is_cta_text(value):
+            issues.append(f"{path}: CTA/imperative text is not positioning")
+        if path.startswith("products[") and (PRICE_TEXT.search(value) or PRODUCT_GENERIC.fullmatch(value.strip()) or re.search(r"\blogo\b", value, re.I)):
+            issues.append(f"{path}: product claim is not a product name")
+        if path.startswith("integrations[") and (GENERIC_TEXT.search(value) or re.search(r"\blogo\b", value, re.I) or _is_cta_text(value)):
+            issues.append(f"{path}: integration claim is not connector evidence")
+        if path.startswith("customers[") and not _looks_like_customer(value):
+            issues.append(f"{path}: customer claim is not a customer name")
+        for eid in item["evidence_ids"]:
+            if RAW_EXCERPT.search(str(excerpts.get(eid, ""))):
+                issues.append(f"{path}: linked evidence excerpt contains raw markup/URL noise")
+    seen_plans = set()
+    for index, item in enumerate(brief["pricing"]["plans"]):
+        value = item["value"]
+        if value is None:
+            continue
+        value = str(value)
+        key = re.sub(r"\W+", " ", value.lower()).strip()
+        if key and key in seen_plans:
+            issues.append(f"pricing.plans[{index}]: duplicate plan")
+        seen_plans.add(key)
+        if ERROR_TEXT.search(value) or len(value.split()) > 12 or value.count("—") > 1:
+            issues.append(f"pricing.plans[{index}]: plan is not coherent plan evidence")
+    return issues
+
+
 def excerpt_supports(value, excerpt):
     if value is None or not excerpt:
         return False
@@ -208,6 +284,9 @@ def _check_claims_quality(brief):
     for index, signal in enumerate(brief["signals"]):
         if is_filler(signal["summary"]):
             raise AssertionError(f"signals[{index}]: filler signal summary is not allowed")
+    issues = content_quality_issues(brief)
+    if issues:
+        raise AssertionError(f"content quality: {issues[0]}")
 
 
 def _check_unknown_coverage(brief):
@@ -242,7 +321,7 @@ def _check_page_contribution(brief, claims):
             raise AssertionError("unread page contribution must not list claims")
         if item["read"] and item["category"] in SUPPORTED_PAGE_CATEGORIES and not item["claims"]:
             excerpt = evidence_map.get(item["evidence_id"], {}).get("excerpt_or_support", "")
-            if len(str(excerpt).strip()) >= 8 and not is_filler(str(excerpt)):
+            if len(str(excerpt).strip()) >= 8 and not is_filler(str(excerpt)) and not ERROR_SUPPORT.search(str(excerpt)):
                 raise AssertionError("read page with a supported category must contribute at least one claim")
         for claim_path in item["claims"]:
             if claim_path not in known_paths:

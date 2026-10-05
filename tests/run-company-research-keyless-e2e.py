@@ -22,7 +22,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from company_brief_validator import validate_brief, is_filler, material_claims
+from company_brief_validator import validate_brief, is_filler, material_claims, content_quality_issues
 
 DEFAULT_CAP = 8
 HARD_CAP = 12
@@ -363,7 +363,11 @@ class _TextExtractor(HTMLParser):
         tag = tag.lower()
         if tag in self.SKIP:
             self.skip += 1
-        if tag in self.BREAK:
+        if len(tag) == 2 and tag[0] == "h" and tag[1] in "123456":
+            self.parts.append("\n" + "#" * int(tag[1]) + " ")
+        elif tag == "li":
+            self.parts.append("\n- ")
+        elif tag in self.BREAK:
             self.parts.append("\n")
         for name, value in attrs:
             if name.lower() in ("aria-label", "title", "alt") and value:
@@ -499,6 +503,188 @@ def dedupe(values):
     return out
 
 
+# ---------------------------------------------------------------------------
+# Conservative content typing: a claim is emitted only when its text is the
+# right kind of thing for the field. Anything ambiguous fails closed to an
+# explicit unknown instead of a mis-typed claim.
+# ---------------------------------------------------------------------------
+
+SOCIAL_PLATFORM_LABELS = {
+    "facebook", "twitter", "x", "linkedin", "youtube", "instagram", "tiktok", "pinterest",
+    "snapchat", "threads", "whatsapp", "telegram", "reddit", "discord", "twitch", "vimeo",
+    "weibo", "wechat", "vk", "mastodon", "tumblr", "flickr", "dribbble", "behance",
+}
+GENERIC_LABEL = re.compile(
+    r"\b(?:logo|icon|view|image|photo|screenshot|illustration|background|banner|hero|graphic|"
+    r"chart|mockup|map|clients?|customers?|partners?|badges?|avatars?|profile|menu|close|next|"
+    r"previous|play|pause|arrow|search|home|about|contact|pricing|features?|products?|solutions?|"
+    r"resources?|support|docs?|documentation|blog|news|careers?|legal|privacy|terms|security|"
+    r"status|login|sign ?up|sign ?in|get started|learn more|read more|see more|view all|subscribe|"
+    r"marketplace|ecosystem|integrations?|apps?|connectors?|overview|includes|why choose|add-ons?|"
+    r"featured|additional|exclusive|compare features|frequently asked questions|faq)\b",
+    re.I,
+)
+CTA_START = re.compile(
+    r"^(?:get|sign|log|contact|try|learn|read|view|watch|start|book|download|see|explore|join|"
+    r"subscribe|talk|buy|request|schedule|apply|meet|discover|unlock|take|build|create|find|"
+    r"compare|choose|select|pick|reach|connect|switch|migrate)\b",
+    re.I,
+)
+CTA_PHRASE = re.compile(
+    r"\b(?:sign ?up|get started|get .{0,20}for free|start (?:for )?free|for free|free trial|"
+    r"try (?:it |for )?free|talk to sales|contact sales|book a demo|get a demo|learn more|"
+    r"read more|see (?:how|the|our)|watch (?:the|how|now))\b",
+    re.I,
+)
+PRICE_LIKE = re.compile(r"(?:[$€£]\s?\d|\d[\d.,]*\s?[€$£]|\b(?:USD|EUR|GBP)\b|\d[\d.,]*\s?%)", re.I)
+RAW_ARTIFACT = re.compile(r"\]\(|https?://|www\.|\?\w+=|%[0-9A-Fa-f]{2}|<[a-z/][^>]*>|\b\w+\?[a-z0-9]+=", re.I)
+ERROR_TEXT = re.compile(
+    r"\b(?:page you requested cannot be found|page not found|404 not found|not found|error while loading|"
+    r"please reload this page|access denied|403 forbidden|502 bad gateway|503 service unavailable|"
+    r"something went wrong|we are sorry|temporarily unavailable|this page is unavailable)\b",
+    re.I,
+)
+ERROR_SUPPORT = re.compile(r"\b(?:unavailable|error/not-found|no claims derived|no readable content)\b", re.I)
+COMPANY_CONNECTORS = {"of", "and", "the", "&", "de", "del", "la", "le", "van", "von", "der", "du", "den", "di"}
+
+
+def is_error_page(text):
+    """True when the consumed body is an error/not-found/status page, not real content."""
+    if not text:
+        return False
+    plain = clean_block(text)
+    if not plain:
+        return False
+    if len(plain) < 800 and ERROR_TEXT.search(plain) and not re.search(r"[$€£]\s?\d", plain):
+        return True
+    return False
+
+
+def normalize_excerpt(text, limit=EXCERPT_LIMIT):
+    """Strip Markdown/HTML/URL/nav noise so an excerpt stays concise and auditable."""
+    if not text:
+        return ""
+    value = text
+    if looks_html(value):
+        value = html_to_text(value)
+    value = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", value)
+    value = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", value)
+    value = re.sub(r"\]\([^)]*\)?", " ", value)
+    value = re.sub(r"[\[\]]", " ", value)
+    value = re.sub(r"<[^>]+>", " ", value)
+    value = re.sub(r"https?://\S+", " ", value)
+    value = re.sub(r"\bwww\.\S+", " ", value)
+    value = re.sub(r"[\u200b\u2060\ufeff\u00ad]", "", value)
+    value = re.sub(r"[*_`#>|]+", " ", value)
+    value = re.sub(r"\s+", " ", value)
+    return bounded(value.strip(" \t·•>-#"), limit)
+
+
+def excerpt_is_clean(text):
+    """An auditable excerpt has no raw Markdown/HTML/URL/CLI artifacts."""
+    if not isinstance(text, str) or not text.strip():
+        return False
+    if RAW_ARTIFACT.search(text):
+        return False
+    if len(re.findall(r"\d{4,}", text)) > 4:
+        return False
+    return True
+
+
+def is_cta(text):
+    """Reject imperative/CTA/signup copy as positioning or claim text."""
+    value = text.strip()
+    if not value:
+        return False
+    if CTA_START.match(value):
+        return True
+    if len(value.split()) <= 6 and CTA_PHRASE.search(value):
+        return True
+    if value.rstrip(".!").lower() in {
+        "get started", "sign up", "try for free", "try it free", "contact sales", "talk to sales",
+        "book a demo", "get a demo", "learn more", "read more", "start for free",
+    }:
+        return True
+    return value.endswith(("→", "»"))
+
+
+def _proper_noun_shape(words):
+    connectors = 0
+    for index, word in enumerate(words):
+        core = word.strip("&.-'’")
+        if not core:
+            return False
+        if core[0].isupper() or core.isupper():
+            continue
+        if word.lower() in COMPANY_CONNECTORS and connectors == 0 and 0 < index:
+            connectors += 1
+            continue
+        return False
+    return True
+
+
+def looks_like_customer_name(value, company_name):
+    """A customer claim must look like a company/logo name, not a sentence, nav item,
+    social icon label, the company itself, or a marketing phrase."""
+    candidate = re.sub(r"\s+", " ", value or "").strip(" ·•|>-")
+    if len(candidate) < 2 or len(candidate) > 40:
+        return False
+    if re.search(r"[.!?]$", candidate):
+        return False
+    if re.search(r"[.,;:!?]\s", candidate) or any(ch in candidate for ch in ",;|/—–"):
+        return False
+    words = candidate.split()
+    if not (1 <= len(words) <= 3):
+        return False
+    if not _proper_noun_shape(words):
+        return False
+    low = candidate.lower().strip(".")
+    if low in SOCIAL_PLATFORM_LABELS:
+        return False
+    if GENERIC_LABEL.search(candidate) or GENERIC_NAME.search(candidate):
+        return False
+    if re.search(r"\blogo\b|\bicon\b", candidate, re.I):
+        return False
+    if company_name and company_name.lower().split()[0] in low.split():
+        return False
+    if re.fullmatch(r"[\W\d_]+", candidate):
+        return False
+    return True
+
+
+def looks_like_connector(value, company_name):
+    """An integration claim must look like a connector/product name proven by
+    explicit integration context, never logo alt text, a CTA, a heading, or the
+    company's own name."""
+    candidate = re.sub(r"\s+", " ", value or "").strip(" ·•|>-")
+    if not (2 <= len(candidate) <= 40):
+        return False
+    if candidate.endswith(("-", "—", "–", ":", "?")) or re.search(r"[.!?]$", candidate):
+        return False
+    if re.search(r"[.,;:!?]\s", candidate) or "," in candidate:
+        return False
+    if re.search(r"\blogo\b|\bicon\b", candidate, re.I):
+        return False
+    if CTA_START.match(candidate) or CTA_PHRASE.search(candidate) or GENERIC_LABEL.search(candidate):
+        return False
+    if re.match(r"^(?:all|see|view|more|browse|show|explore|discover)\b", candidate, re.I):
+        return False
+    if re.search(r"\bapis?\b", candidate, re.I):
+        return False
+    words = candidate.split()
+    if not (1 <= len(words) <= 4):
+        return False
+    if candidate.lower() in SOCIAL_PLATFORM_LABELS:
+        return False
+    if len(words) == 1 and candidate.lower() in {"unlimited", "included", "available", "yes", "no", "all", "custom", "support", "overview", "details", "more", "apis", "api", "sdk", "sdks", "cli", "docs", "faq"}:
+        return False
+    if not _proper_noun_shape(words):
+        return False
+    if company_name and company_name.lower().split()[0] in candidate.lower():
+        return False
+    return True
+
+
 CATEGORY_RULES = (
     ("Customer relationship management", r"\b(crm|customer relationship management|sales platform|marketing automation|salesforce)\b"),
     ("Payments and financial infrastructure", r"\b(payment processing|online payments|accept payments|payment infrastructure|financial infrastructure|money movement|payments platform|payment platform|checkout|merchant account)\b"),
@@ -529,41 +715,47 @@ def extract_category(blocks, plain):
 
 
 POSITIONING_CUES = re.compile(r"\b(for every|for all (?:businesses|teams|companies|developers)|for businesses|for teams|for developers|helps? (?:you|teams|companies|businesses|developers)|platform (?:for|to)|infrastructure (?:for|to)|designed (?:for|to)|built (?:for|to)|the way (?:modern|teams|companies|businesses|work)|so (?:you|teams|businesses|developers) can|empower\w*|backbone|reimagine|unlock)\b", re.I)
-POSITIONING_NOUN = re.compile(r"\b(platform|tool|software|solution|workspace|infrastructure|application|product|service|technology|business(?:es)?|teams?|compan(?:y|ies)|for )\b", re.I)
+POSITIONING_NOUN = re.compile(r"\b(platform|tool|software|solution|workspace|infrastructure|application|product|service|technology|business(?:es)?|teams?|compan(?:y|ies))\b", re.I)
+POSITIONING_VERB = re.compile(r"\b(is|are|was|were|provides?|offers?|helps?|helping|enables?|enabling|powers?|powering|builds?|building|lets?|allows?|allowing|makes|making|turns?|turning|brings?|bringing|connects?|connecting|automates?|automating|unifies|unifying|consolidates?|consolidating|delivers?|delivering|serves?|serving|grows?|growing|works?|working|streamlines?|streamlining|simplifies?|simplifying|empowers?|empowering|improves?|improving)\b", re.I)
 
 
-def extract_positioning(blocks, one_liner):
+def extract_positioning(blocks, one_liner, company_name=None):
+    """Descriptive positioning only; CTA/imperative/signup copy is rejected."""
     candidates = []
     for kind, level, text in blocks:
-        if len(text) > 220 or not meaningful(text, min_len=14) or is_filler(text):
+        if len(text) > 220 or not meaningful(text, min_len=14) or is_filler(text) or is_cta(text):
             continue
         if text == one_liner:
             continue
-        if POSITIONING_CUES.search(text):
+        if POSITIONING_CUES.search(text) and (POSITIONING_NOUN.search(text) or POSITIONING_VERB.search(text)):
             candidates.append(text)
     if candidates:
         candidates.sort(key=len)
         return candidates[0]
     for kind, level, text in blocks:
-        if 16 <= len(text) <= 160 and text != one_liner and meaningful(text, min_len=16) and not is_filler(text) and POSITIONING_NOUN.search(text):
+        if not (16 <= len(text) <= 180) or text == one_liner:
+            continue
+        if not meaningful(text, min_len=16) or is_filler(text) or is_cta(text):
+            continue
+        if POSITIONING_NOUN.search(text) and POSITIONING_VERB.search(text):
             return text
     return None
 
 
 def extract_one_liner(blocks):
     for kind, level, text in blocks:
-        if kind == "heading" and 20 <= len(text) <= 220:
+        if kind == "heading" and 20 <= len(text) <= 220 and not is_cta(text):
             return text
     for kind, level, text in blocks:
-        if 24 <= len(text) <= 220 and meaningful(text, min_len=24, min_words=4):
+        if 24 <= len(text) <= 220 and meaningful(text, min_len=24, min_words=4) and not is_cta(text):
             return text
     return None
 
 
-PRODUCT_STOP = re.compile(r"\b(?:choose|get started|sign up|learn more|read |view |try |contact|talk to|book|watch|see |start |download|explore|join|subscribe|request|schedule|apply|why choose|key features|how |what |includes|overview|resources|objective|strategy|staffing|benchmark|report\b|guide\b|blog\b|story\b|stories\b|update\b|news\b|programme|program\b|case study|testimonial)\b", re.I)
+PRODUCT_STOP = re.compile(r"\b(?:choose|get started|sign up|learn more|read |view |try |contact|talk to|book|watch|see |start |download|explore|join|subscribe|request|schedule|apply|why choose|key features|how |what |includes|overview|resources|objective|strategy|staffing|benchmark|report\b|guide\b|blog\b|story\b|stories\b|update\b|news\b|programme|program\b|case study|testimonial|featured|additional|exclusive|add-ons?|compare features|frequently asked|faq)\b", re.I)
 
 
-def extract_products(blocks):
+def extract_products(blocks, company_name=None):
     out = []
     for kind, level, text in blocks:
         if kind != "heading":
@@ -574,6 +766,12 @@ def extract_products(blocks):
         if value.endswith("?") or PRODUCT_STOP.search(value):
             continue
         if not meaningful(value, min_len=8, min_words=2):
+            continue
+        if RAW_ARTIFACT.search(value) or PRICE_LIKE.search(value):
+            continue
+        if re.search(r"\blogo\b|\bicon\b", value, re.I) or is_cta(value):
+            continue
+        if company_name and company_name.lower().split()[0] in value.lower() and len(value.split()) <= 2:
             continue
         out.append(value)
     return dedupe(out)
@@ -593,6 +791,8 @@ def extract_features(blocks, plain, one_liner):
                 continue
             if sentence.lower().startswith(skip_prefix) or FEATURE_NOISE.search(sentence):
                 continue
+            if is_cta(sentence) or RAW_ARTIFACT.search(sentence) or ERROR_TEXT.search(sentence):
+                continue
             if FEATURE_CUES.search(sentence):
                 out.append(sentence)
 
@@ -610,18 +810,43 @@ def extract_target_market(blocks, plain):
     for kind, level, text in blocks:
         if len(text) > 220:
             continue
-        if TARGET_CUES.search(text) and meaningful(text, min_len=14):
+        if TARGET_CUES.search(text) and meaningful(text, min_len=14) and not is_cta(text) and not RAW_ARTIFACT.search(text) and not ERROR_TEXT.search(text):
             out.append(text)
     for sentence in sentences(plain):
-        if TARGET_CUES.search(sentence) and meaningful(sentence, min_len=24, min_words=4) and len(sentence) <= 240:
+        if TARGET_CUES.search(sentence) and meaningful(sentence, min_len=24, min_words=4) and len(sentence) <= 240 and not is_cta(sentence) and not RAW_ARTIFACT.search(sentence) and not ERROR_TEXT.search(sentence):
             out.append(sentence)
     return dedupe(out)
 
 
-INTEGRATION_HEAD = re.compile(r"\b(integration|integrations|connected apps|marketplace|apps and integrations|connect|ecosystem)\b", re.I)
+INTEGRATION_HEAD = re.compile(r"\b(integration|integrations|connected apps|marketplace|apps and integrations|ecosystem|connectors?|app directory|partner directory)\b", re.I)
+CUSTOMER_CONTEXT = re.compile(r"\b(customers?|case stud(?:y|ies)|success stor(?:y|ies)|stories|trusted by|used by|who uses|loved by|call [\w .'-]+ home|powering)\b", re.I)
 
 
-def extract_integrations(blocks, alts, category="unknown"):
+def _page_has_customer_context(blocks, links, homepage):
+    text = " ".join(t for _, _, t in blocks)
+    if CUSTOMER_CONTEXT.search(text):
+        return True
+    home_host = normalized_hostname(homepage)
+    for link in links:
+        if normalized_hostname(link) != home_host:
+            continue
+        segments = [s.lower() for s in urllib.parse.urlparse(link).path.split("/") if s]
+        for segment in segments:
+            if segment in ("customers", "customer", "case-studies", "case-study", "customer-stories", "stories") or "customer" in segment:
+                return True
+    return False
+
+
+def _page_has_integration_context(blocks, links, category):
+    if category == "integrations":
+        return True
+    return any(kind == "heading" and INTEGRATION_HEAD.search(text) for kind, level, text in blocks)
+
+
+def extract_integrations(blocks, alts, category, company_name=None, integration_context=False):
+    """Connector/ecosystem names only, and only from explicit integration context.
+    Logo alt text, the company's own name, generic headings, CTAs, and nav noise
+    are rejected."""
     out = []
     in_section = False
     section_level = 0
@@ -633,20 +858,17 @@ def extract_integrations(blocks, alts, category="unknown"):
                 continue
             if in_section and level <= section_level:
                 in_section = False
-        if in_section and not PRODUCT_STOP.search(text) and len(text) <= 70 and not text.endswith("?"):
-            for piece in re.split(r",| and ", text):
-                piece = re.sub(r"\([^)]*\)", "", piece).strip().strip(".").strip()
-                if 2 <= len(piece) <= 40 and not piece.endswith("?") and meaningful(piece, min_len=2, min_words=1) and not piece.lower().startswith(("see ", "view ", "learn ", "explore ")):
+        if in_section:
+            for piece in re.split(r",|\band\b|\b&\b|·", text):
+                piece = re.sub(r"\([^)]*\)", "", piece).strip().strip(".·-").strip()
+                if looks_like_connector(piece, company_name):
                     out.append(piece)
-    for kind, level, text in blocks:
-        if kind == "heading" and len(text) <= 40 and meaningful(text, min_len=3, min_words=1) and any(word in text for word in ("Integration", "Connect", "App", "Partner", "Plugin", "Extension")):
-            out.append(text)
-    if category == "integrations":
+    if integration_context or category == "integrations":
         for alt in alts:
-            clean = re.sub(r"\s*logo\s*$", "", alt, flags=re.I).strip()
-            if clean.lower() != alt.lower() and 2 <= len(clean) <= 40 and meaningful(clean, min_len=2, min_words=1):
+            clean = re.sub(r"\s*logo\s*$", "", alt.strip(), flags=re.I).strip(" ·•|>-–—")
+            if clean and clean.lower() != alt.strip().lower() and looks_like_connector(clean, company_name):
                 out.append(clean)
-    return [value for value in dedupe(out) if not re.search(r"\blogo\b", value, re.I)]
+    return dedupe(out)
 
 
 PROPER = re.compile(r"^[A-Z0-9][\w'’&.-]*(?:\s+[A-Z0-9][\w'’&.-]*){0,3}$")
@@ -654,35 +876,35 @@ NAME_OK = re.compile(r"^[A-Za-z0-9][\w'’&.-]*(?:\s+[A-Za-z0-9][\w'’&.-]*){0,
 GENERIC_NAME = re.compile(r"\b(?:logo|icon|view|image|photo|screenshot|illustration|background|banner|hero|graphic|chart|mockup|map|client|clients|partner|partners|badge|avatar|profile)\b", re.I)
 
 
-def extract_customers(blocks, alts, links, homepage):
+def extract_customers(blocks, alts, links, homepage, company_name=None):
+    """Customer/case-study examples only, drawn from explicit customer context."""
     out = []
-    for alt in alts:
-        clean = re.sub(r"\s*logo\s*$", "", alt, flags=re.I).strip()
-        if clean.lower() != alt.lower() and NAME_OK.match(clean) and 1 <= len(clean.split()) <= 3 and len(clean) <= 40 and not GENERIC_NAME.search(clean):
-            out.append(clean.title() if clean.islower() else clean)
-    for kind, level, text in blocks:
-        if kind == "heading":
-            match = re.match(r"^([A-Z][\w'’&.-]*(?:\s+[A-Z][\w'’&.-]*){0,2})\s+(unifies|consolidates|powers|improves|grows|scales|partners|launches|drives|expands|adopts|uses|migrates|accelerates)\b", text)
-            if match:
-                out.append(match.group(1))
-    for alt in alts:
-        clean = alt.strip()
-        if PROPER.match(clean) and 1 <= len(clean.split()) <= 3 and meaningful(clean, min_len=2, min_words=1) and not GENERIC_NAME.search(clean):
-            out.append(clean)
     for link in links:
-        parsed = urllib.parse.urlparse(link)
         if normalized_hostname(link) != normalized_hostname(homepage):
             continue
-        segments = [segment for segment in parsed.path.split("/") if segment]
+        segments = [segment for segment in urllib.parse.urlparse(link).path.split("/") if segment]
         lowered = [segment.lower() for segment in segments]
-        for marker in ("customers", "customer", "case-studies", "case-study", "stories"):
+        for marker in ("customers", "customer", "case-studies", "case-study", "customer-stories", "stories", "case-studies"):
             if marker in lowered:
                 index = lowered.index(marker)
                 if index + 1 < len(segments):
                     slug = segments[index + 1]
                     slug = urllib.parse.unquote(slug).replace("-", " ").replace("_", " ").strip()
-                    if 1 <= len(slug.split()) <= 4 and re.search(r"[A-Za-z]", slug):
-                        out.append(slug.title())
+                    candidate = slug.title()
+                    if looks_like_customer_name(candidate, company_name):
+                        out.append(candidate)
+    for kind, level, text in blocks:
+        if kind != "heading":
+            continue
+        match = re.match(r"^([A-Z][\w'’&.-]*(?:\s+[A-Z][\w'’&.-]*){0,2})\s+(unifies|consolidates|powers|improves|grows|scales|partners|launches|drives|expands|adopts|uses|migrates|accelerates|boosts|accelerates)\b", text)
+        if match and looks_like_customer_name(match.group(1), company_name):
+            out.append(match.group(1))
+    if _page_has_customer_context(blocks, links, homepage):
+        for alt in alts:
+            clean = re.sub(r"\s*(?:logo|image|icon)\s*$", "", alt.strip(), flags=re.I).strip()
+            clean = re.sub(r"\s+(?:team|office|studio|hq|headquarters)$", "", clean, flags=re.I).strip(" ·•|>-–—").strip()
+            if looks_like_customer_name(clean, company_name):
+                out.append(clean.title() if clean.islower() else clean)
     return dedupe(out)
 
 
@@ -698,6 +920,8 @@ SIGNAL_RULES = (
 
 def extract_signals(blocks, plain, category, page_label):
     out = []
+    if is_error_page(plain):
+        return out
     candidates = []
     if category == "changelog_blog":
         for kind, level, text in blocks:
@@ -708,6 +932,9 @@ def extract_signals(blocks, plain, category, page_label):
         if kind == "heading" and 12 <= len(text) <= 160 and re.search(r"\b(new|launch\w*|introduc\w+|announc\w+|partner\w*|expand\w*|unveil\w+|acquires?|raises?|milestone)\b", text, re.I):
             candidates.append(text)
     for candidate in candidates:
+        candidate = normalize_excerpt(candidate)
+        if not meaningful(candidate, min_len=10) or is_cta(candidate) or ERROR_TEXT.search(candidate):
+            continue
         signal_type = "other"
         for name, pattern in SIGNAL_RULES:
             if re.search(pattern, candidate, re.I):
@@ -717,86 +944,170 @@ def extract_signals(blocks, plain, category, page_label):
     return out
 
 
-PRICING_PLAN = re.compile(r"^(free|starter|basic|essential|standard|pro|professional|business|team|teams|organization|organisation|enterprise|custom|plus|premium|growth|scale|unlimited|advanced|beginner|hobby|personal|company|dev|developer|collab|core|lite|individual)$", re.I)
-PLAN_TOKEN = re.compile(r"\b(free|starter|basic|essential|standard|pro|professional|business|team|organization|enterprise|custom|plus|premium|growth|scale|unlimited|advanced)\b", re.I)
+PLAN_NAMES = (
+    "free", "starter", "basic", "essential", "standard", "pro", "professional", "business",
+    "team", "teams", "organization", "organisation", "enterprise", "custom", "plus", "premium",
+    "growth", "scale", "hobby", "personal", "individual", "developer", "dev", "core", "lite",
+)
+PLAN_TOKEN = re.compile(r"^([A-Za-z][A-Za-z0-9'’&+.-]*)")
+STANDALONE_PLAN = re.compile(r"^(?:" + "|".join(PLAN_NAMES) + r")$", re.I)
 AMOUNT_CURRENCY = re.compile(r"[$€£]\s?\d[\d.,]*|\d[\d.,]*\s?[€$£]|\d[\d.,]*\s?(?:USD|EUR|GBP)")
 AMOUNT_RATE = re.compile(r"\d[\d.,]*\s?%")
-PRICING_WORD = re.compile(r"\b(?:fee|fees|rate|pricing|price|prices|transaction|payment|card|per (?:user|seat|month|year|editor|member|workspace)|billed|subscription|credits?/mo)\b", re.I)
+AMOUNT_ANY = re.compile(r"([€£$]\s?\d[\d.,]*|\d[\d.,]*\s?[€£$]|\d[\d.,]*\s?(?:USD|EUR|GBP)|\d[\d.,]*\s?%)")
+AMOUNT_ONLY_REMOVE = re.compile(r"[$€£+]|\b(?:usd|eur|gbp|per|a|month|monthly|year|yearly|annually|user|seat|editor|member|mo|yr|forever|included|from|starting|starts?)\b|[\d.,/%\s]+", re.I)
+CTA_TAIL = re.compile(r"\b(?:sign ?up|try (?:it |for )?free|get started|start (?:for )?free|join for free|continue with [\w ]+|contact sales|book a demo|get a demo|learn more|subscribe|free trial|talk to sales)\b.*$", re.I)
+SUBUNIT_UNIT = re.compile(r"(?:/|per)\s*(user|seat|editor|member|month|year|mo|yr|1k|gb-hour|min|email|1k characters)\b", re.I)
 MODEL_CUES = (
     (r"pay[- ]as[- ]you[- ]go", "Pay-as-you-go"),
     (r"usage[- ]based", "Usage-based"),
-    (r"(?:per|/)\s*(?:user|seat|editor|member|workspace)(?:\s*/\s*(?:month|year|mo|yr))?", None),
+    (r"(?:per|/)\s*(?:user|seat|editor|member|workspace)(?:\s*/?\s*(?:month|year|mo|yr))?", None),
     (r"\bsubscription\b|\bbilled (?:monthly|annually)\b|\bper month\b", None),
     (r"\bfree\b", "Free tier"),
 )
 
 
+def _amount_only(block):
+    """True when a block is essentially just an amount (optionally with a unit)."""
+    core = AMOUNT_ONLY_REMOVE.sub(" ", block)
+    return core.strip(" .-–—·") == ""
+
+
+def _amount_led(block):
+    """Return the amount match when a block starts with an amount followed only by a
+    unit/CTA tail (a priced plan card line), else None."""
+    match = AMOUNT_ANY.match(block)
+    if not match:
+        return None
+    rest = block[match.end():]
+    rest = CTA_TAIL.sub("", rest)
+    return match if AMOUNT_ONLY_REMOVE.sub(" ", rest).strip(" .-–—·") == "" else None
+
+
+def _amount_phrase(block, match):
+    """A concise auditable amount phrase for a plan (whole block when it is only an
+    amount, otherwise the matched amount plus an immediate unit)."""
+    if len(block) <= 40 and _amount_only(block):
+        rest = block[match.end():]
+        if "+" in block or not AMOUNT_ANY.search(rest):
+            return normalize_excerpt(block, 40).strip(" .-–—·")
+    tail = block[match.start():]
+    unit = re.match(r"\s*(?:/|per)\s*([A-Za-z0-9-]+)", tail[len(match.group(0)):])
+    phrase = match.group(0).strip()
+    if unit:
+        phrase = f"{phrase}/{unit.group(1)}"
+    return phrase
+
+
+def _plan_canonical_name(token):
+    low = token.lower()
+    return low[:1].upper() + low[1:]
+
+
 def extract_pricing(text):
-    """Return (model_value, model_excerpt, [(plan, excerpt)]) grounded in the consumed body."""
+    """Return (model_value, model_excerpt, [(plan_value, excerpt)]) grounded in the
+    consumed body, or None. Plans require a recognized plan name paired with an
+    observed amount; ambiguous, sentence-like, duplicated, or error-page pricing
+    fails closed to unknown."""
+    if not text or is_error_page(text):
+        return None
     blocks, _ = block_units(text)
     plain = clean_block(text)
+    if not plain:
+        return None
     model_value, model_excerpt = None, None
     for pattern, label in MODEL_CUES:
         match = re.search(pattern, plain, re.I)
         if match:
-            phrase = match.group(0).strip()
             if label is None:
-                label = phrase.title()
+                label = match.group(0).strip().title()
             model_value = label
-            model_excerpt = bounded(plain[max(0, match.start() - 60): match.end() + 140])
+            model_excerpt = normalize_excerpt(plain[max(0, match.start() - 60): match.end() + 140])
             break
+
     plans = []
-    current = None
-    current_index = None
-    for index, (kind, level, block) in enumerate(blocks):
+    seen = set()
+
+    def add(name, amount, excerpt):
+        key = re.sub(r"\W+", " ", name.lower()).strip()
+        if not name or not key or key in seen:
+            return
+        seen.add(key)
+        value = f"{_plan_canonical_name(name)} — {amount}" if amount else _plan_canonical_name(name)
+        plans.append((value, normalize_excerpt(excerpt, EXCERPT_LIMIT)))
+
+    # Pass 1: a block that starts with a plan name and carries an amount in the same block.
+    for kind, level, block in blocks:
         if kind not in ("heading", "item", "text"):
             continue
-        bare = re.sub(r"\s+(?:monthly|annual|annually|billed|per|seat|month|year)$", "", block.strip().rstrip(".").strip(), flags=re.I).strip()
-        is_plan = bool(PRICING_PLAN.fullmatch(bare)) or (kind == "heading" and len(bare.split()) <= 3 and PLAN_TOKEN.search(bare) and not AMOUNT_CURRENCY.search(bare))
-        if is_plan:
-            current, current_index = (bare, block), index
+        clean = clean_block(block)
+        if not clean or len(clean) > 90:
             continue
-        if current and current_index is not None and index - current_index <= 4:
-            amount = AMOUNT_CURRENCY.search(block)
-            if not amount and PRICING_WORD.search(block):
-                amount = AMOUNT_RATE.search(block)
-            free_tier = re.match(r"^free\b", block, re.I) and len(block.split()) <= 8 and not amount
-            if amount:
-                plan_name = current[0]
-                value = f"{plan_name} — {amount.group(0).strip()}"
-                plans.append((value, bounded(f"{current[1]} {block}")))
-                current, current_index = None, None
-            elif free_tier:
-                value = f"{current[0]} — Free"
-                plans.append((value, bounded(f"{current[1]} {block}")))
-                current, current_index = None, None
-    if not plans:
-        for kind, level, block in blocks:
-            bare = block.strip().rstrip(".").strip()
-            if PRICING_PLAN.fullmatch(bare):
-                plans.append((bare, block))
-    if not plans:
-        for kind, level, block in blocks:
-            if AMOUNT_CURRENCY.search(block) and len(block) <= 200 and meaningful(block, min_len=8):
-                plans.append((bounded(block, 120), block))
-                if len(plans) >= 3:
-                    break
+        head = PLAN_TOKEN.match(clean)
+        if not head or head.group(1).lower() not in PLAN_NAMES:
+            continue
+        amount = AMOUNT_ANY.search(clean)
+        if amount and amount.start() <= max(20, len(head.group(1)) + 40):
+            add(_plan_canonical_name(head.group(1)), _amount_phrase(clean, amount), clean)
+            continue
+        if amount:
+            continue
+        if head.group(1).lower() in {"enterprise", "business", "organization", "organisation", "team", "teams", "company", "corporate"} and len(clean.split()) == 2 and re.search(r"\bcustom\b|\bcontact sales\b", clean, re.I):
+            add(_plan_canonical_name(head.group(1)), "Custom", clean)
+
+    # Pass 1b: plan name + recurring amount inside a long block (a plan card whose
+    # feature list collapsed into one block). Requires an explicit recurring unit
+    # so comparison-table cells are not mistaken for plans.
+    wanted = "|".join(PLAN_NAMES)
+    for kind, level, block in blocks:
+        if kind not in ("heading", "item", "text"):
+            continue
+        clean = clean_block(block)
+        if len(clean) <= 90:
+            continue
+        for match in re.finditer(r"\b(" + wanted + r")\b", clean, re.I):
+            segment = clean[match.end(): match.end() + 60]
+            amount = AMOUNT_ANY.search(segment)
+            if not amount:
+                continue
+            after = segment[amount.end(): amount.end() + 16]
+            if re.match(r"\s*(?:/|per)\s*(?:user|seat|editor|member|month|mo|year|yr)\b", after, re.I):
+                add(_plan_canonical_name(match.group(1)), _amount_phrase(segment, amount), clean)
+                break
+
+    # Pass 2: a plan-name heading whose priced amount is a nearby amount-only block.
+    for index, (kind, level, block) in enumerate(blocks):
+        if kind != "heading":
+            continue
+        name = clean_block(block).strip().strip(".")
+        if not STANDALONE_PLAN.fullmatch(name):
+            continue
+        for follower_kind, follower_level, follower in blocks[index + 1: index + 4]:
+            follower_clean = clean_block(follower).strip()
+            match = _amount_led(follower_clean)
+            if match:
+                add(_plan_canonical_name(name), _amount_phrase(follower_clean, match), f"{name} {follower_clean}")
+                break
+        else:
+            if name.lower() == "custom":
+                add("Custom", None, name)
+            elif any(re.search(r"\bcustom\b|\bcontact sales\b", clean_block(block_clean), re.I) for _, _, block_clean in blocks[index + 1: index + 4]):
+                add(_plan_canonical_name(name), "Custom", name)
+
     if not plans:
         return None
+    plans = plans[:6]
     if model_value is None:
-        anchor = re.search(r"\b(?:pricing|plans?|price|billed|per month|subscription|pay as you go)\b", plain, re.I)
-        if anchor:
-            model_value = bounded(plain[max(0, anchor.start() - 20): anchor.end() + 20], 60)
-            model_excerpt = bounded(plain[max(0, anchor.start() - 40): anchor.end() + 80])
+        joined = " ".join(value for value, _ in plans).lower()
+        if re.search(r"/user|/seat|per user|per seat|/editor|/member", joined):
+            model_value = "Per-seat subscription"
+        elif "%" in joined:
+            model_value = "Transaction-based"
+        elif re.search(r"/mo|/month|per month|/year|per year|/yr", joined):
+            model_value = "Subscription"
         else:
-            model_value, model_excerpt = plans[0][0], plans[0][1]
-    seen, unique_plans = set(), []
-    for value, excerpt in plans:
-        key = re.sub(r"\W+", " ", value.lower()).strip()
-        if key and key not in seen:
-            seen.add(key)
-            unique_plans.append((value, excerpt))
-    return model_value, model_excerpt, unique_plans
+            model_value = "Tiered pricing"
+        model_excerpt = plans[0][1]
+    return model_value, model_excerpt, plans
 
 
 def failure_support(result, source_url, label):
@@ -812,6 +1123,27 @@ def first_body_excerpt(blocks, plain):
         if 12 <= len(sentence) <= 260:
             return bounded(sentence)
     return bounded(plain) if plain else "Empty first-party body."
+
+
+NAV_NOISE = re.compile(r"\blogo\b|\bicon\b|^menu$|\bsign ?up\b|\blog ?in\b|\bcookie", re.I)
+
+
+def clean_body_line(unit):
+    """A concise, auditable body line for a fallback signal: no nav/logo/CTA noise."""
+    def ok(text):
+        if not (12 <= len(text) <= 200) or not meaningful(text, min_len=12):
+            return False
+        if is_filler(text) or is_cta(text) or ERROR_TEXT.search(text) or RAW_ARTIFACT.search(text) or NAV_NOISE.search(text):
+            return False
+        return True
+
+    for kind, level, text in unit["blocks"]:
+        if ok(text):
+            return text
+    for sentence in sentences(unit["plain"]):
+        if ok(sentence):
+            return sentence
+    return None
 
 
 def request_record(result):
@@ -863,20 +1195,24 @@ def make_brief(case, fetched, candidates=None, discovery=None, research_goal=Non
     evidence_owner = {}
 
     def add_evidence(eid, source_url, excerpt, kind="first_party", owner=None):
-        evidence.append({"id": eid, "source_url": public_url(source_url), "kind": kind, "fetched_at": now(), "excerpt_or_support": bounded(excerpt)})
+        evidence.append({"id": eid, "source_url": public_url(source_url), "kind": kind, "fetched_at": now(), "excerpt_or_support": normalize_excerpt(excerpt, 2000)})
         evidence_owner[eid] = owner
 
     page_units = []
     for index, page in enumerate(pages):
         label = "Homepage Markdown fetch" if index == 0 else ("Direct first-party pricing HTML fetch" if page.get("surface") == "free_direct_pricing" else "Selected Markdown fetch")
-        if page_ok[index]:
-            blocks, alts = block_units(page.get("text", ""))
-            plain = " ".join(text for _, _, text in blocks) if blocks else clean_block(page.get("text", ""))
-            add_evidence(page_ids[index], page["source_url"], first_body_excerpt(blocks, plain), owner=page_ids[index])
-            page_units.append({"index": index, "id": page_ids[index], "page": page, "category": page.get("category", "homepage") if index else "homepage", "blocks": blocks, "alts": alts, "plain": plain, "ok": True})
+        body = page.get("text", "")
+        if page_ok[index] and is_error_page(body):
+            add_evidence(page_ids[index], page["source_url"], f"{label} returned an error/not-found body; no claims derived for {public_url(page['source_url'])}.", owner=page_ids[index])
+            page_units.append({"index": index, "id": page_ids[index], "page": page, "category": page.get("category", "homepage") if index else "homepage", "blocks": [], "alts": [], "plain": "", "ok": True, "usable": False})
+        elif page_ok[index]:
+            blocks, alts = block_units(body)
+            plain = " ".join(text for _, _, text in blocks) if blocks else clean_block(body)
+            add_evidence(page_ids[index], page["source_url"], clean_body_line({"blocks": blocks, "plain": plain}) or first_body_excerpt(blocks, plain), owner=page_ids[index])
+            page_units.append({"index": index, "id": page_ids[index], "page": page, "category": page.get("category", "homepage") if index else "homepage", "blocks": blocks, "alts": alts, "plain": plain, "ok": True, "usable": bool(plain.strip())})
         else:
             add_evidence(page_ids[index], page["source_url"], failure_support(page, public_url(page["source_url"]), label), owner=page_ids[index])
-            page_units.append({"index": index, "id": page_ids[index], "page": page, "category": page.get("category", "homepage") if index else "homepage", "blocks": [], "alts": [], "plain": "", "ok": False})
+            page_units.append({"index": index, "id": page_ids[index], "page": page, "category": page.get("category", "homepage") if index else "homepage", "blocks": [], "alts": [], "plain": "", "ok": False, "usable": False})
 
     if successful(brand_result):
         add_evidence(brand_id, brand_result["source_url"], bounded("Brand identity fetch succeeded; identity metadata retained for " + case["domain"] + "."), owner=brand_id)
@@ -885,12 +1221,12 @@ def make_brief(case, fetched, candidates=None, discovery=None, research_goal=Non
 
     def page_order(priority):
         ranked = sorted(
-            (unit for unit in page_units if unit["ok"] and unit["category"] in priority),
+            (unit for unit in page_units if unit["ok"] and unit.get("usable", True) and unit["category"] in priority),
             key=lambda unit: (priority.index(unit["category"]), unit["index"]),
         )
         return ranked
 
-    home_unit = page_units[0] if page_units[0]["ok"] else None
+    home_unit = page_units[0] if page_units[0]["ok"] and page_units[0].get("usable", True) else None
     one_liner, one_liner_excerpt = None, None
     if home_unit:
         one_liner = extract_one_liner(home_unit["blocks"])
@@ -906,7 +1242,7 @@ def make_brief(case, fetched, candidates=None, discovery=None, research_goal=Non
         category_unit = home_unit
     positioning, positioning_excerpt, positioning_unit = None, None, home_unit
     for unit in page_order(["homepage", "about", "product_features"]):
-        value = extract_positioning(unit["blocks"], one_liner)
+        value = extract_positioning(unit["blocks"], one_liner, case["name"])
         if value:
             positioning, positioning_excerpt, positioning_unit = value, value, unit
             break
@@ -915,37 +1251,68 @@ def make_brief(case, fetched, candidates=None, discovery=None, research_goal=Non
     field_items = {"products": [], "features": [], "target_market": [], "integrations": [], "customers": []}
     extraction_by_unit = {}
 
+    def _supporting_line(unit, value):
+        needle = str(value).lower()
+        candidates = []
+        for kind, level, text in unit["blocks"]:
+            if needle in text.lower():
+                for sentence in sentences(text):
+                    if needle in sentence.lower():
+                        candidates.append(sentence)
+                candidates.append(text)
+        for sentence in sentences(unit["plain"]):
+            if needle in sentence.lower():
+                candidates.append(sentence)
+        for candidate in candidates:
+            excerpt = normalize_excerpt(candidate)
+            if needle in excerpt.lower():
+                return excerpt
+        for kind, level, text in unit["blocks"]:
+            index = text.lower().find(needle)
+            if index >= 0:
+                return normalize_excerpt(text[max(0, index - 60): index + len(needle) + 140])
+        return normalize_excerpt(value)
+
     def harvest(unit):
         items = {"products": [], "features": [], "target_market": [], "integrations": [], "customers": []}
-        if not unit["ok"]:
+        if not unit["ok"] or not unit.get("usable", True):
+            extraction_by_unit[unit["id"]] = items
             return items
-        for value in extract_products(unit["blocks"]):
-            items["products"].append((value, value))
+        for value in extract_products(unit["blocks"], case["name"]):
+            items["products"].append((value, normalize_excerpt(_supporting_line(unit, value))))
         for value in extract_features(unit["blocks"], unit["plain"], one_liner):
-            items["features"].append((value, value))
+            items["features"].append((value, normalize_excerpt(value)))
         for value in extract_target_market(unit["blocks"], unit["plain"]):
-            items["target_market"].append((value, value))
-        for value in extract_integrations(unit["blocks"], unit["alts"], unit["category"]):
-            items["integrations"].append((value, value))
+            items["target_market"].append((value, normalize_excerpt(value)))
+        integration_context = _page_has_integration_context(unit["blocks"], page_links(unit["page"].get("text", "")), unit["category"])
+        for value in extract_integrations(unit["blocks"], unit["alts"], unit["category"], case["name"], integration_context):
+            items["integrations"].append((value, normalize_excerpt(_supporting_line(unit, value))))
         links = page_links(unit["page"].get("text", ""))
-        for value in extract_customers(unit["blocks"], unit["alts"], links, case["homepage"]):
-            items["customers"].append((value, value))
+        for value in extract_customers(unit["blocks"], unit["alts"], links, case["homepage"], case["name"]):
+            items["customers"].append((value, normalize_excerpt(_supporting_line(unit, value))))
         # A supported page with no eligible field claim falls back to a real bounded body line so it still contributes.
         eligible = ELIGIBLE_FIELDS.get(unit["category"], ())
         fallback_field = FALLBACK_TARGET.get(unit["category"])
         if fallback_field and eligible and not any(items.get(field) for field in eligible):
             value = None
             for kind, level, text in unit["blocks"]:
-                if 8 <= len(text) <= 120 and meaningful(text, min_len=8):
+                if 8 <= len(text) <= 120 and meaningful(text, min_len=8) and not is_cta(text) and not RAW_ARTIFACT.search(text):
                     value = text
                     break
             if value is None:
                 for sentence in sentences(unit["plain"]):
-                    if 12 <= len(sentence) <= 160 and meaningful(sentence, min_len=12):
+                    if 12 <= len(sentence) <= 160 and meaningful(sentence, min_len=12) and not is_cta(sentence) and not RAW_ARTIFACT.search(sentence):
                         value = sentence
                         break
             if value and not is_filler(value):
-                items[fallback_field].append((value, value))
+                if fallback_field == "integrations" and not looks_like_connector(value, case["name"]):
+                    value = None
+                elif fallback_field == "customers" and not looks_like_customer_name(value, case["name"]):
+                    value = None
+                elif fallback_field == "products" and (PRICE_LIKE.search(value) or re.search(r"\blogo\b", value, re.I) or is_cta(value)):
+                    value = None
+                if value:
+                    items[fallback_field].append((value, normalize_excerpt(value)))
         extraction_by_unit[unit["id"]] = items
         return items
 
@@ -1098,10 +1465,14 @@ def make_brief(case, fetched, candidates=None, discovery=None, research_goal=Non
     for unit in page_units:
         if len(signals) >= 8:
             break
-        if unit["ok"] and CATEGORY_SUPPORT.get(unit["category"]) and unit["id"] not in contributed_ids:
-            summary = first_body_excerpt(unit["blocks"], unit["plain"])
-            if is_filler(summary) or len(summary.strip()) < 8:
+        if unit["ok"] and unit.get("usable", True) and CATEGORY_SUPPORT.get(unit["category"]) and unit["id"] not in contributed_ids:
+            summary = clean_body_line(unit)
+            if not summary:
                 continue
+            key = re.sub(r"\W+", " ", summary.lower()).strip()
+            if not key or key in seen_signals:
+                continue
+            seen_signals.add(key)
             signal_type = {"pricing_plans": "pricing", "changelog_blog": "other"}.get(unit["category"], "positioning")
             eid = build_evidence_id(unit["id"], "signal-fallback", 1)
             add_evidence(eid, unit["page"]["source_url"], summary, owner=unit["id"])
@@ -1146,6 +1517,16 @@ def make_brief(case, fetched, candidates=None, discovery=None, research_goal=Non
             page_contribution.append({"evidence_id": unit["id"], "category": unit["category"], "read": False, "claims": []})
             continue
         paths = sorted(path for path, owner in path_owner.items() if owner == unit["id"])
+        if not paths and unit.get("usable", True) and CATEGORY_SUPPORT.get(unit["category"]):
+            # No claim survives the conservative type checks: keep the page honest
+            # with a support note instead of padding a fake claim.
+            for item in evidence:
+                if item["id"] == unit["id"]:
+                    item["excerpt_or_support"] = normalize_excerpt(
+                        f"{unit['category']} page consumed; no bounded typed claim derived; no claims derived for "
+                        f"{public_url(unit['page']['source_url'])}."
+                    )
+                    break
         page_contribution.append({"evidence_id": unit["id"], "category": unit["category"], "read": True, "claims": paths})
 
     coverage = []
@@ -1204,7 +1585,7 @@ def sanitize_request_records(records):
 
 FILLER_HINTS = re.compile(r"(?:described in bounded|observed in bounded|bounded first-party|first-party text|public company information|response body omitted|non-empty text|software company\.?$|current positioning observed|public positioning is supported|goal-relevant current positioning|products described|features described|public users and teams)", re.I)
 
-BENCHMARK_CRITERIA = ("identity", "summary_meaningful", "no_filler", "products_or_unknown", "target_market_or_unknown", "features_or_unknown", "integrations_or_unknown", "customers_or_unknown", "pricing_or_unknown", "evidence_excerpt_relevance", "explicit_unknowns", "page_contribution", "signal_recency", "evidence_integrity", "unknown_handling", "page_budget", "partial_failure_accounting", "unsupported_claim_count", "pricing_evaluated", "integrations_evaluated", "customers_evaluated")
+BENCHMARK_CRITERIA = ("identity", "summary_meaningful", "no_filler", "content_quality", "no_duplicate_plans", "excerpt_noise_free", "products_or_unknown", "target_market_or_unknown", "features_or_unknown", "integrations_or_unknown", "customers_or_unknown", "pricing_or_unknown", "evidence_excerpt_relevance", "explicit_unknowns", "page_contribution", "signal_recency", "evidence_integrity", "unknown_handling", "page_budget", "partial_failure_accounting", "unsupported_claim_count", "pricing_evaluated", "integrations_evaluated", "customers_evaluated")
 
 
 def excerpt_by_id(brief):
@@ -1247,17 +1628,22 @@ def benchmark_row(brief):
         if item.get("claims"):
             return True
         excerpt = str(excerpts.get(item["evidence_id"], "")).strip()
-        return len(excerpt) < 8 or is_filler(excerpt)
+        return len(excerpt) < 8 or is_filler(excerpt) or bool(ERROR_SUPPORT.search(excerpt))
 
     contributed = [item for item in supported_reads if contributes(item)]
     pricing_pages = [item for item in contribution if item.get("category") == "pricing_plans" and item.get("read")]
     integration_pages = [item for item in contribution if item.get("category") == "integrations" and item.get("read")]
     customer_pages = [item for item in contribution if item.get("category") == "customers_case_studies" and item.get("read")]
+    plan_keys = [re.sub(r"\W+", " ", str(item["value"]).lower()).strip() for item in brief["pricing"]["plans"] if item["value"] is not None]
+    excerpt_noise = any(RAW_ARTIFACT.search(str(excerpts.get(eid, ""))) for path, item in populated.items() for eid in item["evidence_ids"])
 
     criteria = {
         "identity": bool(brief["company"].get("name") and brief["company"].get("domain")),
         "summary_meaningful": all(item["value"] is None or meaningful(item["value"], min_len=8) for item in (brief["summary"]["one_liner"], brief["summary"]["category"], brief["summary"]["positioning"])) and any(item["value"] for item in (brief["summary"]["one_liner"], brief["summary"]["positioning"])),
         "no_filler": not any(is_filler(item["value"]) for item in populated.values()) and not any(FILLER_HINTS.search(item["value"]) for item in populated.values()),
+        "content_quality": not content_quality_issues(brief),
+        "no_duplicate_plans": len(plan_keys) == len(set(plan_keys)),
+        "excerpt_noise_free": not excerpt_noise,
         "products_or_unknown": bool(brief["products"]) or "products" in unknown_fields,
         "target_market_or_unknown": bool(brief["target_market"]) or "target_market" in unknown_fields,
         "features_or_unknown": bool(brief["features"]) or "features" in unknown_fields,
@@ -1277,7 +1663,7 @@ def benchmark_row(brief):
         "integrations_evaluated": (not integration_pages) or bool(brief["integrations"]) or "integrations" in unknown_fields,
         "customers_evaluated": (not customer_pages) or bool(brief["customers"]) or "customers" in unknown_fields,
     }
-    quality = all(criteria[key] for key in ("no_filler", "evidence_excerpt_relevance", "explicit_unknowns", "page_contribution", "unsupported_claim_count", "pricing_evaluated", "integrations_evaluated", "customers_evaluated"))
+    quality = all(criteria[key] for key in ("no_filler", "content_quality", "no_duplicate_plans", "excerpt_noise_free", "evidence_excerpt_relevance", "explicit_unknowns", "page_contribution", "unsupported_claim_count", "pricing_evaluated", "integrations_evaluated", "customers_evaluated"))
     return {"criteria": criteria, "passed": sum(criteria.values()), "total": len(criteria), "quality_pass": quality, "unsupported_claim_count": 0 if criteria["unsupported_claim_count"] else 1}
 
 

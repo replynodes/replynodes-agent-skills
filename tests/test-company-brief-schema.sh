@@ -125,13 +125,21 @@ assert generic_pricing_brief["pricing"]["unknown"] is True
 assert generic_pricing_brief["pricing"]["plans"] == []
 runner.validate_brief(generic_pricing_brief)
 
-pricing_page = fake_fetch(200, "Pricing plans start at $19 USD per month.")
+pricing_page = fake_fetch(200, "Starter plan: $19 USD per month.")
 pricing_page.update({"source_url": "https://example.test/pricing/plans", "category": "pricing_plans"})
 grounded_pricing_brief = runner.make_brief(failed_case, [successful_home, pricing_page, successful_brand])
 assert grounded_pricing_brief["pricing"]["unknown"] is False
 assert grounded_pricing_brief["pricing"]["plans"]
 assert all("$19" in plan["value"] or "19" in plan["value"] for plan in grounded_pricing_brief["pricing"]["plans"])
 runner.validate_brief(grounded_pricing_brief)
+
+# A bare starting-price sentence with no plan name is not a plan and stays unknown.
+sentence_pricing_page = fake_fetch(200, "Pricing plans start at $19 USD per month.")
+sentence_pricing_page.update({"source_url": "https://example.test/pricing/plans", "category": "pricing_plans"})
+sentence_pricing_brief = runner.make_brief(failed_case, [successful_home, sentence_pricing_page, successful_brand])
+assert sentence_pricing_brief["pricing"]["unknown"] is True
+assert sentence_pricing_brief["pricing"]["plans"] == []
+runner.validate_brief(sentence_pricing_brief)
 
 markdown_429 = fake_fetch(429, "", "HTTPError")
 markdown_429.update({"surface": "free_markdown", "source_url": pricing_page["source_url"], "endpoint_url": "https://md.replynodes.com/https%3A%2F%2Fexample.test%2Fpricing%2Fplans", "category": "pricing_plans"})
@@ -156,7 +164,7 @@ assert runner.extract_pricing("<h3>Free</h3><span>$0</span><span aria-label='$6 
 
 product_page = fake_fetch(200, "Product details and feature overview.")
 product_page.update({"source_url": "https://example.test/product", "category": "product_features"})
-later_pricing_page = fake_fetch(200, "Plans start at $29 USD per month.")
+later_pricing_page = fake_fetch(200, "Team plan: $29 USD per month.")
 later_pricing_page.update({"source_url": "https://example.test/pricing/plans", "category": "pricing_plans"})
 later_pricing_brief = runner.make_brief(failed_case, [successful_home, product_page, later_pricing_page, successful_brand])
 assert later_pricing_brief["pricing"]["unknown"] is False

@@ -119,27 +119,48 @@ into analytics.
 ## Deterministic extraction
 
 The runner performs bounded, deterministic extraction from the first-party
-Markdown/HTML bodies it actually consumed:
+Markdown/HTML bodies it actually consumed. Extraction is conservative: each
+field is populated only when the body supplies text of that field's type, and
+anything ambiguous fails closed to an explicit `unknown` rather than a
+mis-typed claim.
 
 - Candidate URLs are canonicalized and deduplicated by host (drop `www.` and a
   trailing dot), path, locale prefix, query string, and logical page category.
   At most one bounded canonical first-party pricing path is probed when the
   homepage does not link one.
 - `summary.one_liner`/`positioning` come from a heading or sentence in the
-  consumed body. `category` is a bounded classification whose linked excerpt is
-  the body sentence that triggered it.
-- `products`, `features`, `target_market`, `integrations`, and `customers` are
-  drawn from headings, capability sentences, integration lists, customer-logo
-  alt text, `customers/<slug>` links, and case-study headings in the consumed
-  pages.
-- `pricing.model`/`plans` require grounded pricing text (a plan name paired with
-  an observed amount) from a designated pricing page; otherwise pricing stays
-  `unknown`.
-- `signals` are current observations taken from the consumed bodies; a dated
-  signal is only emitted when the source explicitly provides a reliable date.
-- `evidence` excerpts are bounded slices of the consumed body. Filler phrases
-  and placeholder support notes from earlier contract versions are rejected by
-  the validator.
+  consumed body. `positioning` must be descriptive; CTA / imperative / signup
+  copy ("Get <product> for free", "Sign up", "Book a demo") is rejected.
+  `category` is a bounded classification whose linked excerpt is the body
+  sentence that triggered it.
+- `products` come from product-name headings; price/currency headings, headings
+  naming only the company, and generic or CTA headings are rejected.
+- `features`, `target_market`, and `signals` come from capability/audience
+  sentences; error/not-found sentences, CTA copy, and raw markup/URL noise are
+  rejected.
+- `integrations` are connector/ecosystem names taken only from explicit
+  integration context (an integrations/marketplace/connectors section or an
+  integrations-designated page). Logo alt text, the company's own name, generic
+  headings ("Marketplace and integrations"), CTAs, and nav fragments are
+  rejected; a connector must look like a product name.
+- `customers` come only from explicit customer/case-study context: a
+  `customers/<slug>` or `customer-stories/<slug>` link, a "<Company> <verb>"
+  case-study heading, or a customer-logo alt text on a page whose body actually
+  signals customers. Sentences, non-name phrases, social/platform icon labels,
+  and the company's own name are rejected.
+- `pricing.model`/`plans` require grounded pricing text (a recognized plan name
+  paired with an observed amount) from a designated pricing page; duplicate,
+  sentence-like, error-page, or name-only-without-amount pricing is rejected and
+  pricing stays `unknown`. A bare starting-price sentence with no plan name is
+  not a plan.
+- Error/not-found/status bodies are detected before extraction and never yield
+  claims, signals, or pricing; the page is recorded honestly with no claim.
+- `evidence` excerpts are normalized: Markdown/HTML, URLs, and stray markup are
+  stripped so an excerpt is a concise, auditable slice that still supports the
+  claim. Filler phrases and placeholder support notes from earlier contract
+  versions are rejected by the validator, and the validator additionally applies
+  independent, field-aware content checks so an excerpt that merely shares a
+  token with a wrong-type claim cannot pass.
 
 ## research_goal
 
