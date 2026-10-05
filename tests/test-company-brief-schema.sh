@@ -33,6 +33,10 @@ must_fail("unknown pricing with plan", lambda b: b["pricing"]["plans"].append({"
 must_fail("homepage discovery capability missing", lambda b: b["meta"]["capabilities_used"].remove("free_homepage_discovery"))
 must_fail("homepage discovery source mismatch", lambda b: b["meta"]["tool_calls"][0].__setitem__("source_url", "https://other.test/"))
 must_fail("tool call endpoint missing", lambda b: b["meta"]["tool_calls"][0].pop("endpoint_url"))
+must_fail("successful page count includes failure", lambda b: b["meta"].update({"pages_attempted": 2, "partial_failure_count": 1, "page_read_count": 2}))
+must_fail("source coverage count mismatch", lambda b: b["meta"]["source_coverage"].__setitem__(0, {"category": "homepage", "pages_read": 0}))
+must_fail("dated signal without publication date", lambda b: b["signals"].__setitem__(0, {"type": "positioning", "summary": "x", "observed_at": "2026-01-01T00:00:00Z", "recency": "dated", "evidence_ids": ["home"]}))
+must_fail("current observation with publication date", lambda b: b["signals"].__setitem__(0, {"type": "positioning", "summary": "x", "observed_at": "2026-01-01T00:00:00Z", "published_at": "2026-01-01", "recency": "current_observation", "evidence_ids": ["home"]}))
 
 observed = copy.deepcopy(fixture)
 observed["pricing"]["unknown"] = False
@@ -179,7 +183,7 @@ selected = runner.select_candidates(prioritized)
 assert len(selected) == runner.E2E_TARGET_READS
 assert selected[1:] == [("https://example.test/pricing", "pricing_plans")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, runner.E2E_TARGET_READS - 1)]
 out_of_order = [(failed_case["homepage"], "homepage"), ("https://example.test/about", "about"), ("https://example.test/integrations", "integrations"), ("https://example.test/product", "product_features"), ("https://example.test/pricing", "pricing_plans")]
-assert runner.select_candidates(out_of_order)[1:] == [("https://example.test/product", "product_features"), ("https://example.test/pricing", "pricing_plans"), ("https://example.test/integrations", "integrations")]
+assert runner.select_candidates(out_of_order)[1:] == [("https://example.test/product", "product_features"), ("https://example.test/pricing", "pricing_plans"), ("https://example.test/integrations", "integrations"), ("https://example.test/about", "about")]
 prioritized_trace = runner.candidate_trace(prioritized, {source: {"selected": True, "request_made": True} for source, _ in selected})
 pricing_trace = next(item for item in prioritized_trace["selected_candidate_sequence"] if item["source_url"] == "https://example.test/pricing")
 assert pricing_trace["selected"] is True and pricing_trace["request_made"] is True
@@ -192,7 +196,7 @@ assert candidate_13["selected"] is False and candidate_13["request_made"] is Fal
 assert trace["attempted_count"] == 13 and trace["attempted_candidate_number"] == 13
 short = many[:5]
 short_trace = runner.candidate_trace(short, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
-assert short_trace["candidate_21"] is None
+assert short_trace["hard_cap_rejection"] is None
 assert short_trace["attempted_count"] == len(short) and short_trace["attempted_candidate_number"] == len(short)
 print("company brief schema fixture passed (schema, claim/evidence integrity, pricing, and negative cases)")
 PY

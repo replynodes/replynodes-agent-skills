@@ -192,6 +192,8 @@ def _check_meta(brief):
         raise AssertionError("page counters must be monotonic: read <= attempted <= discovered")
     if meta["partial_failure_count"] > attempted:
         raise AssertionError("partial failure count cannot exceed attempted pages")
+    if read != attempted - meta["partial_failure_count"]:
+        raise AssertionError("page_read_count must count successful pages only")
     total_covered = sum(item["pages_read"] for item in meta["source_coverage"])
     if total_covered != read:
         raise AssertionError("source coverage must account for every consumed page")
