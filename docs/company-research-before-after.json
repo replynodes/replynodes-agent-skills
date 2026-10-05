@@ -1,0 +1,808 @@
+{
+  "after_source": "docs/company-research-keyless-e2e.json",
+  "before_source": "origin/main:docs/company-research-keyless-e2e.json",
+  "comparison": [
+    {
+      "after": {
+        "category": "Payments and financial infrastructure",
+        "customers": [
+          "Instacart",
+          "Le Monde",
+          "Shotgun",
+          "Lovable",
+          "ElevenLabs"
+        ],
+        "evidence_sample": {
+          "brand": "Brand identity fetch succeeded; identity metadata retained for stripe.com.",
+          "homepage": "Financial infrastructure to grow your revenue. Accept payments, offer financial services and implement custom revenue models \u2013 from your first transaction to your billionth.",
+          "homepage-customers-0-1": "Instacart",
+          "homepage-customers-1-1": "Le Monde",
+          "homepage-customers-2-1": "Shotgun",
+          "homepage-customers-3-1": "Lovable",
+          "homepage-customers-4-1": "ElevenLabs",
+          "homepage-features-0-1": "Get tailored guidance from Stripe on implementation, complex integrations, or major migrations.",
+          "homepage-features-1-1": "Work with a Stripe consulting partner that can integrate and deploy Stripe solutions on your behalf.",
+          "homepage-features-2-1": "Receive ongoing assistance and day-to-day support for technical questions with tiered plans based on your needs.",
+          "homepage-integrations-1-1": "Use a pre-integrated platform",
+          "homepage-integrations-2-1": "Connect to existing systems.",
+          "homepage-products-0-1": "Flexible solutions for every business model",
+          "homepage-products-1-1": "Enable any billing model",
+          "homepage-products-2-1": "Monetise through agentic commerce",
+          "homepage-products-3-1": "Embed payments in your platform",
+          "homepage-signal-0-1": "The backbone of global commerce",
+          "homepage-signal-1-1": "Gamma expands to US$100m ARR and 70 million users with Stripe. Read Gamma's story](https://stripe.com/en-fr/customers/gamma)",
+          "homepage-signal-2-1": "Grow new lines of revenue.",
+          "homepage-summary-category-1": "Global GDP running on Stripe: Financial infrastructure to grow your revenue.",
+          "homepage-summary-one-liner-1": "Financial infrastructure to grow your revenue. Accept payments, offer financial services and implement custom revenue models \u2013 from your first transaction to your billionth.",
+          "homepage-summary-positioning-1": "The backbone of global commerce",
+          "homepage-target-market-0-1": "Flexible solutions for every business model.",
+          "homepage-target-market-1-1": "Grow your business with a comprehensive set of payments and financial tools \u2013 designed to work individually or together.",
+          "homepage-target-market-2-1": "Grow your business with the most comprehensive set of payments and financial tools.",
+          "selected-page": "Establishing your primary business objective for payments",
+          "selected-page-2": "Strategies for pricing embedded payments",
+          "selected-page-2-signal-fallback-1": "Strategies for pricing embedded payments",
+          "selected-page-3": "Stripe logo Wallet, stablecoin issuing and card infrastructure Support plans Pair Stripe's infrastructure with dedicated technical expertise.",
+          "selected-page-3-signal-fallback-1": "Stripe logo Wallet, stablecoin issuing and card infrastructure Support plans Pair Stripe's infrastructure with dedicated technical expertise.",
+          "selected-page-4": "1.5% + \u20ac0.25",
+          "selected-page-4-pricing-model-1": "# Standard Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, monthly fees, or hidden fees. Get started ## 1.5% + \u20ac0.25 for standard European Economic Area cards ## 2.5% + \u20ac0.25",
+          "selected-page-4-pricing-plan-0-1": "Standard 1.5% + \u20ac0.25",
+          "selected-page-5": "Stripe logo Wallet, stablecoin issuing and card infrastructure Your time is valuable.",
+          "selected-page-5-integrations-0-1": "Stripe logo",
+          "selected-page-6": "Stripe logo Wallet, stablecoin issuing and card infrastructure Build a high-converting checkout experience that costs less than traditional app store payments.",
+          "selected-page-6-signal-fallback-1": "Stripe logo Wallet, stablecoin issuing and card infrastructure Build a high-converting checkout experience that costs less than traditional app store payments.",
+          "selected-page-7": "Stripe is a technology company focused on improving the conditions for economic growth and prosperity.",
+          "selected-page-7-signal-fallback-1": "Stripe is a technology company focused on improving the conditions for economic growth and prosperity.",
+          "selected-page-signal-fallback-1": "Establishing your primary business objective for payments"
+        },
+        "features": [
+          "Get tailored guidance from Stripe on implementation, complex integrations, or major migrations.",
+          "Work with a Stripe consulting partner that can integrate and deploy Stripe solutions on your behalf.",
+          "Receive ongoing assistance and day-to-day support for technical questions with tiered plans based on your needs."
+        ],
+        "integrations": [
+          "Stripe logo",
+          "Use a pre-integrated platform",
+          "Connect to existing systems."
+        ],
+        "one_liner": "Financial infrastructure to grow your revenue. Accept payments, offer financial services and implement custom revenue models \u2013 from your first transaction to your billionth.",
+        "page_read_count": 8,
+        "partial_failure_count": 0,
+        "positioning": "The backbone of global commerce",
+        "pricing": {
+          "model": "Pay-as-you-go",
+          "plans": [
+            "Standard \u2014 \u20ac0.25"
+          ],
+          "unknown": false
+        },
+        "products": [
+          "Flexible solutions for every business model",
+          "Enable any billing model",
+          "Monetise through agentic commerce",
+          "Embed payments in your platform"
+        ],
+        "signals": [
+          [
+            "positioning",
+            "The backbone of global commerce"
+          ],
+          [
+            "product_direction",
+            "Gamma expands to US$100m ARR and 70 million users with Stripe. Read Gamma's story](https://stripe.com/en-fr/customers/gamma)"
+          ],
+          [
+            "other",
+            "Grow new lines of revenue."
+          ],
+          [
+            "positioning",
+            "Establishing your primary business objective for payments"
+          ],
+          [
+            "positioning",
+            "Strategies for pricing embedded payments"
+          ],
+          [
+            "pricing",
+            "Stripe logo Wallet, stablecoin issuing and card infrastructure Support plans Pair Stripe's infrastructure with dedicated technical expertise."
+          ],
+          [
+            "positioning",
+            "Stripe logo Wallet, stablecoin issuing and card infrastructure Build a high-converting checkout experience that costs less than traditional app store payments."
+          ],
+          [
+            "positioning",
+            "Stripe is a technology company focused on improving the conditions for economic growth and prosperity."
+          ]
+        ],
+        "target_market": [
+          "Flexible solutions for every business model.",
+          "Grow your business with a comprehensive set of payments and financial tools \u2013 designed to work individually or together.",
+          "Grow your business with the most comprehensive set of payments and financial tools."
+        ],
+        "unknowns": []
+      },
+      "before": {
+        "category": "Software company.",
+        "customers": [],
+        "evidence_sample": {
+          "brand": "Brand fetch succeeded with non-empty text; response body omitted.",
+          "homepage": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-2": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-3": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-4": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-5": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-6": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-7": "Selected Markdown fetch succeeded with non-empty text; response body omitted."
+        },
+        "features": [
+          "Features described in bounded first-party text."
+        ],
+        "integrations": [],
+        "one_liner": "Public company information observed in bounded first-party text.",
+        "page_read_count": 8,
+        "partial_failure_count": 0,
+        "positioning": "Public positioning is supported by the bounded homepage fetch.",
+        "pricing": {
+          "model": null,
+          "plans": [],
+          "unknown": true
+        },
+        "products": [
+          "Products described in bounded first-party text."
+        ],
+        "signals": [
+          [
+            "positioning",
+            "Current positioning observed on the homepage."
+          ]
+        ],
+        "target_market": [
+          "Public users and teams described by the company."
+        ],
+        "unknowns": [
+          "pricing"
+        ]
+      },
+      "domain": "stripe.com",
+      "improvement": [
+        "replaced placeholder product/feature/target-market text with body-derived claims",
+        "products: 1 -> 4 populated claims",
+        "features: 1 -> 3 populated claims",
+        "target_market: 1 -> 3 populated claims",
+        "integrations: 0 -> 3 populated claims",
+        "customers: 0 -> 5 populated claims",
+        "pricing: unknown -> grounded public pricing plans"
+      ],
+      "name": "Stripe"
+    },
+    {
+      "after": {
+        "category": "Productivity and workplace software",
+        "customers": [
+          "Airbnb",
+          "Atlassian",
+          "Dropbox",
+          "Duolingo",
+          "Github"
+        ],
+        "evidence_sample": {
+          "brand": "Brand identity fetch succeeded; identity metadata retained for figma.com.",
+          "homepage": "The full-stack creative canvas",
+          "homepage-features-0-1": "That creates a really transparent, open, and honest process throughout the whole project.",
+          "homepage-products-0-1": "The full-stack creative canvas",
+          "homepage-products-1-1": "Powerfully expressive. Incredibly precise",
+          "homepage-products-2-1": "Social media",
+          "homepage-products-3-1": "Mobile apps",
+          "homepage-signal-0-1": "One workspace for your entire product development process.",
+          "homepage-summary-category-1": "The full-stack creative canvas Get started One workspace for your entire product development process.",
+          "homepage-summary-one-liner-1": "The full-stack creative canvas",
+          "homepage-summary-positioning-1": "One workspace for your entire product development process.",
+          "homepage-target-market-0-1": "Made so your whole team can go from WIP to ship, together.",
+          "selected-page": "One place for full product development",
+          "selected-page-2": "Let Figma bring your next big idea to life",
+          "selected-page-2-signal-fallback-1": "Let Figma bring your next big idea to life",
+          "selected-page-3": "Pick your plan, choose your seats",
+          "selected-page-3-pricing-model-1": "e additional AI credits for your whole team to share\u2014enable pay-as-you-go for flexibility and/or subscribe to save. Learn more - ### Governance+ Manage your organization\u2019s unique security requirements with advance",
+          "selected-page-3-pricing-plan-0-1": "Professional Monthly Annual Full seat $16 /mo - - - - - - - - - + 3,000 AI credits/mo",
+          "selected-page-3-pricing-plan-1-1": "Organization Billed annually Full seat $55 /mo - - - - - - - - - + 3,500 AI credits/mo",
+          "selected-page-3-pricing-plan-2-1": "Enterprise Billed annually Full seat $90 /mo - - - - - - - - - + 4,250 AI credits/mo",
+          "selected-page-4": "Application design templates for any project",
+          "selected-page-4-integrations-0-1": "Application design templates for any project",
+          "selected-page-5": "Build better products, together",
+          "selected-page-5-integrations-1-1": "FIGMA PARTNERS",
+          "selected-page-6": "If you can dream it, you can build it",
+          "selected-page-6-integrations-2-1": "Plugin APIs",
+          "selected-page-6-integrations-3-1": "Partner with Figma",
+          "selected-page-7": "Go in the file with Figma customers",
+          "selected-page-7-customers-0-1": "Airbnb",
+          "selected-page-7-customers-1-1": "Atlassian",
+          "selected-page-7-customers-2-1": "Dropbox",
+          "selected-page-7-customers-3-1": "Duolingo",
+          "selected-page-7-customers-4-1": "Github",
+          "selected-page-features-1-1": "Quickly create code-backed prototypes with Figma Make, then spread multiple directions across the canvas to explore, compare, and refine.",
+          "selected-page-features-2-1": "Figma is a powerful product development platform that makes it easy for teams to collaborate and turn ideas into products.",
+          "selected-page-target-market-1-1": "Figma is the AI-native design platform where product teams explore ideas, align on direction, and move to production in one workspace.",
+          "selected-page-target-market-2-1": "Build as one team"
+        },
+        "features": [
+          "That creates a really transparent, open, and honest process throughout the whole project.",
+          "Quickly create code-backed prototypes with Figma Make, then spread multiple directions across the canvas to explore, compare, and refine.",
+          "Figma is a powerful product development platform that makes it easy for teams to collaborate and turn ideas into products."
+        ],
+        "integrations": [
+          "Application design templates for any project",
+          "FIGMA PARTNERS",
+          "Plugin APIs",
+          "Partner with Figma"
+        ],
+        "one_liner": "The full-stack creative canvas",
+        "page_read_count": 8,
+        "partial_failure_count": 0,
+        "positioning": "One workspace for your entire product development process.",
+        "pricing": {
+          "model": "Pay-as-you-go",
+          "plans": [
+            "Professional Monthly \u2014 $16",
+            "Organization Billed \u2014 $55",
+            "Enterprise Billed \u2014 $90"
+          ],
+          "unknown": false
+        },
+        "products": [
+          "The full-stack creative canvas",
+          "Powerfully expressive. Incredibly precise",
+          "Social media",
+          "Mobile apps"
+        ],
+        "signals": [
+          [
+            "positioning",
+            "One workspace for your entire product development process."
+          ],
+          [
+            "positioning",
+            "Let Figma bring your next big idea to life"
+          ]
+        ],
+        "target_market": [
+          "Made so your whole team can go from WIP to ship, together.",
+          "Figma is the AI-native design platform where product teams explore ideas, align on direction, and move to production in one workspace.",
+          "Build as one team"
+        ],
+        "unknowns": []
+      },
+      "before": {
+        "category": "Software company.",
+        "customers": [],
+        "evidence_sample": {
+          "brand": "Brand fetch succeeded with non-empty text; response body omitted.",
+          "homepage": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-2": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-3": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-4": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-5": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-6": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-7": "Selected Markdown fetch succeeded with non-empty text; response body omitted."
+        },
+        "features": [
+          "Features described in bounded first-party text."
+        ],
+        "integrations": [],
+        "one_liner": "Public company information observed in bounded first-party text.",
+        "page_read_count": 8,
+        "partial_failure_count": 0,
+        "positioning": "Public positioning is supported by the bounded homepage fetch.",
+        "pricing": {
+          "model": "subscription pricing grounded in a designated pricing page",
+          "plans": [
+            "Observed pricing plan text from a designated pricing page"
+          ],
+          "unknown": false
+        },
+        "products": [
+          "Products described in bounded first-party text."
+        ],
+        "signals": [
+          [
+            "positioning",
+            "Current positioning observed on the homepage."
+          ]
+        ],
+        "target_market": [
+          "Public users and teams described by the company."
+        ],
+        "unknowns": []
+      },
+      "domain": "figma.com",
+      "improvement": [
+        "replaced placeholder product/feature/target-market text with body-derived claims",
+        "products: 1 -> 4 populated claims",
+        "features: 1 -> 3 populated claims",
+        "target_market: 1 -> 3 populated claims",
+        "integrations: 0 -> 4 populated claims",
+        "customers: 0 -> 5 populated claims"
+      ],
+      "name": "Figma"
+    },
+    {
+      "after": {
+        "category": "Video, meetings, and collaboration",
+        "customers": [
+          "HubSpot",
+          "Lacoste",
+          "Postclick",
+          "LaunchDarkly",
+          "Remote"
+        ],
+        "evidence_sample": {
+          "brand": "Brand identity fetch succeeded; identity metadata retained for loom.com.",
+          "homepage": "Millions of people across 400,000 companies choose Loom",
+          "homepage-customers-0-1": "HubSpot",
+          "homepage-customers-1-1": "Lacoste",
+          "homepage-customers-2-1": "Postclick",
+          "homepage-customers-3-1": "LaunchDarkly",
+          "homepage-customers-4-1": "Remote",
+          "homepage-features-0-1": "Loom enables us to maximize our impact as a distributed company by helping us collaborate and share ideas more easily.",
+          "homepage-features-1-1": "Loom allows me to connect more personally with people without having to do 75 different one-on-one calls, which is just impossible at scale.",
+          "homepage-products-0-1": "Loom powers great campaigns",
+          "homepage-products-1-1": "Loom for Enterprise",
+          "homepage-products-2-1": "Powerful features for easy, custom recordings",
+          "homepage-products-3-1": "Ship faster with AI bug reports",
+          "homepage-signal-0-1": "Get Loom for free",
+          "homepage-summary-category-1": "Asynchronous Communication Let Loom AI Do the Work: Say Goodbye to Manual Documentation How to use async video messaging to improve communication Lightning fast screen recording Andrew Reynolds (MetaLab) Customer support Video messaging for all use cases One video is worth a thousand words Resources (Main)",
+          "homepage-summary-one-liner-1": "Millions of people across 400,000 companies choose Loom",
+          "homepage-summary-positioning-1": "Get Loom for free",
+          "homepage-target-market-0-1": "Millions of people across 400,000 companies choose Loom",
+          "homepage-target-market-1-1": "Loom enables us to maximize our impact as a distributed company by helping us collaborate and share ideas more easily.",
+          "homepage-target-market-2-1": "Loom amplifies my communication with the team like nothing else has. It's a communication tool that should be in every executive's toolbox.",
+          "selected-page": "Millions of people across 400,000 companies choose Loom",
+          "selected-page-2": "Millions of people across 400,000 companies choose Loom",
+          "selected-page-2-signal-fallback-1": "Millions of people across 400,000 companies choose Loom",
+          "selected-page-3": "Workspace Members & Videos",
+          "selected-page-3-integrations-0-1": "Jira Service Desk",
+          "selected-page-3-integrations-1-1": "Confluence",
+          "selected-page-3-integrations-2-1": "GitHub",
+          "selected-page-3-integrations-3-1": "Upwork",
+          "selected-page-3-integrations-4-1": "FigJam",
+          "selected-page-3-pricing-model-1": "forward faster with unlimited videos and basic editing $18 per user / month Try for free Everything in Starter, and - Unlimited videos - Unlimited recording time - Basic waveform editing - Remove Loom branding - Upl",
+          "selected-page-3-pricing-plan-0-1": "Starter $0 Sign up",
+          "selected-page-3-pricing-plan-1-1": "Business $18 per user / month Try for free",
+          "selected-page-3-pricing-plan-2-1": "Business + AI $24 per user / month Try for free",
+          "selected-page-4": "Selected Markdown fetch unavailable; url=https://loom.com/looms/videos; status=502; error=HTTPError.",
+          "selected-page-5": "Atlassian\u2019s Technical and Organisational Security Measures",
+          "selected-page-features-2-1": "It\u2019s intuitive and enhances productivity by streamlining collaborative efforts."
+        },
+        "features": [
+          "Loom enables us to maximize our impact as a distributed company by helping us collaborate and share ideas more easily.",
+          "Loom allows me to connect more personally with people without having to do 75 different one-on-one calls, which is just impossible at scale.",
+          "It\u2019s intuitive and enhances productivity by streamlining collaborative efforts."
+        ],
+        "integrations": [
+          "Jira Service Desk",
+          "Confluence",
+          "GitHub",
+          "Upwork",
+          "FigJam"
+        ],
+        "one_liner": "Millions of people across 400,000 companies choose Loom",
+        "page_read_count": 5,
+        "partial_failure_count": 1,
+        "positioning": "Get Loom for free",
+        "pricing": {
+          "model": "Per User / Month",
+          "plans": [
+            "Starter \u2014 $0",
+            "Business \u2014 $18",
+            "Business + AI \u2014 $24"
+          ],
+          "unknown": false
+        },
+        "products": [
+          "Loom powers great campaigns",
+          "Loom for Enterprise",
+          "Powerful features for easy, custom recordings",
+          "Ship faster with AI bug reports"
+        ],
+        "signals": [
+          [
+            "positioning",
+            "Get Loom for free"
+          ],
+          [
+            "positioning",
+            "Millions of people across 400,000 companies choose Loom"
+          ]
+        ],
+        "target_market": [
+          "Millions of people across 400,000 companies choose Loom",
+          "Loom enables us to maximize our impact as a distributed company by helping us collaborate and share ideas more easily.",
+          "Loom amplifies my communication with the team like nothing else has. It's a communication tool that should be in every executive's toolbox."
+        ],
+        "unknowns": []
+      },
+      "before": {
+        "category": "Software company.",
+        "customers": [],
+        "evidence_sample": {
+          "brand": "Brand fetch succeeded with non-empty text; response body omitted.",
+          "homepage": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-2": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-3": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-4": "Selected Markdown fetch unavailable; url=https://www.loom.com/looms/videos; status=502; error=HTTPError.",
+          "selected-page-5": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-6": "Selected Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page-7": "Selected Markdown fetch succeeded with non-empty text; response body omitted."
+        },
+        "features": [
+          "Features described in bounded first-party text."
+        ],
+        "integrations": [],
+        "one_liner": "Public company information observed in bounded first-party text.",
+        "page_read_count": 7,
+        "partial_failure_count": 1,
+        "positioning": "Public positioning is supported by the bounded homepage fetch.",
+        "pricing": {
+          "model": "subscription pricing grounded in a designated pricing page",
+          "plans": [
+            "Observed pricing plan text from a designated pricing page"
+          ],
+          "unknown": false
+        },
+        "products": [
+          "Products described in bounded first-party text."
+        ],
+        "signals": [
+          [
+            "positioning",
+            "Current positioning observed on the homepage."
+          ]
+        ],
+        "target_market": [
+          "Public users and teams described by the company."
+        ],
+        "unknowns": []
+      },
+      "domain": "loom.com",
+      "improvement": [
+        "replaced placeholder product/feature/target-market text with body-derived claims",
+        "products: 1 -> 4 populated claims",
+        "features: 1 -> 3 populated claims",
+        "target_market: 1 -> 3 populated claims",
+        "integrations: 0 -> 5 populated claims",
+        "customers: 0 -> 5 populated claims"
+      ],
+      "name": "Loom"
+    },
+    {
+      "after": {
+        "category": "Developer platform and infrastructure",
+        "customers": [
+          "Duolingo",
+          "Gartner"
+        ],
+        "evidence_sample": {
+          "brand": "Brand identity fetch succeeded; identity metadata retained for github.com.",
+          "homepage": "The future of building happens together",
+          "homepage-customers-0-1": "Duolingo",
+          "homepage-customers-1-1": "Gartner",
+          "homepage-features-0-1": "Tools and trends evolve, but collaboration endures.",
+          "homepage-features-1-1": "Code Plan Collaborate Automate Secure Code",
+          "homepage-features-2-1": "Manage projects and assign tasks to Copilot, all from your mobile device.",
+          "homepage-products-0-1": "The future of building happens together",
+          "homepage-products-1-1": "Automate your path to production",
+          "homepage-products-2-1": "Code instantly from anywhere",
+          "homepage-products-3-1": "Keep momentum on the go",
+          "homepage-signal-0-1": "Whether you\u2019re scaling your development process or just learning how to code, GitHub is where you belong. Join the world\u2019s most widely adopted developer platform to build the technologies that shape what\u2019s next.",
+          "homepage-signal-1-1": "Your AI partner everywhere. Copilot is ready to work with you at each step of the software development lifecycle.",
+          "homepage-summary-category-1": "Join the world\u2019s most widely adopted developer platform to build the technologies that shape what\u2019s next.",
+          "homepage-summary-one-liner-1": "The future of building happens together",
+          "homepage-summary-positioning-1": "Whether you\u2019re scaling your development process or just learning how to code, GitHub is where you belong. Join the world\u2019s most widely adopted developer platform to build the technologies that shape what\u2019s next.",
+          "homepage-target-market-0-1": "Tools and trends evolve, but collaboration endures. With GitHub, developers, agents, and code come together on one platform.",
+          "homepage-target-market-1-1": "Duolingo boosts developer speed by 25% with GitHub Copilot",
+          "homepage-target-market-2-1": "Your secrets, your business. Detect, prevent, and remediate leaked secrets across your organization.",
+          "selected-page": "Command your craft",
+          "selected-page-2": "GitHub Actions",
+          "selected-page-2-signal-fallback-1": "GitHub Actions",
+          "selected-page-3": "Try GitHub, the complete developer platform",
+          "selected-page-3-pricing-model-1": "ree for public repositories GitHub sandbox (public preview) Usage-based Usage-based Usage-based Run agent-generated code safely in isolated, stateful cloud environments with snapshot and resume. ### Uh oh! There",
+          "selected-page-3-pricing-plan-0-1": "Free $ 0 USD per month",
+          "selected-page-3-pricing-plan-1-1": "Team $ 4 USD per user/month",
+          "selected-page-3-pricing-plan-2-1": "Enterprise $ 21 USD per user/month",
+          "selected-page-3-pricing-plan-3-1": "Enterprise $ 0",
+          "selected-page-3-pricing-plan-4-1": "Unlimited $0 spend limit",
+          "selected-page-3-pricing-plan-5-1": "Unlimited $ 4",
+          "selected-page-4": "From issue to merge, in one app",
+          "selected-page-4-integrations-0-1": "Connect external data via MCP\u2019s",
+          "selected-page-5": "Codemagic CI/CD",
+          "selected-page-5-integrations-1-1": "Review Notebook App",
+          "selected-page-5-integrations-2-1": "Render",
+          "selected-page-5-integrations-3-1": "LovableBot",
+          "selected-page-5-integrations-4-1": "OpenCode",
+          "selected-page-6": "Let's build from here",
+          "selected-page-6-signal-fallback-1": "Let's build from here",
+          "selected-page-7": "Global diversity, inclusion, and belonging at GitHub",
+          "selected-page-7-signal-fallback-1": "Global diversity, inclusion, and belonging at GitHub",
+          "selected-page-signal-fallback-1": "Command your craft"
+        },
+        "features": [
+          "Tools and trends evolve, but collaboration endures.",
+          "Code Plan Collaborate Automate Secure Code",
+          "Manage projects and assign tasks to Copilot, all from your mobile device."
+        ],
+        "integrations": [
+          "Connect external data via MCP\u2019s",
+          "Review Notebook App",
+          "Render",
+          "LovableBot",
+          "OpenCode"
+        ],
+        "one_liner": "The future of building happens together",
+        "page_read_count": 8,
+        "partial_failure_count": 0,
+        "positioning": "Whether you\u2019re scaling your development process or just learning how to code, GitHub is where you belong. Join the world\u2019s most widely adopted developer platform to build the technologies that shape what\u2019s next.",
+        "pricing": {
+          "model": "Usage-based",
+          "plans": [
+            "Free \u2014 $ 0",
+            "Team \u2014 $ 4",
+            "Enterprise \u2014 $ 21",
+            "Enterprise \u2014 $ 0",
+            "Unlimited \u2014 $0",
+            "Unlimited \u2014 $ 4"
+          ],
+          "unknown": false
+        },
+        "products": [
+          "The future of building happens together",
+          "Automate your path to production",
+          "Code instantly from anywhere",
+          "Keep momentum on the go"
+        ],
+        "signals": [
+          [
+            "positioning",
+            "Whether you\u2019re scaling your development process or just learning how to code, GitHub is where you belong. Join the world\u2019s most widely adopted developer platform to build the technologies that shape what\u2019s next."
+          ],
+          [
+            "product_direction",
+            "Your AI partner everywhere. Copilot is ready to work with you at each step of the software development lifecycle."
+          ],
+          [
+            "positioning",
+            "Command your craft"
+          ],
+          [
+            "positioning",
+            "GitHub Actions"
+          ],
+          [
+            "positioning",
+            "Let's build from here"
+          ],
+          [
+            "positioning",
+            "Global diversity, inclusion, and belonging at GitHub"
+          ]
+        ],
+        "target_market": [
+          "Tools and trends evolve, but collaboration endures. With GitHub, developers, agents, and code come together on one platform.",
+          "Duolingo boosts developer speed by 25% with GitHub Copilot",
+          "Your secrets, your business. Detect, prevent, and remediate leaked secrets across your organization."
+        ],
+        "unknowns": []
+      },
+      "before": {
+        "category": null,
+        "customers": [],
+        "evidence_sample": {
+          "brand": "Brand fetch succeeded with non-empty text; response body omitted.",
+          "homepage": "Homepage Markdown fetch unavailable; url=https://www.github.com/; status=429; error=HTTPError.",
+          "selected-page": "Selected Markdown fetch unavailable; url=https://github.com/features/copilot; status=429; error=HTTPError.",
+          "selected-page-2": "Selected Markdown fetch unavailable; url=https://github.com/features/ai/github-app; status=429; error=HTTPError.",
+          "selected-page-3": "Selected Markdown fetch unavailable; url=https://github.com/features/actions; status=429; error=HTTPError.",
+          "selected-page-4": "Selected Markdown fetch unavailable; url=https://github.com/features/codespaces; status=429; error=HTTPError.",
+          "selected-page-5": "Selected Markdown fetch unavailable; url=https://github.com/features/issues; status=429; error=HTTPError.",
+          "selected-page-6": "Selected Markdown fetch unavailable; url=https://github.com/features/code-review; status=429; error=HTTPError.",
+          "selected-page-7": "Selected Markdown fetch unavailable; url=https://github.com/features/code-quality; status=429; error=HTTPError."
+        },
+        "features": [
+          null
+        ],
+        "integrations": [],
+        "one_liner": null,
+        "page_read_count": 0,
+        "partial_failure_count": 8,
+        "positioning": null,
+        "pricing": {
+          "model": null,
+          "plans": [],
+          "unknown": true
+        },
+        "products": [
+          null
+        ],
+        "signals": [],
+        "target_market": [
+          null
+        ],
+        "unknowns": [
+          "pricing"
+        ]
+      },
+      "domain": "github.com",
+      "improvement": [
+        "products: 1 -> 4 populated claims",
+        "features: 1 -> 3 populated claims",
+        "target_market: 1 -> 3 populated claims",
+        "integrations: 0 -> 5 populated claims",
+        "customers: 0 -> 2 populated claims",
+        "pricing: unknown -> grounded public pricing plans",
+        "consumed pages: 0 -> 8 successful reads"
+      ],
+      "name": "GitHub"
+    },
+    {
+      "after": {
+        "category": null,
+        "customers": [
+          "Ein Microsoft Teams-Videoanruf.",
+          "Facebook",
+          "LinkedIn",
+          "Youtube",
+          "Instagram"
+        ],
+        "evidence_sample": {
+          "brand": "Brand identity fetch succeeded; identity metadata retained for microsoft.com.",
+          "homepage": "Gro\u00df denken, leicht reisen",
+          "homepage-customers-0-1": "Ein Microsoft Teams-Videoanruf.",
+          "homepage-customers-1-1": "Facebook",
+          "homepage-customers-2-1": "LinkedIn",
+          "homepage-customers-3-1": "Youtube",
+          "homepage-customers-4-1": "Instagram",
+          "homepage-products-0-1": "Gro\u00df denken, leicht reisen",
+          "homepage-products-1-1": "PC-Leistung, Tablet-Mobilit\u00e4t",
+          "homepage-products-2-1": "Ihre perfekte Begleitung",
+          "homepage-products-3-1": "Die Rettungslinie bei jedem Einsatz",
+          "homepage-signal-0-1": "Surface Pro for Business und Surface Laptop for Business \u2013 schlankes, leichtes Design unterst\u00fctzt von Snapdragon\u00ae.",
+          "homepage-summary-one-liner-1": "Gro\u00df denken, leicht reisen",
+          "homepage-summary-positioning-1": "Surface Pro for Business und Surface Laptop for Business \u2013 schlankes, leichtes Design unterst\u00fctzt von Snapdragon\u00ae.",
+          "homepage-target-market-0-1": "Surface Pro for Business und Surface Laptop for Business \u2013 schlankes, leichtes Design unterst\u00fctzt von Snapdragon\u00ae.",
+          "homepage-target-market-1-1": "Sparen Sie Zeit und konzentrieren Sie sich auf die Dinge, die am wichtigsten sind \u2013 mit KI in Microsoft 365 for Business.",
+          "homepage-target-market-2-1": "Microsoft Teams f\u00fcr Ihr Unternehmen",
+          "selected-page": "Ihre Produktivit\u00e4t auf h\u00f6chstem Niveau",
+          "selected-page-2": "Welcome to Windows",
+          "selected-page-2-features-0-1": "-RW1dc1h?scl=1) Share this page on X (formerly Twitter)",
+          "selected-page-3": "We are sorry, the page you requested cannot be found.",
+          "selected-page-3-signal-fallback-1": "We are sorry, the page you requested cannot be found.",
+          "selected-page-4": "Notizen mit intelligenten Features und leistungsstarker KI weiterentwickeln",
+          "selected-page-4-integrations-0-1": "Weitere Microsoft 365-Apps entdecken",
+          "selected-page-4-integrations-1-1": "OneNote-",
+          "selected-page-4-integrations-2-1": "Outlook-",
+          "selected-page-4-integrations-3-1": "Defender-",
+          "selected-page-4-integrations-4-1": "OneDrive-",
+          "selected-page-5": "Microsoft products built to support you",
+          "selected-page-5-signal-fallback-1": "Microsoft products built to support you",
+          "selected-page-6": "Andere bef\u00e4higen, mehr zu erreichen",
+          "selected-page-6-signal-fallback-1": "Andere bef\u00e4higen, mehr zu erreichen",
+          "selected-page-7": "Surface Laptop",
+          "selected-page-signal-fallback-1": "Ihre Produktivit\u00e4t auf h\u00f6chstem Niveau"
+        },
+        "features": [
+          "-RW1dc1h?scl=1) Share this page on X (formerly Twitter)"
+        ],
+        "integrations": [
+          "Weitere Microsoft 365-Apps entdecken",
+          "OneNote-",
+          "Outlook-",
+          "Defender-",
+          "OneDrive-"
+        ],
+        "one_liner": "Gro\u00df denken, leicht reisen",
+        "page_read_count": 8,
+        "partial_failure_count": 0,
+        "positioning": "Surface Pro for Business und Surface Laptop for Business \u2013 schlankes, leichtes Design unterst\u00fctzt von Snapdragon\u00ae.",
+        "pricing": {
+          "model": null,
+          "plans": [],
+          "unknown": true
+        },
+        "products": [
+          "Gro\u00df denken, leicht reisen",
+          "PC-Leistung, Tablet-Mobilit\u00e4t",
+          "Ihre perfekte Begleitung",
+          "Die Rettungslinie bei jedem Einsatz"
+        ],
+        "signals": [
+          [
+            "positioning",
+            "Surface Pro for Business und Surface Laptop for Business \u2013 schlankes, leichtes Design unterst\u00fctzt von Snapdragon\u00ae."
+          ],
+          [
+            "positioning",
+            "Ihre Produktivit\u00e4t auf h\u00f6chstem Niveau"
+          ],
+          [
+            "pricing",
+            "We are sorry, the page you requested cannot be found."
+          ],
+          [
+            "positioning",
+            "Microsoft products built to support you"
+          ],
+          [
+            "positioning",
+            "Andere bef\u00e4higen, mehr zu erreichen"
+          ]
+        ],
+        "target_market": [
+          "Surface Pro for Business und Surface Laptop for Business \u2013 schlankes, leichtes Design unterst\u00fctzt von Snapdragon\u00ae.",
+          "Sparen Sie Zeit und konzentrieren Sie sich auf die Dinge, die am wichtigsten sind \u2013 mit KI in Microsoft 365 for Business.",
+          "Microsoft Teams f\u00fcr Ihr Unternehmen"
+        ],
+        "unknowns": [
+          "pricing"
+        ]
+      },
+      "before": {
+        "category": "Software company.",
+        "customers": [],
+        "evidence_sample": {
+          "brand": "Brand fetch succeeded with non-empty text; response body omitted.",
+          "homepage": "Homepage Markdown fetch succeeded with non-empty text; response body omitted.",
+          "selected-page": "Selected Markdown fetch unavailable; url=https://www.microsoft.com/de-de/windows/; status=429; error=HTTPError.",
+          "selected-page-2": "Selected Markdown fetch unavailable; url=https://www.microsoft.com/de-de/power-platform; status=429; error=HTTPError.",
+          "selected-page-3": "Selected Markdown fetch unavailable; url=https://www.microsoft.com/de-de/windows-365; status=429; error=HTTPError.",
+          "selected-page-4": "Selected Markdown fetch unavailable; url=https://www.microsoft.com/de-de/windows/apps-for-windows; status=429; error=HTTPError.",
+          "selected-page-5": "Selected Markdown fetch unavailable; url=https://www.microsoft.com/about; status=429; error=HTTPError.",
+          "selected-page-6": "Selected Markdown fetch unavailable; url=https://www.microsoft.com/de-de/surface/devices/surface-laptop; status=429; error=HTTPError.",
+          "selected-page-7": "Selected Markdown fetch unavailable; url=https://www.microsoft.com/de-de/surface/devices/surface-pro; status=429; error=HTTPError."
+        },
+        "features": [
+          "Features described in bounded first-party text."
+        ],
+        "integrations": [],
+        "one_liner": "Public company information observed in bounded first-party text.",
+        "page_read_count": 1,
+        "partial_failure_count": 7,
+        "positioning": "Public positioning is supported by the bounded homepage fetch.",
+        "pricing": {
+          "model": null,
+          "plans": [],
+          "unknown": true
+        },
+        "products": [
+          "Products described in bounded first-party text."
+        ],
+        "signals": [
+          [
+            "positioning",
+            "Current positioning observed on the homepage."
+          ]
+        ],
+        "target_market": [
+          "Public users and teams described by the company."
+        ],
+        "unknowns": [
+          "pricing"
+        ]
+      },
+      "domain": "microsoft.com",
+      "improvement": [
+        "replaced placeholder product/feature/target-market text with body-derived claims",
+        "products: 1 -> 4 populated claims",
+        "target_market: 1 -> 3 populated claims",
+        "integrations: 0 -> 5 populated claims",
+        "customers: 0 -> 5 populated claims",
+        "consumed pages: 1 -> 8 successful reads"
+      ],
+      "name": "Microsoft"
+    }
+  ],
+  "generated_at": "2026-10-05T11:37:12Z",
+  "method": "Qualitative before/after comparison. Before is the placeholder-based V2 baseline at origin/main (merge 31b5d71a3a27acc201b771843b7af8d72cda1d01). After is the same public companies re-run through the deterministic extraction runner. Both use the same bounded 8/12 page budget, attribution, read-only surfaces, and host_agent synthesis contract.",
+  "stripe_headline": "Stripe now returns real financial-infrastructure positioning, product/capability names, public customer examples, and grounded pricing plans instead of generic placeholders."
+}

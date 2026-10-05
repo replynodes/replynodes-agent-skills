@@ -128,7 +128,7 @@
     },
     "meta": {
       "type": "object", "additionalProperties": false,
-      "required": ["capabilities_used", "tool_calls", "synthesis", "researched_at", "research_goal", "pages_discovered", "pages_attempted", "page_read_count", "page_read_budget_default", "page_read_budget_hard_cap", "partial_failure_count", "source_coverage"],
+      "required": ["capabilities_used", "tool_calls", "synthesis", "researched_at", "research_goal", "pages_discovered", "pages_attempted", "page_read_count", "page_read_budget_default", "page_read_budget_hard_cap", "partial_failure_count", "source_coverage", "page_contribution"],
       "properties": {
         "capabilities_used": {"type": "array", "items": {"type": "string"}},
         "tool_calls": {"type": "array", "items": {"$ref": "#/$defs/toolCall"}},
@@ -141,7 +141,18 @@
         "page_read_budget_default": {"type": "integer", "minimum": 0, "maximum": 8},
         "page_read_budget_hard_cap": {"type": "integer", "minimum": 0, "maximum": 12},
         "partial_failure_count": {"type": "integer", "minimum": 0, "maximum": 12},
-        "source_coverage": {"type": "array", "items": {"$ref": "#/$defs/coverage"}}
+        "source_coverage": {"type": "array", "items": {"$ref": "#/$defs/coverage"}},
+        "page_contribution": {"type": "array", "items": {"$ref": "#/$defs/contribution"}}
+      }
+    },
+    "contribution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_id", "category", "read", "claims"],
+      "properties": {
+        "evidence_id": {"type": "string", "minLength": 1},
+        "category": {"type": "string", "enum": ["homepage", "product_features", "pricing_plans", "integrations", "about", "docs", "customers_case_studies", "changelog_blog", "careers", "unknown"]},
+        "read": {"type": "boolean"},
+        "claims": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
       }
     },
     "toolCall": {

@@ -50,11 +50,16 @@ ReplyNodes supplies public evidence; the host agent synthesizes claims.
   `third_party`), fetched/observed RFC 3339 timestamp, and either a bounded
   `excerpt` or bounded `support` note. Excerpts/support notes preserve the raw
   supporting text a claim is derived from; noise reduction must never rewrite
-  source evidence into something a citation cannot verify.
+  source evidence into something a citation cannot verify. A populated claim
+  must be supported by a linked excerpt taken from the consumed first-party
+  body; a claim whose excerpt shares no meaningful token with the claim text is
+  rejected.
 - `claim_evidence`: explicit linkage from a stable `claim_path` to one or more
   evidence IDs. Every material claim path must have exactly one linkage.
 - `unknowns`: explicit coverage gaps, each an object with `field` and `reason`.
-  Unknown beats guessed.
+  Empty `products`, `target_market`, `features`, `integrations`, or `customers`
+  arrays and an `unknown` pricing object each require an explicit matching
+  `unknowns` entry. Unknown beats guessed; placeholder text is never a claim.
 - `notable_context` (optional; required when `research_goal` is supplied): a
   concise, evidence-linked list of claims most relevant to the goal. It may be
   empty. It never contains an ICP score, lead score, probability to buy,
@@ -101,9 +106,40 @@ retained.
 `synthesis` (`host_agent`), `researched_at`, `research_goal` (string or null),
 `pages_discovered`, `pages_attempted`, `page_read_count` (successfully read
 pages), `page_read_budget_default`, `page_read_budget_hard_cap`,
-`partial_failure_count`, and `source_coverage` (per-category read counts, which
-sum to `page_read_count`). Do not put secrets, full raw request payloads, raw user
-identifiers, cookies, IPs, or unrestricted URLs/query data into analytics.
+`partial_failure_count`, `source_coverage` (per-category read counts, which
+sum to `page_read_count`), and `page_contribution`. `page_contribution` accounts
+for every selected page: `evidence_id`, `category`, `read`, and the list of
+claim paths (including `signals[i]`) that page materially supports. A page read
+from a category that supports a material field must contribute at least one
+claim; pages that produced no extractable body text are recorded with no claims
+rather than being padded with filler. Do not put secrets, full raw request
+payloads, raw user identifiers, cookies, IPs, or unrestricted URLs/query data
+into analytics.
+
+## Deterministic extraction
+
+The runner performs bounded, deterministic extraction from the first-party
+Markdown/HTML bodies it actually consumed:
+
+- Candidate URLs are canonicalized and deduplicated by host (drop `www.` and a
+  trailing dot), path, locale prefix, query string, and logical page category.
+  At most one bounded canonical first-party pricing path is probed when the
+  homepage does not link one.
+- `summary.one_liner`/`positioning` come from a heading or sentence in the
+  consumed body. `category` is a bounded classification whose linked excerpt is
+  the body sentence that triggered it.
+- `products`, `features`, `target_market`, `integrations`, and `customers` are
+  drawn from headings, capability sentences, integration lists, customer-logo
+  alt text, `customers/<slug>` links, and case-study headings in the consumed
+  pages.
+- `pricing.model`/`plans` require grounded pricing text (a plan name paired with
+  an observed amount) from a designated pricing page; otherwise pricing stays
+  `unknown`.
+- `signals` are current observations taken from the consumed bodies; a dated
+  signal is only emitted when the source explicitly provides a reliable date.
+- `evidence` excerpts are bounded slices of the consumed body. Filler phrases
+  and placeholder support notes from earlier contract versions are rejected by
+  the validator.
 
 ## research_goal
 

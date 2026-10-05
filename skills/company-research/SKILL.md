@@ -144,10 +144,11 @@ hosts. They do not emit fake telemetry or claim PostHog evidence.
 
 - Discover candidate pages from the homepage, an entitled `webcontext_map`, and same-site links. Rank deterministically: homepage, product/features, pricing/plans, integrations, about, docs, customers/case studies, then changelog/blog. A supplied `research_goal` may adjust only this ranking and optional `notable_context`; it must not change core fact semantics or create ICP/lead scores.
 - Consume at most **8 successful pages by default** and never more than **12**. Failed, duplicate, rejected, or over-budget candidates do not consume the successful-page budget. Record discovery, attempts, failures, selected pages, and exact source URLs in `meta`.
-- Deduplicate canonical URLs and repeated claims while preserving every supporting evidence URL. Keep `important_pages` auditable.
+- Deduplicate candidate URLs and repeated claims by canonical host (drop `www.` and a trailing dot), path, locale prefix, query string, and logical page category, while preserving every supporting evidence URL. Keep `important_pages` auditable.
+- Extract facts from the consumed first-party Markdown/HTML bodies: populate `summary`, `products`, `features`, `target_market`, `pricing`, `integrations`, `customers`, and `signals` from real body text, and link each claim to a bounded excerpt taken from the body. Never emit placeholder text; an unsupported field stays empty. Record every selected page's claim contribution in `meta.page_contribution`.
 - Emit V2 `signals`, using `recency: dated` only with a reliable `published_at`; otherwise use `current_observation` and omit `published_at`. Never call a claim recent, new, or changed without dated evidence.
-- Emit explicit `unknowns` for unsupported fields. Do not guess pricing, customers, funding, employees, TAM, sentiment, intent, people, or scores. Brand/Brand Kit contributes identity only; never copy logos, colors, fonts, or style-guide payloads into the brief.
-- Every material fact, signal, and optional goal-aware context item must link to evidence. `meta.synthesis` remains `host_agent`; the host owns run lifecycle and #701 telemetry readback. This skill does not emit fake analytics.
+- Emit explicit `unknowns` for unsupported fields, including empty `products`, `target_market`, `features`, `integrations`, `customers`, and unknown `pricing`. Do not guess pricing, customers, funding, employees, TAM, sentiment, intent, people, or scores. Brand/Brand Kit contributes identity only; never copy logos, colors, fonts, or style-guide payloads into the brief.
+- Every material fact, signal, and optional goal-aware context item must link to evidence whose excerpt is relevant to the claim. `meta.synthesis` remains `host_agent`; the host owns run lifecycle and #701 telemetry readback. This skill does not emit fake analytics.
 
 
 ## Optional authenticated MCP enrichment

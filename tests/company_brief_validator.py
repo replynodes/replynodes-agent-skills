@@ -11,7 +11,41 @@ SCHEMA_PATH = ROOT / "references/company-brief.schema.json"
 
 MATERIAL_FIELDS = ("products", "target_market", "features", "integrations", "customers")
 PAGE_CATEGORIES = ("homepage", "product_features", "pricing_plans", "integrations", "about", "docs", "customers_case_studies", "changelog_blog", "careers", "unknown")
+SUPPORTED_PAGE_CATEGORIES = ("homepage", "product_features", "pricing_plans", "integrations", "about", "docs", "customers_case_studies", "changelog_blog")
 ALWAYS_UNKNOWN_FIELDS = ("employee_count", "revenue", "funding", "icp_score", "lead_score", "probability_to_buy")
+STOPWORDS = {"with", "that", "this", "from", "your", "their", "they", "have", "will", "into", "more", "than", "about", "other", "which", "these", "those", "been", "over", "such", "each", "most", "many", "some", "when", "what", "where", "while", "also", "using", "used"}
+FILLER_PATTERNS = (
+    "described in bounded", "observed in bounded", "bounded first-party text", "first-party text",
+    "public company information", "response body omitted", "non-empty text", "current positioning observed",
+    "public positioning is supported", "goal-relevant current positioning", "products described",
+    "features described", "public users and teams", "software company.",
+)
+
+
+def is_filler(value):
+    """True when a claim value is contract filler rather than body-derived text."""
+    if not isinstance(value, str):
+        return False
+    low = value.strip().lower()
+    if not low:
+        return False
+    if any(pattern in low for pattern in FILLER_PATTERNS):
+        return True
+    return bool(re.fullmatch(r"(?:software|technology|internet|public|general|various) company\.?", low))
+
+
+def _tokens(value):
+    return {token for token in re.findall(r"[a-z0-9]{4,}", value.lower()) if token not in STOPWORDS}
+
+
+def excerpt_supports(value, excerpt):
+    if value is None or not excerpt:
+        return False
+    tokens = _tokens(value)
+    if not tokens:
+        return True
+    return bool(tokens & set(re.findall(r"[a-z0-9]{4,}", excerpt.lower())))
+
 
 
 def load_schema(schema_path=SCHEMA_PATH):
@@ -148,8 +182,71 @@ def check_contract(brief, schema=None, schema_path=SCHEMA_PATH):
         raise AssertionError("observed pricing must have model/plans")
     _check_signals(brief, evidence_set)
     _check_unknowns(brief)
+    _check_claims_quality(brief)
+    _check_unknown_coverage(brief)
     _check_meta(brief)
+    _check_page_contribution(brief, claims)
     _check_goal(brief)
+
+
+def _check_claims_quality(brief):
+    """Reject filler, require meaningful text, and require evidence excerpts relevant to claims."""
+    excerpts = {item["id"]: item["excerpt_or_support"] for item in brief["evidence"]}
+    for path, item in material_claims(brief).items():
+        value = item["value"]
+        if value is None:
+            continue
+        if is_filler(value):
+            raise AssertionError(f"{path}: filler claim text is not allowed")
+        if len(value.strip()) < 2 or not re.search(r"[A-Za-z]", value):
+            raise AssertionError(f"{path}: claim text is not meaningful")
+        if path == "summary.category":
+            if not any(len(str(excerpts.get(eid, "")).strip()) >= 8 for eid in item["evidence_ids"]):
+                raise AssertionError(f"{path}: category requires a non-empty first-party source excerpt")
+        elif not any(excerpt_supports(value, excerpts.get(eid, "")) for eid in item["evidence_ids"]):
+            raise AssertionError(f"{path}: no linked evidence excerpt supports the claim text")
+    for index, signal in enumerate(brief["signals"]):
+        if is_filler(signal["summary"]):
+            raise AssertionError(f"signals[{index}]: filler signal summary is not allowed")
+
+
+def _check_unknown_coverage(brief):
+    """Empty material fields and unknown pricing require an explicit unknowns entry."""
+    unknown_fields = {item["field"] for item in brief["unknowns"]}
+    for field in MATERIAL_FIELDS:
+        if not brief[field] and field not in unknown_fields:
+            raise AssertionError(f"{field}: empty material field requires an explicit unknown entry")
+    if brief["pricing"]["unknown"] and "pricing" not in unknown_fields:
+        raise AssertionError("unknown pricing requires an explicit pricing unknown entry")
+
+
+def _check_page_contribution(brief, claims):
+    contribution = brief["meta"].get("page_contribution")
+    if contribution is None:
+        raise AssertionError("meta.page_contribution is required to account for consumed pages")
+    evidence_set = {item["id"] for item in brief["evidence"]}
+    evidence_map = {item["id"]: item for item in brief["evidence"]}
+    signal_paths = {f"signals[{index}]" for index in range(len(brief["signals"]))}
+    notable_paths = {f"notable_context[{index}]" for index in range(len(brief.get("notable_context", [])))}
+    known_paths = set(claims) | signal_paths | notable_paths
+    seen = set()
+    for item in contribution:
+        if item["evidence_id"] not in evidence_set:
+            raise AssertionError("page contribution references unknown evidence")
+        if item["evidence_id"] in seen:
+            raise AssertionError("page contribution evidence must be unique")
+        seen.add(item["evidence_id"])
+        if item["category"] not in PAGE_CATEGORIES:
+            raise AssertionError("page contribution category outside canonical enum")
+        if not item["read"] and item["claims"]:
+            raise AssertionError("unread page contribution must not list claims")
+        if item["read"] and item["category"] in SUPPORTED_PAGE_CATEGORIES and not item["claims"]:
+            excerpt = evidence_map.get(item["evidence_id"], {}).get("excerpt_or_support", "")
+            if len(str(excerpt).strip()) >= 8 and not is_filler(str(excerpt)):
+                raise AssertionError("read page with a supported category must contribute at least one claim")
+        for claim_path in item["claims"]:
+            if claim_path not in known_paths:
+                raise AssertionError(f"page contribution references unknown claim path {claim_path}")
 
 
 def _check_signals(brief, evidence_set):
