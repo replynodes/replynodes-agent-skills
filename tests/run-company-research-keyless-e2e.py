@@ -527,7 +527,8 @@ GENERIC_LABEL = re.compile(
 CTA_START = re.compile(
     r"^(?:get|sign|log|contact|try|learn|read|view|watch|start|book|download|see|explore|join|"
     r"subscribe|talk|buy|request|schedule|apply|meet|discover|unlock|take|build|create|find|"
-    r"compare|choose|select|pick|reach|connect|switch|migrate)\b",
+    r"compare|choose|select|pick|reach|connect|switch|migrate|enable\w*|embed\w*|monet(?:is|iz)\w*|"
+    r"automate\w*|ship\w*|power\w*|streamline\w*|simplify\w*)\b",
     re.I,
 )
 CTA_PHRASE = re.compile(
@@ -627,6 +628,8 @@ def looks_like_customer_name(value, company_name):
     """A customer claim must look like a company/logo name, not a sentence, nav item,
     social icon label, the company itself, or a marketing phrase."""
     candidate = re.sub(r"\s+", " ", value or "").strip(" ·•|>-")
+    if re.search(r"\.(?:png|jpe?g|gif|svg|webp|avif|ico)(?:\?.*)?$", candidate, re.I):
+        return False
     if len(candidate) < 2 or len(candidate) > 40:
         return False
     if re.search(r"[.!?]$", candidate):
@@ -1051,10 +1054,8 @@ def extract_pricing(text):
             continue
         if amount:
             continue
-        if head.group(1).lower() in {"enterprise", "business", "organization", "organisation", "team", "teams", "company", "corporate"} and len(clean.split()) == 2 and re.search(r"\bcustom\b|\bcontact sales\b", clean, re.I):
-            add(_plan_canonical_name(head.group(1)), "Custom", clean)
 
-    # Pass 1b: plan name + recurring amount inside a long block (a plan card whose
+    # Pass 1b: a plan name + recurring amount inside a long block (a plan card whose
     # feature list collapsed into one block). Requires an explicit recurring unit
     # so comparison-table cells are not mistaken for plans.
     wanted = "|".join(PLAN_NAMES)
@@ -1087,11 +1088,6 @@ def extract_pricing(text):
             if match:
                 add(_plan_canonical_name(name), _amount_phrase(follower_clean, match), f"{name} {follower_clean}")
                 break
-        else:
-            if name.lower() == "custom":
-                add("Custom", None, name)
-            elif any(re.search(r"\bcustom\b|\bcontact sales\b", clean_block(block_clean), re.I) for _, _, block_clean in blocks[index + 1: index + 4]):
-                add(_plan_canonical_name(name), "Custom", name)
 
     if not plans:
         return None

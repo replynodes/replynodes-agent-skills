@@ -39,7 +39,7 @@ def _tokens(value):
 
 
 RAW_EXCERPT = re.compile(r"\]\(|https?://|www\.|\?\w+=|%[0-9A-Fa-f]{2}|<[a-z/][^>]*>", re.I)
-CTA_TEXT = re.compile(r"^(?:get|sign|log|contact|try|learn|read|view|watch|start|book|download|see|explore|join|subscribe|talk|buy|request|schedule|apply|meet|discover|unlock)\b", re.I)
+CTA_TEXT = re.compile(r"^(?:get|sign|log|contact|try|learn|read|view|watch|start|book|download|see|explore|join|subscribe|talk|buy|request|schedule|apply|meet|discover|unlock|enable\w*|embed\w*|monet(?:is|iz)\w*|automate\w*|ship\w*|power\w*|streamline\w*|simplify\w*)\b", re.I)
 PRICE_TEXT = re.compile(r"[$€£]\s?\d|\d[\d.,]*\s?[€$£]|\b(?:USD|EUR|GBP)\b|\d[\d.,]*\s?%", re.I)
 GENERIC_TEXT = re.compile(r"\b(?:logo|icon|menu|login|sign up|get started|learn more|read more|see more|view all|marketplace|ecosystem|integrations?|apps?|apis?|connectors?|faq|frequently asked questions|featured|additional|exclusive|compare features|add-ons?|clients?|partners?|customers?)\b", re.I)
 PRODUCT_GENERIC = re.compile(r"\b(?:logo|icon|menu|login|sign up|get started|learn more|read more|see more|view all|marketplace|ecosystem|integrations?|faq|frequently asked questions|featured|additional|exclusive|compare features|add-ons?)\b", re.I)
@@ -56,6 +56,8 @@ def _is_cta_text(value):
 def _looks_like_customer(value):
     v = re.sub(r"\s+", " ", str(value)).strip(" ·•|>-")
     if len(v) < 2 or len(v) > 40 or re.search(r"[.!?]$", v):
+        return False
+    if re.search(r"\.(?:png|jpe?g|gif|svg|webp|avif|ico)(?:\?.*)?$", v, re.I):
         return False
     if any(ch in v for ch in ",;|/—–"):
         return False
@@ -90,7 +92,7 @@ def content_quality_issues(brief):
             issues.append(f"{path}: claim value is error/not-found text")
         if path in ("summary.one_liner", "summary.positioning") and _is_cta_text(value):
             issues.append(f"{path}: CTA/imperative text is not positioning")
-        if path.startswith("products[") and (PRICE_TEXT.search(value) or PRODUCT_GENERIC.fullmatch(value.strip()) or re.search(r"\blogo\b", value, re.I)):
+        if path.startswith("products[") and (PRICE_TEXT.search(value) or PRODUCT_GENERIC.fullmatch(value.strip()) or _is_cta_text(value) or re.search(r"\blogo\b", value, re.I)):
             issues.append(f"{path}: product claim is not a product name")
         if path.startswith("integrations[") and (GENERIC_TEXT.search(value) or re.search(r"\blogo\b", value, re.I) or _is_cta_text(value)):
             issues.append(f"{path}: integration claim is not connector evidence")
@@ -109,7 +111,7 @@ def content_quality_issues(brief):
         if key and key in seen_plans:
             issues.append(f"pricing.plans[{index}]: duplicate plan")
         seen_plans.add(key)
-        if ERROR_TEXT.search(value) or len(value.split()) > 12 or value.count("—") > 1:
+        if ERROR_TEXT.search(value) or len(value.split()) > 12 or value.count("—") > 1 or ("—" not in value and not PRICE_TEXT.search(value)):
             issues.append(f"pricing.plans[{index}]: plan is not coherent plan evidence")
     return issues
 

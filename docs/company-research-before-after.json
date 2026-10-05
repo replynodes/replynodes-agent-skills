@@ -24,9 +24,9 @@
           "homepage-features-1-1": "Receive ongoing assistance and day-to-day support for technical questions with tiered plans based on your needs.",
           "homepage-features-2-1": "Launch and scale payments products with lower operational overhead using embedded components and no-code tools.",
           "homepage-products-0-1": "Flexible solutions for every business model.",
-          "homepage-products-1-1": "Enable any billing model",
-          "homepage-products-2-1": "Monetise through agentic commerce",
-          "homepage-products-3-1": "Embed payments in your platform",
+          "homepage-products-1-1": "The backbone of global commerce",
+          "homepage-products-2-1": "Powering businesses of all sizes.",
+          "homepage-products-3-1": "Hertz unifies commerce with Stripe.",
           "homepage-signal-0-1": "Flexible solutions for every business model.",
           "homepage-signal-1-1": "Gamma expands to US$100m ARR and 70 million users with Stripe. Read Gamma's story",
           "homepage-signal-2-1": "Grow new lines of revenue.",
@@ -44,7 +44,6 @@
           "selected-page-4": "Wallet, stablecoin issuing and card infrastructure",
           "selected-page-4-pricing-model-1": "Standard Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, monthly fees, or hidden fees. Get started 1.5% + \u20ac0.25 for standard European Economic Area cards 2.5% + \u20ac0.25",
           "selected-page-4-pricing-plan-0-1": "Standard 1.5% + \u20ac0.25",
-          "selected-page-4-pricing-plan-1-1": "Custom",
           "selected-page-5": "integrations page consumed; no bounded typed claim derived; no claims derived for",
           "selected-page-6": "integrations page consumed; no bounded typed claim derived; no claims derived for",
           "selected-page-7": "Stripe is a technology company focused on improving the conditions for economic growth and prosperity.",
@@ -64,16 +63,15 @@
         "pricing": {
           "model": "Pay-as-you-go",
           "plans": [
-            "Standard \u2014 1.5% + \u20ac0.25",
-            "Custom"
+            "Standard \u2014 1.5% + \u20ac0.25"
           ],
           "unknown": false
         },
         "products": [
           "Flexible solutions for every business model",
-          "Enable any billing model",
-          "Monetise through agentic commerce",
-          "Embed payments in your platform"
+          "The backbone of global commerce",
+          "Powering businesses of all sizes",
+          "Hertz unifies commerce with Stripe"
         ],
         "signals": [
           [
@@ -345,7 +343,7 @@
           "homepage-products-0-1": "Loom powers great campaigns.",
           "homepage-products-1-1": "Loom for Enterprise",
           "homepage-products-2-1": "Powerful features for easy, custom recordings",
-          "homepage-products-3-1": "Ship faster with AI bug reports",
+          "homepage-products-3-1": "Keep your content safe",
           "homepage-signal-0-1": "Loom enables us to maximize our impact as a distributed company by helping us collaborate and share ideas more easily.",
           "homepage-summary-category-1": "Asynchronous Communication Let Loom AI Do the Work: Say Goodbye to Manual Documentation How to use async video messaging to improve communication Lightning fast screen recording Andrew Reynolds (MetaLab) Customer support Video messaging for all use cases One video is worth a thousand words Resources (Main)",
           "homepage-summary-one-liner-1": "Millions of people across 400,000 companies choose Loom",
@@ -365,7 +363,6 @@
           "selected-page-3-pricing-model-1": "forward faster with unlimited videos and basic editing $18 per user / month Try for free Everything in Starter, and - Unlimited videos - Unlimited recording time - Basic waveform editing - Remove Loom branding - Upl",
           "selected-page-3-pricing-plan-0-1": "Starter $0 Sign up",
           "selected-page-3-pricing-plan-1-1": "Business $18 per user / month Try for free",
-          "selected-page-3-pricing-plan-2-1": "Enterprise",
           "selected-page-4": "Selected Markdown fetch unavailable; url= status=502; error=HTTPError.",
           "selected-page-5": "Security measures",
           "selected-page-features-2-1": "It\u2019s intuitive and enhances productivity by streamlining collaborative efforts."
@@ -390,8 +387,7 @@
           "model": "Per User / Month",
           "plans": [
             "Starter \u2014 $0",
-            "Business \u2014 $18/user",
-            "Enterprise \u2014 Custom"
+            "Business \u2014 $18/user"
           ],
           "unknown": false
         },
@@ -399,7 +395,7 @@
           "Loom powers great campaigns",
           "Loom for Enterprise",
           "Powerful features for easy, custom recordings",
-          "Ship faster with AI bug reports"
+          "Keep your content safe"
         ],
         "signals": [
           [
@@ -490,9 +486,9 @@
           "homepage-features-1-1": "Code Plan Collaborate Automate Secure Code",
           "homepage-features-2-1": "Manage projects and assign tasks to Copilot, all from your mobile device.",
           "homepage-products-0-1": "The future of building happens together",
-          "homepage-products-1-1": "Automate your path to production",
-          "homepage-products-2-1": "Code instantly from anywhere",
-          "homepage-products-3-1": "Keep momentum on the go",
+          "homepage-products-1-1": "Code instantly from anywhere",
+          "homepage-products-2-1": "Keep momentum on the go",
+          "homepage-products-3-1": "Shape your toolchain",
           "homepage-signal-0-1": "Whether you\u2019re scaling your development process or just learning how to code, GitHub is where you belong. Join the world\u2019s most widely adopted developer platform to build the technologies that shape what\u2019s next.",
           "homepage-signal-1-1": "Your AI partner everywhere. Copilot is ready to work with you at each step of the software development lifecycle.",
           "homepage-summary-category-1": "Join the world\u2019s most widely adopted developer platform to build the technologies that shape what\u2019s next.",
@@ -550,9 +546,9 @@
         },
         "products": [
           "The future of building happens together",
-          "Automate your path to production",
           "Code instantly from anywhere",
-          "Keep momentum on the go"
+          "Keep momentum on the go",
+          "Shape your toolchain"
         ],
         "signals": [
           [
@@ -782,7 +778,7 @@
       "name": "Microsoft"
     }
   ],
-  "generated_at": "2026-10-05T12:40:04Z",
+  "generated_at": "2026-10-05T13:30:04Z",
   "method": "Qualitative before/after comparison. Before is the placeholder-based V2 baseline at origin/main (merge 31b5d71a3a27acc201b771843b7af8d72cda1d01). After is the same public companies re-run through the deterministic extraction runner. The after side is intentionally more conservative than the first phase-2 revision: a field is populated only when the consumed body supplies text of that field's type (customer names from explicit customer/case-study context, connectors from explicit integration context, pricing plans from a recognized plan name paired with an observed amount), and anything ambiguous stays an explicit unknown instead of a mis-typed claim. Improvements list only real changes; fields that became unknown under the stricter typing are called out rather than counted as gains. Both runs use the same bounded 8/12 page budget, attribution, read-only surfaces, and host_agent synthesis contract.",
   "stripe_headline": "Stripe now returns real financial-infrastructure positioning, product/capability names, case-study customer examples, and grounded pricing (Standard plan fee) instead of generic placeholders; integrations stay an explicit unknown because the consumed partners page exposes no clean connector name."
 }

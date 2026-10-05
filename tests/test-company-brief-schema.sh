@@ -51,9 +51,10 @@ must_fail("unread page contribution lists claims", lambda b: b["meta"]["page_con
 observed = copy.deepcopy(fixture)
 observed["pricing"]["unknown"] = False
 observed["pricing"]["model"] = {"value": "Public web tools", "evidence_ids": ["home"]}
-observed["pricing"]["plans"] = [{"value": "Public web tools", "evidence_ids": ["home"]}]
+observed["pricing"]["plans"] = [{"value": "Starter — $19 /month", "evidence_ids": ["pricing-unknown"]}]
+observed["evidence"][1]["excerpt_or_support"] = "Example offers a Starter plan for $19 /month."
 observed["unknowns"] = [u for u in observed["unknowns"] if u["field"] != "pricing"]
-observed["claim_evidence"].append({"claim_path": "pricing.plans[0]", "evidence_ids": ["home"]})
+observed["claim_evidence"].append({"claim_path": "pricing.plans[0]", "evidence_ids": ["pricing-unknown"]})
 check_contract(observed, schema=schema)
 must_fail("observed pricing without model", lambda b: (b["pricing"].__setitem__("unknown", False), b["pricing"]["plans"].append({"value": "Public web tools", "evidence_ids": ["home"]}), b["unknowns"].__setitem__(slice(None), [u for u in b["unknowns"] if u["field"] != "pricing"]), b["claim_evidence"].append({"claim_path": "pricing.plans[0]", "evidence_ids": ["home"]})))
 must_fail("observed pricing without plans", lambda b: (b["pricing"].__setitem__("unknown", False), b["pricing"]["model"].__setitem__("value", "Public web tools"), b["unknowns"].__setitem__(slice(None), [u for u in b["unknowns"] if u["field"] != "pricing"])))

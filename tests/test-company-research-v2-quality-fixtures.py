@@ -78,6 +78,9 @@ cued = brief_for(
 )
 assert "Duolingo" in [c["value"] for c in cued["customers"]]
 assert all(runner.looks_like_customer_name(c["value"], "Acme") for c in cued["customers"])
+twilio_logo_body = "# Twilio\n\n## Customers\n\n![Ibm.Png](https://cdn.example/Ibm.Png)\n![Toyota.jpg](https://cdn.example/Toyota.jpg)\n"
+twilio_logo = brief_for(twilio_logo_body, name="Twilio")
+assert twilio_logo["customers"] == [], twilio_logo["customers"]
 
 # --- Finding 3: integrations need explicit connector evidence, not logo alts -------
 integrations_body = (
@@ -97,7 +100,8 @@ vercel = "## Hobby\n\n$0 /mo.\n\n## Pro\n\n$20 /mo.\n\n## Enterprise Custom\n"
 plan = runner.extract_pricing(vercel)
 assert plan is not None
 names = {v.split(" — ")[0] for v, _ in plan[2]}
-assert names == {"Hobby", "Pro", "Enterprise"}, names
+assert names == {"Hobby", "Pro"}, names
+assert not any("Enterprise" in v for v, _ in plan[2])
 assert not any("$4" in v for v, _ in plan[2])
 
 github = ("## Free\n\n### $ 0 USD per month\n\n## Team\n\n### $ 4 USD per user/month\n\n"
@@ -110,6 +114,8 @@ assert sum(v.startswith("Enterprise") for v in values) == 1, values
 
 assert runner.extract_pricing("Starts at $0.0002/1k characters for conversation ingestion.") is None
 assert runner.extract_pricing("Pricing plans start at $19 USD per month.") is None
+assert runner.extract_pricing("## Custom\n") is None
+assert runner.extract_pricing("## Enterprise\n\nContact sales for pricing.\n") is None
 twilio = brief_for("# Twilio\n\nStarts at $0.0002/1k characters for conversation ingestion.\n",
                    category="pricing_plans")
 assert twilio["pricing"]["unknown"] is True
@@ -129,8 +135,13 @@ positioning = runner.extract_positioning(cta_blocks, None, "Loom")
 assert positioning == "Loom is a video messaging platform for teams.", positioning
 only_cta, _ = runner.block_units("Get Loom for free\n")
 assert runner.extract_positioning(only_cta, None, "Loom") is None
+product_blocks, _ = runner.block_units("## Enable any billing model\n## Automate your path to production\n## Powering businesses of all sizes\n## Atlas Payments\n")
+assert "Enable any billing model" not in runner.extract_products(product_blocks, "Stripe")
+assert "Automate your path to production" not in runner.extract_products(product_blocks, "GitHub")
+assert "Powering businesses of all sizes" not in runner.extract_products(product_blocks, "Stripe")
+assert "Atlas Payments" in runner.extract_products(product_blocks, "Example")
 
-# --- Finding 7: excerpts are normalized/auditable ----------------------------------
+# --- Finding 7: excerpts are normalized/auditable -----------------------------------
 cleaned = runner.normalize_excerpt("![Cover](https://x/y.png) Hello [World](https://a.b/c) <b>bold</b>")
 assert "http" not in cleaned and "](" not in cleaned and "<b>" not in cleaned, cleaned
 assert "Hello World bold" in cleaned, cleaned

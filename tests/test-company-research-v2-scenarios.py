@@ -21,7 +21,7 @@ def fetch(status, text, source, content_type="text/markdown", surface="free_mark
 
 HOME = (
     "# Acme is a platform for modern data teams.\n\n"
-    "Powering businesses of all sizes.\n\n"
+    "Acme helps businesses of all sizes.\n\n"
     "## Build dashboards\n\n"
     "Integrate with Slack and GitHub to sync reporting across teams.\n"
 )
@@ -35,7 +35,7 @@ assert brief["meta"]["page_read_count"] == 1
 assert brief["pricing"]["unknown"] is True
 # Extraction is body-derived, not placeholder text.
 assert brief["summary"]["one_liner"]["value"] == "Acme is a platform for modern data teams."
-assert brief["summary"]["positioning"]["value"] == "Powering businesses of all sizes."
+assert brief["summary"]["positioning"]["value"] == "Acme helps businesses of all sizes."
 for claim in brief["target_market"] + brief["products"]:
     assert claim["value"] in HOME, claim
 excerpts = {item["id"]: item["excerpt_or_support"] for item in brief["evidence"]}
