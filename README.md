@@ -40,7 +40,7 @@ brief. An abridged checked-in keyless E2E result for Loom looks like this:
   "signals": [{"type": "positioning", "recency": "current_observation", "evidence_ids": ["homepage"]}],
   "pricing": {"model": {"value": "subscription pricing grounded in a designated pricing page", "evidence_ids": ["selected-page"]}, "plans": [], "unknown": false},
   "coverage_limits": ["Only bounded homepage-link candidates and selected pages were requested; no raw response body was retained."],
-  "meta": {"synthesis": "host_agent", "page_read_count": 4, "page_read_budget_default": 8, "page_read_budget_hard_cap": 12}
+  "meta": {"synthesis": "host_agent", "page_read_count": 8, "page_read_budget_default": 8, "page_read_budget_hard_cap": 12}
 }
 ```
 
