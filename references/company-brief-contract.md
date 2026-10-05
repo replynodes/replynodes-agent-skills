@@ -50,11 +50,16 @@ ReplyNodes supplies public evidence; the host agent synthesizes claims.
   `third_party`), fetched/observed RFC 3339 timestamp, and either a bounded
   `excerpt` or bounded `support` note. Excerpts/support notes preserve the raw
   supporting text a claim is derived from; noise reduction must never rewrite
-  source evidence into something a citation cannot verify.
+  source evidence into something a citation cannot verify. A populated claim
+  must be supported by a linked excerpt taken from the consumed first-party
+  body; a claim whose excerpt shares no meaningful token with the claim text is
+  rejected.
 - `claim_evidence`: explicit linkage from a stable `claim_path` to one or more
   evidence IDs. Every material claim path must have exactly one linkage.
 - `unknowns`: explicit coverage gaps, each an object with `field` and `reason`.
-  Unknown beats guessed.
+  Empty `products`, `target_market`, `features`, `integrations`, or `customers`
+  arrays and an `unknown` pricing object each require an explicit matching
+  `unknowns` entry. Unknown beats guessed; placeholder text is never a claim.
 - `notable_context` (optional; required when `research_goal` is supplied): a
   concise, evidence-linked list of claims most relevant to the goal. It may be
   empty. It never contains an ICP score, lead score, probability to buy,
@@ -101,9 +106,61 @@ retained.
 `synthesis` (`host_agent`), `researched_at`, `research_goal` (string or null),
 `pages_discovered`, `pages_attempted`, `page_read_count` (successfully read
 pages), `page_read_budget_default`, `page_read_budget_hard_cap`,
-`partial_failure_count`, and `source_coverage` (per-category read counts, which
-sum to `page_read_count`). Do not put secrets, full raw request payloads, raw user
-identifiers, cookies, IPs, or unrestricted URLs/query data into analytics.
+`partial_failure_count`, `source_coverage` (per-category read counts, which
+sum to `page_read_count`), and `page_contribution`. `page_contribution` accounts
+for every selected page: `evidence_id`, `category`, `read`, and the list of
+claim paths (including `signals[i]`) that page materially supports. A page read
+from a category that supports a material field must contribute at least one
+claim; pages that produced no extractable body text are recorded with no claims
+rather than being padded with filler. Do not put secrets, full raw request
+payloads, raw user identifiers, cookies, IPs, or unrestricted URLs/query data
+into analytics.
+
+## Deterministic extraction
+
+The runner performs bounded, deterministic extraction from the first-party
+Markdown/HTML bodies it actually consumed. Extraction is conservative: each
+field is populated only when the body supplies text of that field's type, and
+anything ambiguous fails closed to an explicit `unknown` rather than a
+mis-typed claim.
+
+- Candidate URLs are canonicalized and deduplicated by host (drop `www.` and a
+  trailing dot), path, locale prefix, query string, and logical page category.
+  At most one bounded canonical first-party pricing path is probed when the
+  homepage does not link one.
+- `summary.one_liner`/`positioning` come from a heading or sentence in the
+  consumed body. `positioning` must be descriptive; CTA / imperative / signup
+  copy ("Get <product> for free", "Sign up", "Book a demo") is rejected.
+  `category` is a bounded classification whose linked excerpt is the body
+  sentence that triggered it.
+- `products` come from product-name headings; price/currency headings, headings
+  naming only the company, and generic or CTA headings are rejected.
+- `features`, `target_market`, and `signals` come from capability/audience
+  sentences; error/not-found sentences, CTA copy, and raw markup/URL noise are
+  rejected.
+- `integrations` are connector/ecosystem names taken only from explicit
+  integration context (an integrations/marketplace/connectors section or an
+  integrations-designated page). Logo alt text, the company's own name, generic
+  headings ("Marketplace and integrations"), CTAs, and nav fragments are
+  rejected; a connector must look like a product name.
+- `customers` come only from explicit customer/case-study context: a
+  `customers/<slug>` or `customer-stories/<slug>` link, a "<Company> <verb>"
+  case-study heading, or a customer-logo alt text on a page whose body actually
+  signals customers. Sentences, non-name phrases, social/platform icon labels,
+  and the company's own name are rejected.
+- `pricing.model`/`plans` require grounded pricing text (a recognized plan name
+  paired with an observed amount) from a designated pricing page; duplicate,
+  sentence-like, error-page, or name-only-without-amount pricing is rejected and
+  pricing stays `unknown`. A bare starting-price sentence with no plan name is
+  not a plan.
+- Error/not-found/status bodies are detected before extraction and never yield
+  claims, signals, or pricing; the page is recorded honestly with no claim.
+- `evidence` excerpts are normalized: Markdown/HTML, URLs, and stray markup are
+  stripped so an excerpt is a concise, auditable slice that still supports the
+  claim. Filler phrases and placeholder support notes from earlier contract
+  versions are rejected by the validator, and the validator additionally applies
+  independent, field-aware content checks so an excerpt that merely shares a
+  token with a wrong-type claim cannot pass.
 
 ## research_goal
 
