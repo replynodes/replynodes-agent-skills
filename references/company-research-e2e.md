@@ -27,10 +27,11 @@ deterministic schema, claim/evidence, and pricing contract validator used by
 the repository schema gate. Every material claim is linked to evidence.
 Pricing is machine-checkable: `unknown: true` requires `model.value: null` and
 `plans: []`; `unknown: false` requires a non-null observed model and at least
-one observed plan. The report includes coverage limits, each company's
-observed candidate sequence, and a trace-derived budget proof for the default
-cap of 12, hard cap of 20, and rejection of candidate 21 without retry or
-fallback. A failed or unavailable fetch is recorded as a coverage limit, never
-as invented evidence. The emitted JSON is a contract/E2E report for this
-runner, not telemetry or PostHog evidence; it preserves the output contract
-and privacy statement and does not claim host lifecycle analytics.
+one observed plan. The runner covers 20 public companies, with Stripe as the primary before/after
+case, and enforces deterministic candidate ranking, duplicate/noise reduction,
+normal/sparse/partial-failure/goal-aware contract fixtures, and the V2 budget
+of 8 successful pages by default / 12 hard cap. A failed or unavailable fetch is
+recorded as a coverage limit, never as invented evidence. The emitted JSON is a
+contract/E2E report for this runner, not telemetry or PostHog evidence; it
+preserves the output contract and privacy statement and does not claim host
+lifecycle analytics.

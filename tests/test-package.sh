@@ -17,6 +17,7 @@ cmp "$root/references/company-brief-contract.md" "$tmp/references/company-brief-
 cmp "$root/references/company-brief.schema.json" "$tmp/references/company-brief.schema.json"
 
 "$root/tests/test-company-brief-schema.sh"
+python3 "$root/tests/test-company-research-v2-scenarios.py"
 "$root/tests/test-distribution.sh"
 
 # The official Agent Skills validator is run separately because it expects a

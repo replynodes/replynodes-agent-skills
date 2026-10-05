@@ -15,8 +15,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from company_brief_validator import validate_brief
 
-DEFAULT_CAP = 12
-HARD_CAP = 20
+DEFAULT_CAP = 8
+HARD_CAP = 12
 MAX_BODY = 2 * 1024 * 1024
 MCP_URL = "https://mcp.replynodes.com/mcp"
 ATTRIBUTION_HEADER = "X-ReplyNodes-Skill"
@@ -27,13 +27,17 @@ WORKFLOW_SURFACE_HOSTS = {
     "mcp": ("mcp.replynodes.com", {"POST"}),
 }
 TOOL_NAMES = ("web_search", "webcontext_map", "webcontext_scrape", "webcontext_crawl", "brand_retrieve", "brand_search", "brand_styleguide", "brand_fonts", "brand_logo")
-E2E_TARGET_READS = 4
+E2E_TARGET_READS = DEFAULT_CAP
 
-CASES = (
-    {"domain": "figma.com", "name": "Figma", "homepage": "https://www.figma.com/"},
-    {"domain": "loom.com", "name": "Loom", "homepage": "https://www.loom.com/"},
-    {"domain": "microsoft.com", "name": "Microsoft", "homepage": "https://www.microsoft.com/"},
-)
+CASES = tuple({"domain": domain, "name": name, "homepage": f"https://www.{domain}/"} for domain, name in (
+    ("stripe.com", "Stripe"), ("figma.com", "Figma"), ("loom.com", "Loom"),
+    ("microsoft.com", "Microsoft"), ("notion.so", "Notion"), ("slack.com", "Slack"),
+    ("shopify.com", "Shopify"), ("hubspot.com", "HubSpot"), ("github.com", "GitHub"),
+    ("linear.app", "Linear"), ("canva.com", "Canva"), ("atlassian.com", "Atlassian"),
+    ("zoom.us", "Zoom"), ("dropbox.com", "Dropbox"), ("openai.com", "OpenAI"),
+    ("salesforce.com", "Salesforce"), ("airtable.com", "Airtable"), ("intercom.com", "Intercom"),
+    ("twilio.com", "Twilio"), ("vercel.com", "Vercel"),
+))
 
 def now():
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -66,6 +70,11 @@ def successful(result):
 
 def md_url(source):
     return "https://md.replynodes.com/" + urllib.parse.quote(source, safe="")
+
+def public_url(source):
+    """Keep committed metadata free of tracking query strings/fragments."""
+    parsed = urllib.parse.urlsplit(source)
+    return urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, parsed.path or "/", "", ""))
 
 def mcp_tools_once():
     payload = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/list", "params": {}}, separators=(",", ":")).encode()
@@ -170,9 +179,9 @@ def candidate_trace(candidates, execution):
         actual = execution.get(source, {})
         accepted = not over_cap
         selected = bool(actual.get("selected", False)) if accepted else False
-        decisions.append({"candidate_number": number, "candidate_kind": category, "decision": "rejected_hard_cap" if over_cap else ("admitted_selected" if selected else "admitted_not_selected"), "accepted": accepted, "rejected": over_cap, "selected": selected, "request_made": accepted and bool(actual.get("request_made", False)), "retry_or_fallback_count": int(actual.get("retry_or_fallback_count", 0)) if accepted else 0, "source_url": source})
+        decisions.append({"candidate_number": number, "candidate_kind": category, "decision": "rejected_hard_cap" if over_cap else ("admitted_selected" if selected else "admitted_not_selected"), "accepted": accepted, "rejected": over_cap, "selected": selected, "request_made": accepted and bool(actual.get("request_made", False)), "retry_or_fallback_count": int(actual.get("retry_or_fallback_count", 0)) if accepted else 0, "source_url": public_url(source)})
     attempted_count = len(decisions)
-    return {"candidate_order": [{"source_url": source, "category": category} for source, category in candidates[:HARD_CAP + 1]], "selected_candidate_sequence": decisions, "candidate_21": decisions[HARD_CAP] if len(decisions) > HARD_CAP else None, "accepted_count": sum(item["accepted"] for item in decisions), "attempted_count": attempted_count, "attempted_candidate_number": attempted_count or None, "request_made_count": sum(item["request_made"] for item in decisions), "retry_or_fallback_count": sum(item["retry_or_fallback_count"] for item in decisions)}
+    return {"candidate_order": [{"source_url": public_url(source), "category": category} for source, category in candidates[:HARD_CAP + 1]], "selected_candidate_sequence": decisions, "hard_cap_rejection": decisions[HARD_CAP] if len(decisions) > HARD_CAP else None, "accepted_count": sum(item["accepted"] for item in decisions), "attempted_count": attempted_count, "attempted_candidate_number": attempted_count or None, "request_made_count": sum(item["request_made"] for item in decisions), "retry_or_fallback_count": sum(item["retry_or_fallback_count"] for item in decisions)}
 
 CATEGORY_ORDER = {"product_features": 0, "pricing_plans": 1, "integrations": 2, "about": 3, "docs": 4, "customers_case_studies": 5, "changelog_blog": 6, "unknown": 7}
 
@@ -194,7 +203,7 @@ def failure_support(result, source_url, label):
 def success_support(label): return f"{label} succeeded with non-empty text; response body omitted."
 
 def request_record(result):
-    return {"surface": result.get("surface", "free_markdown"), "operation": "GET", "source_url": result["source_url"], "endpoint_url": result.get("endpoint_url", result["source_url"]), "http_status": result["status"] or 599, "content_type": result["content_type"] or "unavailable"}
+    return {"surface": result.get("surface", "free_markdown"), "operation": "GET", "source_url": public_url(result["source_url"]), "endpoint_url": public_url(result.get("endpoint_url", result["source_url"])), "http_status": result["status"] or 599, "content_type": result["content_type"] or "unavailable"}
 
 def grounded_pricing(text):
     html_mode = bool(re.match(r"\s*(?:<!doctype\s+html|<html\b)", text, re.I))
@@ -222,7 +231,7 @@ def grounded_pricing(text):
 def designated_pricing_page(page):
     return page.get("category") == "pricing_plans" and page_category(page.get("source_url", "")) == "pricing_plans"
 
-def make_brief(case, fetched, candidates=None, discovery=None):
+def make_brief(case, fetched, candidates=None, discovery=None, research_goal=None):
     pages, brand_result = fetched[:-1], fetched[-1]; home = pages[0]
     home_id, brand_id = "homepage", "brand"
     home_ok = successful(home)
@@ -231,8 +240,8 @@ def make_brief(case, fetched, candidates=None, discovery=None):
     evidence = []
     for index, page in enumerate(pages):
         label = "Homepage Markdown fetch" if index == 0 else ("Direct first-party pricing HTML fetch" if page.get("surface") == "free_direct_pricing" else "Selected Markdown fetch")
-        evidence.append({"id": page_ids[index], "source_url": page["source_url"], "kind": "first_party", "fetched_at": now(), "excerpt_or_support": success_support(label) if page_ok[index] else failure_support(page, page["source_url"], label)})
-    evidence.append({"id": brand_id, "source_url": brand_result["source_url"], "kind": "first_party", "fetched_at": now(), "excerpt_or_support": success_support("Brand fetch") if successful(brand_result) else failure_support(brand_result, brand_result["source_url"], "Brand fetch")})
+        evidence.append({"id": page_ids[index], "source_url": public_url(page["source_url"]), "kind": "first_party", "fetched_at": now(), "excerpt_or_support": success_support(label) if page_ok[index] else failure_support(page, public_url(page["source_url"]), label)})
+    evidence.append({"id": brand_id, "source_url": public_url(brand_result["source_url"]), "kind": "first_party", "fetched_at": now(), "excerpt_or_support": success_support("Brand fetch") if successful(brand_result) else failure_support(brand_result, public_url(brand_result["source_url"]), "Brand fetch")})
     pricing_candidate = next((index for index, page in enumerate(pages) if page_ok[index] and designated_pricing_page(page)), None)
     pricing_match = next((index for index, page in enumerate(pages) if page_ok[index] and designated_pricing_page(page) and grounded_pricing(page.get("text", ""))), None)
     pricing_seen = pricing_match is not None
@@ -241,7 +250,7 @@ def make_brief(case, fetched, candidates=None, discovery=None):
     plans = [claim("Observed pricing plan text from a designated pricing page", pricing_evidence)] if pricing_seen else []
     paths = [("summary.one_liner", home_id), ("summary.category", home_id), ("summary.positioning", home_id), ("products[0]", home_id), ("target_market[0]", home_id), ("pricing.model", pricing_evidence), ("features[0]", home_id)]
     if plans: paths.append(("pricing.plans[0]", pricing_evidence))
-    selected_pages = [{"category": page.get("category", "homepage") if index else "homepage", "url": page["source_url"], "evidence_id": page_ids[index]} for index, page in enumerate(pages)]
+    selected_pages = [{"category": page.get("category", "homepage") if index else "homepage", "url": public_url(page["source_url"]), "evidence_id": page_ids[index]} for index, page in enumerate(pages)]
     coverage = []
     if not home_ok: coverage.append("Homepage coverage is unavailable; material company claims remain unknown.")
     if len(pages) == 1: coverage.append("No bounded homepage link with a selected page category was available; pricing is unknown.")
@@ -254,10 +263,43 @@ def make_brief(case, fetched, candidates=None, discovery=None):
     page_calls = [request_record(record) for page in pages for record in page.get("attempts", [page])]
     capabilities = ["free_markdown", "free_homepage_discovery", "free_brand"]
     if any(page.get("surface") == "free_direct_pricing" for page in pages): capabilities.append("free_direct_pricing")
-    return {"brief_version": "1.0", "generated_at": now(), "company": {"domain": case["domain"], "name": case["name"], "homepage_url": case["homepage"]}, "summary": {"one_liner": claim(home_claim, home_id), "category": claim("Software company." if home_ok else None, home_id), "positioning": claim("Public positioning is supported by the bounded homepage fetch." if home_ok else None, home_id)}, "products": [claim("Products described in bounded first-party text." if home_ok else None, home_id)], "target_market": [claim("Public users and teams described by the company." if home_ok else None, home_id)], "pricing": {"model": pricing_model, "plans": plans, "unknown": not pricing_seen}, "features": [claim("Features described in bounded first-party text." if home_ok else None, home_id)], "integrations": [], "important_pages": selected_pages, "recent_updates": [], "brand": {"name": case["name"] if successful(brand_result) else None, "description": None, "logo_url": None, "colors": [], "fonts": [], "unknown": not successful(brand_result)}, "evidence": evidence, "claim_evidence": [{"claim_path": path, "evidence_ids": [evidence_id]} for path, evidence_id in paths], "coverage_limits": coverage, "meta": {"capabilities_used": capabilities, "tool_calls": discovery_call + page_calls + [request_record(brand_result)], "synthesis": "host_agent", "page_read_count": len(pages), "page_read_budget_default": DEFAULT_CAP, "page_read_budget_hard_cap": HARD_CAP}}
+    if research_goal:
+        paths.append(("notable_context[0]", home_id))
+    unknowns = [{"field": "pricing", "reason": "No grounded pricing page was consumed."}] if not pricing_seen else []
+    signals = [{"type": "positioning", "summary": "Current positioning observed on the homepage.", "observed_at": now(), "recency": "current_observation", "evidence_ids": [home_id]}] if home_ok else []
+    source_coverage = [{"category": page.get("category", "homepage") if index else "homepage", "pages_read": 1} for index, page in enumerate(pages) if page_ok[index]]
+    partial_failure_count = sum(1 for page in pages if not successful(page))
+    page_read_count = len(pages) - partial_failure_count
+    meta = {"capabilities_used": capabilities, "tool_calls": discovery_call + page_calls + [request_record(brand_result)], "synthesis": "host_agent", "researched_at": now(), "research_goal": research_goal, "pages_discovered": len(candidates or pages), "pages_attempted": len(pages), "page_read_count": page_read_count, "page_read_budget_default": DEFAULT_CAP, "page_read_budget_hard_cap": HARD_CAP, "partial_failure_count": partial_failure_count, "source_coverage": source_coverage}
+    notable_context = [claim("Goal-relevant current positioning observed on the homepage.", home_id)] if research_goal and home_ok else []
+    brief = {"brief_version": "2.0", "generated_at": now(), "company": {"domain": case["domain"], "name": case["name"], "homepage_url": case["homepage"]}, "summary": {"one_liner": claim(home_claim, home_id), "category": claim("Software company." if home_ok else None, home_id), "positioning": claim("Public positioning is supported by the bounded homepage fetch." if home_ok else None, home_id)}, "products": [claim("Products described in bounded first-party text." if home_ok else None, home_id)], "target_market": [claim("Public users and teams described by the company." if home_ok else None, home_id)], "pricing": {"model": pricing_model, "plans": plans, "unknown": not pricing_seen}, "features": [claim("Features described in bounded first-party text." if home_ok else None, home_id)], "integrations": [], "customers": [], "signals": signals, "important_pages": selected_pages, "brand": {"name": case["name"] if successful(brand_result) else None, "description": None, "unknown": not successful(brand_result)}, "evidence": evidence, "claim_evidence": [{"claim_path": path, "evidence_ids": [evidence_id]} for path, evidence_id in paths], "unknowns": unknowns, "coverage_limits": coverage, "meta": meta}
+    if research_goal is not None: brief["notable_context"] = notable_context
+    return brief
 
 def sanitize_request_records(records):
     return [request_record(record) for record in records]
+
+def benchmark_row(brief):
+    """Score only observable contract properties; never infer business quality."""
+    claims = [item for item in brief["claim_evidence"] if item["claim_path"]]
+    evidence_ids = {item["id"] for item in brief["evidence"]}
+    linked = {evidence_id for item in claims for evidence_id in item["evidence_ids"]}
+    meta = brief["meta"]
+    criteria = {
+        "identity": bool(brief["company"].get("name") and brief["company"].get("domain")),
+        "product": bool(brief["products"]),
+        "pricing_or_unknown": bool(brief["pricing"]["unknown"] or brief["pricing"]["plans"]),
+        "target_market": bool(brief["target_market"]),
+        "integrations_or_unknown": bool(brief["integrations"] or any(item["field"] == "integrations" for item in brief["unknowns"])),
+        "customers_or_unknown": bool(brief["customers"] or any(item["field"] == "customers" for item in brief["unknowns"])),
+        "signal_recency": all(item["recency"] in {"dated", "current_observation"} for item in brief["signals"]),
+        "evidence_integrity": linked <= evidence_ids,
+        "unknown_handling": len({item["field"] for item in brief["unknowns"]}) == len(brief["unknowns"]),
+        "page_budget": meta["page_read_count"] <= meta["page_read_budget_default"] <= DEFAULT_CAP <= HARD_CAP,
+        "partial_failure_accounting": meta["page_read_count"] == meta["pages_attempted"] - meta["partial_failure_count"],
+        "unsupported_claim_count": sum(1 for item in claims if not set(item["evidence_ids"]) <= evidence_ids),
+    }
+    return {"criteria": criteria, "passed": sum(criteria.values()), "total": len(criteria), "unsupported_claim_count": criteria["unsupported_claim_count"]}
 
 def main():
     parser = argparse.ArgumentParser(); parser.add_argument("--output", required=True, type=Path); args = parser.parse_args()
@@ -292,8 +334,9 @@ def main():
         raise SystemExit("live keyless E2E found no grounded public-pricing case")
     skill = Path(__file__).parents[1] / "skills/company-research/SKILL.md"; claimed = [name for name in TOOL_NAMES if name in skill.read_text(encoding="utf-8")]; mcp_status, mcp_type, observed = mcp_tools_once()
     if not set(claimed) <= set(observed): raise SystemExit("live tools/list is missing claimed tool names")
-    per_company = {case["domain"]: {"candidate_sequence": trace["selected_candidate_sequence"], "accepted_count": trace["accepted_count"], "attempted_count": trace["attempted_count"], "attempted_candidate_number": trace["attempted_candidate_number"], "candidate_21": trace["candidate_21"], "request_made_count": trace["request_made_count"], "retry_or_fallback_count": trace["retry_or_fallback_count"], "page_read_count": brief["meta"]["page_read_count"]} for case, brief, trace in zip(CASES, briefs, traces)}
-    output = {"generated_at": now(), "keyless": True, "surfaces": ["free_markdown", "free_homepage_discovery", "free_direct_pricing", "free_brand"], "requests": reports, "mcp_tools_list": {"endpoint": MCP_URL, "http_status": mcp_status, "content_type": mcp_type or "unavailable", "claimed_tool_names": claimed, "observed_tool_names": observed}, "schema_validation": {case["domain"]: report["schema_validation"] for case, report in zip(CASES, reports)}, "budget_proof": {"default_cap": DEFAULT_CAP, "hard_cap": HARD_CAP, "per_company": per_company, "candidate_traces": {case["domain"]: trace for case, trace in zip(CASES, traces)}}, "briefs": briefs}
+    per_company = {case["domain"]: {"candidate_sequence": trace["selected_candidate_sequence"], "accepted_count": trace["accepted_count"], "attempted_count": trace["attempted_count"], "attempted_candidate_number": trace["attempted_candidate_number"], "hard_cap_rejection": trace["hard_cap_rejection"], "request_made_count": trace["request_made_count"], "retry_or_fallback_count": trace["retry_or_fallback_count"], "page_read_count": brief["meta"]["page_read_count"], "partial_failure_count": brief["meta"]["partial_failure_count"]} for case, brief, trace in zip(CASES, briefs, traces)}
+    benchmark = {case["domain"]: benchmark_row(brief) for case, brief in zip(CASES, briefs)}
+    output = {"generated_at": now(), "keyless": True, "surfaces": ["free_markdown", "free_homepage_discovery", "free_direct_pricing", "free_brand"], "requests": reports, "mcp_tools_list": {"endpoint": MCP_URL, "http_status": mcp_status, "content_type": mcp_type or "unavailable", "claimed_tool_names": claimed, "observed_tool_names": observed}, "schema_validation": {case["domain"]: report["schema_validation"] for case, report in zip(CASES, reports)}, "benchmark": {"companies": len(CASES), "criteria": list(next(iter(benchmark.values()))["criteria"]), "per_company": benchmark, "unsupported_claim_count": sum(item["unsupported_claim_count"] for item in benchmark.values())}, "budget_proof": {"default_cap": DEFAULT_CAP, "hard_cap": HARD_CAP, "per_company": per_company, "candidate_traces": {case["domain"]: trace for case, trace in zip(CASES, traces)}}, "briefs": briefs}
     args.output.parent.mkdir(parents=True, exist_ok=True); args.output.write_text(json.dumps(output, indent=2, sort_keys=True) + "\n", encoding="utf-8"); print(f"wrote sanitized keyless E2E report: {args.output}")
 
 if __name__ == "__main__": main()

@@ -12,8 +12,8 @@ schema = json.loads((root / "references/company-brief.schema.json").read_text())
 fixture = json.loads((root / "tests/fixtures/company-brief.json").read_text())
 check_contract(fixture, schema=schema)
 meta = fixture["meta"]
-assert meta["page_read_count"] <= meta["page_read_budget_default"] <= 12
-assert meta["page_read_count"] <= meta["page_read_budget_hard_cap"] <= 20
+assert meta["page_read_count"] <= meta["page_read_budget_default"] <= 8
+assert meta["page_read_count"] <= meta["page_read_budget_hard_cap"] <= 12
 
 def must_fail(label, mutate):
     candidate = copy.deepcopy(fixture)
@@ -33,6 +33,10 @@ must_fail("unknown pricing with plan", lambda b: b["pricing"]["plans"].append({"
 must_fail("homepage discovery capability missing", lambda b: b["meta"]["capabilities_used"].remove("free_homepage_discovery"))
 must_fail("homepage discovery source mismatch", lambda b: b["meta"]["tool_calls"][0].__setitem__("source_url", "https://other.test/"))
 must_fail("tool call endpoint missing", lambda b: b["meta"]["tool_calls"][0].pop("endpoint_url"))
+must_fail("successful page count includes failure", lambda b: b["meta"].update({"pages_attempted": 2, "partial_failure_count": 1, "page_read_count": 2}))
+must_fail("source coverage count mismatch", lambda b: b["meta"]["source_coverage"].__setitem__(0, {"category": "homepage", "pages_read": 0}))
+must_fail("dated signal without publication date", lambda b: b["signals"].__setitem__(0, {"type": "positioning", "summary": "x", "observed_at": "2026-01-01T00:00:00Z", "recency": "dated", "evidence_ids": ["home"]}))
+must_fail("current observation with publication date", lambda b: b["signals"].__setitem__(0, {"type": "positioning", "summary": "x", "observed_at": "2026-01-01T00:00:00Z", "published_at": "2026-01-01", "recency": "current_observation", "evidence_ids": ["home"]}))
 
 observed = copy.deepcopy(fixture)
 observed["pricing"]["unknown"] = False
@@ -77,8 +81,7 @@ failed_brand.update({"source_url": "https://brand.replynodes.com/example.test"})
 failed_brand_brief = runner.make_brief(failed_case, [successful_home, failed_brand])
 assert failed_brand_brief["brand"]["name"] is None
 assert failed_brand_brief["brand"]["description"] is None
-assert failed_brand_brief["brand"]["logo_url"] is None
-assert failed_brand_brief["brand"]["colors"] == [] and failed_brand_brief["brand"]["fonts"] == []
+assert set(failed_brand_brief["brand"]) == {"name", "description", "unknown"}
 assert failed_brand_brief["brand"]["unknown"] is True
 assert all(item["value"] is not None for path, item in material_claims(failed_brand_brief).items() if path != "pricing.model")
 assert "succeeded" in failed_brand_brief["evidence"][0]["excerpt_or_support"].lower()
@@ -180,25 +183,20 @@ selected = runner.select_candidates(prioritized)
 assert len(selected) == runner.E2E_TARGET_READS
 assert selected[1:] == [("https://example.test/pricing", "pricing_plans")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, runner.E2E_TARGET_READS - 1)]
 out_of_order = [(failed_case["homepage"], "homepage"), ("https://example.test/about", "about"), ("https://example.test/integrations", "integrations"), ("https://example.test/product", "product_features"), ("https://example.test/pricing", "pricing_plans")]
-assert runner.select_candidates(out_of_order)[1:] == [("https://example.test/product", "product_features"), ("https://example.test/pricing", "pricing_plans"), ("https://example.test/integrations", "integrations")]
+assert runner.select_candidates(out_of_order)[1:] == [("https://example.test/product", "product_features"), ("https://example.test/pricing", "pricing_plans"), ("https://example.test/integrations", "integrations"), ("https://example.test/about", "about")]
 prioritized_trace = runner.candidate_trace(prioritized, {source: {"selected": True, "request_made": True} for source, _ in selected})
 pricing_trace = next(item for item in prioritized_trace["selected_candidate_sequence"] if item["source_url"] == "https://example.test/pricing")
 assert pricing_trace["selected"] is True and pricing_trace["request_made"] is True
-prioritized_13 = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 12)] + [("https://example.test/pricing", "pricing_plans")]
-selected_13 = runner.select_candidates(prioritized_13)
-assert len(selected_13) == runner.E2E_TARGET_READS
-assert ("https://example.test/pricing", "pricing_plans") in selected_13
-prioritized_13_trace = runner.candidate_trace(prioritized_13, {source: {"selected": True, "request_made": True} for source, _ in selected_13})
-pricing_trace_13 = next(item for item in prioritized_13_trace["selected_candidate_sequence"] if item["source_url"] == "https://example.test/pricing")
-assert pricing_trace_13["selected"] is True and pricing_trace_13["request_made"] is True
 many = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 21)]
 trace = runner.candidate_trace(many, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
-assert trace["accepted_count"] == 20 and trace["candidate_21"]["accepted"] is False
-assert trace["candidate_21"]["selected"] is False and trace["candidate_21"]["request_made"] is False
-assert trace["attempted_count"] == 21 and trace["attempted_candidate_number"] == 21
+assert trace["accepted_count"] == 12
+candidate_13 = trace["selected_candidate_sequence"][12]
+assert candidate_13["accepted"] is False
+assert candidate_13["selected"] is False and candidate_13["request_made"] is False
+assert trace["attempted_count"] == 13 and trace["attempted_candidate_number"] == 13
 short = many[:5]
 short_trace = runner.candidate_trace(short, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
-assert short_trace["candidate_21"] is None
+assert short_trace["hard_cap_rejection"] is None
 assert short_trace["attempted_count"] == len(short) and short_trace["attempted_candidate_number"] == len(short)
 print("company brief schema fixture passed (schema, claim/evidence integrity, pricing, and negative cases)")
 PY

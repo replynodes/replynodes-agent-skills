@@ -1,18 +1,20 @@
 {
-  "brief_version": "1.0",
-  "generated_at": "2026-10-03T10:00:00Z",
+  "brief_version": "2.0",
+  "generated_at": "2026-10-05T10:00:00Z",
   "company": {"domain": "example.com", "name": "Example Company", "homepage_url": "https://example.com/"},
-  "summary": {"one_liner": {"value": "Example makes public web tools.", "evidence_ids": ["home"]}, "category": {"value": "software", "evidence_ids": ["home"]}, "positioning": {"value": "Tools for public web workflows.", "evidence_ids": ["home"]}},
+  "summary": {"one_liner": {"value": "Example makes public web tools.", "evidence_ids": ["home"]}, "category": {"value": null, "evidence_ids": ["home"]}, "positioning": {"value": "Tools for public web workflows.", "evidence_ids": ["home"]}},
   "products": [{"value": "Web tools", "evidence_ids": ["home"]}],
   "target_market": [{"value": "Public web users", "evidence_ids": ["home"]}],
   "pricing": {"model": {"value": null, "evidence_ids": ["pricing-unknown"]}, "plans": [], "unknown": true},
   "features": [{"value": "Markdown page retrieval", "evidence_ids": ["home"]}],
   "integrations": [],
+  "customers": [],
+  "signals": [{"type": "positioning", "summary": "Example positions itself as public web tooling.", "observed_at": "2026-10-05T09:59:00Z", "recency": "current_observation", "evidence_ids": ["home"]}],
   "important_pages": [{"category": "homepage", "url": "https://example.com/", "evidence_id": "home"}],
-  "recent_updates": [],
-  "brand": {"name": "Example Company", "description": null, "logo_url": null, "colors": [], "fonts": [], "unknown": false},
-  "evidence": [{"id": "home", "source_url": "https://md.replynodes.com/https://example.com/", "kind": "first_party", "fetched_at": "2026-10-03T09:59:00Z", "excerpt_or_support": "Example makes public web tools."}, {"id": "pricing-unknown", "source_url": "https://example.com/", "kind": "first_party", "fetched_at": "2026-10-03T09:59:00Z", "excerpt_or_support": "Pricing was not found in the bounded page set."}],
+  "evidence": [{"id": "home", "source_url": "https://md.replynodes.com/https://example.com/", "kind": "first_party", "fetched_at": "2026-10-05T09:59:00Z", "excerpt_or_support": "Example makes public web tools."}, {"id": "pricing-unknown", "source_url": "https://example.com/", "kind": "first_party", "fetched_at": "2026-10-05T09:59:00Z", "excerpt_or_support": "Pricing was not found in the bounded page set."}],
   "claim_evidence": [{"claim_path": "summary.one_liner", "evidence_ids": ["home"]}, {"claim_path": "summary.category", "evidence_ids": ["home"]}, {"claim_path": "summary.positioning", "evidence_ids": ["home"]}, {"claim_path": "products[0]", "evidence_ids": ["home"]}, {"claim_path": "target_market[0]", "evidence_ids": ["home"]}, {"claim_path": "pricing.model", "evidence_ids": ["pricing-unknown"]}, {"claim_path": "features[0]", "evidence_ids": ["home"]}],
+  "unknowns": [{"field": "pricing", "reason": "No grounded public pricing evidence found in the bounded page set."}, {"field": "employee_count", "reason": "Not inferred by the canonical company-research contract."}],
+  "notable_context": [],
   "coverage_limits": ["Representative fixture: no pricing page was available."],
-  "meta": {"capabilities_used": ["free_markdown", "free_homepage_discovery", "free_brand"], "tool_calls": [{"surface": "free_homepage_discovery", "operation": "GET", "source_url": "https://example.com/", "endpoint_url": "https://example.com/", "http_status": 200, "content_type": "text/html"}, {"surface": "free_markdown", "operation": "GET", "source_url": "https://example.com/", "endpoint_url": "https://md.replynodes.com/https://example.com/", "http_status": 200, "content_type": "text/markdown"}, {"surface": "free_brand", "operation": "GET", "source_url": "https://brand.replynodes.com/example.com", "endpoint_url": "https://brand.replynodes.com/example.com", "http_status": 200, "content_type": "application/json"}], "synthesis": "host_agent", "page_read_count": 1, "page_read_budget_default": 12, "page_read_budget_hard_cap": 20}
+  "meta": {"capabilities_used": ["free_markdown", "free_homepage_discovery", "free_brand"], "tool_calls": [{"surface": "free_homepage_discovery", "operation": "GET", "source_url": "https://example.com/", "endpoint_url": "https://example.com/", "http_status": 200, "content_type": "text/html"}, {"surface": "free_markdown", "operation": "GET", "source_url": "https://example.com/", "endpoint_url": "https://md.replynodes.com/https://example.com/", "http_status": 200, "content_type": "text/markdown"}, {"surface": "free_brand", "operation": "GET", "source_url": "https://brand.replynodes.com/example.com.json", "endpoint_url": "https://brand.replynodes.com/example.com.json", "http_status": 200, "content_type": "application/json"}], "synthesis": "host_agent", "researched_at": "2026-10-05T09:59:30Z", "research_goal": null, "pages_discovered": 6, "pages_attempted": 1, "page_read_count": 1, "page_read_budget_default": 8, "page_read_budget_hard_cap": 12, "partial_failure_count": 0, "source_coverage": [{"category": "homepage", "pages_read": 1}]}
 }

@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/replynodes/replynodes-agent-skills/blob/main/references/company-brief.schema.json",
-  "title": "ReplyNodes company brief",
+  "title": "ReplyNodes company brief V2",
   "type": "object",
   "additionalProperties": false,
-  "required": ["brief_version", "generated_at", "company", "summary", "products", "target_market", "pricing", "features", "integrations", "important_pages", "recent_updates", "brand", "evidence", "claim_evidence", "coverage_limits", "meta"],
+  "required": ["brief_version", "generated_at", "company", "summary", "products", "target_market", "pricing", "features", "integrations", "customers", "signals", "important_pages", "evidence", "claim_evidence", "unknowns", "coverage_limits", "meta"],
   "properties": {
-    "brief_version": {"type": "string", "const": "1.0"},
+    "brief_version": {"type": "string", "const": "2.0"},
     "generated_at": {"type": "string", "format": "date-time"},
     "company": {
       "type": "object", "additionalProperties": false,
@@ -18,24 +18,27 @@
       }
     },
     "summary": {"$ref": "#/$defs/claimSummary"},
-    "products": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
-    "target_market": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "products": {"$ref": "#/$defs/claims"},
+    "target_market": {"$ref": "#/$defs/claims"},
+    "features": {"$ref": "#/$defs/claims"},
+    "integrations": {"$ref": "#/$defs/claims"},
+    "customers": {"$ref": "#/$defs/claims"},
     "pricing": {
       "type": "object", "additionalProperties": false,
       "required": ["model", "plans", "unknown"],
       "properties": {
         "model": {"$ref": "#/$defs/claim"},
-        "plans": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+        "plans": {"$ref": "#/$defs/claims"},
         "unknown": {"type": "boolean"}
       }
     },
-    "features": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
-    "integrations": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "signals": {"type": "array", "items": {"$ref": "#/$defs/signal"}},
     "important_pages": {"type": "array", "items": {"$ref": "#/$defs/page"}},
-    "recent_updates": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
-    "brand": {"$ref": "#/$defs/brand"},
     "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
     "claim_evidence": {"type": "array", "items": {"$ref": "#/$defs/linkage"}},
+    "unknowns": {"type": "array", "items": {"$ref": "#/$defs/unknown"}},
+    "notable_context": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "brand": {"$ref": "#/$defs/brand"},
     "coverage_limits": {"type": "array", "items": {"type": "string"}},
     "meta": {"$ref": "#/$defs/meta"}
   },
@@ -44,8 +47,18 @@
       "type": "object", "additionalProperties": false,
       "required": ["value", "evidence_ids"],
       "properties": {
-        "value": {"type": ["string", "null"], "minLength": 1},
+        "value": {"type": ["string", "null"], "minLength": 1, "maxLength": 500},
         "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "brand": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "description", "unknown"],
+      "properties": {
+        "name": {"type": ["string", "null"], "maxLength": 200},
+        "description": {"type": ["string", "null"], "maxLength": 1000},
+        "unknown": {"type": "boolean"}
       }
     },
     "claimSummary": {
@@ -61,52 +74,85 @@
       "type": "object", "additionalProperties": false,
       "required": ["category", "url", "evidence_id"],
       "properties": {
-        "category": {"type": "string", "enum": ["homepage", "product_features", "pricing_plans", "integrations", "about", "docs", "customers_case_studies", "changelog_blog", "unknown"]},
+        "category": {"type": "string", "enum": ["homepage", "product_features", "pricing_plans", "integrations", "about", "docs", "customers_case_studies", "changelog_blog", "careers", "unknown"]},
         "url": {"type": "string", "format": "uri", "pattern": "^https://"},
         "evidence_id": {"type": "string", "minLength": 1}
-      }
-    },
-    "brand": {
-      "type": "object", "additionalProperties": false,
-      "required": ["name", "description", "logo_url", "colors", "fonts", "unknown"],
-      "properties": {
-        "name": {"type": ["string", "null"]}, "description": {"type": ["string", "null"]},
-        "logo_url": {"type": ["string", "null"]}, "colors": {"type": "array", "items": {"type": "string"}},
-        "fonts": {"type": "array", "items": {"type": "string"}}, "unknown": {"type": "boolean"}
       }
     },
     "evidence": {
       "type": "object", "additionalProperties": false,
       "required": ["id", "source_url", "kind", "fetched_at", "excerpt_or_support"],
       "properties": {
-        "id": {"type": "string", "minLength": 1}, "source_url": {"type": "string", "format": "uri", "pattern": "^https://"},
-        "kind": {"type": "string", "enum": ["first_party", "third_party", "unknown"]}, "fetched_at": {"type": "string", "format": "date-time"},
+        "id": {"type": "string", "minLength": 1},
+        "source_url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "kind": {"type": "string", "enum": ["first_party", "third_party", "unknown"]},
+        "fetched_at": {"type": "string", "format": "date-time"},
         "excerpt_or_support": {"type": "string", "minLength": 1, "maxLength": 2000}
       }
     },
     "linkage": {
       "type": "object", "additionalProperties": false,
       "required": ["claim_path", "evidence_ids"],
-      "properties": {"claim_path": {"type": "string", "minLength": 1}, "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}}
+      "properties": {
+        "claim_path": {"type": "string", "minLength": 1},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "signal": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "summary", "observed_at", "recency", "evidence_ids"],
+      "properties": {
+        "type": {"type": "string", "enum": ["product_launch", "product_direction", "pricing", "partnership", "hiring", "leadership", "market_expansion", "positioning", "customer_momentum", "other"]},
+        "summary": {"type": "string", "minLength": 1, "maxLength": 500},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "published_at": {"type": "string", "format": "date-time"},
+        "recency": {"type": "string", "enum": ["dated", "current_observation"]},
+        "evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "unknown": {
+      "type": "object", "additionalProperties": false,
+      "required": ["field", "reason"],
+      "properties": {
+        "field": {"type": "string", "minLength": 1, "maxLength": 100},
+        "reason": {"type": "string", "minLength": 1, "maxLength": 500}
+      }
+    },
+    "coverage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["category", "pages_read"],
+      "properties": {
+        "category": {"type": "string", "enum": ["homepage", "product_features", "pricing_plans", "integrations", "about", "docs", "customers_case_studies", "changelog_blog", "careers", "unknown"]},
+        "pages_read": {"type": "integer", "minimum": 0, "maximum": 12}
+      }
     },
     "meta": {
       "type": "object", "additionalProperties": false,
-      "required": ["capabilities_used", "tool_calls", "synthesis", "page_read_count", "page_read_budget_default", "page_read_budget_hard_cap"],
+      "required": ["capabilities_used", "tool_calls", "synthesis", "researched_at", "research_goal", "pages_discovered", "pages_attempted", "page_read_count", "page_read_budget_default", "page_read_budget_hard_cap", "partial_failure_count", "source_coverage"],
       "properties": {
         "capabilities_used": {"type": "array", "items": {"type": "string"}},
         "tool_calls": {"type": "array", "items": {"$ref": "#/$defs/toolCall"}},
         "synthesis": {"type": "string", "const": "host_agent"},
-        "page_read_count": {"type": "integer", "minimum": 0, "maximum": 20},
-        "page_read_budget_default": {"type": "integer", "minimum": 0, "maximum": 12},
-        "page_read_budget_hard_cap": {"type": "integer", "minimum": 0, "maximum": 20}
+        "researched_at": {"type": "string", "format": "date-time"},
+        "research_goal": {"type": ["string", "null"], "minLength": 1, "maxLength": 500},
+        "pages_discovered": {"type": "integer", "minimum": 0, "maximum": 1000},
+        "pages_attempted": {"type": "integer", "minimum": 0, "maximum": 12},
+        "page_read_count": {"type": "integer", "minimum": 0, "maximum": 12},
+        "page_read_budget_default": {"type": "integer", "minimum": 0, "maximum": 8},
+        "page_read_budget_hard_cap": {"type": "integer", "minimum": 0, "maximum": 12},
+        "partial_failure_count": {"type": "integer", "minimum": 0, "maximum": 12},
+        "source_coverage": {"type": "array", "items": {"$ref": "#/$defs/coverage"}}
       }
     },
     "toolCall": {
       "type": "object", "additionalProperties": false,
       "required": ["surface", "operation", "source_url", "http_status", "content_type"],
       "properties": {
-        "surface": {"type": "string", "enum": ["free_markdown", "free_homepage_discovery", "free_direct_pricing", "free_brand", "mcp"]}, "operation": {"type": "string", "minLength": 1},
-        "source_url": {"type": "string", "format": "uri", "pattern": "^https://"}, "endpoint_url": {"type": "string", "format": "uri", "pattern": "^https://"}, "http_status": {"type": "integer", "minimum": 100, "maximum": 599},
+        "surface": {"type": "string", "enum": ["free_markdown", "free_homepage_discovery", "free_direct_pricing", "free_brand", "mcp"]},
+        "operation": {"type": "string", "minLength": 1},
+        "source_url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "endpoint_url": {"type": "string", "format": "uri", "pattern": "^https://"},
+        "http_status": {"type": "integer", "minimum": 100, "maximum": 599},
         "content_type": {"type": "string", "minLength": 1}
       }
     }
