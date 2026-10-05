@@ -104,6 +104,42 @@ For first use, an agent can treat the homepage Markdown and Brand JSON responses
 as its first evidence, then add optional authenticated MCP enrichment only when
 the question needs broader coverage.
 
+## Producer/host boundary and attribution handoff
+
+Static Markdown instructions cannot force an arbitrary host transport to add
+headers. A host without an explicit header-capable integration must omit
+attribution rather than infer it. The exact handoff is one header,
+`X-ReplyNodes-Skill: company-research`, on bounded Company Research workflow
+calls only: Markdown `GET`/`HEAD` to `md.replynodes.com` for the homepage or
+selected pages, Brand `GET`/`HEAD` to `brand.replynodes.com`, and optional MCP
+requests to `mcp.replynodes.com` that are part of this workflow. It is not for
+target-company URLs or other skills/surfaces. Jev Web Analyzer traffic, generic
+API traffic, `capability=other`, `surface=direct_api`, and `/v1/internal/brand`
+are not Company Research and must neither receive nor be inferred as this
+handoff; the eligible `brand.replynodes.com` public Brand surface is distinct
+from `/v1/internal/brand`. Downstream handling is fail
+closed: exactly one exact value is eligible; malformed, duplicate,
+unknown, case-mismatched, or oversized values are unattributed.
+
+The smallest truthful host-owned lifecycle contract is one bounded, stable,
+host-generated `run_id` per workflow, retained in workflow context, with all
+eligible downstream requests and traces correlated through the existing
+supported correlation mechanism. A per-request `X-Request-Id` is not a
+product `run_id`. The host maps this to existing ReplyNodes telemetry/property
+names and privacy allowlists; it creates no new event, sink, or identity
+system. Product outcome and infrastructure outcome remain separate. Each
+started run has exactly one terminal `completed` or `failed` result, with
+bounded stage and classification; retry/degrade, blocked, validation,
+cache/duplicate, and cancellation paths converge on that result. Analytics are
+best-effort and off the critical path, and exclude raw URLs/query strings,
+payloads, credentials, cookies, raw IPs, User-Agent values, and unrestricted
+identifiers. This skill remains read-only and its output contract is
+unchanged.
+
+The host agent/runtime owns `run_id`, lifecycle, correlation, and analytics.
+This static skill and its runner cannot guarantee those semantics for arbitrary
+hosts. They do not emit fake telemetry or claim PostHog evidence.
+
 ## Bounded evidence workflow
 
 - Read the homepage first through free Markdown, then Brand JSON. Discover

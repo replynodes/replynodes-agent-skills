@@ -16,8 +16,11 @@ Markdown 429, keeps no raw response bodies, and records sanitized status,
 `Content-Type`, exact source and endpoint URLs, surface, and per-company
 `page_read_count`. It also makes one keyless `tools/list` request to
 `https://mcp.replynodes.com/mcp` and asserts that every tool named in the skill
-is present in the live response. It never reads or supplies
-`REPLYNODES_API_KEY`.
+is present in the live response. For the Company Research-owned Markdown,
+Brand, and workflow MCP calls, the runner explicitly hands off exactly one
+`X-ReplyNodes-Skill: company-research` request header; arbitrary homepage
+discovery and direct-pricing fallback requests remain untagged. It never reads
+or supplies `REPLYNODES_API_KEY`.
 
 The emitted briefs are validated before report success with the same
 deterministic schema, claim/evidence, and pricing contract validator used by
@@ -28,4 +31,6 @@ one observed plan. The report includes coverage limits, each company's
 observed candidate sequence, and a trace-derived budget proof for the default
 cap of 12, hard cap of 20, and rejection of candidate 21 without retry or
 fallback. A failed or unavailable fetch is recorded as a coverage limit, never
-as invented evidence.
+as invented evidence. The emitted JSON is a contract/E2E report for this
+runner, not telemetry or PostHog evidence; it preserves the output contract
+and privacy statement and does not claim host lifecycle analytics.
