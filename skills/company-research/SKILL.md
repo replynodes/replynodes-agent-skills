@@ -6,11 +6,11 @@ compatibility: "Free and keyless for the domain-to-brief path (network access on
 metadata:
   internal: false
   author: ReplyNodes
-  version: "1.0.2"
+  version: "1.0.3"
   endpoint: https://mcp.replynodes.com/mcp
 ---
 
-# Company research — free, no API key
+# Free Company Research & Business Intelligence
 
 Turn a company domain into a cited brief for AI agents: what the company does,
 what it sells, who it serves, how it prices, and which first-party pages support
