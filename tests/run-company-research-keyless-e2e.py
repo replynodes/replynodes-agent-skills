@@ -19,6 +19,13 @@ DEFAULT_CAP = 12
 HARD_CAP = 20
 MAX_BODY = 2 * 1024 * 1024
 MCP_URL = "https://mcp.replynodes.com/mcp"
+ATTRIBUTION_HEADER = "X-ReplyNodes-Skill"
+ATTRIBUTION_VALUE = "company-research"
+WORKFLOW_SURFACE_HOSTS = {
+    "markdown": ("md.replynodes.com", {"GET", "HEAD"}),
+    "brand": ("brand.replynodes.com", {"GET", "HEAD"}),
+    "mcp": ("mcp.replynodes.com", {"POST"}),
+}
 TOOL_NAMES = ("web_search", "webcontext_map", "webcontext_scrape", "webcontext_crawl", "brand_retrieve", "brand_search", "brand_styleguide", "brand_fonts", "brand_logo")
 E2E_TARGET_READS = 4
 
@@ -31,8 +38,17 @@ CASES = (
 def now():
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
-def get_once(url, accept="text/markdown,application/json,text/plain"):
-    request = urllib.request.Request(url, headers={"Accept": accept, "User-Agent": "replynodes-company-research-contract/1.0"})
+def request_headers(url, accept, *, method="GET", workflow_surface=None):
+    headers = {"Accept": accept, "User-Agent": "replynodes-company-research-contract/1.0"}
+    surface = WORKFLOW_SURFACE_HOSTS.get(workflow_surface)
+    parsed = urllib.parse.urlparse(url)
+    if (surface and parsed.scheme == "https" and parsed.hostname == surface[0]
+            and method in surface[1]):
+        headers[ATTRIBUTION_HEADER] = ATTRIBUTION_VALUE
+    return headers
+
+def get_once(url, accept="text/markdown,application/json,text/plain", *, workflow_surface=None):
+    request = urllib.request.Request(url, headers=request_headers(url, accept, workflow_surface=workflow_surface))
     try:
         with urllib.request.urlopen(request, timeout=20) as response:
             status, content_type = response.status, response.headers.get("Content-Type", "")
@@ -53,7 +69,9 @@ def md_url(source):
 
 def mcp_tools_once():
     payload = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/list", "params": {}}, separators=(",", ":")).encode()
-    request = urllib.request.Request(MCP_URL, data=payload, headers={"Accept": "application/json, text/event-stream", "Content-Type": "application/json", "User-Agent": "replynodes-company-research-contract/1.0"})
+    headers = request_headers(MCP_URL, "application/json, text/event-stream", method="POST", workflow_surface="mcp")
+    headers["Content-Type"] = "application/json"
+    request = urllib.request.Request(MCP_URL, data=payload, headers=headers, method="POST")
     names, total, line_buffer = set(), 0, b""
     def parse_sse_lines(chunk):
         nonlocal line_buffer
@@ -246,7 +264,7 @@ def main():
     if "REPLYNODES_API_KEY" in __import__("os").environ: raise SystemExit("refusing an environment containing REPLYNODES_API_KEY")
     reports, briefs, traces = [], [], []
     for case in CASES:
-        endpoint = md_url(case["homepage"]); home = get_once(endpoint); home.update({"surface": "free_markdown", "source_url": case["homepage"], "endpoint_url": endpoint}); home["attempts"] = [home.copy()]
+        endpoint = md_url(case["homepage"]); home = get_once(endpoint, workflow_surface="markdown"); home.update({"surface": "free_markdown", "source_url": case["homepage"], "endpoint_url": endpoint}); home["attempts"] = [home.copy()]
         discovery = get_once(case["homepage"], "text/html,application/xhtml+xml"); discovery.update({"surface": "free_homepage_discovery", "source_url": case["homepage"], "endpoint_url": case["homepage"]})
         candidates = discover_candidates(case["homepage"], home["text"] if successful(home) else "", discovery["text"] if successful(discovery) else "")
         selected = select_candidates(candidates)
@@ -255,7 +273,7 @@ def main():
         direct_pricing_used = False
         for source, category in selected[1:]:
             execution[source] = {"selected": True, "request_made": True, "retry_or_fallback_count": 0}
-            endpoint = md_url(source); markdown = get_once(endpoint); markdown.update({"surface": "free_markdown", "source_url": source, "endpoint_url": endpoint, "category": category})
+            endpoint = md_url(source); markdown = get_once(endpoint, workflow_surface="markdown"); markdown.update({"surface": "free_markdown", "source_url": source, "endpoint_url": endpoint, "category": category})
             result = markdown; result["attempts"] = [markdown.copy()]
             if category == "pricing_plans" and markdown.get("status") == 429 and not direct_pricing_used:
                 direct_pricing_used = True
@@ -265,7 +283,7 @@ def main():
                 result = direct; result["attempts"] = [markdown.copy(), direct.copy()]
             fetched.append(result)
         trace = candidate_trace(candidates, execution)
-        brand_source = "https://brand.replynodes.com/" + case["domain"]; brand_result = get_once(brand_source); brand_result.update({"surface": "free_brand", "source_url": brand_source, "endpoint_url": brand_source}); brand_result["attempts"] = [brand_result.copy()]; fetched.append(brand_result)
+        brand_source = "https://brand.replynodes.com/" + case["domain"]; brand_result = get_once(brand_source, workflow_surface="brand"); brand_result.update({"surface": "free_brand", "source_url": brand_source, "endpoint_url": brand_source}); brand_result["attempts"] = [brand_result.copy()]; fetched.append(brand_result)
         brief = make_brief(case, fetched, candidates, discovery); validate_brief(brief); assert brief["meta"]["page_read_count"] <= DEFAULT_CAP <= brief["meta"]["page_read_budget_default"]
         sanitized_requests = sanitize_request_records([discovery] + [record for page in fetched for record in page.get("attempts", [page])])
         assert all("text" not in record and "error" not in record and "status" not in record for record in sanitized_requests)
