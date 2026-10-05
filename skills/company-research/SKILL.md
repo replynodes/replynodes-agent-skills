@@ -6,7 +6,7 @@ compatibility: "Free and keyless for the domain-to-brief path (network access on
 metadata:
   internal: false
   author: ReplyNodes
-  version: "1.0.3"
+  version: "2.0.0"
   endpoint: https://mcp.replynodes.com/mcp
 ---
 
@@ -142,32 +142,13 @@ hosts. They do not emit fake telemetry or claim PostHog evidence.
 
 ## Bounded evidence workflow
 
-- Read the homepage first through free Markdown, then Brand JSON. Discover
-  important pages with optional authenticated `webcontext_map`; otherwise use
-  links present on the homepage plus this deterministic, bounded candidate
-  order: product/features, pricing/plans, integrations, about, docs,
-  customers/case studies, and a relevant changelog/blog page. Use
-  `webcontext_scrape` for selected pages and `webcontext_crawl` only when the
-  live schema and entitlement make a bounded crawl useful; this skill does not
-  implement a crawler.
-- Read at most 12 pages per company by default, with a hard cap of 20. Stop at
-  the first applicable cap. Record `page_read_count`, `page_read_budget_default`,
-  and `page_read_budget_hard_cap` in `meta` and prove
-  `page_read_count <= page_read_budget_default <= 12` for a normal run and
-  `page_read_count <= page_read_budget_hard_cap <= 20` always. A failed,
-  duplicate, rejected, or over-cap candidate is skipped once; it is not an
-  unbounded retry or fallback.
-- Use Brand/Brand Kit for identity and basic brand metadata only. Use
-  `web_search` only to resolve unresolved identity or add recent public context.
-  First-party pages win for products, pricing, positioning, and features.
-- CCI taxonomy/page priority is optional read-only enrichment only when already
-  entitled. Missing, 404, 403, or 503 CCI data falls back to the bounded web
-  workflow and never turns a snapshot into a historical change claim. Do not add
-  a CCI dependency.
+- Discover candidate pages from the homepage, an entitled `webcontext_map`, and same-site links. Rank deterministically: homepage, product/features, pricing/plans, integrations, about, docs, customers/case studies, then changelog/blog. A supplied `research_goal` may adjust only this ranking and optional `notable_context`; it must not change core fact semantics or create ICP/lead scores.
+- Consume at most **8 successful pages by default** and never more than **12**. Failed, duplicate, rejected, or over-budget candidates do not consume the successful-page budget. Record discovery, attempts, failures, selected pages, and exact source URLs in `meta`.
+- Deduplicate canonical URLs and repeated claims while preserving every supporting evidence URL. Keep `important_pages` auditable.
+- Emit V2 `signals`, using `recency: dated` only with a reliable `published_at`; otherwise use `current_observation` and omit `published_at`. Never call a claim recent, new, or changed without dated evidence.
+- Emit explicit `unknowns` for unsupported fields. Do not guess pricing, customers, funding, employees, TAM, sentiment, intent, people, or scores. Brand/Brand Kit contributes identity only; never copy logos, colors, fonts, or style-guide payloads into the brief.
+- Every material fact, signal, and optional goal-aware context item must link to evidence. `meta.synthesis` remains `host_agent`; the host owns run lifecycle and #701 telemetry readback. This skill does not emit fake analytics.
 
-Mark missing facts as `unknown` or coverage-limited. Never infer pricing,
-customers, funding, TAM, employee counts, sentiment, intent, people, lead
-scores, or integrations from weak signals.
 
 ## Optional authenticated MCP enrichment
 

@@ -12,8 +12,8 @@ schema = json.loads((root / "references/company-brief.schema.json").read_text())
 fixture = json.loads((root / "tests/fixtures/company-brief.json").read_text())
 check_contract(fixture, schema=schema)
 meta = fixture["meta"]
-assert meta["page_read_count"] <= meta["page_read_budget_default"] <= 12
-assert meta["page_read_count"] <= meta["page_read_budget_hard_cap"] <= 20
+assert meta["page_read_count"] <= meta["page_read_budget_default"] <= 8
+assert meta["page_read_count"] <= meta["page_read_budget_hard_cap"] <= 12
 
 def must_fail(label, mutate):
     candidate = copy.deepcopy(fixture)
@@ -77,8 +77,7 @@ failed_brand.update({"source_url": "https://brand.replynodes.com/example.test"})
 failed_brand_brief = runner.make_brief(failed_case, [successful_home, failed_brand])
 assert failed_brand_brief["brand"]["name"] is None
 assert failed_brand_brief["brand"]["description"] is None
-assert failed_brand_brief["brand"]["logo_url"] is None
-assert failed_brand_brief["brand"]["colors"] == [] and failed_brand_brief["brand"]["fonts"] == []
+assert set(failed_brand_brief["brand"]) == {"name", "description", "unknown"}
 assert failed_brand_brief["brand"]["unknown"] is True
 assert all(item["value"] is not None for path, item in material_claims(failed_brand_brief).items() if path != "pricing.model")
 assert "succeeded" in failed_brand_brief["evidence"][0]["excerpt_or_support"].lower()
@@ -184,18 +183,13 @@ assert runner.select_candidates(out_of_order)[1:] == [("https://example.test/pro
 prioritized_trace = runner.candidate_trace(prioritized, {source: {"selected": True, "request_made": True} for source, _ in selected})
 pricing_trace = next(item for item in prioritized_trace["selected_candidate_sequence"] if item["source_url"] == "https://example.test/pricing")
 assert pricing_trace["selected"] is True and pricing_trace["request_made"] is True
-prioritized_13 = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 12)] + [("https://example.test/pricing", "pricing_plans")]
-selected_13 = runner.select_candidates(prioritized_13)
-assert len(selected_13) == runner.E2E_TARGET_READS
-assert ("https://example.test/pricing", "pricing_plans") in selected_13
-prioritized_13_trace = runner.candidate_trace(prioritized_13, {source: {"selected": True, "request_made": True} for source, _ in selected_13})
-pricing_trace_13 = next(item for item in prioritized_13_trace["selected_candidate_sequence"] if item["source_url"] == "https://example.test/pricing")
-assert pricing_trace_13["selected"] is True and pricing_trace_13["request_made"] is True
 many = [(failed_case["homepage"], "homepage")] + [(f"https://example.test/page-{i}", "unknown") for i in range(1, 21)]
 trace = runner.candidate_trace(many, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
-assert trace["accepted_count"] == 20 and trace["candidate_21"]["accepted"] is False
-assert trace["candidate_21"]["selected"] is False and trace["candidate_21"]["request_made"] is False
-assert trace["attempted_count"] == 21 and trace["attempted_candidate_number"] == 21
+assert trace["accepted_count"] == 12
+candidate_13 = trace["selected_candidate_sequence"][12]
+assert candidate_13["accepted"] is False
+assert candidate_13["selected"] is False and candidate_13["request_made"] is False
+assert trace["attempted_count"] == 13 and trace["attempted_candidate_number"] == 13
 short = many[:5]
 short_trace = runner.candidate_trace(short, {failed_case["homepage"]: {"selected": True, "request_made": True, "retry_or_fallback_count": 0}})
 assert short_trace["candidate_21"] is None

@@ -1,4 +1,4 @@
-"""Deterministic validator for the checked-in company brief contract."""
+"""Deterministic validator for the checked-in company brief V2 contract."""
 import datetime
 import json
 import re
@@ -8,6 +8,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
 SCHEMA_PATH = ROOT / "references/company-brief.schema.json"
+
+MATERIAL_FIELDS = ("products", "target_market", "features", "integrations", "customers")
+PAGE_CATEGORIES = ("homepage", "product_features", "pricing_plans", "integrations", "about", "docs", "customers_case_studies", "changelog_blog", "careers", "unknown")
+ALWAYS_UNKNOWN_FIELDS = ("employee_count", "revenue", "funding", "icp_score", "lead_score", "probability_to_buy")
 
 
 def load_schema(schema_path=SCHEMA_PATH):
@@ -80,10 +84,11 @@ def validate_schema(value, schema=None, node=None, path="$", schema_path=SCHEMA_
 
 def material_claims(brief):
     paths = [(f"summary.{key}", brief["summary"][key]) for key in ("one_liner", "category", "positioning")]
-    for field in ("products", "target_market", "features", "integrations", "recent_updates"):
+    for field in MATERIAL_FIELDS:
         paths.extend((f"{field}[{i}]", claim) for i, claim in enumerate(brief[field]))
     paths.append(("pricing.model", brief["pricing"]["model"]))
     paths.extend((f"pricing.plans[{i}]", claim) for i, claim in enumerate(brief["pricing"]["plans"]))
+    paths.extend((f"notable_context[{i}]", claim) for i, claim in enumerate(brief.get("notable_context", [])))
     return dict(paths)
 
 
@@ -141,8 +146,68 @@ def check_contract(brief, schema=None, schema_path=SCHEMA_PATH):
             raise AssertionError("unknown pricing must be null/empty")
     elif pricing["model"]["value"] is None or not pricing["plans"]:
         raise AssertionError("observed pricing must have model/plans")
+    _check_signals(brief, evidence_set)
+    _check_unknowns(brief)
+    _check_meta(brief)
+    _check_goal(brief)
+
+
+def _check_signals(brief, evidence_set):
+    known_types = {"product_launch", "product_direction", "pricing", "partnership", "hiring", "leadership", "market_expansion", "positioning", "customer_momentum", "other"}
+    for signal in brief["signals"]:
+        if signal["type"] not in known_types:
+            raise AssertionError("signal type outside canonical enum")
+        if not set(signal["evidence_ids"]) <= evidence_set:
+            raise AssertionError("dangling signal evidence")
+        if signal["recency"] == "dated":
+            if "published_at" not in signal:
+                raise AssertionError("dated signal requires published_at")
+        elif signal["recency"] == "current_observation":
+            if "published_at" in signal:
+                raise AssertionError("current_observation signal must omit published_at")
+        else:
+            raise AssertionError("signal recency outside canonical enum")
+
+
+def _check_unknowns(brief):
+    fields = [item["field"] for item in brief["unknowns"]]
+    if len(fields) != len(set(fields)):
+        raise AssertionError("unknown fields must be unique")
+    for item in brief["unknowns"]:
+        if not item["field"].strip() or not item["reason"].strip():
+            raise AssertionError("unknowns require field and reason")
+
+
+def _check_meta(brief):
+    meta = brief["meta"]
+    if meta["synthesis"] != "host_agent":
+        raise AssertionError("synthesis owner must remain host_agent")
+    default, hard = meta["page_read_budget_default"], meta["page_read_budget_hard_cap"]
+    read, attempted, discovered = meta["page_read_count"], meta["pages_attempted"], meta["pages_discovered"]
+    if not (read <= default <= 8):
+        raise AssertionError("default page budget must bound the read count at 8")
+    if not (read <= hard <= 12):
+        raise AssertionError("hard page cap must bound the read count at 12")
+    if read > attempted or attempted > discovered:
+        raise AssertionError("page counters must be monotonic: read <= attempted <= discovered")
+    if meta["partial_failure_count"] > attempted:
+        raise AssertionError("partial failure count cannot exceed attempted pages")
+    total_covered = sum(item["pages_read"] for item in meta["source_coverage"])
+    if total_covered != read:
+        raise AssertionError("source coverage must account for every consumed page")
+    for item in meta["source_coverage"]:
+        if item["category"] not in PAGE_CATEGORIES:
+            raise AssertionError("source coverage category outside canonical enum")
+    if meta["research_goal"] is not None and "notable_context" not in brief:
+        raise AssertionError("goal-aware runs require a notable_context section")
+
+
+def _check_goal(brief):
+    goal = brief["meta"]["research_goal"]
+    if goal is None and brief.get("notable_context"):
+        raise AssertionError("notable_context is only populated for goal-aware runs")
 
 
 def validate_brief(brief, schema_path=SCHEMA_PATH):
-    """Validate schema, claim/evidence integrity, and pricing invariants."""
+    """Validate schema, claim/evidence integrity, signals, unknowns, and budget invariants."""
     check_contract(brief, schema_path=schema_path)

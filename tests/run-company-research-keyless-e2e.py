@@ -15,8 +15,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from company_brief_validator import validate_brief
 
-DEFAULT_CAP = 12
-HARD_CAP = 20
+DEFAULT_CAP = 8
+HARD_CAP = 12
 MAX_BODY = 2 * 1024 * 1024
 MCP_URL = "https://mcp.replynodes.com/mcp"
 ATTRIBUTION_HEADER = "X-ReplyNodes-Skill"
@@ -29,11 +29,15 @@ WORKFLOW_SURFACE_HOSTS = {
 TOOL_NAMES = ("web_search", "webcontext_map", "webcontext_scrape", "webcontext_crawl", "brand_retrieve", "brand_search", "brand_styleguide", "brand_fonts", "brand_logo")
 E2E_TARGET_READS = 4
 
-CASES = (
-    {"domain": "figma.com", "name": "Figma", "homepage": "https://www.figma.com/"},
-    {"domain": "loom.com", "name": "Loom", "homepage": "https://www.loom.com/"},
-    {"domain": "microsoft.com", "name": "Microsoft", "homepage": "https://www.microsoft.com/"},
-)
+CASES = tuple({"domain": domain, "name": name, "homepage": f"https://www.{domain}/"} for domain, name in (
+    ("stripe.com", "Stripe"), ("figma.com", "Figma"), ("loom.com", "Loom"),
+    ("microsoft.com", "Microsoft"), ("notion.so", "Notion"), ("slack.com", "Slack"),
+    ("shopify.com", "Shopify"), ("hubspot.com", "HubSpot"), ("github.com", "GitHub"),
+    ("linear.app", "Linear"), ("canva.com", "Canva"), ("atlassian.com", "Atlassian"),
+    ("zoom.us", "Zoom"), ("dropbox.com", "Dropbox"), ("openai.com", "OpenAI"),
+    ("salesforce.com", "Salesforce"), ("airtable.com", "Airtable"), ("intercom.com", "Intercom"),
+    ("twilio.com", "Twilio"), ("vercel.com", "Vercel"),
+))
 
 def now():
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -222,7 +226,7 @@ def grounded_pricing(text):
 def designated_pricing_page(page):
     return page.get("category") == "pricing_plans" and page_category(page.get("source_url", "")) == "pricing_plans"
 
-def make_brief(case, fetched, candidates=None, discovery=None):
+def make_brief(case, fetched, candidates=None, discovery=None, research_goal=None):
     pages, brand_result = fetched[:-1], fetched[-1]; home = pages[0]
     home_id, brand_id = "homepage", "brand"
     home_ok = successful(home)
@@ -254,7 +258,16 @@ def make_brief(case, fetched, candidates=None, discovery=None):
     page_calls = [request_record(record) for page in pages for record in page.get("attempts", [page])]
     capabilities = ["free_markdown", "free_homepage_discovery", "free_brand"]
     if any(page.get("surface") == "free_direct_pricing" for page in pages): capabilities.append("free_direct_pricing")
-    return {"brief_version": "1.0", "generated_at": now(), "company": {"domain": case["domain"], "name": case["name"], "homepage_url": case["homepage"]}, "summary": {"one_liner": claim(home_claim, home_id), "category": claim("Software company." if home_ok else None, home_id), "positioning": claim("Public positioning is supported by the bounded homepage fetch." if home_ok else None, home_id)}, "products": [claim("Products described in bounded first-party text." if home_ok else None, home_id)], "target_market": [claim("Public users and teams described by the company." if home_ok else None, home_id)], "pricing": {"model": pricing_model, "plans": plans, "unknown": not pricing_seen}, "features": [claim("Features described in bounded first-party text." if home_ok else None, home_id)], "integrations": [], "important_pages": selected_pages, "recent_updates": [], "brand": {"name": case["name"] if successful(brand_result) else None, "description": None, "logo_url": None, "colors": [], "fonts": [], "unknown": not successful(brand_result)}, "evidence": evidence, "claim_evidence": [{"claim_path": path, "evidence_ids": [evidence_id]} for path, evidence_id in paths], "coverage_limits": coverage, "meta": {"capabilities_used": capabilities, "tool_calls": discovery_call + page_calls + [request_record(brand_result)], "synthesis": "host_agent", "page_read_count": len(pages), "page_read_budget_default": DEFAULT_CAP, "page_read_budget_hard_cap": HARD_CAP}}
+    if research_goal:
+        paths.append(("notable_context[0]", home_id))
+    unknowns = [{"field": "pricing", "reason": "No grounded pricing page was consumed."}] if not pricing_seen else []
+    signals = [{"type": "positioning", "summary": "Current positioning observed on the homepage.", "observed_at": now(), "recency": "current_observation", "evidence_ids": [home_id]}] if home_ok else []
+    source_coverage = [{"category": "homepage", "pages_read": 1}] + [{"category": page.get("category", "unknown"), "pages_read": 1} for page in pages[1:]]
+    meta = {"capabilities_used": capabilities, "tool_calls": discovery_call + page_calls + [request_record(brand_result)], "synthesis": "host_agent", "researched_at": now(), "research_goal": research_goal, "pages_discovered": len(candidates or pages), "pages_attempted": len(pages), "page_read_count": len(pages), "page_read_budget_default": DEFAULT_CAP, "page_read_budget_hard_cap": HARD_CAP, "partial_failure_count": sum(1 for page in pages if not successful(page)), "source_coverage": source_coverage}
+    notable_context = [claim("Goal-relevant current positioning observed on the homepage.", home_id)] if research_goal and home_ok else []
+    brief = {"brief_version": "2.0", "generated_at": now(), "company": {"domain": case["domain"], "name": case["name"], "homepage_url": case["homepage"]}, "summary": {"one_liner": claim(home_claim, home_id), "category": claim("Software company." if home_ok else None, home_id), "positioning": claim("Public positioning is supported by the bounded homepage fetch." if home_ok else None, home_id)}, "products": [claim("Products described in bounded first-party text." if home_ok else None, home_id)], "target_market": [claim("Public users and teams described by the company." if home_ok else None, home_id)], "pricing": {"model": pricing_model, "plans": plans, "unknown": not pricing_seen}, "features": [claim("Features described in bounded first-party text." if home_ok else None, home_id)], "integrations": [], "customers": [], "signals": signals, "important_pages": selected_pages, "brand": {"name": case["name"] if successful(brand_result) else None, "description": None, "unknown": not successful(brand_result)}, "evidence": evidence, "claim_evidence": [{"claim_path": path, "evidence_ids": [evidence_id]} for path, evidence_id in paths], "unknowns": unknowns, "coverage_limits": coverage, "meta": meta}
+    if notable_context: brief["notable_context"] = notable_context
+    return brief
 
 def sanitize_request_records(records):
     return [request_record(record) for record in records]
