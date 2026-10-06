@@ -249,15 +249,20 @@ Each record is exactly `{evidence_id, category, read, claims}`
 
 ### toolCall record shape
 
-Exactly `{surface, operation, source_url, http_status, content_type}` plus the
-optional `endpoint_url` (`additionalProperties: false`):
+Exactly `{surface, operation, source_url, endpoint_url, http_status, content_type}`
+(`additionalProperties: false`). The JSON Schema permits `endpoint_url` to be
+omitted, but the supported Company Research contract requires it on every
+record: use the exact source URL for direct calls and the transformed Markdown
+URL for `free_markdown` calls. In particular, the single
+`free_homepage_discovery` record MUST use the declared homepage URL for both
+`source_url` and `endpoint_url`.
 
 - `surface`: `free_markdown` | `free_homepage_discovery` | `free_direct_pricing`
   | `free_brand` | `mcp`.
 - `operation`: non-empty string (for example `GET`).
 - `source_url`: exact absolute `https://` source URL.
-- `endpoint_url`: optional absolute `https://` URL; only a `free_markdown` call
-  may differ from `source_url`.
+- `endpoint_url`: absolute `https://` URL; only a `free_markdown` call may
+  differ from `source_url`.
 - `http_status`: integer 100–599. `content_type`: non-empty string.
 
 ## Keyless path (no API key)
@@ -360,6 +365,29 @@ able to reproduce the same selection from the same inputs.
   context item must link to evidence whose excerpt is relevant to the claim.
   `meta.synthesis` remains `host_agent`; the host owns run lifecycle and #701
   telemetry readback. This skill does not emit fake analytics.
+
+### Typed-field quality gate
+
+Before accepting a non-empty typed field, apply these stricter output checks;
+schema-valid prose that fails one of them is still invalid for this contract:
+
+- **Customers:** each `customers[i].value` is a concise proper customer name
+  (for example `Shopify`), not a sentence such as “customer stories include
+  Shopify” or a market-size/customer-segment description. A company name is
+  valid only when the same evidence has customer-story, testimonial, or
+  customer-context language.
+- **Integrations:** each `integrations[i].value` names an explicit connector,
+  app, API/SDK, partner, payment method, platform, or ecosystem integration.
+  Do not emit generic “integrations for businesses” or broad capability prose.
+- **Pricing plans:** each non-null `pricing.plans[i].value` is a short plan or
+  rate claim of at most 12 words and contains a grounded amount, percentage,
+  currency, or explicit pricing language. Keep explanatory context in
+  `pricing.model`, not in the plan value. CTA/contact-sales text alone is not
+  a plan.
+- **Every material claim:** values must be concise field-typed facts whose
+  linked evidence excerpt contains supporting terms. If the typed value cannot
+  pass these checks, omit it and add an explicit `unknowns` entry instead of
+  weakening the checker or returning a prose paragraph.
 
 ## Mandatory pre-return self-validation
 
