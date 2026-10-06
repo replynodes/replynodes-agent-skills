@@ -1,6 +1,11 @@
 # Release checklist
 
-This branch prepares package version `v2.0.3` from `VERSION`.
+This branch prepares package version `v2.0.4` from `VERSION`.
+
+## v2.0.4 release notes
+
+- Makes the `company-research` Agent Skill emit the canonical Company Research V2 host-agent contract directly.
+- Documents required schema fields, claim/evidence linkage, coverage limits, execution metadata, bounded page accounting, fail-closed extraction, and mandatory pre-return validation.
 
 ## v2.0.3 release notes
 
