@@ -78,12 +78,187 @@ facts stay `unknown` instead of being guessed.
 
 ## What you get
 
-A JSON company brief, validated against `references/company-brief.schema.json`
-and described in `references/company-brief-contract.md`. Every material claim
-links to `evidence` with an exact `source_url`, `kind` (`first_party` or
-`third_party`), a retrieval timestamp, and a bounded excerpt or support note.
-`meta.synthesis` is always `host_agent`; ReplyNodes does not synthesize claims.
-Missing facts stay `unknown` or coverage-limited.
+One JSON company brief that matches `references/company-brief.schema.json` and
+is described in `references/company-brief-contract.md`. The contract below is
+self-contained so a host can emit canonical V2 without post-processing. Every
+material claim links to `evidence` with an exact `source_url`, `kind`
+(`first_party` or `third_party`), a retrieval timestamp, and a bounded excerpt
+or support note. `meta.synthesis` is always `host_agent`; ReplyNodes does not
+synthesize claims. Missing facts stay `unknown` or coverage-limited.
+
+## Canonical Company Research V2 output contract
+
+Emit exactly one JSON object matching the checked-in schema. Return every key in
+this canonical order; all keys are required and present on every return except
+`brand` and `notable_context`, which are optional (keep the position shown when
+you do emit them). `notable_context` is required whenever `meta.research_goal`
+is supplied. The schema sets `additionalProperties: false` at every level:
+adding any extra top-level or nested key fails validation, so never emit
+convenience fields.
+
+1. `brief_version` — string, exactly `"2.0"`.
+2. `generated_at` — RFC 3339 UTC date-time for synthesis (required).
+3. `company` — object `{domain, name, homepage_url}` (see below).
+4. `summary` — object `{one_liner, category, positioning}`, each a claim object.
+5. `products` — array of claim objects.
+6. `target_market` — array of claim objects.
+7. `pricing` — object `{model, plans, unknown}` (see below).
+8. `features` — array of claim objects.
+9. `integrations` — array of claim objects.
+10. `customers` — array of claim objects.
+11. `signals` — array of signal objects.
+12. `important_pages` — array of page objects.
+13. `brand` — object `{name, description, unknown}` (optional; identity only).
+14. `evidence` — array of evidence objects.
+15. `claim_evidence` — array of linkage objects.
+16. `unknowns` — array of `{field, reason}` objects.
+17. `coverage_limits` — array of strings.
+18. `meta` — execution metadata object (see below).
+19. `notable_context` — array of claim objects (optional; required when
+    `research_goal` is set).
+
+### claim object (summary, products, target_market, features, integrations, customers, pricing.model/plans, notable_context)
+
+- `value`: bounded string 1–500 chars, or `null` when the bounded evidence did
+  not support the field.
+- `evidence_ids`: non-empty, unique array of evidence IDs that resolve to
+  `evidence`. Even a `null` value carries at least one evidence ID.
+
+### pricing object
+
+- `model`: one claim object. `plans`: array of claim objects (may be empty).
+  `unknown`: boolean.
+- Stay mutually consistent and fail closed: when `unknown` is `true`,
+  `model.value` is `null` and `plans` is `[]`; when `unknown` is `false`,
+  `model.value` is a non-null observed string and `plans` is non-empty. Never
+  turn a missing pricing page into a price or plan claim.
+
+### company requirements
+
+- `domain`: non-empty normalized string (lowercase; scheme, `www.`, trailing
+  dot, path, query, and fragment trimmed).
+- `name`: non-empty display name.
+- `homepage_url`: absolute `https://` URI, the exact homepage used for
+  discovery. No other keys are allowed in `company`.
+
+### timestamp requirements
+
+- `generated_at`, `meta.researched_at`, every `evidence.fetched_at`, and every
+  `signals[].observed_at` are RFC 3339 date-times (`YYYY-MM-DDTHH:MM:SSZ`) in
+  UTC. `generated_at` is synthesis time, `meta.researched_at` is research time,
+  `evidence.fetched_at` is that evidence's actual retrieval time.
+- `signals[].published_at` is present only with `recency: "dated"` and omitted
+  with `recency: "current_observation"`.
+
+### evidence object
+
+- `id`: unique non-empty string. `source_url`: exact absolute `https://` URL.
+- `kind`: `first_party` | `third_party` | `unknown`.
+- `fetched_at`: RFC 3339 date-time.
+- `excerpt_or_support`: bounded 1–2000 char excerpt taken from the consumed
+  body, or a bounded support note. No raw markup/URL noise, secrets, cookies,
+  sessions, credentials, or private data.
+
+### signal object
+
+- `type`: one of `product_launch`, `product_direction`, `pricing`,
+  `partnership`, `hiring`, `leadership`, `market_expansion`, `positioning`,
+  `customer_momentum`, `other`.
+- `summary`: body-derived bounded string 1–500 chars, never filler.
+- `observed_at`: RFC 3339 retrieval time.
+- `recency`: `dated` (requires `published_at`) or `current_observation` (omit
+  `published_at`).
+- `evidence_ids`: non-empty unique array resolving to `evidence`.
+
+### important_pages object
+
+- `category`: one of the canonical page categories (`homepage`,
+  `product_features`, `pricing_plans`, `integrations`, `about`, `docs`,
+  `customers_case_studies`, `changelog_blog`, `careers`, `unknown`).
+- `url`: exact absolute `https://` page URL. `evidence_id`: resolves to
+  `evidence`.
+
+### claim_evidence and exact claim paths
+
+`claim_evidence` lists exactly one linkage object per material claim:
+`{claim_path, evidence_ids}`, where `claim_path` is a non-empty string and
+`evidence_ids` is a non-empty unique array. The set of `claim_path` values must
+equal the material claim paths below — a missing or extra linkage fails. The
+exact paths are:
+
+- `summary.one_liner`, `summary.category`, `summary.positioning`
+- `products[i]`, `target_market[i]`, `features[i]`, `integrations[i]`,
+  `customers[i]`
+- `pricing.model`, `pricing.plans[i]`
+- `notable_context[i]` (only when `notable_context` is emitted)
+
+Every path must resolve to checked-in `evidence`; every
+`important_pages[i].evidence_id` and every `signals[i].evidence_ids` entry must
+resolve too.
+
+### unknowns and coverage_limits
+
+- `unknowns`: array of `{field, reason}` with unique `field` values. `field`
+  (1–100 chars) names the missing field; `reason` (1–500 chars) states why.
+  Every empty material field (`products`, `target_market`, `features`,
+  `integrations`, `customers`) and an unknown `pricing` each require a matching
+  `unknowns` entry. Unknown beats guessed; never emit placeholder text as a
+  claim.
+- `coverage_limits`: array of strings recording honest missing, failed, capped,
+  or entitlement-limited coverage.
+
+### meta: exact required fields and types
+
+`meta` is required and complete; `additionalProperties: false`, so no extra keys.
+
+- `capabilities_used`: array of strings. Include `free_homepage_discovery` and
+  every surface actually used (`free_markdown`, `free_brand`,
+  `free_direct_pricing`, `mcp`).
+- `tool_calls`: array of toolCall records (shape below).
+- `synthesis`: string, exactly `"host_agent"`.
+- `researched_at`: RFC 3339 date-time.
+- `research_goal`: string 1–500 chars or `null`.
+- `pages_discovered`: integer 0–1000. `pages_attempted`: integer 0–12.
+- `page_read_count`: integer 0–12 (successfully read pages only).
+- `page_read_budget_default`: integer 0–8. `page_read_budget_hard_cap`:
+  integer 0–12. `partial_failure_count`: integer 0–12.
+- `source_coverage`: array of `{category, pages_read}` records; `category` is a
+  canonical page category and `pages_read` an integer 0–12. The `pages_read`
+  values must sum to `page_read_count`.
+- `page_contribution`: array of contribution records (shape below).
+
+Hold these invariants: `page_read_count == pages_attempted - partial_failure_count`;
+`page_read_count <= pages_attempted <= pages_discovered`;
+`page_read_count <= page_read_budget_default <= 8`; and
+`page_read_count <= page_read_budget_hard_cap <= 12`.
+
+### page_contribution array-record shape
+
+Each record is exactly `{evidence_id, category, read, claims}`
+(`additionalProperties: false`):
+
+- `evidence_id`: non-empty string resolving to `evidence`; unique across records.
+- `category`: a canonical page category.
+- `read`: boolean.
+- `claims`: array of unique claim-path strings this page materially supports.
+  Allowed values are the material claim paths above plus `signals[i]` and
+  `notable_context[i]`. An unread page (`read: false`) lists no claims. A read
+  page whose category supports material fields and whose body carries
+  non-filler text must contribute at least one claim; a read page with no
+  extractable body lists no claims rather than filler.
+
+### toolCall record shape
+
+Exactly `{surface, operation, source_url, http_status, content_type}` plus the
+optional `endpoint_url` (`additionalProperties: false`):
+
+- `surface`: `free_markdown` | `free_homepage_discovery` | `free_direct_pricing`
+  | `free_brand` | `mcp`.
+- `operation`: non-empty string (for example `GET`).
+- `source_url`: exact absolute `https://` source URL.
+- `endpoint_url`: optional absolute `https://` URL; only a `free_markdown` call
+  may differ from `source_url`.
+- `http_status`: integer 100–599. `content_type`: non-empty string.
 
 ## Keyless path (no API key)
 
@@ -142,13 +317,88 @@ hosts. They do not emit fake telemetry or claim PostHog evidence.
 
 ## Bounded evidence workflow
 
-- Discover candidate pages from the homepage, an entitled `webcontext_map`, and same-site links. Rank deterministically: homepage, product/features, pricing/plans, integrations, about, docs, customers/case studies, then changelog/blog. A supplied `research_goal` may adjust only this ranking and optional `notable_context`; it must not change core fact semantics or create ICP/lead scores.
-- Consume at most **8 successful pages by default** and never more than **12**. Failed, duplicate, rejected, or over-budget candidates do not consume the successful-page budget. Record discovery, attempts, failures, selected pages, and exact source URLs in `meta`.
-- Deduplicate candidate URLs and repeated claims by canonical host (drop `www.` and a trailing dot), path, locale prefix, query string, and logical page category, while preserving every supporting evidence URL. Keep `important_pages` auditable.
-- Extract facts from the consumed first-party Markdown/HTML bodies: populate `summary`, `products`, `features`, `target_market`, `pricing`, `integrations`, `customers`, and `signals` from real body text, and link each claim to a bounded excerpt taken from the body. Never emit placeholder text; an unsupported field stays empty. Record every selected page's claim contribution in `meta.page_contribution`.
-- Emit V2 `signals`, using `recency: dated` only with a reliable `published_at`; otherwise use `current_observation` and omit `published_at`. Never call a claim recent, new, or changed without dated evidence.
-- Emit explicit `unknowns` for unsupported fields, including empty `products`, `target_market`, `features`, `integrations`, `customers`, and unknown `pricing`. Do not guess pricing, customers, funding, employees, TAM, sentiment, intent, people, or scores. Brand/Brand Kit contributes identity only; never copy logos, colors, fonts, or style-guide payloads into the brief.
-- Every material fact, signal, and optional goal-aware context item must link to evidence whose excerpt is relevant to the claim. `meta.synthesis` remains `host_agent`; the host owns run lifecycle and #701 telemetry readback. This skill does not emit fake analytics.
+Discovery, ranking, and accounting are deterministic and bounded; a host must be
+able to reproduce the same selection from the same inputs.
+
+- **Discovery.** Discover candidate pages from the homepage, an entitled
+  `webcontext_map`, and same-site links. `meta.pages_discovered` counts every
+  candidate classified, which may exceed the retrieval budget.
+- **Ranking.** Rank candidates deterministically: homepage, product/features,
+  pricing/plans, integrations, about, docs, customers/case studies, then
+  changelog/blog. A supplied `research_goal` may adjust only this ranking and
+  optional `notable_context`; it must not change core fact semantics or create
+  ICP/lead scores.
+- **Budget.** Consume at most **8 successful pages by default** and never more
+  than **12**. `page_read_count` counts successfully consumed pages only; failed,
+  duplicate, rejected, unsupported, or over-budget candidates do not consume the
+  budget. Record discovery, attempts, failures, selected pages, and exact source
+  URLs in `meta` (`pages_discovered`, `pages_attempted`, `page_read_count`,
+  `partial_failure_count`, `source_coverage`, `page_contribution`).
+- **Dedup.** Deduplicate candidate URLs and repeated claims by canonical host
+  (drop `www.` and a trailing dot), path, locale prefix, query string, and
+  logical page category, while preserving every supporting evidence URL. Keep
+  `important_pages` auditable.
+- **Extraction (fail closed).** Extract facts from the consumed first-party
+  Markdown/HTML bodies: populate `summary`, `products`, `features`,
+  `target_market`, `pricing`, `integrations`, `customers`, and `signals` from
+  real body text, and link each claim to a bounded excerpt taken from the body.
+  Each field is populated only when the body supplies text of that field's type;
+  anything ambiguous fails closed to an explicit `unknown` rather than a
+  mis-typed claim. Error/not-found/status bodies are detected before extraction
+  and never yield claims, signals, or pricing. Never emit placeholder or filler
+  text; an unsupported field stays empty and is listed in `unknowns`. Record
+  every selected page's claim contribution in `meta.page_contribution`.
+- **Signals.** Emit V2 `signals`, using `recency: dated` only with a reliable
+  `published_at`; otherwise use `current_observation` and omit `published_at`.
+  Never call a claim recent, new, or changed without dated evidence.
+- **Unknowns.** Emit explicit `unknowns` for unsupported fields, including empty
+  `products`, `target_market`, `features`, `integrations`, `customers`, and
+  unknown `pricing`. Do not guess pricing, customers, funding, employees, TAM,
+  sentiment, intent, people, or scores. Brand/Brand Kit contributes identity
+  only; never copy logos, colors, fonts, or style-guide payloads into the brief.
+- **Evidence linkage.** Every material fact, signal, and optional goal-aware
+  context item must link to evidence whose excerpt is relevant to the claim.
+  `meta.synthesis` remains `host_agent`; the host owns run lifecycle and #701
+  telemetry readback. This skill does not emit fake analytics.
+
+## Mandatory pre-return self-validation
+
+Before returning, validate the assembled brief locally against
+`references/company-brief.schema.json` (or the equivalent checks below) and fix
+the brief, not the validator. Do not return a brief that fails any check.
+
+1. **Schema shape.** Exactly the canonical top-level keys, in the canonical
+   order, no extras; `additionalProperties: false` holds at every level;
+   `brief_version == "2.0"`; `meta.synthesis == "host_agent"`.
+2. **Requireds present.** `generated_at`, `company`, and `meta.researched_at`
+   exist and parse as RFC 3339 date-times; `company.domain`, `company.name`, and
+   `company.homepage_url` (absolute `https://`) are present and non-empty.
+3. **Evidence integrity.** `evidence` IDs are unique; every `evidence_ids`
+   reference in claims, `claim_evidence`, `important_pages`, `signals`, and
+   `page_contribution` resolves to an existing evidence ID.
+4. **Linkage completeness.** `claim_evidence` has exactly one entry per material
+   claim path, with no missing or extra paths, and each `claim_path` matches the
+   exact path strings.
+5. **Pricing consistency.** `unknown: true` implies `model.value` is `null` and
+   `plans` is `[]`; `unknown: false` implies a non-null `model.value` and a
+   non-empty `plans`.
+6. **Unknowns coverage.** Every empty material field and unknown `pricing` has a
+   matching `unknowns` entry, with unique `field` values and non-empty reasons.
+7. **Budget accounting.** `page_read_count == pages_attempted - partial_failure_count`;
+   `page_read_count <= pages_attempted <= pages_discovered`;
+   `page_read_count <= page_read_budget_default <= 8`;
+   `page_read_count <= page_read_budget_hard_cap <= 12`; `source_coverage`
+   `pages_read` sums to `page_read_count`.
+8. **Contribution accounting.** `page_contribution` accounts for every consumed
+   page with unique `evidence_id`s; unread records list no claims; read pages
+   with supporting bodies contribute at least one claim.
+9. **Signals.** `type` and `recency` are in their enums; `dated` signals carry
+   `published_at` and `current_observation` signals omit it.
+10. **Goal.** When `research_goal` is non-null, `notable_context` is present;
+    when it is null, `notable_context` is omitted or empty.
+11. **Safety.** No secrets, cookies, sessions, credentials, private data, or raw
+    markup/URL noise in any claim value or evidence excerpt; the brief makes no
+    monitoring, change-detection, transaction, write, or private-access claim.
 
 
 ## Optional authenticated MCP enrichment
