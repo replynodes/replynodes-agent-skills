@@ -1,6 +1,12 @@
 # Release checklist
 
-This branch prepares package version `v2.0.4` from `VERSION`.
+This branch prepares package version `v2.0.5` from `VERSION`.
+
+## v2.0.5 release notes
+
+- Tightens typed-field quality and operational tool-call output requirements
+  for real Agent Skills-compatible hosts.
+- Adds the typed-field checks to the mandatory pre-return validation checklist.
 
 ## v2.0.4 release notes
 

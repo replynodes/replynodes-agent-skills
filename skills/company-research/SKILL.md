@@ -261,8 +261,8 @@ URL for `free_markdown` calls. In particular, the single
   | `free_brand` | `mcp`.
 - `operation`: non-empty string (for example `GET`).
 - `source_url`: exact absolute `https://` source URL.
-- `endpoint_url`: absolute `https://` URL; only a `free_markdown` call may
-  differ from `source_url`.
+- `endpoint_url`: absolute `https://` URL; every non-`free_markdown` call must
+  equal `source_url`, and only a `free_markdown` call may differ.
 - `http_status`: integer 100–599. `content_type`: non-empty string.
 
 ## Keyless path (no API key)
@@ -380,10 +380,9 @@ schema-valid prose that fails one of them is still invalid for this contract:
   app, API/SDK, partner, payment method, platform, or ecosystem integration.
   Do not emit generic “integrations for businesses” or broad capability prose.
 - **Pricing plans:** each non-null `pricing.plans[i].value` is a short plan or
-  rate claim of at most 12 words and contains a grounded amount, percentage,
-  currency, or explicit pricing language. Keep explanatory context in
-  `pricing.model`, not in the plan value. CTA/contact-sales text alone is not
-  a plan.
+  rate claim of at most 12 words and contains a grounded numeric amount,
+  percentage, or currency token. Keep explanatory context in `pricing.model`,
+  not in the plan value. CTA/contact-sales text alone is not a plan.
 - **Every material claim:** values must be concise field-typed facts whose
   linked evidence excerpt contains supporting terms. If the typed value cannot
   pass these checks, omit it and add an explicit `unknowns` entry instead of
@@ -427,6 +426,11 @@ the brief, not the validator. Do not return a brief that fails any check.
 11. **Safety.** No secrets, cookies, sessions, credentials, private data, or raw
     markup/URL noise in any claim value or evidence excerpt; the brief makes no
     monitoring, change-detection, transaction, write, or private-access claim.
+12. **Typed-field quality.** Customers are concise proper names; integrations
+    name explicit connectors/partners/apps/APIs/ecosystem items; non-null
+    pricing plans are at most 12 words and contain a numeric amount, percentage,
+    or currency token. Otherwise omit the claim and record the limitation in
+    `unknowns`.
 
 
 ## Optional authenticated MCP enrichment
