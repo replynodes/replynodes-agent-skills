@@ -1,6 +1,11 @@
 # Release checklist
 
-This branch prepares package version `v2.0.5` from `VERSION`.
+This branch prepares package version `v2.0.6` from `VERSION`.
+
+## v2.0.6 release notes
+
+- Makes integration and target-market extraction evidence-token grounded and
+  fail closed against generic category prose.
 
 ## v2.0.5 release notes
 
