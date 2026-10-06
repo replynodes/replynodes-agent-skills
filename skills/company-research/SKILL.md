@@ -377,8 +377,16 @@ schema-valid prose that fails one of them is still invalid for this contract:
   valid only when the same evidence has customer-story, testimonial, or
   customer-context language.
 - **Integrations:** each `integrations[i].value` names an explicit connector,
-  app, API/SDK, partner, payment method, platform, or ecosystem integration.
-  Do not emit generic “integrations for businesses” or broad capability prose.
+  named partner, payment method, platform, or ecosystem integration (for
+  example `Affirm`, `Afterpay`, or `Klarna`). Prefer the named entity itself;
+  do not emit category words such as “API”, “apps”, “marketplace”,
+  “ecosystem”, or “integrations” as the value, and do not emit broad capability
+  prose.
+- **Target market:** each non-null value must reuse meaningful words grounded in
+  its linked excerpt (for example `startups` or `Fortune 500 companies`), not a
+  paraphrase whose tokens are absent from the evidence. If the excerpt does
+  not support a concise grounded segment, omit it and record an `unknowns`
+  limitation.
 - **Pricing plans:** each non-null `pricing.plans[i].value` is a short plan or
   rate claim of at most 12 words and contains a grounded numeric amount,
   percentage, or currency token. Keep explanatory context in `pricing.model`,
