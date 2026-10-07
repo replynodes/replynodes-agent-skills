@@ -20,6 +20,7 @@ cmp "$root/references/company-brief.schema.json" "$tmp/references/company-brief.
 python3 "$root/tests/test-company-research-v2-scenarios.py"
 python3 "$root/tests/test-company-research-v2-quality-fixtures.py"
 "$root/tests/test-distribution.sh"
+"$root/tests/test-registry-links.sh"
 
 # The official Agent Skills validator is run separately because it expects a
 # skill directory itself to be named `replynodes`; this repository is the source

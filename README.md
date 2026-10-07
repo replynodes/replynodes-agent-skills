@@ -170,7 +170,12 @@ listing counts are external signals and are not claims about genuine users.
 The source repository and its `skills.sh.json` taxonomy are the canonical
 distribution metadata. Do not infer that a marketplace or ClawHub listing has
 updated until its external page is read back. Public install or listing counts
-are not claims about genuine users.
+are not claims about genuine users. The dated live readback of both registries
+is in [registry-inventory-2026-10-07.md](references/registry-inventory-2026-10-07.md),
+with raw rows in
+[registry-readback-2026-10-07.json](references/registry-readback-2026-10-07.json)
+and the sync/next-owner actions in
+[registry-sync-2026-10-07.md](references/registry-sync-2026-10-07.md).
 
 For the exact install/readback evidence, external blockers, and the measurement
 window definition, see
@@ -202,7 +207,12 @@ slugs to exact provider API slugs. Install the canonical slug:
 The internal `brand-profile` and `brand-intelligence` skills are merged into
 `brand-kit` as internal guidance. See
 [references/slug-migration-2026-10-07.md](references/slug-migration-2026-10-07.md).
-Registry-side unpublish, redirect, and readback are owned by issue #58.
+Registry-side unpublish, redirect, and readback are owned by issue #58. The
+2026-10-07 readback
+([registry-inventory-2026-10-07.md](references/registry-inventory-2026-10-07.md))
+shows the third-party indices had not yet re-crawled these renames; the exact
+upstream/owner actions are recorded in
+[registry-sync-2026-10-07.md](references/registry-sync-2026-10-07.md).
 
 ## Example agent prompts
 

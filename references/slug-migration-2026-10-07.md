@@ -78,3 +78,14 @@ with `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`, and
 - Registry publication/readback (#58).
 - `pdf-to-markdown` remains internal and not-public-ready: its no-key conversion
   contract is still unverified in production, so it was left unchanged.
+
+## #58 registry readback outcome (2026-10-07)
+
+Issue #58 performed the live read-only registry readback recorded in
+[registry-inventory-2026-10-07.md](registry-inventory-2026-10-07.md) (raw rows
+in [registry-readback-2026-10-07.json](registry-readback-2026-10-07.json)). No
+skills.sh or ClawHub write was performed. At that readback, skills.sh still
+listed the pre-rename slugs and the two legacy brand entries, and ClawHub still
+had no canonical `brand-kit` target, so the approved `brandkitfetch` -> `brand-kit`
+migration remains blocked upstream. Exact next owner actions are in
+[registry-sync-2026-10-07.md](registry-sync-2026-10-07.md).
