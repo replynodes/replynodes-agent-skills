@@ -74,8 +74,9 @@ exists.
 
 The free capabilities are admitted through one shared anonymous quota, each in its
 own bucket keyed by trusted client-IP bucket + capability + UTC day: **Tier A
-(20 requests/day)** for Markdown, Brand, and Logo (`url-to-markdown`,
-`brand-kit`, `brand-logo`, including the keyless `GET /v1/brand/logo`), and
+(20 requests/day)** for the Markdown and Brand hosts plus the keyless
+`GET https://api.replynodes.com/v1/brand/logo` endpoint (`url-to-markdown`,
+`brand-kit`, `brand-logo`), and
 **Tier B (10/day)** for the reviewed keyless `/v1` primitives — web search,
 single-page scrape, App Store, Google Play, Reddit, and YouTube. Every anonymous
 response carries `X-RateLimit-*` headers. Over the limit the API returns HTTP
@@ -84,7 +85,7 @@ machine-readable `continuation` object. Offer the existing free-account/API-key
 continuation at <https://docs.replynodes.com/docs/auth> (an existing
 authenticated free account has 500 credits); never ask a user to paste a key into
 chat. The `img.replynodes.com` Logo host is a separate anonymous surface with no
-published fixed quota.
+published fixed limit.
 
 ## Additional public skills
 
@@ -110,7 +111,8 @@ These documented endpoints need no account or API key:
 - `https://brand.replynodes.com/{domain}` — a free, zero-auth brand kit for one
   public domain. Append `.json` for machine-readable retrieval.
 - `https://img.replynodes.com/{domain}` — one public-domain logo image with no
-  signup or API key; see the focused `brand-logo` skill for fallback behavior.
+  signup, API key, or published fixed limit; see the focused `brand-logo` skill
+  for fallback behavior.
 - `https://api.replynodes.com/v1/brand/logo?domain={domain}` — keyless JSON logo
   lookup (Tier A, 20/day per capability).
 - The reviewed keyless `/v1` primitives need no key either (Tier B, 10/day per

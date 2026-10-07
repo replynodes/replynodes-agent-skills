@@ -1,8 +1,10 @@
 # ReplyNodes research recipes
 
-These are routing recipes, not fixed API contracts. The free Markdown, Brand, and
-Logo hosts are anonymous (Tier A: 20 requests/UTC day per capability), and the
-reviewed keyless `/v1` primitives — `GET /v1/web/search`,
+These are routing recipes, not fixed API contracts. The free Markdown and Brand
+hosts and the keyless `GET https://api.replynodes.com/v1/brand/logo` endpoint are
+anonymous at Tier A (20 requests/UTC day per capability); the
+`img.replynodes.com` Logo host is a separate anonymous surface with no published
+fixed limit. The reviewed keyless `/v1` primitives — `GET /v1/web/search`,
 `GET /v1/webcontext/scrape`, and the `/v1/appstore/*`, `/v1/googleplay/*`,
 `/v1/reddit/*`, and `/v1/youtube/*` reads — are anonymous at Tier B (10/day per
 capability). The remaining `/v1` routes (site `map`/`crawl`/`brand`, deeper
@@ -67,8 +69,9 @@ Return official facts separately from community observations.
 
 ## Brand reconstruction
 
-1. Confirm the official domain with keyed `/v1/web/search` and a primary-site
-   scrape, or start from a known domain with the free Brand host.
+1. Confirm the official domain with the free keyless `/v1/web/search` (Tier B)
+   plus a primary-site scrape, or start from a known domain with the free Brand
+   host; use keyed routes only for continuation or deeper enrichment.
 2. Free Brand host: `GET https://brand.replynodes.com/<domain>.json`.
 3. Keyed `/v1/brand/fonts` and `/v1/brand/styleguide` signals where needed.
 4. Map/crawl selected official pages for supporting copy and assets.

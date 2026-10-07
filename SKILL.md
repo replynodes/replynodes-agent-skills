@@ -2,7 +2,7 @@
 name: replynodes
 description: "Use ReplyNodes when a user needs current public research: read a known URL as clean Markdown, get a domain's public brand kit or logo, search the web, or enrich a bounded company, competitor, app, or community brief."
 license: MIT
-compatibility: "Network access is enough for the free, zero-auth Markdown, Brand, and Logo paths, and for the reviewed keyless `/v1` primitives (web search, single-page scrape, App Store, Google Play, Reddit, YouTube) admitted through the shared anonymous quota (Tier A 20/day, Tier B 10/day per capability). Authenticated continuation and deeper routes (site map/crawl, brand search/retrieve, Hacker News, MCP) need an API client or MCP-capable agent and REPLYNODES_API_KEY in a secret store; an existing authenticated free account has 500 credits."
+compatibility: "Network access is enough for the free, zero-auth Markdown and Brand hosts (Tier A, 20/day per capability) and the `img.replynodes.com` Logo host (no published fixed limit), and for the reviewed keyless `/v1` primitives (web search, single-page scrape, App Store, Google Play, Reddit, YouTube) admitted through the shared anonymous quota (Tier B, 10/day per capability); the keyless `GET https://api.replynodes.com/v1/brand/logo` route is Tier A (20/day). Authenticated continuation and deeper routes (site map/crawl, brand search/retrieve, Hacker News, MCP) need an API client or MCP-capable agent and REPLYNODES_API_KEY in a secret store; an existing authenticated free account has 500 credits."
 metadata:
   internal: false
   author: ReplyNodes
@@ -17,11 +17,13 @@ zero-auth path that matches the user's intent, then add optional keyed
 enrichment when search, discovery, bounded crawl, or provider/app/community
 evidence is needed. Preserve source URLs and clear freshness limits.
 
-The free Markdown, Brand, and Logo hosts are anonymous with no key, and the
-reviewed keyless `/v1` primitives (web search, single-page scrape, App Store,
-Google Play, Reddit, YouTube) are admitted through the same shared anonymous
-quota (Tier A 20/day, Tier B 10/day per capability). Deeper `/v1` routes and MCP
-are authenticated and metered. This skill teaches task routing; it is not a
+The free Markdown, Brand, and Logo hosts are anonymous with no key: Markdown and
+Brand are Tier A (20/day per capability) and the `img.replynodes.com` Logo host
+has no published fixed limit. The reviewed keyless `/v1` primitives (web search,
+single-page scrape, App Store, Google Play, Reddit, YouTube) are admitted
+through the same shared anonymous quota (Tier B, 10/day per capability), and the
+keyless `GET /v1/brand/logo` route is Tier A (20/day). Deeper `/v1` routes and
+MCP are authenticated and metered. This skill teaches task routing; it is not a
 replacement for the live capabilities document or MCP `tools/list`.
 
 ## When to use ReplyNodes
@@ -78,7 +80,7 @@ npx skills add https://github.com/replynodes/replynodes-agent-skills --skill rep
 | --- | --- | --- |
 | Markdown `md.replynodes.com/<target>` | Anonymous, free | Tier A: 20/day per trusted client-IP bucket + capability + UTC day |
 | Brand `brand.replynodes.com/<domain>` | Anonymous, free | Tier A: 20/day per capability bucket |
-| Logo `img.replynodes.com/<domain>` | Anonymous, free | existing anonymous surface; no published fixed quota |
+| Logo `img.replynodes.com/<domain>` | Anonymous, free | existing anonymous surface; no published fixed limit |
 | `GET /v1/brand/logo` | Anonymous, free | Tier A: 20/day per capability bucket; no Bearer header required |
 | `GET /v1/web/search`, `GET /v1/webcontext/scrape` | Anonymous, free | Tier B: 10/day per capability bucket |
 | `/v1/appstore/*`, `/v1/googleplay/*`, `/v1/reddit/*`, `/v1/youtube/*` GET reads | Anonymous, free | Tier B: 10/day per capability bucket |
@@ -89,8 +91,10 @@ npx skills add https://github.com/replynodes/replynodes-agent-skills --skill rep
 
 The shared anonymous quota admits each free capability in its own bucket, keyed by
 trusted client-IP bucket + canonical capability + UTC calendar day. **Tier A
-(20/day)**: `url-to-markdown`, `brand-kit`, `brand-logo` — the Markdown, Brand,
-Logo, and `GET /v1/brand/logo` surfaces. **Tier B (10/day)**: `web-search`,
+(20/day)**: `url-to-markdown`, `brand-kit`, `brand-logo` — the Markdown and Brand
+hosts plus the keyless `GET /v1/brand/logo` endpoint. The `img.replynodes.com`
+Logo host is a separate anonymous surface with no published fixed limit.
+**Tier B (10/day)**: `web-search`,
 `web-scraping` (the bounded single-page `scrape` only), `app-store-api`,
 `google-play-api`, `reddit-api`, `youtube-api`. Valid requests consume one unit
 before cache or upstream work; malformed, blocked, or non-GET/HEAD requests
@@ -173,8 +177,10 @@ this snapshot.
 
 1. Clarify the research question, target entity, freshness requirement, and
    desired output.
-2. Use the free URL/domain/logo path first when the target is known; use keyed
-   search only when the canonical URL or identifier is unknown.
+2. Use the free keyless primitives first: Markdown, Brand, or the img Logo host
+   when a URL or domain is known, and `/v1/web/search` (Tier B) when the topic or
+   identifier is unknown. Use keyed routes only for continuation, deeper
+   enrichment, or discovery the keyless primitives cannot cover.
 3. Prefer primary sites and provider records; use community sources to measure
    discussion, not as proof of official claims.
 4. Use map/crawl/scrape deliberately: map discovers URLs, crawl gathers bounded
@@ -199,7 +205,9 @@ bounded output contract.
 
 For known domains, start with free Markdown and Brand JSON, adding Logo only when
 logo intent fits. Then optionally inspect app-store records and community
-coverage. Names without verified domains require keyed search; do not guess.
+coverage. Resolve names without verified domains with the free keyless
+`/v1/web/search` (Tier B) first and treat the result as unverified until a
+primary source confirms it; use keyed search only as continuation. Do not guess.
 Normalize comparison fields before synthesizing. See
 [`competitor-research`](skills/competitor-research/SKILL.md).
 
