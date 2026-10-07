@@ -1,8 +1,8 @@
 ---
 name: reddit-api
-description: "Reddit API for agents: search posts, read a subreddit's posts, fetch a post by id or permalink, and inspect public user posts and activity. Read-only, keyed access."
+description: "Reddit API for agents: search posts, read a subreddit's posts, fetch a post by id or permalink, and inspect public user posts and activity. Free keyless first request; read-only, with authenticated continuation."
 license: MIT
-compatibility: "Authenticated keyed access only: an API client or MCP-capable agent, network access, and REPLYNODES_API_KEY in a secret store. No verified no-key Reddit route is documented."
+compatibility: "Free and keyless for the first request (network access only; shared anonymous quota, Tier B: 10 admitted requests per trusted client-IP bucket per capability per UTC day; no account or API key). Authenticated continuation needs an API client or MCP-capable agent and REPLYNODES_API_KEY in a secret store; an existing authenticated free account has 500 credits."
 metadata:
   internal: true
   author: ReplyNodes
@@ -16,19 +16,45 @@ metadata:
 
 Read public Reddit data for research: search posts across Reddit, list a
 subreddit's posts, fetch a post by id or permalink, and inspect a public user's
-posts or activity. ReplyNodes is **read-only** for public Reddit data, and this
-capability is **keyed-only**: every Reddit route is authenticated and metered on
-the same API-key path (fetcher #715/#727 keeps `/v1` provider routes
-keyed-only). There is no verified no-key Reddit endpoint. ReplyNodes cannot log
-in, post, vote, message, or change Reddit data.
+posts or activity. ReplyNodes is **read-only** for public Reddit data. The
+reviewed `/v1/reddit/*` GET routes are admitted through the shared anonymous
+quota with **no key required** (Tier B: 10 requests per UTC day per capability).
+A presented credential stays on the authenticated API-key/credits path.
+ReplyNodes cannot log in, post, vote, message, or change Reddit data.
 
-## Fastest working production path
+## Fastest working production path (no key first)
+
+1. Send one read-only GET with no credentials:
+
+   ```bash
+   curl --fail-with-body \
+     'https://api.replynodes.com/v1/reddit/search_posts?query=replynodes&limit=25'
+   ```
+
+   This first request needs no account, API key, or MCP connection. The reviewed
+   `/v1/reddit/*` GET routes share one anonymous bucket at **Tier B: 10 admitted
+   requests per trusted client-IP bucket per capability per UTC day**. Every
+   anonymous response carries `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and
+   `X-RateLimit-Reset`.
+
+2. Use a returned post id or permalink for detail calls. Keep each request
+   inside the 10/day anonymous bucket. Reddit's upstream provider can return
+   `502 upstream_unavailable` intermittently; that is a provider failure, not an
+   auth failure, and it still consumes one anonymous unit.
+
+## Authenticated continuation after the limit
+
+The same operations are exposed through the production MCP endpoint
+`https://mcp.replynodes.com/mcp` and at the REST origin
+`https://api.replynodes.com`, both requiring a ReplyNodes API key. Authenticated
+API-key, OAuth, and dashboard callers bypass the anonymous quota and use the
+existing auth/credits path; an existing authenticated free account has 500
+credits.
 
 1. Create a free ReplyNodes account and API key at
-   <https://docs.replynodes.com/docs/auth>. An existing authenticated free
-   account has 500 credits. Store the key in the host secret store as
-   `REPLYNODES_API_KEY` — never paste it into chat, a URL, a file, or a log.
-2. Search posts by query:
+   <https://docs.replynodes.com/docs/auth>.
+2. Store the key in the host secret store as `REPLYNODES_API_KEY` — never paste
+   it into chat, a URL, a file, or a log.
 
    ```bash
    curl --fail-with-body \
@@ -36,12 +62,8 @@ in, post, vote, message, or change Reddit data.
      -H "Authorization: Bearer ${REPLYNODES_API_KEY}"
    ```
 
-3. Use a returned post id or permalink for detail calls.
-
-The same operations are exposed through the production MCP endpoint
-`https://mcp.replynodes.com/mcp` with
-`Authorization: Bearer ${REPLYNODES_API_KEY}`. Run `initialize` and `tools/list`
-and use the live tool names and schemas; the live server is authoritative.
+3. Run MCP `initialize` and `tools/list` and use the live tool names and
+   schemas; the live server is authoritative.
 
 ## Supported operations (live routes, live schema wins)
 
@@ -59,8 +81,7 @@ canonical schema are at <https://api.replynodes.com/v1/capabilities>.
 
 ## Worked scenarios
 
-- **Find complaints about a product.**
-  `GET /v1/reddit/search_posts?query=<product>+complaints&sort=relevance`.
+- **Find complaints about a product.** `GET /v1/reddit/search_posts?query=<product>+complaints&sort=relevance`.
 - **Top posts in a community.**
   `GET /v1/reddit/subreddit_posts/<subreddit>?category=top&time_filter=month`.
 - **Read a known post.** `GET /v1/reddit/post_by_id/<id>` or
@@ -75,10 +96,14 @@ input schema.
 
 ## Errors and failure behavior
 
-Responses use the standard envelope. A missing, unknown, expired, or revoked key
-returns `401 invalid_or_expired_token`; insufficient scope returns
-`403 forbidden_scope`; exhausted credits return `429 rate_limited`; malformed
-parameters return `400 invalid_request`. Provider outages return
+Without a key, exceeding the anonymous Tier B bucket returns HTTP `429` with
+`code: anonymous_limit_reached`, a `Retry-After` header (seconds to the next UTC
+midnight), the same `X-RateLimit-*` headers, and a machine-readable
+`continuation` object pointing to <https://docs.replynodes.com/docs/auth>.
+Malformed parameters return `400 invalid_request` and consume no quota. With a
+key, a missing, unknown, expired, or revoked key returns
+`401 invalid_or_expired_token`; insufficient scope returns `403 forbidden_scope`;
+exhausted credits return `429 rate_limited`. Provider outages return
 `502 upstream_unavailable`. Treat `429`/`5xx` as retryable and other codes as
 terminal for the request.
 

@@ -72,15 +72,19 @@ Fields and assets are conditional. This retrieves existing public signals; it
 does not generate a brand, grant licensing rights, or promise that every asset
 exists.
 
-The free Markdown and Brand hosts share one anonymous quota of **20 admitted
-requests per trusted client-IP bucket per UTC day**, with `X-RateLimit-*`
-headers on every anonymous response. Over the limit the API returns HTTP `429`
-with code `anonymous_limit_reached`, a `Retry-After` header, and a
+The free capabilities are admitted through one shared anonymous quota, each in its
+own bucket keyed by trusted client-IP bucket + capability + UTC day: **Tier A
+(20 requests/day)** for Markdown, Brand, and Logo (`url-to-markdown`,
+`brand-kit`, `brand-logo`, including the keyless `GET /v1/brand/logo`), and
+**Tier B (10/day)** for the reviewed keyless `/v1` primitives — web search,
+single-page scrape, App Store, Google Play, Reddit, and YouTube. Every anonymous
+response carries `X-RateLimit-*` headers. Over the limit the API returns HTTP
+`429` with code `anonymous_limit_reached`, a `Retry-After` header, and a
 machine-readable `continuation` object. Offer the existing free-account/API-key
 continuation at <https://docs.replynodes.com/docs/auth> (an existing
-authenticated free account has 500 credits); never ask a user to paste a key
-into chat. The Logo host is a separate anonymous surface with no published fixed
-quota.
+authenticated free account has 500 credits); never ask a user to paste a key into
+chat. The `img.replynodes.com` Logo host is a separate anonymous surface with no
+published fixed quota.
 
 ## Additional public skills
 
@@ -89,9 +93,9 @@ primary first-install choices above:
 
 | Skill | Task/use | Key requirement |
 | --- | --- | --- |
-| `replynodes` | Route current public research across free HTTP paths and optional MCP enrichment. | Zero-auth-first for free Markdown, Brand, and Logo; optional deeper MCP enrichment is keyed. |
-| `competitor-research` | Compare verified public company domains and alternatives. | Known domains can start keyless; optional deeper MCP research is keyed. |
-| `app-store-api` | Read Apple App Store app, review, rating, developer, privacy, and similar-app data. | Keyed only; requires `REPLYNODES_API_KEY`. |
+| `replynodes` | Route current public research across free HTTP paths and optional MCP enrichment. | Zero-auth-first for free Markdown, Brand, and Logo, and for the free keyless `/v1` primitives; deeper MCP enrichment is keyed. |
+| `competitor-research` | Compare verified public company domains and alternatives. | Known domains and the keyless `/v1` primitives start free; deeper map/crawl, brand, and Hacker News routes are keyed. |
+| `app-store-api` | Read Apple App Store app, review, rating, developer, privacy, and similar-app data. | Free keyless first request (Tier B, 10/day); an API key is only needed for continuation past the limit. |
 
 `pdf-to-markdown` is not listed as public/live: its documented no-key direct
 HTTP contract is pending production deployment and readback. Other nested
@@ -107,6 +111,12 @@ These documented endpoints need no account or API key:
   public domain. Append `.json` for machine-readable retrieval.
 - `https://img.replynodes.com/{domain}` — one public-domain logo image with no
   signup or API key; see the focused `brand-logo` skill for fallback behavior.
+- `https://api.replynodes.com/v1/brand/logo?domain={domain}` — keyless JSON logo
+  lookup (Tier A, 20/day per capability).
+- The reviewed keyless `/v1` primitives need no key either (Tier B, 10/day per
+  capability): `GET /v1/web/search`, `GET /v1/webcontext/scrape`, and the
+  `/v1/appstore/*`, `/v1/googleplay/*`, `/v1/reddit/*`, and `/v1/youtube/*`
+  reads. An API key is only needed for continuation past the anonymous limit.
 
 The [ReplyNodes home page](https://replynodes.com/) is the product entry point;
 the canonical Agent Skills source is

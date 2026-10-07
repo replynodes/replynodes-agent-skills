@@ -35,8 +35,9 @@ current input schema before every call.
 - `list`
 
 These unprefixed names are the current live App Store inventory. Do not infer
-provider tool names from older snapshots or internal prefixes. No verified
-no-key App Store data path is claimed by this package.
+provider tool names from older snapshots or internal prefixes. The reviewed
+`/v1/appstore/*` GET routes are keyless (Tier B: 10 requests/UTC day per
+capability); the MCP tool names remain the callable surface for keyed use.
 
 ## Google Play (11)
 

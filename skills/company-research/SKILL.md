@@ -270,9 +270,10 @@ URL for `free_markdown` calls. In particular, the single
 1. Normalize a supplied domain (lowercase; trim scheme, trailing dot, path,
    query, fragment, and `www.`). A supplied domain works through the keyless
    Markdown and Brand HTTP surfaces. A company-name-only input is not a reliable
-   keyless domain resolver: do not guess — resolve a name only from keyed
-   `web_search` or verified Brand evidence; otherwise ask for a domain or leave
-   identity unresolved. Preserve every exact resolved source URL in evidence.
+   keyless domain resolver: do not guess — resolve a name only from the free
+   keyless `GET /v1/web/search` route (Tier B, no API key) or verified Brand
+   evidence; otherwise ask for a domain or leave identity unresolved. Preserve
+   every exact resolved source URL in evidence.
 2. Read the homepage first through `GET https://md.replynodes.com/<target>`; for
    example, `https://md.replynodes.com/https://replynodes.com/`. Then retrieve
    machine-readable identity/basic brand metadata through
@@ -287,12 +288,30 @@ the question needs broader coverage.
 ## Anonymous limits and continuation on the free hosts
 
 The free Markdown (`md.replynodes.com`) and Brand (`brand.replynodes.com`) hosts
-share one anonymous quota: **20 admitted requests per trusted client-IP bucket
-per UTC day** (fetcher #715/#727). Because a single brief may read several
-first-party pages plus the Brand JSON, one run can consume more than one unit —
-deduplicate URLs first and keep within the 8-page default budget so common runs
-stay inside the quota. Every anonymous response includes `X-RateLimit-Limit`,
-`X-RateLimit-Remaining`, and `X-RateLimit-Reset`.
+are each admitted through the shared anonymous quota at **Tier A: 20 admitted
+requests per trusted client-IP bucket per capability per UTC day**. The quota key
+pairs the trusted IP bucket with the canonical capability (`url-to-markdown` or
+`brand-kit`) and the UTC day, so a Brand read and a Markdown read use separate
+20/day buckets. The keyless primitive routes used to extend a brief have their
+own buckets: the reviewed `/v1` primitives — `GET /v1/web/search`,
+`GET /v1/webcontext/scrape`, and the `/v1/appstore/*`, `/v1/googleplay/*`,
+`/v1/reddit/*`, and `/v1/youtube/*` reads — are **Tier B: 10 admitted requests
+per trusted client-IP bucket per capability per UTC day**. Because a single brief
+may read several first-party pages plus the Brand JSON (and optionally a Tier B
+primitive), one run can consume more than one unit — deduplicate URLs first and
+keep within the 8-page default budget so common runs stay inside the quota.
+Every anonymous response includes `X-RateLimit-Limit`, `X-RateLimit-Remaining`,
+and `X-RateLimit-Reset`.
+
+## No top-level workflow route
+
+There is **no** `GET /v1/company-research` workflow route and none is fabricated
+here. The company brief is a host-agent composition of the keyless primitives
+above (free Markdown and Brand first, then the Tier B primitive routes when
+needed); the gateway admits each primitive against its own capability bucket
+rather than one charged workflow call. Deeper authenticated enrichment is
+available only through the production MCP tools described below. Do not claim a
+single "company research" API endpoint.
 
 On HTTP `429` the typed envelope is:
 

@@ -2,7 +2,7 @@
 name: replynodes
 description: "Use ReplyNodes when a user needs current public research: read a known URL as clean Markdown, get a domain's public brand kit or logo, search the web, or enrich a bounded company, competitor, app, or community brief."
 license: MIT
-compatibility: "Network access is enough for the free, zero-auth Markdown, Brand, and Logo paths (shared anonymous quota). Keyed search, provider, and app/community routes need an API client or MCP-capable agent and REPLYNODES_API_KEY in a secret store."
+compatibility: "Network access is enough for the free, zero-auth Markdown, Brand, and Logo paths, and for the reviewed keyless `/v1` primitives (web search, single-page scrape, App Store, Google Play, Reddit, YouTube) admitted through the shared anonymous quota (Tier A 20/day, Tier B 10/day per capability). Authenticated continuation and deeper routes (site map/crawl, brand search/retrieve, Hacker News, MCP) need an API client or MCP-capable agent and REPLYNODES_API_KEY in a secret store; an existing authenticated free account has 500 credits."
 metadata:
   internal: false
   author: ReplyNodes
@@ -17,9 +17,12 @@ zero-auth path that matches the user's intent, then add optional keyed
 enrichment when search, discovery, bounded crawl, or provider/app/community
 evidence is needed. Preserve source URLs and clear freshness limits.
 
-The free Markdown, Brand, and Logo hosts are anonymous. Every keyed `/v1`
-provider route is authenticated and metered. This skill teaches task routing; it
-is not a replacement for the live capabilities document or MCP `tools/list`.
+The free Markdown, Brand, and Logo hosts are anonymous with no key, and the
+reviewed keyless `/v1` primitives (web search, single-page scrape, App Store,
+Google Play, Reddit, YouTube) are admitted through the same shared anonymous
+quota (Tier A 20/day, Tier B 10/day per capability). Deeper `/v1` routes and MCP
+are authenticated and metered. This skill teaches task routing; it is not a
+replacement for the live capabilities document or MCP `tools/list`.
 
 ## When to use ReplyNodes
 
@@ -56,10 +59,14 @@ memory. Preserve the source URL for each important claim.
 3. Logo-only intent → free Logo:
    `GET https://img.replynodes.com/{domain}` with a bare domain. Report whether
    the result is a detected logo, favicon, or deterministic placeholder.
-4. Only afterward, use optional keyed access for search/discovery, bounded
-   map/crawl/scrape, or provider, app, and community enrichment.
+4. Free keyless `/v1` primitives for an unknown topic or current public fact
+   (`/v1/web/search`), a selector-scoped single-page read
+   (`/v1/webcontext/scrape`), or App Store, Google Play, Reddit, and YouTube
+   reads (Tier B, no key).
+5. Only afterward, use optional keyed access for site map/crawl, deeper brand
+   routes, Hacker News, or other authenticated enrichment.
 
-Steps 1–3 need no account or API key. A direct install is:
+Steps 1–4 need no account or API key. A direct install is:
 
 ```bash
 npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes --full-depth
@@ -67,21 +74,26 @@ npx skills add https://github.com/replynodes/replynodes-agent-skills --skill rep
 
 ## Auth and keyless classification
 
-| Surface | Classification | Evidence |
+| Surface | Classification | Tier / limit |
 | --- | --- | --- |
-| Markdown `md.replynodes.com/<target>` | Anonymous, free | shared 20/day anonymous quota (fetcher #715/#727) |
-| Brand `brand.replynodes.com/<domain>` | Anonymous, free | shared 20/day anonymous quota (fetcher #715/#727) |
-| Logo `img.replynodes.com/<domain>` | Anonymous, free | existing anonymous surface, unchanged by #715/#727; no published fixed quota |
-| `/v1/web/search`, `/v1/webcontext/*` | Keyed-only, metered | anonymous daily quota does not open `/v1` |
-| `/v1/appstore/*`, `/v1/googleplay/*`, `/v1/reddit/*`, `/v1/youtube/*`, `/v1/hackernews/*` | Keyed-only, metered | provider routes are `auth_required=true`, read-only |
-| `/v1/brand/*` | Keyed-only, metered | not an anonymous alternative to the free Brand host |
+| Markdown `md.replynodes.com/<target>` | Anonymous, free | Tier A: 20/day per trusted client-IP bucket + capability + UTC day |
+| Brand `brand.replynodes.com/<domain>` | Anonymous, free | Tier A: 20/day per capability bucket |
+| Logo `img.replynodes.com/<domain>` | Anonymous, free | existing anonymous surface; no published fixed quota |
+| `GET /v1/brand/logo` | Anonymous, free | Tier A: 20/day per capability bucket; no Bearer header required |
+| `GET /v1/web/search`, `GET /v1/webcontext/scrape` | Anonymous, free | Tier B: 10/day per capability bucket |
+| `/v1/appstore/*`, `/v1/googleplay/*`, `/v1/reddit/*`, `/v1/youtube/*` GET reads | Anonymous, free | Tier B: 10/day per capability bucket |
+| `GET /v1/webcontext/map`, `/crawl`, `/brand`, `/v1/brand/search`, `/retrieve`, `/fonts`, `/styleguide`, `/v1/hackernews/*` | Keyed-only, metered | authenticated routes; not in the anonymous policy |
 | MCP `mcp.replynodes.com/mcp` | Keyed | `Authorization: Bearer ${REPLYNODES_API_KEY}` |
 
 ## Anonymous limits and continuation
 
-The free Markdown and Brand hosts share one anonymous quota: **20 admitted
-requests per trusted client-IP bucket per UTC day**. Valid requests consume one
-unit before cache or upstream work; malformed, blocked, or non-GET/HEAD requests
+The shared anonymous quota admits each free capability in its own bucket, keyed by
+trusted client-IP bucket + canonical capability + UTC calendar day. **Tier A
+(20/day)**: `url-to-markdown`, `brand-kit`, `brand-logo` — the Markdown, Brand,
+Logo, and `GET /v1/brand/logo` surfaces. **Tier B (10/day)**: `web-search`,
+`web-scraping` (the bounded single-page `scrape` only), `app-store-api`,
+`google-play-api`, `reddit-api`, `youtube-api`. Valid requests consume one unit
+before cache or upstream work; malformed, blocked, or non-GET/HEAD requests
 consume none. Every anonymous response carries `X-RateLimit-Limit`,
 `X-RateLimit-Remaining`, and `X-RateLimit-Reset`.
 
@@ -137,18 +149,18 @@ old README. The live
 Choose the narrowest surface that answers the request, then combine surfaces when
 the question is comparative or investigative.
 
-| User intent | Start with (free) | Add when useful (keyed) |
+| User intent | Start with (free keyless) | Add when useful |
 | --- | --- | --- |
-| One known webpage | Markdown host | `/v1/webcontext/scrape` for selectors or metadata |
-| What pages exist on a site? | — | `/v1/webcontext/map` |
-| Several same-origin pages | — | `/v1/webcontext/crawl` |
-| Unknown topic or current public fact | — | `/v1/web/search` |
-| Company identity and assets | Brand host, then Logo | `/v1/brand/retrieve`, `/v1/brand/fonts`, `/v1/brand/styleguide` |
-| iOS app research | — | `/v1/appstore/*` |
-| Android app research | — | `/v1/googleplay/*` |
-| YouTube coverage | — | `/v1/youtube/*` |
-| Reddit opinions or discussion | — | `/v1/reddit/*` |
-| Developer and technical discussion | — | `/v1/hackernews/*` |
+| One known webpage | Markdown host, or `/v1/webcontext/scrape` for selectors | authenticated map/crawl for site structure |
+| What pages exist on a site? | — | `/v1/webcontext/map` (keyed) |
+| Several same-origin pages | — | `/v1/webcontext/crawl` (keyed) |
+| Unknown topic or current public fact | `/v1/web/search` (Tier B) | — |
+| Company identity and assets | Brand host, then Logo or `/v1/brand/logo` | `/v1/brand/retrieve`, `/v1/brand/fonts`, `/v1/brand/styleguide` (keyed) |
+| iOS app research | `/v1/appstore/*` (Tier B) | — |
+| Android app research | `/v1/googleplay/*` (Tier B) | — |
+| YouTube coverage | `/v1/youtube/*` (Tier B) | — |
+| Reddit opinions or discussion | `/v1/reddit/*` (Tier B) | — |
+| Developer and technical discussion | — | `/v1/hackernews/*` (keyed) |
 
 Provider skill routing: `url-to-markdown`, `brand-kit`, `brand-logo`,
 `web-search`, `web-scraping`, `company-research`, `competitor-research`,
@@ -193,18 +205,18 @@ Normalize comparison fields before synthesizing. See
 
 ### Mobile-app research
 
-Resolve the app with the keyed App Store or Google Play search, then fetch
-details, ratings, reviews, privacy/data-safety disclosures, developer apps,
-availability, and similar apps as supported. Use web, Reddit, and YouTube only
-for external context around the store record.
+Resolve the app with the free keyless App Store or Google Play search (Tier B),
+then fetch details, ratings, reviews, privacy/data-safety disclosures, developer
+apps, availability, and similar apps as supported. Use web, Reddit, and YouTube
+only for external context around the store record.
 
 ### Content and brand research
 
 For a topic, search the web, search YouTube, fetch video metadata/transcripts or
-comments, search Reddit, and search Hacker News. For brand reconstruction,
-retrieve the brand profile from the free Brand host, add fonts/styleguide where
-needed, then scrape relevant official pages. Do not treat a logo or color result
-as proof of ownership without the source URL.
+comments, and search Reddit — all free keyless Tier B — plus keyed Hacker News.
+For brand reconstruction, retrieve the brand profile from the free Brand host,
+add fonts/styleguide where needed, then scrape relevant official pages. Do not
+treat a logo or color result as proof of ownership without the source URL.
 
 More compact workflow recipes are in
 [references/research-workflows.md](references/research-workflows.md).

@@ -81,11 +81,15 @@ contract is the
 
 ## Anonymous limits and continuation
 
-The free Brand and Markdown hosts share one anonymous quota: **20 admitted
-requests per trusted client-IP bucket per UTC day**. Every anonymous response
-includes `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`.
-When the limit is reached the response is HTTP `429` with a typed envelope and a
-`Retry-After` header (seconds to the next UTC midnight):
+The free Brand host is admitted through the shared anonymous quota at **Tier A:
+20 admitted requests per trusted client-IP bucket per capability per UTC day**.
+The quota key pairs the trusted IP bucket with the canonical capability
+(`brand-kit`) and the UTC day, so a Brand read does not consume a Markdown
+(`url-to-markdown`) or Logo (`brand-logo`) unit; each free capability has its own
+20/day Tier A bucket. Every anonymous response includes `X-RateLimit-Limit`,
+`X-RateLimit-Remaining`, and `X-RateLimit-Reset`. When the limit is reached the
+response is HTTP `429` with a typed envelope and a `Retry-After` header (seconds
+to the next UTC midnight):
 
 ```json
 {"error":{"code":"anonymous_limit_reached","message":"The anonymous daily limit has been reached; an existing authenticated free account has 500 credits.","request_id":"<id>","continuation":{"url":"https://docs.replynodes.com/docs/auth"}}}
