@@ -1,0 +1,305 @@
+{
+  "schema": "replynodes-registry-readback/v1",
+  "observed_at_utc": "2026-10-07",
+  "source_repository": "replynodes/replynodes-agent-skills",
+  "source_head": "166f0f515afb27e7cc393fa5b0c236005661b9fc",
+  "method": "live read-only public HTTP GET; no credentials; no registry writes",
+  "skills_sh": {
+    "repo_collection_url": "https://www.skills.sh/replynodes/replynodes-agent-skills",
+    "badge_url": "https://skills.sh/b/replynodes/replynodes-agent-skills",
+    "badge_total_installs": 32,
+    "public_api_note": "https://skills.sh/api/v1/skills... returned HTTP 401 authentication_required (Vercel OIDC token required); not used",
+    "soft_page_rule": "any slug returns HTTP 200 with generated meta; real listing requires a rendered description + install count",
+    "real_listings": {
+      "company-research": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/company-research",
+        "http": 200,
+        "installs": 8,
+        "rendered_description_sha256": "217f9b1ad258ff681fb432c948e28e2c81e7e0b9a44694902f016630cc444031",
+        "state": "match (display-truncated)"
+      },
+      "replynodes": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/replynodes",
+        "http": 200,
+        "installs": 6,
+        "rendered_description_sha256": "c1e2f83b1b05a725d504ab6f69d0600ea60fea283294516449d480c6bcbfdb04",
+        "state": "differs (pre-#57 wording)"
+      },
+      "brand-kit": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/brand-kit",
+        "http": 200,
+        "installs": 2,
+        "rendered_description_sha256": "b014ee780024b6e4d7c980be14aee71435153cdc03def1b955b62673a91b01e8",
+        "state": "differs (pre-#57 wording)"
+      },
+      "competitor-research": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/competitor-research",
+        "http": 200,
+        "installs": 2,
+        "rendered_description_sha256": "8f3e62c0cf60e6920ab9bef32c1652c2b47b77db460cd796cb4465b684266f44",
+        "state": "differs (pre-#57 wording)"
+      },
+      "url-to-markdown": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/url-to-markdown",
+        "http": 200,
+        "installs": 2,
+        "rendered_description_sha256": "89f62be02ffada36735100873ad404118476f7d93f69b6bc276514bfbe30caf2",
+        "state": "differs (pre-#57 wording)"
+      },
+      "app-store-research": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/app-store-research",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "4800ca074163640eb349e9060551b3db5ca5bc5fe96f908e7198ac1a7da80ff8",
+        "state": "legacy slug (superseded by #57 rename)"
+      },
+      "brand-fonts": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/brand-fonts",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "7c1b00abe2cfc95a549389cc1ca92c1d7174009b2af55ca87e4436eef42d4999",
+        "state": "differs (pre-#57 wording)"
+      },
+      "brand-intelligence": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/brand-intelligence",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "0112426cb853ccedd48db21ab6f5e0d5334ea2f6444042684a24ea8a76cc02f2",
+        "state": "differs (pre-#57 wording)"
+      },
+      "brand-profile": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/brand-profile",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "54da411d5ee9e8ecef640f20d521d580620d86521c5090e6348578645d9a82e0",
+        "state": "differs (pre-#57 wording)"
+      },
+      "brand-search": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/brand-search",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "a77fa54fb433cbf65dd153942650686f58fba4427e9652c1aab7e83248de5341",
+        "state": "differs (pre-#57 wording)"
+      },
+      "brand-styleguide": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/brand-styleguide",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "8603929b1255667dd40b9f13f4b169ca2e12c9c792e2c4c7e79a7c8624b4225d",
+        "state": "differs (pre-#57 wording)"
+      },
+      "pdf-to-markdown": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/pdf-to-markdown",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "177a60ae764a3e5d176c6e9387312bd6e6169b904b3edf1f76a38626d3e14f1b",
+        "state": "match"
+      },
+      "reddit-research": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/reddit-research",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "396ff12c718e2ca01b081d145a6b28d52f93806cf3eac0b63a7bdd28f364a947",
+        "state": "legacy slug (superseded by #57 rename)"
+      },
+      "web-scraping": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/web-scraping",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "719e081c09668d1ae840666c99bce556dfd1352f47c8ef1a083128cc742d3f84",
+        "state": "differs (pre-#57 wording)"
+      },
+      "web-search": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/web-search",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "ded6c7fcb36bbfaca72def0630f678d4d1f28a6a177883836a4217768decd96e",
+        "state": "differs (pre-#57 wording)"
+      },
+      "brandkitfetch": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/brandkitfetch",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "8a40b7aed539109585bde6687b971abfde9edb138accf654c703a24b279eeddf",
+        "state": "legacy (no canonical repo path)"
+      },
+      "brand-kit-fetch": {
+        "url": "https://www.skills.sh/replynodes/replynodes-agent-skills/brand-kit-fetch",
+        "http": 200,
+        "installs": 1,
+        "rendered_description_sha256": "8a40b7aed539109585bde6687b971abfde9edb138accf654c703a24b279eeddf",
+        "state": "legacy (no canonical repo path)"
+      }
+    },
+    "soft_only_slugs": [
+      "app-store-api",
+      "brand-logo",
+      "google-play-api",
+      "google-play-research",
+      "reddit-api",
+      "youtube-api",
+      "youtube-research"
+    ]
+  },
+  "clawhub": {
+    "publisher_url": "https://clawhub.ai/replynodes-ai",
+    "publisher_page_http": 200,
+    "row_api_template": "https://clawhub.ai/api/v1/skills/<slug>?owner=replynodes-ai",
+    "owner_handle": "replynodes-ai",
+    "packages": {
+      "replynodes": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/replynodes",
+        "http": 200,
+        "version": "1.0.3",
+        "downloads": 396,
+        "installs": 0,
+        "updated_at_utc": "2026-08-19T01:20:14Z",
+        "display_name": "Social Media Scheduler — Publish, Cross-Post & Auto-Post via ReplyNodes for OpenClaw",
+        "description_sha256": "06472446326750bbd694d5637880d8403dc40aa712f4543a5e1cd724ea682adc"
+      },
+      "company-research": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/company-research",
+        "http": 200,
+        "version": "1.0.3",
+        "downloads": 58,
+        "installs": 0,
+        "updated_at_utc": "2026-10-05T02:33:42Z",
+        "display_name": "Free Company Research & Business Intelligence",
+        "description_sha256": "ae229c47e35cdc772b4e22303dc850928d0c800072d51e2286e10f262d49bd6f"
+      },
+      "url-to-markdown": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/url-to-markdown",
+        "http": 200,
+        "version": "1.1.2",
+        "downloads": 121,
+        "installs": 1,
+        "updated_at_utc": "2026-09-27T03:23:24Z",
+        "display_name": "url-to-markdown",
+        "description_sha256": "0bd3282ab1b9faeb7012969b85ca057b9523f05a18ad89ccf84702fb0232849a"
+      },
+      "brand-logo": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/brand-logo",
+        "http": 200,
+        "version": "1.0.0",
+        "downloads": 131,
+        "installs": 0,
+        "updated_at_utc": "2026-09-27T03:23:33Z",
+        "display_name": "brand-logo",
+        "description_sha256": "d66ebe8f0eac86ff4dcc720ee6fedbaeb8e80bdbbb1254e06d1294b648b3c771"
+      },
+      "appstore-api": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/appstore-api",
+        "http": 200,
+        "version": "2.1.3",
+        "downloads": 735,
+        "installs": 1,
+        "updated_at_utc": "2026-09-12T16:55:48Z",
+        "display_name": "Apple App Store API",
+        "description_sha256": "203e0d58be1258b7cbb49ae2f94708766ae1f992ec034cacb30a4e10b1f5043f"
+      },
+      "googleplay-public-data-api": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/googleplay-public-data-api",
+        "http": 200,
+        "version": "1.1.2",
+        "downloads": 463,
+        "installs": 1,
+        "updated_at_utc": "2026-09-24T22:03:28Z",
+        "display_name": "Google Play Public Data API",
+        "description_sha256": "4d9866a935edb56fe9d50bf31133cc174bd13bd6a62e21eec2a043116a887d63"
+      },
+      "reddit-api": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/reddit-api",
+        "http": 200,
+        "version": "1.1.0",
+        "downloads": 271,
+        "installs": 0,
+        "updated_at_utc": "2026-09-09T11:28:49Z",
+        "display_name": "Reddit Api",
+        "description_sha256": "42d398cee0aadb252000dce056e545fcd8dc5b4b7ef47809fc9ef5370963555a"
+      },
+      "youtube-public-api": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/youtube-public-api",
+        "http": 200,
+        "version": "2.0.1",
+        "downloads": 462,
+        "installs": 1,
+        "updated_at_utc": "2026-09-09T10:09:49Z",
+        "display_name": "Youtube Public Api",
+        "description_sha256": "28e1eb55f89e56f8db22b286f95f8d46bcff23da83eb967b03ed288fe94c1ca5"
+      },
+      "brandkitfetch": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/brandkitfetch",
+        "http": 200,
+        "version": "1.0.0",
+        "downloads": 119,
+        "installs": 0,
+        "updated_at_utc": "2026-09-28T00:53:51Z",
+        "display_name": "Brand Kit Fetch",
+        "description_sha256": "41acd637f103b0c8a128774d442910076d0522787ec075d7bd9d6330f8364d02"
+      },
+      "hackernews-api": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/hackernews-api",
+        "http": 200,
+        "version": "2.0.1",
+        "downloads": 521,
+        "installs": 3,
+        "updated_at_utc": "2026-09-09T10:09:37Z",
+        "display_name": "Hackernews Api",
+        "description_sha256": "e8541610342342a3f2d03b650568bfe73d1eca26afe4563ade1dfb7bf7e5d3bf"
+      },
+      "fomo-app-data-api": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/fomo-app-data-api",
+        "http": 200,
+        "version": "2.0.1",
+        "downloads": 508,
+        "installs": 1,
+        "updated_at_utc": "2026-09-09T10:10:38Z",
+        "display_name": "Fomo App Data Api",
+        "description_sha256": "7af604aa314fd396a82df879192daa0a921a8e8b08af0d134ab4340957bd76e2"
+      },
+      "seo-geo-growth-agent": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/seo-geo-growth-agent",
+        "http": 200,
+        "version": "1.0.0",
+        "downloads": 299,
+        "installs": 0,
+        "updated_at_utc": "2026-08-21T02:03:20Z",
+        "display_name": "SEO & GEO Growth Agent",
+        "description_sha256": "a5c29e4f65c99a887a43e933b5baa5dfbb21366d465d582faebc07581e0e3a55"
+      },
+      "web-research-public-data": {
+        "page_url": "https://clawhub.ai/replynodes-ai/skills/web-research-public-data",
+        "http": 200,
+        "version": "1.0.2",
+        "downloads": 237,
+        "installs": 1,
+        "updated_at_utc": "2026-09-16T11:09:24Z",
+        "display_name": "Web Search, Web Scraping, Crawl, Reddit, YouTube & App Research API",
+        "description_sha256": "cfbd3311d2c0dc5315122085b9979fb1b5601b54deafdefa18c266e7d60bd57b"
+      }
+    },
+    "packages_total_downloads": 4321,
+    "packages_total_installs": 9,
+    "canonical_slugs_absent": {
+      "competitor-research": "404",
+      "brand-kit": "404",
+      "app-store-api": "404",
+      "google-play-api": "404",
+      "youtube-api": "404",
+      "web-search": "404",
+      "web-scraping": "404",
+      "pdf-to-markdown": "404",
+      "brand-fonts": "404",
+      "brand-search": "404",
+      "brand-styleguide": "404",
+      "brand-profile": "404",
+      "brand-intelligence": "404",
+      "brand-kit-fetch": "404"
+    }
+  },
+  "notes": [
+    "Registry counts are external display signals, not users and not API callers.",
+    "ClawHub public rows expose no source repository/commit.",
+    "skills.sh exposes no version or source commit for a listing."
+  ]
+}
