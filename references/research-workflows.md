@@ -1,10 +1,20 @@
 # ReplyNodes research recipes
 
-These are routing recipes, not fixed API contracts. The free Markdown, Brand, and
-Logo hosts are anonymous (shared 20-request/UTC-day quota). Every `/v1` provider
-route is keyed: confirm the current route names, parameters, and schemas with the
-live [capabilities document](https://api.replynodes.com/v1/capabilities) or MCP
-`tools/list` before execution.
+These are routing recipes, not fixed API contracts. The free Markdown and Brand
+hosts and the keyless `GET https://api.replynodes.com/v1/brand/logo` endpoint are
+anonymous at Tier A (20 requests/UTC day per capability); the
+`img.replynodes.com` Logo host is a separate anonymous surface with no published
+fixed limit. The reviewed keyless `/v1` primitives — `GET /v1/web/search`,
+`GET /v1/webcontext/scrape`, and the `/v1/appstore/*`, `/v1/googleplay/*`,
+`/v1/reddit/*`, and `/v1/youtube/*` reads — are anonymous at Tier B (10/day per
+capability). The remaining `/v1` routes (site `map`/`crawl`/`brand`, deeper
+`/v1/brand/*`, and `/v1/hackernews/*`) are keyed: confirm the current route names,
+parameters, and schemas with the live
+[capabilities document](https://api.replynodes.com/v1/capabilities) or MCP
+`tools/list` before execution. Over the anonymous limit the free routes return
+`429 anonymous_limit_reached` with a `Retry-After` header and an
+<https://docs.replynodes.com/docs/auth> continuation (an existing authenticated
+free account has 500 credits).
 
 ## Company profile
 
@@ -48,18 +58,20 @@ Return official facts separately from community observations.
 
 ## Content and community research
 
-1. Keyed `/v1/web/search` to establish the topic and primary sources.
-2. Keyed `/v1/youtube/search`, video details, transcripts, comments, and related
-   videos.
-3. Keyed `/v1/reddit/search_posts` and inspect relevant posts or subreddit
-   listings.
+1. Free keyless `/v1/web/search` (Tier B) to establish the topic and primary
+   sources.
+2. Free keyless `/v1/youtube/search` (Tier B), video details, transcripts,
+   comments, and related videos.
+3. Free keyless `/v1/reddit/search_posts` (Tier B) and inspect relevant posts or
+   subreddit listings.
 4. Keyed `/v1/hackernews/search` and inspect high-value items with comments.
 5. Synthesize themes while preserving which claims came from which source.
 
 ## Brand reconstruction
 
-1. Confirm the official domain with keyed `/v1/web/search` and a primary-site
-   scrape, or start from a known domain with the free Brand host.
+1. Confirm the official domain with the free keyless `/v1/web/search` (Tier B)
+   plus a primary-site scrape, or start from a known domain with the free Brand
+   host; use keyed routes only for continuation or deeper enrichment.
 2. Free Brand host: `GET https://brand.replynodes.com/<domain>.json`.
 3. Keyed `/v1/brand/fonts` and `/v1/brand/styleguide` signals where needed.
 4. Map/crawl selected official pages for supporting copy and assets.

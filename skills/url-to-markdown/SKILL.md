@@ -65,11 +65,15 @@ Successful canonical URLs are cached for 24 hours in shared Redis; the
 
 ## Anonymous limits and continuation
 
-The free Markdown and Brand hosts share one anonymous quota: **20 admitted
-requests per trusted client-IP bucket per UTC day**. A valid request consumes one
-unit before cache or upstream work; malformed, blocked, or non-GET/HEAD requests
-consume none. Every anonymous response includes `X-RateLimit-Limit`,
-`X-RateLimit-Remaining`, and `X-RateLimit-Reset`.
+The free Markdown host is admitted through the shared anonymous quota at **Tier
+A: 20 admitted requests per trusted client-IP bucket per capability per UTC
+day**. The quota key pairs the trusted IP bucket with the canonical capability
+(`url-to-markdown`) and the UTC day, so a Markdown read does not consume a Brand
+(`brand-kit`) unit or a Logo (`brand-logo`) unit; each free capability has its
+own 20/day Tier A bucket. A valid request consumes one unit before cache or
+upstream work; malformed, blocked, or non-GET/HEAD requests consume none. Every
+anonymous response includes `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and
+`X-RateLimit-Reset`.
 
 When the limit is reached the response is HTTP `429` with a typed envelope and a
 `Retry-After` header (seconds to the next UTC midnight):
