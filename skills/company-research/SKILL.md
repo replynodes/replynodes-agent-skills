@@ -284,6 +284,29 @@ For first use, an agent can treat the homepage Markdown and Brand JSON responses
 as its first evidence, then add optional authenticated MCP enrichment only when
 the question needs broader coverage.
 
+## Anonymous limits and continuation on the free hosts
+
+The free Markdown (`md.replynodes.com`) and Brand (`brand.replynodes.com`) hosts
+share one anonymous quota: **20 admitted requests per trusted client-IP bucket
+per UTC day** (fetcher #715/#727). Because a single brief may read several
+first-party pages plus the Brand JSON, one run can consume more than one unit —
+deduplicate URLs first and keep within the 8-page default budget so common runs
+stay inside the quota. Every anonymous response includes `X-RateLimit-Limit`,
+`X-RateLimit-Remaining`, and `X-RateLimit-Reset`.
+
+On HTTP `429` the typed envelope is:
+
+```json
+{"error":{"code":"anonymous_limit_reached","message":"The anonymous daily limit has been reached; an existing authenticated free account has 500 credits.","request_id":"<id>","continuation":{"url":"https://docs.replynodes.com/docs/auth"}}}
+```
+
+plus a `Retry-After` header (seconds to the next UTC midnight). Record the `429`
+in `coverage_limits` and offer the user the existing free-account continuation at
+<https://docs.replynodes.com/docs/auth> — an existing authenticated free account
+has 500 credits. Never ask the user to paste an API key into chat. If the shared
+Redis-backed quota or cache is unavailable the route fails closed with HTTP
+`503 degraded`.
+
 ## Producer/host boundary and attribution handoff
 
 Static Markdown instructions cannot force an arbitrary host transport to add

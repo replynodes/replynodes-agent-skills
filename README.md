@@ -72,6 +72,16 @@ Fields and assets are conditional. This retrieves existing public signals; it
 does not generate a brand, grant licensing rights, or promise that every asset
 exists.
 
+The free Markdown and Brand hosts share one anonymous quota of **20 admitted
+requests per trusted client-IP bucket per UTC day**, with `X-RateLimit-*`
+headers on every anonymous response. Over the limit the API returns HTTP `429`
+with code `anonymous_limit_reached`, a `Retry-After` header, and a
+machine-readable `continuation` object. Offer the existing free-account/API-key
+continuation at <https://docs.replynodes.com/docs/auth> (an existing
+authenticated free account has 500 credits); never ask a user to paste a key
+into chat. The Logo host is a separate anonymous surface with no published fixed
+quota.
+
 ## Additional public skills
 
 These are available in the canonical public metadata but are not the three
@@ -81,7 +91,7 @@ primary first-install choices above:
 | --- | --- | --- |
 | `replynodes` | Route current public research across free HTTP paths and optional MCP enrichment. | Zero-auth-first for free Markdown, Brand, and Logo; optional deeper MCP enrichment is keyed. |
 | `competitor-research` | Compare verified public company domains and alternatives. | Known domains can start keyless; optional deeper MCP research is keyed. |
-| `app-store-research` | Read Apple App Store app, review, rating, developer, privacy, and similar-app data. | Authenticated MCP only; requires `REPLYNODES_API_KEY`. |
+| `app-store-api` | Read Apple App Store app, review, rating, developer, privacy, and similar-app data. | Keyed only; requires `REPLYNODES_API_KEY`. |
 
 `pdf-to-markdown` is not listed as public/live: its documented no-key direct
 HTTP contract is pending production deployment and readback. Other nested
@@ -175,6 +185,24 @@ provenance, see [PROVENANCE.md](PROVENANCE.md).
 Run the [package validator](scripts/validate-package.sh) and
 [package tests](tests/test-package.sh) to check the repository layout and
 deterministic package behavior.
+
+## Slug migration
+
+Agent-skills issue #57 (canonical taxonomy #56) renamed the provider research
+slugs to exact provider API slugs. Install the canonical slug:
+
+| Legacy slug | Canonical slug |
+| --- | --- |
+| `app-store-research` | `app-store-api` |
+| `google-play-research` | `google-play-api` |
+| `reddit-research` | `reddit-api` |
+| `youtube-research` | `youtube-api` |
+| `brandkitfetch`, `brand-kit-fetch` | `brand-kit` |
+
+The internal `brand-profile` and `brand-intelligence` skills are merged into
+`brand-kit` as internal guidance. See
+[references/slug-migration-2026-10-07.md](references/slug-migration-2026-10-07.md).
+Registry-side unpublish, redirect, and readback are owned by issue #58.
 
 ## Example agent prompts
 
