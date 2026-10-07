@@ -99,7 +99,7 @@ ClawHub package totals: **downloads 4321**, **installs 9** (external display sig
   `youtube-public-api` vs `youtube-api`). The umbrella slug `replynodes` renders as
   `Social Media Scheduler — Publish, Cross-Post & Auto-Post…`, which is not this
   repository's read-only umbrella. `company-research` carries #57-era wording but its
-  stored version is `1.0.3`, not the repository's `2.0.0`.
+  stored version is `1.0.3`, not the repository's `2.0.6`.
 
 ## Official documented refresh / submission path
 

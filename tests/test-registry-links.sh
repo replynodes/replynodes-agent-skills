@@ -61,6 +61,7 @@ for rel in (
 # 6. registry counts must be labelled external signals, not users
 assert "external display signals" in inv
 assert "external display signals" in sync
+assert "PENDING" in sync
 assert "real users or API callers" in sync or "not users" in sync
 
 print("registry link and evidence-consistency checks passed")

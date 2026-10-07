@@ -86,6 +86,12 @@ listing to "cover" a stale one is explicitly out of scope.
 
 ## Approved migration / deprecation outcome
 
+> **Status of every outcome below: PENDING owner/registry action.** No supported public
+> write was performed on either surface in this change, so no unpublish, hide, redirect,
+> merge, or deprecation has taken effect. skills.sh outcomes await the upstream
+> `vercel-labs/skills` manifest pull request; ClawHub outcomes await owner-run,
+> authenticated `clawhub` commands.
+
 | Registry | Legacy slug | Canonical successor | #56 outcome | This run |
 | --- | --- | --- | --- | --- |
 | skills.sh | `brandkitfetch` | `brand-kit` | migrate (owner-supported) | read back still live; no write (upstream PR path) |
