@@ -1,6 +1,12 @@
 ---
 name: app-store-api
-description: "Apple App Store API for agents: search iOS apps by term, read ratings and reviews, look up apps by id, list developer apps, read privacy details, and find similar apps. Free keyless first request; read-only, with authenticated continuation."
+description: >-
+  Apple App Store API for AI agents: search iOS apps by keyword, read ratings
+  and reviews, look up an app by id, list a developer's apps, read privacy
+  details, and find similar apps. Use it for App Store research, iOS app
+  discovery, ASO (app store optimization), competitor app and review analysis,
+  and developer catalog lookups. Free keyless first request, read-only, with
+  an optional authenticated continuation.
 license: MIT
 compatibility: "Free and keyless for the first request (network access only; shared anonymous quota, Tier B: 10 admitted requests per trusted client-IP bucket per capability per UTC day; no account or API key). Authenticated continuation needs an API client or MCP-capable agent and REPLYNODES_API_KEY in a secret store; an existing authenticated free account has 500 credits."
 metadata:
@@ -9,7 +15,7 @@ metadata:
   version: "1.0.0"
   endpoint: https://api.replynodes.com
   mcp_endpoint: https://mcp.replynodes.com/mcp
-  keywords: [App Store API, iOS app search, app reviews, app ratings, app developer, app privacy, similar apps, iTunes]
+  keywords: [App Store API, iOS app search, App Store search, app reviews, app ratings, app developer, app privacy, similar apps, iTunes API, ASO, app store optimization, competitor apps, iOS, keyless]
 ---
 
 # ReplyNodes Apple App Store API
