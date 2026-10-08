@@ -71,7 +71,7 @@ memory. Preserve the source URL for each important claim.
 Steps 1–4 need no account or API key. A direct install is:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes --full-depth
+npx skills add replynodes/replynodes-agent-skills
 ```
 
 ## Auth and keyless classification

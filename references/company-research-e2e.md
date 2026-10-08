@@ -70,3 +70,25 @@ statement and does not claim host lifecycle analytics.
 `docs/company-research-before-after.json` records qualitative before/after
 evidence for representative companies (including Stripe) between the placeholder
 baseline and the extraction-aware contract.
+
+## Live re-verification (2026-10-08)
+
+Re-executed 2026-10-08 with `tests/run-company-research-keyless-e2e.py` under a
+clean `HOME` and `DISABLE_TELEMETRY=1`: a bounded live keyless run over the first
+three benchmark companies (Stripe, Figma, Loom) emitted briefs that pass the
+runner's schema/contract/quality validator, and all 20 briefs in
+`docs/company-research-keyless-e2e.json` re-validate against the same
+`company_brief_validator` from the source head
+`4aa42f65980056d3464f596d0fd749c3be17eca7`. The default 20-company live run is
+data-dependent: it is accepted only when at least one company grounds public
+pricing, and a changed or noisy live page can trip an extraction-quality
+assertion (observed 2026-10-08 as a linked-evidence excerpt check).
+
+Focused-install reference limitation: `npx skills add
+https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research`
+installs only `skills/company-research/SKILL.md`. The repository-root
+`references/` files that the skill names (`company-brief.schema.json`,
+`company-brief-contract.md`, `company-research-e2e.md`,
+`company-research-distribution.md`) are not bundled with the focused skill; they
+resolve only in the full repository (umbrella install). The inline contract in
+`SKILL.md` is self-contained for host use.
