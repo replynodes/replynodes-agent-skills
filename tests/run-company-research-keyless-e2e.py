@@ -22,7 +22,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from company_brief_validator import validate_brief, is_filler, material_claims, content_quality_issues
+from company_brief_validator import validate_brief, is_filler, material_claims, content_quality_issues, excerpt_supports
 
 DEFAULT_CAP = 8
 HARD_CAP = 12
@@ -986,7 +986,10 @@ SUBUNIT_UNIT = re.compile(r"(?:/|per)\s*(user|seat|editor|member|month|year|mo|y
 MODEL_CUES = (
     (r"pay[- ]as[- ]you[- ]go", "Pay-as-you-go"),
     (r"usage[- ]based", "Usage-based"),
-    (r"(?:per|/)\s*(?:user|seat|editor|member|workspace)(?:\s*/?\s*(?:month|year|mo|yr))?", None),
+    # The per-unit cue must sit on a word boundary: a camelCase machine key such as
+    # `costPerUserPerMonthInCents` is not readable pricing prose and must not be read
+    # as a model cue (it would title-case to the meaningless claim `Peruser`).
+    (r"(?<![A-Za-z])(?:per|/)\s*(?:user|seat|editor|member|workspace)(?:\s*/?\s*(?:month|year|mo|yr))?(?![A-Za-z])", None),
     (r"\bsubscription\b|\bbilled (?:monthly|annually)\b|\bper month\b", None),
     (r"\bfree\b", "Free tier"),
 )
@@ -1043,11 +1046,15 @@ def extract_pricing(text):
     model_value, model_excerpt = None, None
     for pattern, label in MODEL_CUES:
         match = re.search(pattern, plain, re.I)
-        if match:
-            if label is None:
-                label = match.group(0).strip().title()
-            model_value = label
-            model_excerpt = normalize_excerpt(plain[max(0, match.start() - 60): match.end() + 140])
+        if not match:
+            continue
+        candidate = label if label is not None else match.group(0).strip().title()
+        excerpt = normalize_excerpt(plain[max(0, match.start() - 60): match.end() + 140])
+        # Fail closed: a cue only becomes the model when the linked excerpt actually
+        # grounds the derived value. This rejects machine text (for example a camelCase
+        # key) that would otherwise yield an unsupportable label like `Peruser`.
+        if candidate and excerpt_supports(candidate, excerpt):
+            model_value, model_excerpt = candidate, excerpt
             break
 
     plans = []

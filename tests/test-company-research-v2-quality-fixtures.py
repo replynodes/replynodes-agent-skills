@@ -173,5 +173,55 @@ assert runner.html_to_text("<p>Deploy your <em>apps</em> fast</p>").strip() == "
 assert runner.html_to_text("<span>Acme</span> <span>Inc</span>").strip() == "Acme Inc"
 assert runner.html_to_text("<h2>Build dashboards</h2><p>Track metrics.</p>").strip() == "## Build dashboards\n\nTrack metrics."
 
+# --- Finding 9: camelCase JSON keys are not pricing-model evidence ------------------
+# A first-party HTML body can embed machine JSON such as Airtable's plan objects. The
+# camelCase key `costPerUserPerMonthInCents` used to be read as a per-unit model cue and
+# title-cased into the meaningless, ungrounded claim `Peruser`. A machine key must never
+# become a pricing claim: the model stays grounded in readable prose, or pricing is absent.
+airtable_like = (
+    '{"plans":[{"name":"Business","costPerUserPerMonthInCents":5400,'
+    '"aiCreditsPerUserPerMonth":20000}]}\n'
+    "## Free\n\n$0 /mo\n\n## Team\n\n$20 /user/month\n\n"
+    "Airtable plans are charged per seat for all users.\n"
+)
+result = runner.extract_pricing(airtable_like)
+assert result is not None
+model_value, model_excerpt, _ = result
+assert model_value != "Peruser", model_value
+assert "peruser" not in model_value.lower().replace(" ", ""), model_value
+assert excerpt_supports(model_value, model_excerpt), (model_value, model_excerpt)
+# The contract-level reproduction: a two-page brief whose pricing page embeds the JSON
+# key must validate end to end with a grounded model claim.
+home_body = "# Airtable\n\nAirtable is a spreadsheet-database platform for modern teams.\n"
+pricing_page = fetch(200, airtable_like, "https://example.test/pricing", category="pricing_plans")
+home_page = fetch(200, home_body, CASE["homepage"])
+discovery = fetch(200, "<a href='/pricing'>Pricing</a>", CASE["homepage"], "text/html", "free_homepage_discovery")
+airtable_brief = runner.make_brief(
+    CASE,
+    [home_page, pricing_page, BRAND],
+    [(CASE["homepage"], "homepage"), ("https://example.test/pricing", "pricing_plans")],
+    discovery,
+)
+runner.validate_brief(airtable_brief)
+assert airtable_brief["pricing"]["unknown"] is False
+assert airtable_brief["pricing"]["model"]["value"] != "Peruser"
+model_claim = airtable_brief["pricing"]["model"]
+excerpt_map = {item["id"]: item["excerpt_or_support"] for item in airtable_brief["evidence"]}
+assert any(excerpt_supports(model_claim["value"], excerpt_map[eid]) for eid in model_claim["evidence_ids"])
+
+# A body whose only per-unit text is the camelCase machine key fails closed: with no
+# recognized plan amounts there is no pricing at all, never a `Peruser` claim.
+assert runner.extract_pricing(
+    '{"plan":{"name":"Business","costPerUserPerMonthInCents":5400}}'
+) is None
+
+# Control: genuine readable model prose still grounds a model claim.
+control = runner.extract_pricing("## Pro\n\n$10 /mo\n\nSeats are billed per seat every month.\n")
+assert control is not None
+control_value, control_excerpt, _ = control
+assert control_value != "Peruser", control_value
+assert excerpt_supports(control_value, control_excerpt), (control_value, control_excerpt)
+
 print("quality fixtures passed: benchmark_false_green, customers_context, integrations_evidence, "
-      "pricing_coherence, error_page, positioning_cta, excerpt_normalization, text_node_boundaries")
+      "pricing_coherence, error_page, positioning_cta, excerpt_normalization, text_node_boundaries, "
+      "pricing_model_machine_key")
