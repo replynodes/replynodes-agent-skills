@@ -24,14 +24,25 @@ backend service.
 ## Install (one command, no account)
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
 ```
 
-Works in Claude Code, Codex, Cursor, Windsurf, OpenClaw, and any Agent
-Skills-compatible host. Keep `--full-depth`: this canonical repository keeps a
-root umbrella skill, and the current `skills` CLI stops at that root unless
-full-depth discovery is requested — a bare focused install reports no matching
-`company-research` skill (verified with `skills` 1.7.0 on 2026-10-04).
+This installs only the focused `company-research` skill. Works in Claude Code,
+Codex, Cursor, Windsurf, OpenClaw, and any Agent Skills-compatible host.
+
+To install the whole canonical package instead — the `replynodes` umbrella plus
+every focused skill — use:
+
+```bash
+npx skills add replynodes/replynodes-agent-skills
+```
+
+The repository-plus-`--skill` form
+(`npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research`)
+is a compatibility limitation, not the primary command: for a remote GitHub
+clone the current `skills` CLI stops at the root `replynodes` skill and reports
+no matching `company-research` skill, so use the focused directory command above
+(verified with `skills` 1.7.0).
 
 ## Example: Stripe
 

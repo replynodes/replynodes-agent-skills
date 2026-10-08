@@ -6,19 +6,28 @@ Turn public URLs and domains into bounded, evidence-backed context for AI agents
 
 ## Choose a first skill
 
-Install the task that matches your first job:
+Install the task that matches your first job with a focused command that points
+at the skill's own directory in this repository:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill url-to-markdown --full-depth
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-kit --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/url-to-markdown
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/brand-kit
 ```
 
-The `--full-depth` flag is intentional: this canonical package keeps the
-`replynodes` umbrella at the repository root and focused skills under
-`skills/<slug>`. The current official CLI stops at the root skill for a remote
-GitHub clone unless full-depth discovery is requested. Do not remove this flag
-or treat a bare focused install as passing until that upstream behavior changes.
+Install the whole canonical package — the `replynodes` umbrella plus every
+focused skill — with the umbrella install:
+
+```bash
+npx skills add replynodes/replynodes-agent-skills
+```
+
+The repository-plus-`--skill` form, for example
+`npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research`,
+is a compatibility limitation rather than the primary command: for a remote
+GitHub clone the current official `skills` CLI stops at the root `replynodes`
+skill and reports no matching focused skill. Use the focused directory command
+above instead.
 
 | Skill | Use it for |
 | --- | --- |

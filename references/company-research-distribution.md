@@ -11,6 +11,8 @@ require an external index, publisher account, or marketplace owner.
   grouping)
 - Owned attribution entry:
   `https://replynodes.com/?skill=company-research&campaign=company-research`
+- Discovery baseline: `references/phase-1-discovery-baseline-2026-10-04.md`,
+  re-run 2026-10-08 in `references/phase-1-discovery-baseline-2026-10-08.md`.
 - No marketplace-specific copy or fork is part of this repository.
 
 The source repository, the checked-in skill, and the taxonomy above are the
@@ -19,20 +21,23 @@ before they are described as current.
 
 ## Install readback
 
-Observed on 2026-10-04 UTC with the current official `skills` CLI (`1.7.0`)
-in a temporary `HOME`:
+Verified 2026-10-08 UTC with the current official `skills` CLI (`1.7.0`) in a
+clean temporary `HOME` and working directory:
 
 | Command | Result | Disposition |
 | --- | --- | --- |
-| `npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research` | Exit 1: the clone exposes only the root `replynodes` skill and reports no matching `company-research` skill. | **External blocker.** The CLI stops discovery at a root `SKILL.md` unless full-depth discovery is requested. |
-| `npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth` | Finds and installs `company-research`. | **Passing workaround.** |
+| `npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research` | Exit 0: installs the focused `company-research` skill from the canonical repository. | **Primary CTA.** |
+| `npx skills add replynodes/replynodes-agent-skills` | Exit 0: installs the `replynodes` umbrella (root skill plus nested focused skills). | **Umbrella install.** |
+| `npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research` | Exit 1: the clone exposes only the root `replynodes` skill and reports no matching `company-research` skill. | **Compatibility limitation, not the CTA.** |
 
-The `--full-depth` command is the documented install command in `README.md` and
-`skills/company-research/SKILL.md`. Removing the root umbrella skill or copying
-`company-research` into a second top-level location would create a fork or
-break the canonical `replynodes` install, so this repository does not do that.
-The bare-command acceptance item remains pending an upstream CLI behavior
-change or a supported remote index mechanism.
+The focused directory command is the documented install in `README.md` and
+`skills/company-research/SKILL.md`; the same `.../tree/main/skills/<slug>` form
+was verified for `url-to-markdown` and `brand-kit`. Removing the root umbrella
+skill or copying `company-research` into a second top-level location would
+create a fork or break the canonical `replynodes` install, so this repository
+does not do that. The repository-plus-`--skill` form remains a documented
+compatibility limitation until upstream CLI behavior changes; it is not the
+primary CTA.
 
 ## Public marketplace readback
 
@@ -98,10 +103,13 @@ bash tests/test-distribution.sh
 INSTALL_INTERNAL_SKILLS=1 DISABLE_TELEMETRY=1 \
   npx --yes skills@1.7.0 add . --list --full-depth
 
-# Public focused install; use the documented full-depth path.
-HOME="$(mktemp -d)" npx --yes skills add \
-  https://github.com/replynodes/replynodes-agent-skills \
-  --skill company-research --full-depth
+# Public focused install (primary CTA); clean HOME.
+HOME="$(mktemp -d)" npx --yes skills@1.7.0 add \
+  https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
+
+# Public umbrella install.
+HOME="$(mktemp -d)" npx --yes skills@1.7.0 add \
+  replynodes/replynodes-agent-skills
 ```
 
 Then read back the canonical GitHub file, the skills.sh page, and the ClawHub

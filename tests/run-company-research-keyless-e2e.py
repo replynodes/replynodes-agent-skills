@@ -358,31 +358,52 @@ class _TextExtractor(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.parts = []
         self.skip = 0
+        # Last character of the most recent character-data chunk, or None when the
+        # last appended piece was a structural marker (newline/heading/list bullet/
+        # attribute) that already enforces its own boundary. Two adjacent character
+        # chunks fused without separation would merge sibling-node text into one
+        # token (e.g. `MCP Registry` + `Integrate external tools`).
+        self._data_tail = None
+
+    def _append(self, piece):
+        self.parts.append(piece)
+        self._data_tail = None
+
+    def _append_data(self, data):
+        # Preserve token boundaries between adjacent text nodes: insert a separator
+        # only when the previous and next boundary characters are both alphanumeric,
+        # so legitimate inline text (already separated by whitespace or punctuation)
+        # is left untouched.
+        if self._data_tail is not None and self._data_tail.isalnum() and data and data[0].isalnum():
+            self.parts.append(" ")
+        self.parts.append(data)
+        if data:
+            self._data_tail = data[-1]
 
     def handle_starttag(self, tag, attrs):
         tag = tag.lower()
         if tag in self.SKIP:
             self.skip += 1
         if len(tag) == 2 and tag[0] == "h" and tag[1] in "123456":
-            self.parts.append("\n" + "#" * int(tag[1]) + " ")
+            self._append("\n" + "#" * int(tag[1]) + " ")
         elif tag == "li":
-            self.parts.append("\n- ")
+            self._append("\n- ")
         elif tag in self.BREAK:
-            self.parts.append("\n")
+            self._append("\n")
         for name, value in attrs:
             if name.lower() in ("aria-label", "title", "alt") and value:
-                self.parts.append(" " + value + " ")
+                self._append(" " + value + " ")
 
     def handle_endtag(self, tag):
         tag = tag.lower()
         if tag in self.SKIP and self.skip:
             self.skip -= 1
         if tag in self.BREAK:
-            self.parts.append("\n")
+            self._append("\n")
 
     def handle_data(self, data):
         if not self.skip:
-            self.parts.append(data)
+            self._append_data(data)
 
     def text(self):
         return "".join(self.parts)

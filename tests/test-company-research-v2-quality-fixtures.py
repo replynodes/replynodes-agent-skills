@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from company_brief_validator import content_quality_issues
+from company_brief_validator import content_quality_issues, excerpt_supports
 
 p = Path(__file__).with_name("run-company-research-keyless-e2e.py")
 spec = importlib.util.spec_from_file_location("runner", p)
@@ -156,5 +156,22 @@ for ev in bad["evidence"]:
 assert any("excerpt" in issue for issue in content_quality_issues(bad))
 assert runner.benchmark_row(bad)["criteria"]["excerpt_noise_free"] is False
 
+# --- Finding 8: adjacent sibling text nodes keep token boundaries ------------------
+# HTML text nodes that are siblings with an inline element between them used to fuse
+# into one token (`MCP Registry` + `Integrate external tools` -> `RegistryIntegrate`),
+# which made an otherwise-grounded integration claim fail its evidence token check.
+adjacent = "<div><span>MCP Registry</span><span>Integrate external tools</span></div>"
+adjacent_text = runner.html_to_text(adjacent)
+assert "MCP Registry" in adjacent_text and "Integrate external tools" in adjacent_text, adjacent_text
+assert "RegistryIntegrate" not in adjacent_text, adjacent_text
+assert excerpt_supports("MCP Registry", adjacent_text), adjacent_text
+assert excerpt_supports("Integrate external tools", adjacent_text), adjacent_text
+
+# Control: legitimate inline formatting/words keep the author's explicit boundaries.
+assert runner.html_to_text("<p>Hello <b>world</b> today</p>").strip() == "Hello world today"
+assert runner.html_to_text("<p>Deploy your <em>apps</em> fast</p>").strip() == "Deploy your apps fast"
+assert runner.html_to_text("<span>Acme</span> <span>Inc</span>").strip() == "Acme Inc"
+assert runner.html_to_text("<h2>Build dashboards</h2><p>Track metrics.</p>").strip() == "## Build dashboards\n\nTrack metrics."
+
 print("quality fixtures passed: benchmark_false_green, customers_context, integrations_evidence, "
-      "pricing_coherence, error_page, positioning_cta, excerpt_normalization")
+      "pricing_coherence, error_page, positioning_cta, excerpt_normalization, text_node_boundaries")
