@@ -20,6 +20,8 @@ If you are an agent or a developer routing a task, match the job to one skill:
 
 Machine-readable index for agents: [`llms.txt`](llms.txt).
 
+For routes beyond these skills (search, site map/crawl, Reddit, Hacker News, richer brand routes), re-fetch the live capabilities document at <https://api.replynodes.com/v1/capabilities> and call only routes it marks callable. Agent sign-up: <https://replynodes.com/auth.md> then <https://replynodes.com/quickstart.md>.
+
 Try it with no account or API key (read-only, rate limited per day; see limits below):
 
 ```bash
