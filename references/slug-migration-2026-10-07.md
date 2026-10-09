@@ -51,6 +51,8 @@ reconciled the metadata to `internal: false` to match the shipped public surface
 the Logo host as an existing anonymous surface). The `brand-logo` slug itself is
 unchanged.
 
+> Historical snapshot: the keyed-only classifications below predate the gateway rollout. See [`references/keyless-readback-2026-10-09.md`](keyless-readback-2026-10-09.md) for current production evidence. The control route `/v1/brand/retrieve` remains keyed.
+
 ## Capability classification used for the rewrite
 
 Source: `replynodes-fetcher` PR #727 and `docs/anonymous-daily-quota.md`

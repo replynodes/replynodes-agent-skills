@@ -1,5 +1,7 @@
 # Canonical skill inventory and taxonomy gate
 
+> Historical snapshot: the keyless classifications and quota conclusions below predate the gateway rollout. See [`references/keyless-readback-2026-10-09.md`](keyless-readback-2026-10-09.md) for the later production readback; do not use this snapshot as current route truth.
+
 Observed at **2026-10-06 UTC**. Repository head: [`2869acc`](https://github.com/replynodes/replynodes-agent-skills/tree/2869acc), equal to `origin/main`. This is the issue [#56](https://github.com/replynodes/replynodes-agent-skills/issues/56) discovery/decision gate. The related [replynodes-fetcher #715](https://github.com/replynodes/replynodes-fetcher/issues/715) page was read live on 2026-10-06: it is open and contains only its specification/body, with no comments or production evidence.
 
 ## Method, boundaries, and decision rule
