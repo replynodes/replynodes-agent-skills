@@ -1,0 +1,16 @@
+name: ReplyNodes umbrella research setup
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install canonical umbrella skill
+        run: npx --yes skills add replynodes/replynodes-agent-skills
+      - name: Show canonical source
+        run: |
+          printf '%s\n' 'ReplyNodes umbrella installed from:'
+          printf '%s\n' 'https://github.com/replynodes/replynodes-agent-skills'
+          printf '%s\n' 'Use it for bounded public web, brand, app, and competitor research.'

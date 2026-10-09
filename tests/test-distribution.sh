@@ -21,7 +21,6 @@ assert FOCUSED_CTA in readme
 assert FOCUSED_CTA in distribution
 assert FOCUSED_CTA in skill
 assert "npx skills add replynodes/replynodes-agent-skills" in readme
-# The repository-plus-`--skill` form is only a documented compatibility limitation.
 assert "--skill company-research --full-depth" not in readme
 assert "company-research-distribution.md" in readme
 assert "PENDING" in distribution

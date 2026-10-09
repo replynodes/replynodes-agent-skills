@@ -1,6 +1,11 @@
 ---
 name: url-to-markdown
-description: "Fetch a public webpage as clean Markdown for LLM context: read, summarize, quote, or cite any public URL while preserving the exact source URL. Free, zero-auth, read-only."
+description: >-
+  Fetch a public webpage as clean Markdown for LLM and RAG context: read,
+  scrape, summarize, quote, or cite any public URL while preserving the exact
+  source URL. Use it to convert an article, docs page, blog post, or product
+  page into compact Markdown, strip cookie banners and navigation clutter, or
+  feed a web page into an LLM. Free, zero-auth, keyless, and read-only.
 license: MIT
 compatibility: "Network access only. The Markdown host is free and zero-auth; no account, API key, or MCP connection is needed."
 metadata:
@@ -9,7 +14,7 @@ metadata:
   version: "1.1.0"
   repository: https://github.com/replynodes/replynodes-agent-skills
   endpoint: https://md.replynodes.com
-  keywords: [web, markdown, URL, LLM context, agent, read, webpage to markdown, scrape page]
+  keywords: [web, markdown, url, llm context, rag, webpage to markdown, html to markdown, scrape page, extract text, read url, web page reader, article to markdown, agent, read]
 ---
 
 # URL to Markdown

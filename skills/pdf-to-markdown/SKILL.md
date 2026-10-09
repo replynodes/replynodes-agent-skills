@@ -84,7 +84,7 @@ authoritative.
 Install this focused skill from the canonical source:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill pdf-to-markdown
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/pdf-to-markdown
 ```
 
 Canonical source: https://github.com/replynodes/replynodes-agent-skills
