@@ -1,24 +1,37 @@
-# Install and discovery reliability
+# Install and discovery contract
 
 ## ADDED Requirements
 
-### Requirement: Canonical install paths are explicit
-The repository MUST document one canonical umbrella install and one focused install for each priority skill, including the required nested-discovery flag and a truthful explanation of bare-command limitations.
+### Requirement: Canonical acquisition commands are explicit
+The repository MUST document exactly one umbrella acquisition command and a direct focused-directory acquisition command for each priority skill. The documentation MUST identify the canonical GitHub source, the focused Skills.sh page when present, and the fact that external indexes may lag.
 
-#### Scenario: Clean focused install
-- **WHEN** a user runs the documented focused command in a fresh HOME and empty repository
-- **THEN** the requested skill is installed from the canonical GitHub repository without credentials
-- **AND** the documentation identifies the installed path and source repository
+#### Scenario: Umbrella install
+- **WHEN** a user runs `npx --yes skills add replynodes/replynodes-agent-skills` in an isolated project
+- **THEN** the documentation says the umbrella is the canonical all-skills path
+- **AND** the user is not directed to a duplicate marketplace repository
 
-#### Scenario: Clean umbrella install
-- **WHEN** a user runs the documented umbrella command in a fresh HOME
-- **THEN** the root `replynodes` skill is discovered and installed
-- **AND** the command does not depend on a registry duplicate
+#### Scenario: Focused install
+- **WHEN** a user wants `company-research`, `url-to-markdown`, or `app-store-api`
+- **THEN** the documentation provides the direct `tree/main/skills/<slug>` command
+- **AND** the command preserves the literal canonical slug and source repository
 
-### Requirement: Canonical metadata is task-oriented
-Priority skill metadata MUST use truthful user-task language, bounded keywords, canonical slugs, and a read-only/keyless-first claim where live evidence supports it.
+#### Scenario: Nested-discovery compatibility
+- **WHEN** the CLI is probed with a repository-plus-`--skill` form
+- **THEN** the result is recorded as compatibility evidence only
+- **AND** the primary CTA is not changed to a command that the current CLI cannot prove
 
-#### Scenario: Legacy slug
-- **WHEN** a registry still renders a legacy slug
-- **THEN** repository documentation points to the canonical slug and records the registry discrepancy
-- **AND** no duplicate listing is created to bypass the discrepancy
+### Requirement: Clean-install evidence is honest
+A clean-install record MUST include CLI version, isolated HOME/workdir, command, source SHA, installed path/content hash on success, or the exact failure and host blocker on failure.
+
+#### Scenario: Installation blocked by host
+- **WHEN** installation fails with `ENOSPC`, network failure, or an upstream index error
+- **THEN** the report records the literal error and marks the gate blocked
+- **AND** it does not claim installation succeeded
+
+### Requirement: Metadata is task-oriented and bounded
+Priority skill metadata MUST use truthful task language, bounded keywords, canonical slugs, and read-only/keyless-first claims only where supported by live evidence.
+
+#### Scenario: Legacy external slug
+- **WHEN** Skills.sh or ClawHub renders a legacy alias
+- **THEN** repository docs point to the canonical source/slug and classify the alias as external drift
+- **AND** no duplicate listing or invented version is created
