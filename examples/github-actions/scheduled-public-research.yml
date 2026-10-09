@@ -9,8 +9,10 @@ jobs:
   snapshot:
     runs-on: ubuntu-latest
     steps:
-      - name: Install canonical company-research skill once per scheduled run
-        run: npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
+      # Install once in the agent environment, not on every scheduled run:
+      # npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
+      # Source: https://github.com/replynodes/replynodes-agent-skills
+      # Focused page: https://www.skills.sh/replynodes/replynodes-agent-skills/company-research
       - name: Read one bounded public homepage
         run: |
           set -euo pipefail

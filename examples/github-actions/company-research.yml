@@ -13,8 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install canonical company-research skill
-        run: npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
+      # Install once in the agent environment:
+      # npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
+      # Source: https://github.com/replynodes/replynodes-agent-skills
+      # Focused page: https://www.skills.sh/replynodes/replynodes-agent-skills/company-research
       - name: Read public evidence
         env:
           DOMAIN: ${{ inputs.domain }}

@@ -12,8 +12,10 @@ jobs:
   markdown:
     runs-on: ubuntu-latest
     steps:
-      - name: Install canonical url-to-markdown skill
-        run: npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/url-to-markdown
+      # Install once in the agent environment:
+      # npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/url-to-markdown
+      # Source: https://github.com/replynodes/replynodes-agent-skills
+      # Focused page: https://www.skills.sh/replynodes/replynodes-agent-skills/url-to-markdown
       - name: Fetch public Markdown
         env:
           URL: ${{ inputs.url }}
