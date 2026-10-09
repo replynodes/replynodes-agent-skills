@@ -127,7 +127,7 @@ This internal skill was renamed from `reddit-research` (agent-skills issue #57,
 canonical taxonomy #56). The canonical install slug is `reddit-api`:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill reddit-api --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/reddit-api
 ```
 
 A ClawHub `reddit-api` package already exists as external registry state; it is

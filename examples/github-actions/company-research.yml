@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install canonical company-research skill
-        run: npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth
+        run: npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
       - name: Read public evidence
         env:
           DOMAIN: ${{ inputs.domain }}

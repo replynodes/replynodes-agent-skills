@@ -4,19 +4,19 @@ Status: P0 implementation baseline. This document separates source work from ext
 
 ## Canonical install funnel
 
-Use the canonical GitHub source and `--full-depth` for focused nested skills:
+Use the canonical GitHub source and focused skill directories:
 
 ```bash
 # Umbrella routing
-npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes --full-depth
+npx --yes skills add replynodes/replynodes-agent-skills
 
 # Priority focused skills
-npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth
-npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill url-to-markdown --full-depth
-npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill app-store-api --full-depth
+npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
+npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/url-to-markdown
+npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/app-store-api
 ```
 
-The current official CLI can stop at the root `SKILL.md` for a remote repository. Therefore a bare focused command is not treated as passing. Do not remove the umbrella or create duplicate top-level copies merely to hide this upstream/index limitation. Internal validation uses `DISABLE_TELEMETRY=1`; user CTAs do not.
+The focused directory commands are the primary public CTAs. The umbrella remains the canonical all-skills install; do not create duplicate top-level copies merely to hide registry/index differences.
 
 ## 30-query discovery baseline
 

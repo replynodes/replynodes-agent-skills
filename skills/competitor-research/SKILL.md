@@ -30,7 +30,7 @@ does not contact companies, publish content, or modify provider data.
 For each verified bare domain, start with the free, zero-auth paths (no key):
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill competitor-research --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/competitor-research
 curl --fail-with-body 'https://md.replynodes.com/https://replynodes.com/'
 curl --fail-with-body 'https://brand.replynodes.com/replynodes.com.json'
 ```

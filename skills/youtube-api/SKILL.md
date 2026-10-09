@@ -126,7 +126,7 @@ This internal skill was renamed from `youtube-research` (agent-skills issue #57,
 canonical taxonomy #56). The canonical install slug is `youtube-api`:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill youtube-api --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/youtube-api
 ```
 
 A ClawHub `youtube-public-api` package exists as external registry state; it is

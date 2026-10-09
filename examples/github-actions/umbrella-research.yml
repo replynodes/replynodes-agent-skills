@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install canonical umbrella skill
-        run: npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill replynodes --full-depth
+        run: npx --yes skills add replynodes/replynodes-agent-skills
       - name: Show canonical source
         run: |
           printf '%s\n' 'ReplyNodes umbrella installed from:'

@@ -21,10 +21,7 @@ assert FOCUSED_CTA in readme
 assert FOCUSED_CTA in distribution
 assert FOCUSED_CTA in skill
 assert "npx skills add replynodes/replynodes-agent-skills" in readme
-# The repository-plus-`--skill` form is a documented compatibility fallback,
-# while the focused directory command remains the primary CTA.
-assert "--skill company-research --full-depth" in readme
-assert readme.index(FOCUSED_CTA) < readme.index("--skill company-research --full-depth")
+assert "--skill company-research --full-depth" not in readme
 assert "company-research-distribution.md" in readme
 assert "PENDING" in distribution
 assert re.search(r"two\s+separate UTC calendar days", distribution)

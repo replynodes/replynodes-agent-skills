@@ -6,7 +6,7 @@ GitHub source metadata is canonical. Skills.sh indexes GitHub and may expose sof
 
 ## Install funnel
 
-Keep the root `replynodes` umbrella and nested `skills/<slug>/SKILL.md` layout. Use `--full-depth` in public focused commands because the current CLI requires it for this layout. Internal discovery installs set `DISABLE_TELEMETRY=1`. A clean install matrix records the source SHA and installed content hash; it does not generate repeated CI installs.
+Keep the root `replynodes` umbrella and nested `skills/<slug>/SKILL.md` layout. Public focused commands target the canonical `tree/main/skills/<slug>` directories; the umbrella command targets the repository. A clean install matrix records the source SHA and installed content hash; it does not generate repeated CI installs.
 
 ## Measurement
 

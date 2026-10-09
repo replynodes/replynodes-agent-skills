@@ -137,7 +137,7 @@ simple single-domain identity fetch through MCP.
 ## Install and first use
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-kit --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/brand-kit
 curl --fail-with-body https://brand.replynodes.com/replynodes.com.json
 ```
 

@@ -134,7 +134,7 @@ This internal skill was renamed from `google-play-research` (agent-skills issue
 #57, canonical taxonomy #56). The canonical install slug is `google-play-api`:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill google-play-api --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/google-play-api
 ```
 
 Registry-side redirects and readback are owned by issue #58.

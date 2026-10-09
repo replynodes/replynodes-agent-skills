@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install canonical app-store-api skill
-        run: npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill app-store-api --full-depth
+        run: npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/app-store-api
       - name: Search public App Store data
         env:
           TERM: ${{ inputs.term }}

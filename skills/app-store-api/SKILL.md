@@ -137,7 +137,7 @@ This skill was renamed from `app-store-research` (agent-skills issue #57,
 canonical taxonomy #56). Install the canonical slug:
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill app-store-api --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/app-store-api
 ```
 
 The previous `--skill app-store-research` install name is superseded by

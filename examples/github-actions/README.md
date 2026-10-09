@@ -11,4 +11,4 @@ These are copyable, bounded examples for real read-only research workflows. They
 Canonical source: https://github.com/replynodes/replynodes-agent-skills
 Skills.sh pages: https://skills.sh/replynodes/replynodes-agent-skills
 
-For local validation only, use `DISABLE_TELEMETRY=1`; never add that flag to user-facing install commands.
+The examples intentionally do not disable the CLI's normal telemetry behavior: they model a real developer install and avoid inflating or suppressing distribution measurements.
