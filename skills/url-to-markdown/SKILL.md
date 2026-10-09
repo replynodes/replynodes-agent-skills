@@ -1,11 +1,13 @@
 ---
 name: url-to-markdown
 description: >-
-  Fetch a public webpage as clean Markdown for LLM and RAG context: read,
-  scrape, summarize, quote, or cite any public URL while preserving the exact
-  source URL. Use it to convert an article, docs page, blog post, or product
-  page into compact Markdown, strip cookie banners and navigation clutter, or
-  feed a web page into an LLM. Free, zero-auth, keyless, and read-only.
+  Use when you have a public URL and need its content as clean Markdown for
+  LLM and RAG context: read, scrape, summarize, quote, or cite the page while
+  preserving the exact source URL. Fits converting an article, docs page, blog
+  post, or product page into compact Markdown, stripping cookie banners and
+  navigation clutter, or feeding a web page into an LLM. Not for private,
+  login-gated, or credentialed URLs, and not for crawling a whole site. Free,
+  zero-auth, keyless, and read-only.
 license: MIT
 compatibility: "Network access only. The Markdown host is free and zero-auth; no account, API key, or MCP connection is needed."
 metadata:

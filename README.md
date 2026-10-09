@@ -4,6 +4,33 @@
 
 Turn public URLs and domains into bounded, evidence-backed context for AI agents—read-only, with exact source URLs and honest unknowns.
 
+## Which skill do I need?
+
+If you are an agent or a developer routing a task, match the job to one skill:
+
+| If the task is… | Use | Key needed? |
+| --- | --- | --- |
+| "Give me a cited brief on this company / domain" | `company-research` | No |
+| "Compare us with these competitors" (real domains known) | `competitor-research` | No to start |
+| "Read this public URL as Markdown" / "feed this page to an LLM" | `url-to-markdown` | No |
+| "Get this company's logo, colors, fonts, styleguide" | `brand-kit` | No |
+| "Just the logo for this domain" | `brand-logo` | No |
+| "Search iOS apps / App Store reviews / ratings / privacy / developer apps / similar apps" | `app-store-api` | No for first request |
+| Anything else on the public web, or unsure | `replynodes` (umbrella router) | No to start |
+
+Machine-readable index for agents: [`llms.txt`](llms.txt).
+
+Try it with no account or API key (read-only, rate limited per day; see limits below):
+
+```bash
+curl -s https://md.replynodes.com/https://replynodes.com/ | head
+curl -s https://brand.replynodes.com/replynodes.com.json
+```
+
+All skills are read-only over public data. They cannot log in, publish, post,
+purchase, or change anything on a platform. Over the anonymous limit the API
+returns HTTP `429` (`anonymous_limit_reached`) with a `Retry-After` header.
+
 ## Choose a first skill
 
 Install the task that matches your first job with a focused command that points

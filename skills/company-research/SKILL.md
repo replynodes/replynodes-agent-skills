@@ -1,13 +1,13 @@
 ---
 name: company-research
 description: >-
-  Free, keyless company research and business intelligence for AI agents: give
-  it a company domain and get a cited company brief — what the company does,
-  its products, pricing, target market, customers, integrations, and important
-  pages — grounded in first-party evidence. No API key, no signup, no account.
-  Use it for a company profile, account or prospect research, vendor
-  evaluation, and a bounded due-diligence snapshot, with honest unknowns
-  instead of guesses.
+  Use when you have a company domain and need a cited company brief: what the
+  company does, its products, pricing, target market, customers, integrations,
+  and important pages, grounded in first-party evidence. Fits a company
+  profile, account or prospect research, vendor evaluation, and a bounded
+  due-diligence snapshot, with honest unknowns instead of guesses. Not for
+  private company data or for comparing several companies (use
+  competitor-research). Free, keyless, no signup.
 license: MIT
 compatibility: "Free and keyless for the domain-to-brief path (network access only). Runs in any Agent Skills-compatible host — Claude Code, Codex, Cursor, Windsurf, OpenClaw. Optional deeper MCP enrichment needs an MCP-capable agent and REPLYNODES_API_KEY in a secret store."
 metadata:

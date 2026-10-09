@@ -1,12 +1,13 @@
 ---
 name: brand-kit
 description: >-
-  Brand Kit API for AI agents: get a company's existing public brand identity
-  from a domain — logos, colors, fonts, typography, styleguide, and provenance
-  — as zero-auth JSON. Use it to build a branded landing page, deck, report,
-  or dashboard, fetch brand assets and design tokens, or extract a visual
-  identity from a public website. Free, keyless, read-only; it retrieves
-  existing public signals and does not generate a brand.
+  Use when you have a company domain and need its existing public brand
+  identity: logos, colors, fonts, typography, styleguide, and provenance as
+  zero-auth JSON. Fits building a branded landing page, deck, report, or
+  dashboard, fetching brand assets and design tokens, or extracting a visual
+  identity from a public website. Not for logo-only needs (use brand-logo) and
+  not for generating a new brand. Free, keyless, read-only; it retrieves
+  existing public signals only.
 license: MIT
 compatibility: "Network access only for the free zero-auth brand host. An optional authenticated MCP route needs an MCP-capable agent and REPLYNODES_API_KEY in a secret store."
 metadata:
