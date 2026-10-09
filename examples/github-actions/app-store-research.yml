@@ -1,0 +1,29 @@
+name: ReplyNodes App Store research
+on:
+  workflow_dispatch:
+    inputs:
+      term:
+        description: Public iOS app search term
+        required: true
+        default: notion
+permissions:
+  contents: read
+jobs:
+  app-store:
+    runs-on: ubuntu-latest
+    steps:
+      # Install once in the agent environment:
+      # npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/app-store-api
+      # Source: https://github.com/replynodes/replynodes-agent-skills
+      # Focused page: https://www.skills.sh/replynodes/replynodes-agent-skills/app-store-api
+      - name: Search public App Store data
+        env:
+          SEARCH_TERM: ${{ inputs.term }}
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --max-time 20 --get 'https://api.replynodes.com/v1/appstore/search' \
+            --data-urlencode "term=${SEARCH_TERM}" --data 'country=us' --data 'num=1' -o appstore.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-store-research
+          path: appstore.json

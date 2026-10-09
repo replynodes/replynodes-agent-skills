@@ -1,6 +1,12 @@
 ---
 name: competitor-research
-description: "Competitor research for agents: build a sourced, read-only comparison from verified public company domains — official sites, brand identity, apps, and community signals — with honest unknowns."
+description: >-
+  Competitor research and competitive analysis for AI agents: build a sourced,
+  read-only comparison from verified public company domains — official sites,
+  brand identity, mobile apps, and community signals — with honest unknowns.
+  Use it for alternatives and side-by-side comparison research, competitive
+  intelligence, market and landscape research, and positioning a product
+  against named competitors when you have a real domain for each.
 license: MIT
 compatibility: "Known-domain Markdown and Brand reads need only network access (free, zero-auth, Tier A: 20 requests/UTC day per capability), and the reviewed `/v1` web-search, single-page scrape, app-store, Google Play, Reddit, and YouTube reads are free keyless at Tier B (10/UTC day per capability). Deeper authenticated routes (site map/crawl, brand search/retrieve, Hacker News, MCP) need an MCP-capable agent or API client and REPLYNODES_API_KEY in a secret store; an existing authenticated free account has 500 credits."
 metadata:
@@ -8,7 +14,7 @@ metadata:
   author: ReplyNodes
   version: "1.0.0"
   endpoint: https://mcp.replynodes.com/mcp
-  keywords: [competitor research, alternatives, competitor analysis, market research, comparison, public domains]
+  keywords: [competitor research, competitor analysis, competitive analysis, competitive intelligence, alternatives, comparison, market research, competitive landscape, public domains]
 ---
 
 # ReplyNodes competitor research
@@ -24,7 +30,7 @@ does not contact companies, publish content, or modify provider data.
 For each verified bare domain, start with the free, zero-auth paths (no key):
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill competitor-research --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/competitor-research
 curl --fail-with-body 'https://md.replynodes.com/https://replynodes.com/'
 curl --fail-with-body 'https://brand.replynodes.com/replynodes.com.json'
 ```

@@ -1,6 +1,13 @@
 ---
 name: company-research
-description: "Free company research for AI agents: give it a company domain and get a cited company brief — what it does, products, pricing, target market, integrations, and key pages — from first-party evidence, with no API key and no signup."
+description: >-
+  Free, keyless company research and business intelligence for AI agents: give
+  it a company domain and get a cited company brief — what the company does,
+  its products, pricing, target market, customers, integrations, and important
+  pages — grounded in first-party evidence. No API key, no signup, no account.
+  Use it for a company profile, account or prospect research, vendor
+  evaluation, and a bounded due-diligence snapshot, with honest unknowns
+  instead of guesses.
 license: MIT
 compatibility: "Free and keyless for the domain-to-brief path (network access only). Runs in any Agent Skills-compatible host — Claude Code, Codex, Cursor, Windsurf, OpenClaw. Optional deeper MCP enrichment needs an MCP-capable agent and REPLYNODES_API_KEY in a secret store."
 metadata:
@@ -8,6 +15,8 @@ metadata:
   author: ReplyNodes
   version: "2.0.0"
   endpoint: https://mcp.replynodes.com/mcp
+  repository: https://github.com/replynodes/replynodes-agent-skills
+  keywords: [company research, company profile, company brief, business intelligence, domain research, account research, prospect research, sales prospecting, vendor evaluation, due diligence, company enrichment, competitive research, first-party evidence, keyless]
 ---
 
 # Free Company Research & Business Intelligence

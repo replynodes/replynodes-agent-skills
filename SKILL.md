@@ -1,6 +1,14 @@
 ---
 name: replynodes
-description: "Use ReplyNodes when a user needs current public research: read a known URL as clean Markdown, get a domain's public brand kit or logo, search the web, or enrich a bounded company, competitor, app, or community brief."
+description: >-
+  Research the current public web with ReplyNodes, the keyless, read-only
+  public-data layer for AI agents. Use it to turn a known URL into clean
+  Markdown for LLM context, fetch a domain's public brand kit, colors, fonts,
+  or logo, run a web search, scrape or map a site, and build bounded, cited
+  briefs about a company, competitor, app, or community. Free and zero-auth
+  first for Markdown, Brand, Logo, and the reviewed /v1 web-search, scrape,
+  App Store, Google Play, Reddit, and YouTube reads; optional MCP enrichment
+  is keyed.
 license: MIT
 compatibility: "Network access is enough for the free, zero-auth Markdown and Brand hosts (Tier A, 20/day per capability) and the `img.replynodes.com` Logo host (no published fixed limit), and for the reviewed keyless `/v1` primitives (web search, single-page scrape, App Store, Google Play, Reddit, YouTube) admitted through the shared anonymous quota (Tier B, 10/day per capability); the keyless `GET https://api.replynodes.com/v1/brand/logo` route is Tier A (20/day). Authenticated continuation and deeper routes (site map/crawl, brand search/retrieve, Hacker News, MCP) need an API client or MCP-capable agent and REPLYNODES_API_KEY in a secret store; an existing authenticated free account has 500 credits."
 metadata:
@@ -8,6 +16,7 @@ metadata:
   author: ReplyNodes
   version: "2.0.0"
   endpoint: https://mcp.replynodes.com/mcp
+  keywords: [web research, company research, competitor research, brand kit, url to markdown, web scraping, web search, app store research, reddit search, youtube research, public data, public web, keyless, zero-auth, read-only, ai agent]
 ---
 
 # ReplyNodes research skill

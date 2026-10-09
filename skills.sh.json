@@ -4,7 +4,7 @@
   "groupings": [
     {
       "title": "Research",
-      "description": "ReplyNodes read-only web, brand, app-store, video, and community research for AI agents.",
+      "description": "ReplyNodes keyless, read-only public web research for AI agents — web search and scraping, URL to Markdown, company research, competitor and competitive analysis, and Apple App Store data.",
       "skills": [
         "replynodes",
         "company-research",
@@ -15,7 +15,7 @@
     },
     {
       "title": "Brand research",
-      "description": "ReplyNodes read-only brand discovery, identity, styleguide, and typography research.",
+      "description": "ReplyNodes keyless, read-only brand research for AI agents — brand discovery, identity, public logos, colors, fonts, styleguide, typography, and design tokens.",
       "skills": [
         "brand-kit"
       ]

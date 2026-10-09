@@ -1,6 +1,12 @@
 ---
 name: brand-kit
-description: "Brand Kit API for agents: get a company's existing public brand identity from a domain — logos, colors, fonts, typography, and provenance — as zero-auth JSON. Read-only; no brand generation."
+description: >-
+  Brand Kit API for AI agents: get a company's existing public brand identity
+  from a domain — logos, colors, fonts, typography, styleguide, and provenance
+  — as zero-auth JSON. Use it to build a branded landing page, deck, report,
+  or dashboard, fetch brand assets and design tokens, or extract a visual
+  identity from a public website. Free, keyless, read-only; it retrieves
+  existing public signals and does not generate a brand.
 license: MIT
 compatibility: "Network access only for the free zero-auth brand host. An optional authenticated MCP route needs an MCP-capable agent and REPLYNODES_API_KEY in a secret store."
 metadata:
@@ -9,7 +15,7 @@ metadata:
   version: "1.0.0"
   endpoint: https://brand.replynodes.com
   mcp_endpoint: https://mcp.replynodes.com/mcp
-  keywords: [brand kit, brand assets, logo, colors, fonts, typography, styleguide, design tokens, domain]
+  keywords: [brand kit, brand assets, brand identity, brand guidelines, logo, logos, colors, fonts, typography, styleguide, design tokens, visual identity, domain, brand lookup]
 ---
 
 # Brand Kit
@@ -131,7 +137,7 @@ simple single-domain identity fetch through MCP.
 ## Install and first use
 
 ```bash
-npx skills add https://github.com/replynodes/replynodes-agent-skills --skill brand-kit --full-depth
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/brand-kit
 curl --fail-with-body https://brand.replynodes.com/replynodes.com.json
 ```
 

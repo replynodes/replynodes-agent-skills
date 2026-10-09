@@ -1,0 +1,24 @@
+name: Scheduled bounded public research
+on:
+  schedule:
+    - cron: '17 8 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      # Install once in the agent environment, not on every scheduled run:
+      # npx --yes skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
+      # Source: https://github.com/replynodes/replynodes-agent-skills
+      # Focused page: https://www.skills.sh/replynodes/replynodes-agent-skills/company-research
+      - name: Read one bounded public homepage
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --max-time 20 'https://md.replynodes.com/https://replynodes.com/' -o replynodes-home.md
+          test -s replynodes-home.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scheduled-public-research
+          path: replynodes-home.md
