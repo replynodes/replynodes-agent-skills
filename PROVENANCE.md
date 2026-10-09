@@ -7,13 +7,14 @@
 - Live capability snapshot: MCP `initialize` and `tools/list` returned 51
   read-only tools across website research, brand assets, Apple App Store,
   Google Play, YouTube, Reddit, and Hacker News.
-- Distribution: public GitHub source consumed by the official `skills` CLI and
-  skills.sh indexing.
+- Distribution: public GitHub source consumed by the official `skills` CLI;
+  skills.sh indexes this source asynchronously and its repository-path pages
+  are not proof that each focused skill is a real indexed listing.
 - Canonical Agent Skills source: `https://github.com/replynodes/replynodes-agent-skills`.
-  The currently verified skills.sh source page is
+  The canonical skills.sh repository page is
   `https://www.skills.sh/replynodes/replynodes-agent-skills/replynodes`, with
-  the focused logo page at
-  `https://www.skills.sh/replynodes/replynodes-agent-skills/brand-logo`.
+  `brand-logo` included in the source taxonomy but pending a verified focused
+  registry listing.
 - Acquisition hub: `https://github.com/replynodes/free-markdown-brand-logo-api`.
   It contains examples only and no duplicate Agent Skills files.
 - ClawHub migration: verified. ClawHub latest

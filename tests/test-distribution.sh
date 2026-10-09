@@ -53,6 +53,21 @@ skills = {
 assert "company-research" in skills, "company-research missing from skills.sh taxonomy"
 # Preserve the approved #714/#56 public skill, including the renamed provider slug.
 assert "app-store-api" in skills, "app-store-api missing from skills.sh taxonomy"
+# Every production skill marked public must be represented in the canonical
+# taxonomy; this prevents a public focused skill from silently becoming an
+# ungrouped registry surface.
+public = set()
+for skill_file in [root / "SKILL.md", *sorted((root / "skills").glob("*/SKILL.md"))]:
+    text = skill_file.read_text(encoding="utf-8")
+    match = re.search(r"(?m)^name:\s*([A-Za-z0-9_-]+)\s*$", text)
+    internal = re.search(r"(?m)^\s*internal:\s*(true|false)\s*$", text)
+    assert match and internal, f"{skill_file} must declare name and internal"
+    if internal.group(1) == "false":
+        public.add(match.group(1))
+assert public == skills & public, (
+    "all public production skills must be present in skills.sh taxonomy: "
+    f"missing={sorted(public - skills)}"
+)
 # Legacy/internal aliases must not be presented as public acquisition choices.
 for legacy in (
     "app-store-research",
