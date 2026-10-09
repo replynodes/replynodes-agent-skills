@@ -15,6 +15,7 @@ metadata:
   author: ReplyNodes
   version: "2.0.0"
   endpoint: https://mcp.replynodes.com/mcp
+  repository: https://github.com/replynodes/replynodes-agent-skills
   keywords: [company research, company profile, company brief, business intelligence, domain research, account research, prospect research, sales prospecting, vendor evaluation, due diligence, company enrichment, competitive research, first-party evidence, keyless]
 ---
 

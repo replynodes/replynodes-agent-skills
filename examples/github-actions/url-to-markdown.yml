@@ -1,0 +1,27 @@
+name: ReplyNodes URL to Markdown
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Public HTTP(S) URL
+        required: true
+        default: https://replynodes.com/
+permissions:
+  contents: read
+jobs:
+  markdown:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install canonical url-to-markdown skill
+        run: npx --yes skills add https://github.com/replynodes/replynodes-agent-skills --skill url-to-markdown --full-depth
+      - name: Fetch public Markdown
+        env:
+          URL: ${{ inputs.url }}
+        run: |
+          set -euo pipefail
+          case "$URL" in http://*|https://*) ;; *) echo 'HTTP(S) URL required' >&2; exit 2;; esac
+          curl --fail-with-body --max-time 20 "https://md.replynodes.com/${URL}" -o page.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: url-to-markdown-output
+          path: page.md

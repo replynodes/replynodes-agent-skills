@@ -15,6 +15,7 @@ metadata:
   version: "1.0.0"
   endpoint: https://api.replynodes.com
   mcp_endpoint: https://mcp.replynodes.com/mcp
+  repository: https://github.com/replynodes/replynodes-agent-skills
   keywords: [App Store API, iOS app search, App Store search, app reviews, app ratings, app developer, app privacy, similar apps, iTunes API, ASO, app store optimization, competitor apps, iOS, keyless]
 ---
 

@@ -13,6 +13,7 @@ at the skill's own directory in this repository:
 npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/company-research
 npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/url-to-markdown
 npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/brand-kit
+npx skills add https://github.com/replynodes/replynodes-agent-skills/tree/main/skills/app-store-api
 ```
 
 Install the whole canonical package — the `replynodes` umbrella plus every
@@ -22,12 +23,20 @@ focused skill — with the umbrella install:
 npx skills add replynodes/replynodes-agent-skills
 ```
 
-The repository-plus-`--skill` form, for example
-`npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research`,
-is a compatibility limitation rather than the primary command: for a remote
-GitHub clone the current official `skills` CLI stops at the root `replynodes`
-skill and reports no matching focused skill. Use the focused directory command
-above instead.
+The repository-plus-`--skill` form is retained as a compatibility fallback:
+
+```bash
+npx skills add https://github.com/replynodes/replynodes-agent-skills --skill company-research --full-depth
+```
+
+It is required when a host cannot install a direct focused directory URL because
+the current official CLI may stop at the root `replynodes` skill for a remote
+clone. Do not remove the umbrella or create duplicate top-level copies merely
+to hide this upstream/index limitation.
+
+Canonical focused pages: [company-research](https://skills.sh/replynodes/replynodes-agent-skills/company-research), [url-to-markdown](https://skills.sh/replynodes/replynodes-agent-skills/url-to-markdown), and [app-store-api](https://skills.sh/replynodes/replynodes-agent-skills/app-store-api). The source repository is canonical; Skills.sh and ClawHub pages are separately read back and may lag or retain legacy slugs.
+
+Copyable GitHub Actions examples live in [`examples/github-actions/`](examples/github-actions/).
 
 | Skill | Use it for |
 | --- | --- |
