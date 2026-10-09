@@ -1,12 +1,14 @@
 ---
 name: app-store-api
 description: >-
-  Apple App Store API for AI agents: search iOS apps by keyword, read ratings
-  and reviews, look up an app by id, list a developer's apps, read privacy
-  details, and find similar apps. Use it for App Store research, iOS app
-  discovery, ASO (app store optimization), competitor app and review analysis,
-  and developer catalog lookups. Free keyless first request, read-only, with
-  an optional authenticated continuation.
+  Use when you need Apple App Store data: search iOS apps by keyword, read
+  ratings and reviews, look up an app by id or bundle id, list a developer's
+  apps, read privacy details, or find similar apps. Fits App Store research,
+  iOS app discovery, ASO (app store optimization), competitor app and review
+  analysis, and developer catalog lookups. Not for Google Play (use
+  google-play-api), and not for downloading, purchasing, or reviewing apps.
+  Free keyless first request, read-only, with an optional authenticated
+  continuation.
 license: MIT
 compatibility: "Free and keyless for the first request (network access only; shared anonymous quota, Tier B: 10 admitted requests per trusted client-IP bucket per capability per UTC day; no account or API key). Authenticated continuation needs an API client or MCP-capable agent and REPLYNODES_API_KEY in a secret store; an existing authenticated free account has 500 credits."
 metadata:

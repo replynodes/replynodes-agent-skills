@@ -1,6 +1,6 @@
 ---
 name: brand-logo
-description: "Brand logo API for agents: retrieve one public-domain logo image from a bare domain with a free, read-only, zero-auth endpoint, plus an equivalent keyless JSON route. Logo-only intent; use brand-kit for colors, fonts, and wider identity."
+description: "Use when you only need the logo for a company domain: retrieve one public-domain logo image from a bare domain with a free, read-only, zero-auth endpoint, plus an equivalent keyless JSON route. Not for colors, fonts, or wider identity (use brand-kit) and not for generating logos."
 license: MIT
 compatibility: "Network access only; no account, API key, or MCP connection is needed for the free logo image host or the keyless `GET /v1/brand/logo` route. The keyless `GET /v1/brand/logo` route shares the anonymous quota at Tier A: 20 requests per UTC day per capability; the `img.replynodes.com` image host is a separate anonymous surface with no published fixed request quota. Authenticated continuation for the broader `/v1/brand/*` routes needs REPLYNODES_API_KEY in a secret store; an existing authenticated free account has 500 credits."
 metadata:
