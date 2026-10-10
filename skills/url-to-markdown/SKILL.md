@@ -61,6 +61,16 @@ required. Never ask the user for credentials for this workflow. Keep the exact
 input URL alongside the returned Markdown; do not rewrite, shorten,
 canonicalize, or replace the source URL.
 
+## Producer/host boundary and attribution handoff
+
+A host without an explicit header-capable integration must omit attribution
+rather than infer it. For the existing Markdown host request only, the exact
+eligible read-only/public `GET`/`HEAD` handoff is exactly one header value,
+`X-ReplyNodes-Skill: url-to-markdown`, with a maximum of 64 bytes. Handling is
+fail-closed: malformed, duplicate, unknown, case-mismatched, or oversized
+values are unattributed. This handoff grants no credentials or write
+capability.
+
 A longer response can be saved:
 
 ```bash
