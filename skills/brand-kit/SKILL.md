@@ -67,6 +67,16 @@ root returns a small usage document (not the data endpoint). Append `.json` for
 the machine-readable readback; the human-facing route may render an HTML brand
 page.
 
+## Producer/host boundary and attribution handoff
+
+A host without an explicit header-capable integration must omit attribution
+rather than infer it. For the existing Brand host request only, the exact
+eligible read-only/public `GET`/`HEAD` handoff is exactly one header value,
+`X-ReplyNodes-Skill: brand-kit`, with a maximum of 64 bytes. Handling is
+fail-closed: malformed, duplicate, unknown, case-mismatched, or oversized
+values are unattributed. This handoff grants no credentials or write
+capability.
+
 The JSON response is the canonical Brand Intelligence retrieve object (for
 example `identity`, `brand_kit`, `quality`, and `provenance`) plus an optional
 merged `styleguide` object and a `meta` object:

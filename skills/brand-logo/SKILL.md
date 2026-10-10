@@ -50,6 +50,15 @@ When the caller needs structured JSON instead of image bytes, the canonical
 curl --fail-with-body 'https://api.replynodes.com/v1/brand/logo?domain=replynodes.com'
 ```
 
+## Producer/host boundary and attribution handoff
+
+A host without an explicit header-capable integration must omit attribution
+rather than infer it. For the existing public logo `GET`/`HEAD` surfaces
+documented above only, the exact eligible read-only/public handoff is exactly one header value, `X-ReplyNodes-Skill: brand-logo`, with a maximum of 64 bytes.
+Handling is fail-closed: malformed, duplicate, unknown, case-mismatched, or
+oversized values are unattributed. This handoff grants no credentials or write
+capability.
+
 ## Limits and errors
 
 The `GET /v1/brand/logo` route is admitted through the shared anonymous quota at
